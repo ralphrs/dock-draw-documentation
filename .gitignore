@@ -5,3 +5,8 @@ node_modules/
 **/playwright-report/
 **/.vite*/
 *.log
+node_modules/
+_lixeira/
+tasks/.state/*.seen
+adrs/_work/spike-s1/test-results/
+.DS_Store
