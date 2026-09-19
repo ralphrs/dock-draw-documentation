@@ -1,0 +1,359 @@
+# LEDGER — Contratos dos ADRs da engine de documentação
+
+Entrada obrigatória de todo ADR novo. Atualizado em 2026-09-19.
+
+> [!IMPORTANT]
+> **Regra de status do ledger (mudança de processo, 2026-09-19).** Os ADRs 002, 003 e 004 estão **Propostos** e encadeados: o 002 só vira Aceito quando o spike S-1 passar, e o 003 e o 004 são aceitos junto com ele. Se o ledger registrasse só ADRs Aceitos, nenhum ADR seguinte poderia ser escrito até o spike rodar.
+>
+> Por isso o ledger tem duas seções:
+>
+> - **Aceitos**: contratos definitivos.
+> - **Propostos vinculantes**: contratos que os próximos ADRs **devem respeitar como se estivessem aceitos**. Se o spike S-1 falhar, o gatilho de reabertura do ADR 002 reabre a cadeia 002 → 003 → 004 e todo ADR que tenha consumido esses contratos é revisado.
+
+## Arquitetura base (inegociável; candidata que conflita é eliminada)
+- App: TanStack Start (SSR, server functions) + React 19 + Vite + TypeScript strict. Alias @ → src. Formatação oxfmt.
+- UI: shadcn/Radix. Tailwind CSS v4 via @tailwindcss/vite, sem tailwind.config e sem PostCSS.
+- Cores só por token CSS (custom properties), temas .theme-dark / .theme-light. Único hardcode permitido: linear-gradient(135deg,#8b5cf6,#4f8ff7). Nada de CSS reset universal não-layered.
+- Animações respeitam prefers-reduced-motion. Tudo funciona em dark e light.
+- Backend: Supabase (Postgres, Auth, RLS, Storage). Multi-inquilino.
+- Motor de diagrama: @xyflow/react (React Flow), decidido no ADR 001; o modelo do diagrama vive no Supabase.
+- Ambiente: projeto Lovable; instalação só pelo registro npm, sem build nativo nem postinstall que baixa binário.
+- Segurança: conteúdo de usuário nunca é compilado nem avaliado como código.
+- Versões: sempre a última estável, conferida na data da pesquisa, com link da fonte.
+- Dependências novas: permitidas só com justificativa no ADR (exceção documentada, como no ADR 001).
+
+---
+
+# Aceitos
+
+## ADR 001 — Motor de diagrama
+
+```yaml
+adr: "001"
+camada: "Motor de diagrama"
+status: "Aceito"
+decisao: "@xyflow/react (React Flow), com nodes/edges controlados pelo estado do app"
+interfaces_publicadas:
+  - nome: "Modelo de diagrama (elementos, relacionamentos, views)"
+    tipo: "tabelas Supabase"
+    descricao: "public.projects, public.views, public.view_nodes, public.model_elements, public.relationships (supabase-types-dokdraw.ts). Mutáveis, sem histórico de revisão"
+restricoes_impostas:
+  - "Diagramas são referenciados por id estável, nunca por título"
+  - "O registry de formas (ShapeDef) é independente do motor"
+premissas_sobre_camadas_futuras:
+  - camada: "Renderização (ADR 007)"
+    premissa: "Consegue exibir uma view de diagrama em modo leitura dentro de uma página"
+```
+
+---
+
+# Propostos vinculantes
+
+Ordem de aceitação: 002 (após spike S-1) → 003 e 004 juntos com o 002.
+
+## ADR 002 — Formato de conteúdo (DokMD v1)
+
+Arquivo: `ADR-002-formato-de-conteudo.md` · Status: Proposto — vira Aceito quando o spike S-1 passar.
+
+```yaml
+adr: "002"
+camada: "Formato de conteúdo"
+status: "Proposto"
+data: "2026-09-18"
+decisao: "Páginas escritas e armazenadas em DokMD v1 (CommonMark + GFM + frontmatter YAML + directives só de bloco, conjunto fechado), AST mdast, referências por URI dok: com id; MDX/wikilink/alerts só na entrada."
+dependencias:
+  - pacote: "mdast-util-from-markdown"
+    versao: "^2.0.3"
+    licenca: "MIT"
+    verificado_em: "2026-09-18 https://www.npmjs.com/package/mdast-util-from-markdown"
+  - pacote: "mdast-util-to-markdown"
+    versao: "^2.1.2"
+    licenca: "MIT"
+    verificado_em: "2026-09-18 https://www.npmjs.com/package/mdast-util-to-markdown"
+  - pacote: "micromark-extension-gfm"
+    versao: "^3.0.0"
+    licenca: "MIT"
+    verificado_em: "2026-09-18 https://www.npmjs.com/package/micromark-extension-gfm"
+  - pacote: "mdast-util-gfm"
+    versao: "^3.1.0"
+    licenca: "MIT"
+    verificado_em: "2026-09-18 https://www.npmjs.com/package/mdast-util-gfm"
+  - pacote: "micromark-extension-directive"
+    versao: "^4.0.0"
+    licenca: "MIT"
+    verificado_em: "2026-09-18 https://www.npmjs.com/package/micromark-extension-directive"
+  - pacote: "mdast-util-directive"
+    versao: "^3.1.0"
+    licenca: "MIT"
+    verificado_em: "2026-09-18 https://www.npmjs.com/package/mdast-util-directive"
+  - pacote: "micromark-extension-frontmatter"
+    versao: "^2.0.0"
+    licenca: "MIT"
+    verificado_em: "2026-09-18 https://www.npmjs.com/package/micromark-extension-frontmatter"
+  - pacote: "mdast-util-frontmatter"
+    versao: "^2.0.1"
+    licenca: "MIT"
+    verificado_em: "2026-09-18 https://www.npmjs.com/package/mdast-util-frontmatter"
+  - pacote: "micromark-extension-mdx-jsx"
+    versao: "^3.0.2"
+    licenca: "MIT"
+    verificado_em: "2026-09-18 https://www.npmjs.com/package/micromark-extension-mdx-jsx (só importador)"
+  - pacote: "mdast-util-mdx-jsx"
+    versao: "^3.2.0"
+    licenca: "MIT"
+    verificado_em: "2026-09-18 https://www.npmjs.com/package/mdast-util-mdx-jsx (só importador)"
+  - pacote: "unist-util-visit"
+    versao: "^5.1.0"
+    licenca: "MIT"
+    verificado_em: "2026-09-18 https://www.npmjs.com/package/unist-util-visit"
+  - pacote: "mdast-util-to-string"
+    versao: "^4.0.0"
+    licenca: "MIT"
+    verificado_em: "2026-09-18 https://www.npmjs.com/package/mdast-util-to-string"
+  - pacote: "github-slugger"
+    versao: "^2.0.0"
+    licenca: "ISC"
+    verificado_em: "2026-09-18 https://www.npmjs.com/package/github-slugger"
+  - pacote: "yaml"
+    versao: "^2.9.1"
+    licenca: "ISC"
+    verificado_em: "2026-09-18 https://www.npmjs.com/package/yaml"
+  - pacote: "zod"
+    versao: "^4.6.5"
+    licenca: "MIT"
+    verificado_em: "2026-09-18 https://www.npmjs.com/package/zod (provavelmente já presente no app)"
+  - pacote: "@types/mdast"
+    versao: "^4.0.4"
+    licenca: "MIT"
+    verificado_em: "2026-09-18 https://www.npmjs.com/package/@types/mdast (devDependency)"
+interfaces_publicadas:
+  - nome: "Gramática DokMD v1"
+    tipo: "formato"
+    descricao: "Apêndice A deste ADR; conformidade definida pelas 30 fixtures em fixtures/"
+  - nome: "DokAST"
+    tipo: "tipo TS"
+    descricao: "mdast (@types/mdast 4) restrita aos nós listados no Apêndice A.4, com DokDirective discriminada por name e atributos tipados"
+  - nome: "frontmatterSchema"
+    tipo: "tipo TS"
+    descricao: "Schema Zod estrito: dok, id, title obrigatórios; description, tags, aliases, props opcionais; ordem canônica de chaves"
+  - nome: "URIs dok:"
+    tipo: "formato"
+    descricao: "dok:page/<uuid>[#slug], dok:page/new?title=<pct>, dok:asset/<uuid>, dok:diagram/<uuid>[?view=<uuid>]"
+  - nome: "parseDok / serializeDok / normalizeDok / validateDok"
+    tipo: "função"
+    descricao: "src/content-format; normalizeDok é idempotente e é o que o save grava; validateDok devolve Diagnostic[] com códigos DOK-Exxx (bloqueiam) e DOK-Wxxx"
+  - nome: "importDialect"
+    tipo: "função"
+    descricao: "gfm | obsidian | starlight-mdx | legacy → DokAST + relatório de conversão; nunca falha, degrada para texto"
+  - nome: "collectRefs"
+    tipo: "função"
+    descricao: "Lista refs {kind: page|unresolved|asset|diagram, id, view?, rev?, anchor?, position} para backlinks, grafo e integridade"
+  - nome: "extractText"
+    tipo: "função"
+    descricao: "Texto indexável por bloco, sem render (regras na seção 7.5)"
+  - nome: "migrateDok"
+    tipo: "função"
+    descricao: "Migrações puras versão n → n+1 sobre a AST"
+  - nome: "Matriz de tradução por destino"
+    tipo: "formato"
+    descricao: "Apêndice B; normativa para o ADR 010"
+restricoes_impostas:
+  - "Todo produtor e consumidor de conteúdo usa DokAST via src/content-format; nenhuma camada parseia Markdown por conta própria no caminho de persistência"
+  - "A fonte de verdade gravada é o texto canônico (saída de normalizeDok); AST, HTML e índices são derivados"
+  - "Nenhuma camada avalia código; MDX nunca é compilado dentro do app"
+  - "Links, imagens, anexos e diagramas são referenciados por id em URI dok:; título é só rótulo"
+  - "Todo save passa por normalizeDok + validateDok no servidor; qualquer DOK-E bloqueia"
+  - "Directives só de bloco; nenhum componente ou editor pode fazer 'palavra:palavra' virar diretiva"
+  - "Conteúdo não carrega estilo: sem HTML, class, style ou atributos fora do registro"
+  - "Datas, autor, status editorial, slug e hierarquia não moram no conteúdo"
+  - "Mudança no que o parser reconhece só com incremento de dok, migração e fixtures novas; nome novo no registro de diretivas é aditivo e não incrementa"
+premissas_sobre_camadas_futuras:
+  - camada: "Edição (ADR 005)"
+    premissa: "O editor produz DokAST/DokMD sem perda de significado nas fixtures e suporta directives só de bloco; o servidor normaliza no save"
+  - camada: "Fluxo editorial (ADR 004)"
+    premissa: "Revisões guardam texto canônico com sua versão dok; o diff é feito sobre texto canônico na mesma versão"
+  - camada: "Renderização (ADR 007)"
+    premissa: "Renderiza DokAST sem MDX, resolve URIs dok: e define a política de imagem externa"
+  - camada: "Busca (ADR 009)"
+    premissa: "Indexa a saída de extractText"
+  - camada: "Exportação (ADR 010)"
+    premissa: "Implementa a matriz do Apêndice B, incluindo escape de { e < ao emitir .mdx e injeção de datas a partir do banco"
+  - camada: "Persistência"
+    premissa: "Grava texto canônico + refs derivadas de collectRefs; id do frontmatter é igual ao id da linha da página"
+  - camada: "Motor de diagrama (ADR 001)"
+    premissa: "Views e revisões de diagrama têm uuid estável; existe forma de gerar SVG/PNG estático de uma view fora do canvas interativo"
+riscos_abertos:
+  - "MDXEditor registra text directives por padrão; precisa aceitar a extensão flow-only (spike S-1)"
+  - "Plate perde a serialização MDX nativa: componentes como directives exigem regras próprias no @platejs/markdown"
+  - "Tiptap usa marked, não mdast; se for o escolhido, exige conversor próprio para não divergir"
+  - "Âncoras por slug quebram quando o heading é renomeado"
+  - "Geração estática de view de diagrama para export ainda não tem dono (conflito C-2)"
+  - "Import de conteúdo com muito HTML perde marcação"
+gatilhos_de_reabertura:
+  - "Spike S-1 falha em MDXEditor, Plate e Milkdown"
+  - "Starlight deixa de suportar :::note em algum processador"
+  - "Extensão de directives sem manutenção ou com major que mude a sintaxe"
+  - "Necessidade de componentes inline, transclusão, matemática ou ids de heading estáveis"
+  - "Mais de 10% das páginas importadas com DOK-W104"
+```
+
+## ADR 003 — Armazenamento e versionamento
+
+Arquivo: `ADR-003-armazenamento-e-versionamento.md` · Status: Proposto — aceito junto com o ADR 002.
+
+```yaml
+adr: "003"
+camada: "Armazenamento e versionamento"
+status: "Proposto"
+data: "2026-09-18"
+decisao: "Postgres puro no Supabase: page_revisions append-only e imutável (snapshot completo, não delta); status editorial em log de eventos à parte, projetado em revision_current_status; pages.published_revision_id aponta a revisão publicada; page_drafts mutável, um por autor por página; page_refs derivada de collectRefs para backlinks e integridade."
+dependencias: []
+interfaces_publicadas:
+  - nome: "content.workspace_members / content.spaces / content.pages / content.page_revisions / content.page_drafts / content.revision_statuses / content.revision_status_events / content.revision_current_status / content.page_refs / content.assets / content.sync_state"
+    tipo: "tabela"
+    descricao: "Schema completo na seção 6.2 deste ADR; page_revisions e revision_status_events são append-only, garantido por trigger. workspace_members não existia no schema real (supabase-types-dokdraw.ts só tinha public.user_roles, global) — é criada por este ADR"
+  - nome: "Space, Page, PageRevision, PageDraft, Asset"
+    tipo: "tipo TS"
+    descricao: "src/content-store/types.ts, seção 6.5"
+  - nome: "getPage / getPageTree / getDraft / saveDraft / submitRevision / transitionRevisionStatus / publishRevision / listRevisions / getRevision / createPage / movePage / softDeletePage / restorePage / purgePage / createAsset / getAssetSignedUrl / getBacklinks"
+    tipo: "função"
+    descricao: "src/content-store/server.ts; server functions do TanStack Start, seção 6.5"
+  - nome: "content.effective_role(space_id, user_id)"
+    tipo: "função"
+    descricao: "Ponto único de resolução de papel para RLS: override por content.space_members, senão content.workspace_members"
+restricoes_impostas:
+  - "Toda escrita de conteúdo publicado cria uma linha nova em page_revisions; a tabela nunca é UPDATE/DELETE (garantido por trigger e ausência de política de RLS para isso)"
+  - "Status editorial nunca é coluna de page_revisions; sempre um evento em revision_status_events"
+  - "Ninguém lê o rascunho de outro autor fora do fluxo formal de revisão (RLS: page_drafts só é visível ao próprio autor)"
+  - "Assets são imutáveis: substituir o arquivo de um asset cria um novo id, nunca sobrescreve o storage_path existente"
+  - "Toda referência (link, asset, diagrama) extraída de uma revisão salva vira uma linha em page_refs; nenhuma camada resolve referência varrendo texto"
+  - "A identidade de página é id (uuid); slug é só cosmético e nunca aparece em dok:page/<uuid>"
+  - "Todo workspace criado em public.workspaces ganha automaticamente uma linha 'owner' em content.workspace_members (trigger); nenhum fluxo pode depender só de public.workspaces.owner_id para autorização"
+premissas_sobre_camadas_futuras:
+  - camada: "Fluxo editorial (ADR 004)"
+    premissa: "Novos estados e papéis são linhas novas em revision_statuses/revision_status_events; comentários ancorados são uma tabela aditiva que referencia revision_id, sem alterar page_revisions"
+  - camada: "Busca (ADR 009)"
+    premissa: "Indexa via pages.published_revision_id para conteúdo público; indexa page_drafts só dentro do escopo RLS do próprio autor"
+  - camada: "Exportação e sync (ADR 010)"
+    premissa: "Usa content.sync_state para remote_file_id/hash/data; nenhuma tabela nova necessária para o estado de sync básico"
+  - camada: "Motor de diagrama (persistência, ADR 001)"
+    premissa: "Antes de excluir um diagrama ou view, consulta content.page_refs (kind='diagram') para saber se alguma página quebra"
+  - camada: "Colaboração em tempo real (futura)"
+    premissa: "Uma camada Yjs efêmera pode escrever em page_drafts via autosave incremental sem mudar este schema; Realtime pode assinar page_drafts com segurança porque a RLS já restringe por autor"
+riscos_abertos:
+  - "public.invites não tem workspace_id hoje; não há fluxo formal para popular content.workspace_members além do seed automático do owner — alguém precisa decidir como um segundo usuário entra num workspace"
+  - "Performance de content.effective_role() em RLS não verificada em escala (spike não bloqueante, seção 8)"
+  - "page_refs.target_id para diagramas (public.projects/public.views) não tem FK de banco; integridade depende de disciplina de aplicação, não do Postgres"
+  - "page_refs.target_rev_id não tem o que referenciar hoje: public.views/model_elements/relationships são mutáveis, sem histórico — rev fica sempre null até o ADR 001 decidir versionar diagramas"
+gatilhos_de_reabertura:
+  - "Volume de revisões por página torna snapshot completo caro o suficiente para justificar deltas"
+  - "effective_role() não escala e precisa sair de subquery para claim de JWT"
+  - "ADR 004 precisa de merge automático entre revisores, não só detecção de conflito"
+  - "public.invites ganha workspace_id e muda a forma de content.workspace_members ser populada"
+```
+
+## ADR 004 — Fluxo editorial
+
+Arquivo: `ADR-004-fluxo-editorial.md` · Status: Proposto — aceito junto com os ADRs 002 e 003.
+
+```yaml
+adr: "004"
+camada: "Fluxo editorial"
+status: "Proposto"
+data: "2026-09-18"
+decisao: "Máquina de estados própria em Postgres, estendendo o ADR 003: revision_reviews (votos append-only) agrega para revision_status_events conforme a política de space_editorial_policies; revision_comments (ancorados por faixa de linha) e notifications são tabelas aditivas; a regra e o mecanismo de fixação de diagrama via page_refs.target_rev_id ficam definidos para quando o ADR 001 versionar diagramas — hoje a coluna é sempre null e o DokMD nunca é reescrito para incluir rev."
+dependencias: []
+interfaces_publicadas:
+  - nome: "RevisionStatus (enum)"
+    tipo: "tipo TS"
+    descricao: "submitted | in_review | changes_requested | approved | published | rejected | superseded — idêntico ao já semeado em content.revision_statuses pelo ADR 003"
+  - nome: "REVISION_TRANSITIONS / isTransitionAllowed"
+    tipo: "função"
+    descricao: "src/editorial-flow/transitions.ts; tabela declarativa de (from, to, actor) — seção 6.3 — única fonte de verdade sobre quais transições são legais"
+  - nome: "content.space_editorial_policies / content.revision_reviews / content.revision_comments / content.notifications"
+    tipo: "tabela"
+    descricao: "Schema completo na seção 6, com RLS na seção 6.7"
+  - nome: "castReviewVote / publishRevision / getSpaceEditorialPolicy / upsertSpaceEditorialPolicy / initializeDraftFrom"
+    tipo: "função"
+    descricao: "src/editorial-flow/server.ts; server functions do TanStack Start, seção 6.3"
+  - nome: "Eventos emitidos"
+    tipo: "evento"
+    descricao: "Um evento por linha nova em revision_status_events (to_status = submitted|in_review|changes_requested|approved|published|rejected|superseded) e por linha nova em revision_comments; consumidos hoje só pelo fan-out para notifications, disponíveis para ADR 010/011 via leitura direta ou Realtime sobre essas tabelas"
+restricoes_impostas:
+  - "Toda transição de status passa por uma server function que consulta REVISION_TRANSITIONS antes de inserir em revision_status_events; RLS nega insert direto do cliente nessa tabela"
+  - "revision_reviews é append-only (trigger forbid_mutation do ADR 003, reaproveitada); um novo voto do mesmo revisor é uma linha nova, nunca um UPDATE"
+  - "Autoaprovação (revisor = autor da revisão) é bloqueada a menos que space_editorial_policies.allow_self_approval = true"
+  - "Só revisões publicadas (pages.published_revision_id) aparecem para leitores, na busca pública, na publicação e no sync — salvo ação manual do próprio autor exportando seu rascunho"
+  - "Diagrama referenciado sem rev explícito nunca tem o DokMD reescrito para incluí-lo; a fixação em page_refs.target_rev_id é o mecanismo definido para quando o ADR 001 versionar diagramas — até lá a coluna fica null e a resolução é sempre dinâmica"
+  - "page_revisions permanece imutável; nenhuma tabela ou função deste ADR insere, altera ou apaga uma linha ali além de leitura"
+premissas_sobre_camadas_futuras:
+  - camada: "Edição (ADR 005)"
+    premissa: "Implementa diff textual e renderizado contra a versão publicada, modo de comentário ancorado por faixa de linha, indicador de revisão em changes_requested e modo somente leitura; decide se e como entra modo de sugestão de edição"
+  - camada: "Renderização (ADR 007)"
+    premissa: "Hoje resolve todo embed de diagrama dinamicamente, em rascunho ou em qualquer revisão, porque page_refs.target_rev_id é sempre null; quando o ADR 001 versionar diagramas, passa a resolver revisões específicas pelo target_rev_id fixado, mantendo resolução dinâmica só para rascunhos"
+  - camada: "Busca (ADR 009)"
+    premissa: "Indexa exclusivamente via pages.published_revision_id; nenhuma revisão em submitted/in_review/changes_requested/approved é exposta à busca pública"
+  - camada: "Exportação e sync (ADR 010)"
+    premissa: "Exporta e sincroniza só publicadas por padrão; exportação de rascunho é ação manual do próprio autor, fora do pipeline de sync_state"
+  - camada: "Publicação (ADR 011)"
+    premissa: "Qualquer superfície pública respeita a mesma barreira de pages.published_revision_id usada por Busca e Exportação"
+riscos_abertos:
+  - "Sem papel dedicado de publicador — publish_role é política, não papel; ver gatilho de reabertura"
+  - "revision_reviews_current é VIEW, não materializada; performance sob alto volume de votos não verificada"
+  - "Provedor de e-mail e templates de notificação não escolhidos — só a tabela notifications está pronta para alimentar isso depois"
+  - "Concorrência de voto (dois revisores votando ao mesmo tempo) precisa de verificação não bloqueante — seção 8"
+  - "page_refs.target_rev_id fica sempre null hoje: diagramas do ADR 001 (public.views/model_elements/relationships) são mutáveis, sem histórico — mesmo risco que o ADR 003 já registrou, herdado aqui porque a regra de negócio de fixação é deste ADR"
+gatilhos_de_reabertura:
+  - "Produto pedir papel dedicado de publicador, separado de quem aprova"
+  - "Aprovação por categoria de revisor (não só contagem) virar requisito"
+  - "Modo de sugestão de edição inline virar requisito"
+  - "E-mail transacional virar requisito obrigatório"
+  - "effective_role() não escalar sob a carga das novas policies (agrava o gatilho já registrado no ADR 003)"
+  - "ADR 001 (ou extensão dele) versionar diagramas — ativa de fato a fixação por revisão da seção 6.4"
+```
+
+---
+
+# Numeração oficial
+
+| ADR | Camada | Estado |
+| --- | --- | --- |
+| 001 | Motor de diagrama | Aceito |
+| 002 | Formato de conteúdo | Proposto (aguarda S-1) |
+| 003 | Armazenamento e versionamento | Proposto |
+| 004 | Fluxo editorial | Proposto |
+| 005 | Edição | **Não escrito** — o arquivo `ADR-005-edicao.md` contém o prompt, não o ADR |
+| 006 | *A definir* (camada em produção) | — |
+| 007 | Renderização | Não escrito |
+| 008 | Navegação e descoberta | Não escrito |
+| 009 | Busca | Não escrito |
+| 010 | Exportação e sincronização | Não escrito |
+| 011 | Publicação | Não escrito |
+| 012 | Consolidação da stack | Não escrito |
+| — | Tenancy e acesso (membros de workspace, convites) | **Sem número** — pressuposto pelos ADRs 003 e 004 |
+
+---
+
+# Conflitos em aberto
+
+| # | Entre | Descrição | Dono da resolução |
+| --- | --- | --- | --- |
+| C-1 | 002 × 001 | O embed `dok:diagram/<uuid>?view=` admite `rev`, mas o modelo real do ADR 001 é mutável e sem histórico. `page_refs.target_rev_id` fica sempre `null`; toda resolução de diagrama é dinâmica, inclusive em revisões publicadas. Uma revisão aprovada pode mudar de aparência se o diagrama for editado depois | Extensão do ADR 001 (versionamento de diagramas). Gatilho já registrado no ADR 004 |
+| C-2 | 002 × 001 / 007 / 010 | Todo destino de export precisa de SVG/PNG estático de uma view, fora do canvas interativo. Ninguém é dono da geração | ADR 007 (Renderização) decide; o ADR 010 consome. Se exigir mudança no motor, emenda ao ADR 001 |
+| C-3 | 003 / 004 × plano | Os ADRs 003 e 004 pressupõem um "ADR de tenancy/auth": `public.invites` não tem `workspace_id`, e só o owner entra em `content.workspace_members` automaticamente. Não há como um segundo usuário entrar num workspace | Novo ADR de Tenancy e acesso — precisa de número |
+| C-4 | 004 × 005 | O ADR 004 exige do editor: diff textual **e** renderizado contra a publicada, comentário ancorado por **faixa de linhas do texto canônico**, indicador de `changes_requested` e modo somente leitura. Ancorar por linha do texto canônico num editor WYSIWYG exige mapear seleção visual ↔ posição no Markdown | ADR 005 (eliminatório/importante explícito) |
+| C-5 | 002 × prompt 005 | O ADR 002 trocou o eliminatório de round-trip de 28/30 para **30/30** (teste 1 do S-1, com `normalizeDok`) e redefiniu os testes 3 e 4. O prompt original do ADR 005 ainda pede 28/30 | Prompt do ADR 005 atualizado (entregue junto com este ledger) |
+| C-6 | Numeração | O ADR 002 manda "renderização **e navegação**" para o 007 (o plano tem Navegação no 008) e chama o ADR 003 de "ADR de persistência". O ADR 004 manda o diff visual para "ADR 005/006". O `PROMPT-ADR-006.md` é uma cópia antiga do prompt de Renderização | Corrigir referências na próxima revisão de 002 e 004; descartar `PROMPT-ADR-006.md` |
+| C-7 | 003 × base | `public.user_roles` (`admin`/`member`, global) convive com `content.space_members.role` (`admin`/`editor`/`reviewer`/`viewer`, por espaço). São escopos diferentes, mas nenhum ADR diz qual prevalece para ações fora da Wiki | ADR de Tenancy e acesso (C-3) |
+
+# Premissas pendentes por camada destinatária
+
+| Camada | Premissas recebidas (de) |
+| --- | --- |
+| Edição (005) | Produz DokAST/DokMD sem perda, directives só de bloco (002); diff textual e renderizado, comentário por faixa de linhas, indicador `changes_requested`, somente leitura, decisão sobre modo sugestão (004) |
+| Renderização (007) | Renderiza DokAST sem MDX, resolve `dok:`, política de imagem externa (002); resolução dinâmica de diagrama até existir versionamento (004); exibe view em modo leitura (001); dono da geração estática de view (C-2) |
+| Busca (009) | Indexa `extractText` (002); só `pages.published_revision_id` na busca pública; rascunhos só no escopo do autor (003, 004) |
+| Exportação (010) | Implementa a matriz do Apêndice B, escape de `{` e `<` no .mdx, datas vindas do banco (002); usa `content.sync_state` (003); só publicadas, rascunho só por ação manual do autor (004) |
+| Publicação (011) | Mesma barreira de `pages.published_revision_id` (004) |
+| Motor de diagrama (001) | uuid estável de view e revisão, geração estática fora do canvas (002); consultar `page_refs` antes de excluir diagrama/view (003) |
+| Colaboração futura | Yjs efêmero escrevendo em `page_drafts` sem mudar schema (003) |
