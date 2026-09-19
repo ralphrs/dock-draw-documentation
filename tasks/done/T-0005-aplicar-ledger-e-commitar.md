@@ -79,7 +79,24 @@ Nenhuma nesta tarefa. A autorização de `A-Q-0002` (`tasks/done/`) já cobre os
    4 OK adr=005 status=Aceito
    ```
 5. **Pendências marcadas.** ✔ `adrs/_work/ADR-005-pendencias-ledger.md`, linha 3: "Todas as 14 aplicadas em `adrs/LEDGER.md` em 2026-09-19, por `A-Q-0002` (`aprovado_por: humano`, decisão 2, categorias `ledger` e `aceite-adr`). Diff completo em `adrs/_work/ADR-005-ledger-diff.md`." Item 14 explícito sobre o que ficou só documentado (a lacuna de cobertura do corpus, fatia F5 do ADR 002, sem virar gatilho de reabertura por si só).
-6. **Commits.** Ver abaixo, "Commits realizados" (anexado depois de rodar `git log`/`git status` reais, conforme o critério pede).
+6. **Commits.** ✔ Dois commits, mais um terceiro só para esta evidência (abaixo). Push feito na `main`. Sem `Co-Authored-By` nem rodapé de ferramenta em nenhum dos três.
+
+### Commits realizados
+
+```
+$ git log --oneline -3
+3f4e52e docs(ledger): aceita os ADRs 002 a 005 e publica o contrato do 005
+01b3e53 docs(adr-005): fecha o desenho, a causa da lista frouxa e as referências internas
+d3273d2 docs: sessão C desenvolvedora, A como scrum master, app-release
+
+$ git status --short
+(vazio)
+
+$ git push origin main
+219b29a..3f4e52e  main -> main
+```
+
+`01b3e53` traz os entregáveis do ADR 005 e do spike (T-0002, T-0003, T-0004). `3f4e52e` traz só `adrs/LEDGER.md`.
 
 ### Achado fora do escopo original, corrigido antes desta tarefa
 
