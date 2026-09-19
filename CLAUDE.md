@@ -11,12 +11,14 @@ Seja direto: proposta primeiro, justificativa depois. Discorde quando eu estiver
 | `prompts/` | `PROMPT-ADR-NNN.md`: a pergunta de cada ADR | Só eu. Não edite |
 | `adrs/` | ADRs gerados (`ADR-NNN-slug.md`) e `LEDGER.md` | Você, com minha aprovação |
 | `adrs/_work/` | Escopo aprovado, fichas de pesquisa por candidata, rascunhos | Você, livremente |
+| `guia-sessoes/` | Protocolo entre a sessão A (arquiteto) e a sessão B (executor), modelos e scripts | Só eu. Não edite |
+| `tasks/` | Tarefas, dúvidas e respostas trocadas entre as sessões A e B | As sessões, pelos scripts de `guia-sessoes/bin/` |
 
 ## Regras de toda sessão
 
 - Antes de propor qualquer tecnologia, leia `insumos/BASE.md` e `adrs/LEDGER.md`. O ledger é a fonte de verdade das decisões, incluindo a seção "Propostos vinculantes".
 - Candidata que viola a arquitetura base ou um contrato do ledger é eliminada, a menos que você proponha **explicitamente** reabrir o ADR anterior, com custo. Nunca contorne um contrato em silêncio.
-- **Nunca edite `adrs/LEDGER.md` nem um ADR existente sem minha aprovação explícita nesta sessão.** Proponha o diff e espere.
+- **Nunca edite `adrs/LEDGER.md` nem um ADR existente sem minha aprovação explícita.** Proponha o diff e espere. Quando as sessões trabalham pelo protocolo de `guia-sessoes/PROTOCOLO.md`, aprovação explícita é uma resposta `A-Q-*` com `aprovado_por: humano`, e nada mais.
 - Um ADR por sessão. Se surgir necessidade de mudar outro ADR, pare e me diga.
 - Versões e licenças sempre conferidas na web na data da pesquisa, com link. README não é evidência.
 - ADRs em Markdown puro, com alertas GFM (`> [!NOTE]`), não callouts `:::`.

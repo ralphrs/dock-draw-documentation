@@ -6,14 +6,24 @@
       "Read(insumos/**)",
       "Read(prompts/**)",
       "Read(adrs/**)",
+      "Read(guia-sessoes/**)",
+      "Read(tasks/**)",
       "Write(adrs/_work/**)",
-      "Edit(adrs/_work/**)"
+      "Edit(adrs/_work/**)",
+      "Write(tasks/**)",
+      "Edit(tasks/**)",
+      "Bash(guia-sessoes/bin/wait-for.sh:*)",
+      "Bash(guia-sessoes/bin/move.sh:*)",
+      "Bash(guia-sessoes/bin/next-id.sh:*)",
+      "Bash(guia-sessoes/bin/seen.sh:*)"
     ],
     "deny": [
       "Edit(insumos/**)",
       "Write(insumos/**)",
       "Edit(prompts/**)",
-      "Write(prompts/**)"
+      "Write(prompts/**)",
+      "Edit(guia-sessoes/**)",
+      "Write(guia-sessoes/**)"
     ]
   }
 }
