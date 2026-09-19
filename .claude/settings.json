@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch",
+      "Read(insumos/**)",
+      "Read(prompts/**)",
+      "Read(adrs/**)",
+      "Write(adrs/_work/**)",
+      "Edit(adrs/_work/**)"
+    ],
+    "deny": [
+      "Edit(insumos/**)",
+      "Write(insumos/**)",
+      "Edit(prompts/**)",
+      "Write(prompts/**)"
+    ]
+  }
+}
