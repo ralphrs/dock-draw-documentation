@@ -2,7 +2,9 @@
 
 Data: 2026-09-19. Porta: 5311. Comando: `SPIKE_PORT=5311 npx playwright test tests/mdxeditor 2>&1 | tee mdxeditor/playwright-output.txt`. `npx tsc --noEmit -p .` sem erro nos arquivos do MDXEditor.
 
-Resultado bruto da rodada final: 99 testes, 94 passaram, 5 falharam (1A 05, 1B 05, 9 D-2 26, 9 D-2 27, 10 05).
+Placar desta seção: rodada da parada 3. A correção da fusão de listas e o placar novo estão em "Correção da fixture 05 (parada 4)", no fim do arquivo.
+
+Resultado bruto da rodada da parada 3: 99 testes, 94 passaram, 5 falharam (1A 05, 1B 05, 9 D-2 26, 9 D-2 27, 10 05).
 
 ## Placar
 
@@ -92,7 +94,7 @@ Dias: o spike consumiu uma sessão. Estimativas para produção dos itens "C":
 
 ## Falhas
 
-### 1A 05, 1B 05, 10 05: listas adjacentes
+### 1A 05, 1B 05, 10 05: listas adjacentes (corrigido na parada 4, ver o fim do arquivo)
 
 ```diff
  - um
@@ -193,4 +195,87 @@ Primeira rodada do teste 1, antes dos visitors próprios de lista e quebra (visi
 -Linha com quebra\
 +Linha com quebra
  seguinte.
+```
+
+## Correção da fixture 05 (parada 4)
+
+Critério de saída **não atingido**: 1A, 1B, 1C e alternância fecham, o t14 fica em 30/36. A fusão de listas vizinhas está corrigida em todos os casos. As seis falhas restantes do t14 são de outra causa, lista frouxa e item com vários blocos, fora do escopo desta rodada.
+
+Placar da rodada (`mdxeditor/playwright-output-correcao-05.txt`, 135 testes, 127 passam, 8 falham):
+
+| Item | Antes | Agora |
+| --- | --- | --- |
+| 1A | 24/25 | **25/25** |
+| 1B | 16/17 | **17/17** |
+| 1C | 5/5 | 5/5 |
+| Alternância (teste 10, corpus) | 24/25 | **25/25** |
+| t14 extra | 9/36 | **30/36** (falham x05 e x06, três testes cada) |
+| 9 (D-2) | 6/8 | 6/8, fora desta rodada |
+| Demais testes (2 a 8, 11, 12, 13) | Passavam | Passam |
+
+Nenhum teste que passava antes passou a falhar. O teste 12 já era intermitente antes da correção (o Radix devolve o foco ao gatilho num efeito posterior ao Escape): com `--repeat-each 5` e sem a correção, 3 de 5 passaram. A asserção do teste passou a esperar o foco por até 2 s, e com isso 5 de 5 passam. O arquivo do teste é do autor desta correção, `tests/mdxeditor/t06-t12-shell.spec.ts`.
+
+### Abordagem
+
+`src/editors/mdxeditor/listNoMerge.ts`, 37 linhas, mais duas linhas em `dokPlugin.tsx` (import e a chamada `installListNoMerge()` no corpo do módulo, antes de qualquer editor existir).
+
+O que foi sobrescrito: o `$transform` declarado no `$config` do `ListNode` do `@lexical/list` 0.48 (`node_modules/@lexical/list/dist/LexicalList.dev.mjs:1080-1085`), que chama `mergeNextSiblingListIfSameType` (`:367-372`, que por sua vez chama `mergeLists`, `:271`). O substituto mantém a outra metade do transform original, a numeração dos itens, reimplementada a partir de `updateChildrenListItemValue` (`:344-360`, não exportada), e não funde nada.
+
+A troca é feita no registro estático do Lexical, por `getStaticNodeConfig(ListNode).ownNodeConfig.$transform`. `getStaticNodeConfig` é exportado pelo pacote `lexical` e tem cache por classe (`node_modules/lexical/dist/Lexical.dev.mjs:17770`), e cada `createEditor` lê esse registro em `getTransformSetFromKlass` (`:14427-14445`, usado em `:14549`). Assim a troca vale para o editor raiz e para todo editor aninhado criado depois, inclusive os que importam conteúdo no próprio `initialEditorState`, que era o ponto onde a fusão acontecia antes de qualquer código do adaptador poder agir.
+
+Por que não uma subclasse com `replace`: `getTransformSetFromKlass` percorre `iterStaticNodeConfigChain`, e o `$transform` do `ListNode` entra na cadeia de qualquer subclasse. Substituir o nó não removeria a fusão.
+
+Alcance: a troca é global para o `ListNode` na página. O `mergeLists` continua em pé nas operações de edição que o usam de propósito, indentação e remoção de item aninhado (`:800`). Só o transform automático de lista suja deixou de fundir.
+
+Medição da causa antiga, com o `getTree` da fixture 05 logo na carga e antes de qualquer edição: `["list:3","list:2"]` com os visitors oficiais (a primeira lista já vinha com três itens), contra `["list:2","list:2"]` depois da correção. A fusão acontecia na importação, não na edição.
+
+### O que ficou de fora e por quê
+
+x05 e x06 (listas vizinhas com item de vários blocos) falham por lista frouxa, não por fusão. Diferença medida na carga da x05:
+
+```
+SPREAD obtido   [{"spread":false,"itens":[{"spread":false,"blocos":["paragraph"]},…]},…]
+SPREAD parseDok [{"spread":true,"itens":[{"spread":true,"blocos":["paragraph","paragraph"]},…]},…]
+```
+
+Duas perdas independentes da fusão, ambas nos visitors do MDXEditor 4.2.5:
+
+1. `spread` nunca é exportado. O `LexicalListVisitor` grava só `ordered` e `spread: false` (`plugins/lists/LexicalListVisitor.js:6`) e o `LexicalListItemVisitor` grava `spread: false` em todo item (`plugins/lists/LexicalListItemVisitor.js`). O `ListExportVisitor` próprio do adaptador herdou isso ao acrescentar `start`.
+2. Item com dois parágrafos vira um parágrafo só. O `MdastParagraphVisitor` representa a separação com dois `LineBreakNode` dentro do `ListItemNode` (`plugins/core/MdastParagraphVisitor.js:6-16`), e o caminho de volta devolve texto com `\n\n` dentro de um único parágrafo.
+
+Saída real da x05 nesta rodada:
+
+```
+14 x05-ul-ul-varios-blocos carga FAIL
+@@ -10,12 +10,9 @@
+ 
+   continuação do um
+-
+ - dois
+ 
+ * três
+-
+   ```ts
+   const x = 1
+   ```
+-
+ * quatro
+```
+
+Corrigir isso exige estado próprio no `ListNode` e no `ListItemNode` (o `NodeState` do Lexical) para carregar `spread`, e um modelo de item com blocos de verdade no lugar do par de `LineBreakNode`. Estimativa de 1 a 1,5 dia, fora do escopo da parada 4, que pediu a fusão. Pela regra de esforço da rodada, nenhuma correção pontual foi tentada para fechar x05 e x06.
+
+Saída real da correção:
+
+```
+1A 05 PASS
+1B 05 PASS
+10 05 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+14 x01-ul-ul carga PASS
+14 x02-ol-ol carga PASS
+14 x07-tres-ul-seguidas carga PASS
+14 x08-citacao-ul-ul carga PASS
+14 x09-citacao-ol-ol-varios-blocos carga PASS
+14 x10-callout-ul-ul carga PASS
+14 x11-callout-ol-ol-varios-blocos carga PASS
+14 x12-callout-ul-ol carga PASS
 ```

@@ -130,6 +130,10 @@ test('12 portal Radix do menu Inserir sobre o editor', async ({ page }) => {
     }
   })
   await page.keyboard.press('Escape')
+  // O Radix devolve o foco ao gatilho num efeito posterior ao fechamento, então a leitura espera.
+  await page
+    .waitForFunction(() => document.activeElement?.getAttribute('data-testid') === 'insert-menu', undefined, { timeout: 2000 })
+    .catch(() => undefined)
   const focusBack = await page.evaluate(() => document.activeElement?.getAttribute('data-testid'))
   console.log(`12 menu=${JSON.stringify(info)} foco após Escape=${focusBack}`)
   expect(info.onTop && info.inViewport && info.itemsOnTop.every(Boolean)).toBe(true)

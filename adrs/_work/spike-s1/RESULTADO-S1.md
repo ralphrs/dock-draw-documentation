@@ -64,3 +64,55 @@ O arquiteto técnico escolheu corrigir a fixture 05 no MDXEditor antes de aplica
 Fora do prazo, como C na ponderação e fatias de implementação: D-2 26/27, notas de rodapé editáveis. A exceção ao colar árvore com nó `html` é fatia obrigatória antes de liberar o editor (um save que lança exceção perde trabalho do usuário).
 
 O Plate não recebe a mesma rodada: a falha dele é de modelo (lista por indentação sem item de vários blocos, 3 a 5 dias com risco).
+
+## Desfecho da rodada de correção (parada 4)
+
+Saída real: `mdxeditor/playwright-output-correcao-05.txt`, 135 testes, 127 passam, 8 falham.
+
+### Trava 1, critério numérico: atingida
+
+| Item | Antes | Depois |
+| --- | --- | --- |
+| 1A expected | 24/25 | **25/25** |
+| 1B input canonical | 16/17 | **17/17** |
+| 1C erro | 5/5 | **5/5** |
+| **E-01 (A + C)** | 29/30 | **30/30** |
+| Alternância (D-5) | 24/25 | **25/25** |
+| D-2 roteamento | 6/8 | 6/8 (fora da rodada por decisão da parada 4) |
+
+Nenhum teste que passava antes passa a falhar.
+
+### Trava 2, correção de modelo: verificada na forma, incompleta no resultado
+
+A correção substitui o `$transform` declarado no `$config` do `ListNode` do `@lexical/list` 0.48 (`LexicalList.dev.mjs:1080-1085`), que chamava `mergeNextSiblingListIfSameType` (`:367-372`). O substituto mantém só a numeração dos itens. A troca acontece no registro estático (`getStaticNodeConfig(ListNode).ownNodeConfig.$transform`), lido por cada `createEditor` em `getTransformSetFromKlass` (`Lexical.dev.mjs:14427-14445`), porque o transform é herdado pela cadeia de configuração e os editores aninhados importam conteúdo no próprio `initialEditorState`. Arquivos: `src/editors/mdxeditor/listNoMerge.ts` (37 linhas) e duas linhas em `dokPlugin.tsx`.
+
+Revisão de conformidade: nenhum caso especial por fixture, nenhuma chamada a `parseDok`, `serializeDok` ou `normalizeDok` dentro do adaptador, e `extra/`, `tests/mdxeditor/t14-extra-listas.spec.ts`, `src/shared`, `content-format`, `src/routes`, configs e `package.json` sem alteração (`git diff --stat`). A única mudança de teste está no `tests/mdxeditor/t06-t12-shell.spec.ts`, arquivo do próprio subagente: o teste 12 passou a esperar até 2 s pelo foco no gatilho, porque o Radix devolve o foco num efeito posterior ao Escape. O teste já era intermitente antes da correção (3 de 5 com `--repeat-each 5`), e depois do ajuste dá 5 de 5.
+
+Casos extras de regressão (`extra/`, 12 casos, 3 testes cada): **30/36**, contra 9/36 na linha de base (`extra/baseline-antes-da-correcao.txt`). Falham os três testes de `x05-ul-ul-varios-blocos` e os três de `x06-ol-ol-varios-blocos`.
+
+### Causa do que sobrou: lista frouxa, não fusão
+
+As seis falhas restantes têm causa diferente da fusão. O diff é só de linha em branco:
+
+```
+   continuação do um
+-
+ - dois
+
+ * três
+-
+   ```ts
+```
+
+Nenhum conteúdo se perde. O parágrafo de continuação, o bloco de código e a citação continuam dentro do item. O que se perde é o `spread` do CommonMark: a lista frouxa volta apertada. Medido na carga da x05, `spread` vem `false` em listas e itens contra `true` no `parseDok`. Origem nos visitors do MDXEditor, que gravam `spread: false` (`LexicalListVisitor.js:6`, `LexicalListItemVisitor.js`) e representam parágrafos do item com par de `LineBreakNode` (`MdastParagraphVisitor.js:6-16`). Correção estimada em 1 a 1,5 dia, com `NodeState` para `spread` e modelo de item com blocos.
+
+### Achado: o corpus do ADR 002 não cobre lista frouxa
+
+Nenhuma das 30 fixtures tem lista frouxa. A fixture 05 tem três listas vizinhas, todas apertadas. O E-01 30/30 não prova, portanto, que uma lista com parágrafo de continuação sobrevive ao round-trip no MDXEditor. Os casos `extra/` exigidos pela trava 2 são o que expõe a lacuna, e o corpus do ADR 002 fica com uma fatia de teste a acrescentar (dono: ADR 002, fatia F5).
+
+### Verificações de bundle (parada 3, item 2, e D-3)
+
+Build `mdxeditor/dist-check`, chunks em `client/assets`:
+
+- Nenhum chunk contém `js-yaml`, `argparse`, `ArgumentParser` ou `YAMLException`. O `argparse` com licença Python-2.0 fica fora do bundle de produto.
+- O runtime do Lexical (`createEditor`, `registerNodeTransform`) aparece só em `Adapter-vQce0VTX.js`, o chunk lazy da rota de edição. Os chunks de leitura (`read-*.js`, 244 e 503 bytes), de rota e de índice não o carregam. As ocorrências da palavra `mdxeditor` no `index-*.js` são o nome do arquivo de rota, não a biblioteca.

@@ -52,7 +52,11 @@ import { useEffect } from 'react'
 import type { DokDirectiveNode } from '../../content-components/core'
 import type { AdapterHandle, AdapterProps } from '../contract'
 import { makeDirectiveDescriptors } from './directives'
+import { installListNoMerge } from './listNoMerge'
 import { $isDokImageNode, $isDokOpaqueNode, DokImageNode, DokOpaqueNode, isOpaqueType } from './nodes'
+
+// Antes de qualquer editor: listas vizinhas do mesmo tipo continuam distintas (ver listNoMerge.ts).
+installListNoMerge()
 
 type Realm = Parameters<NonNullable<Parameters<typeof realmPlugin>[0]['init']>>[0]
 
