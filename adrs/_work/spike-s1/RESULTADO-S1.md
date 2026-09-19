@@ -106,9 +106,19 @@ As seis falhas restantes têm causa diferente da fusão. O diff é só de linha 
 
 Nenhum conteúdo se perde. O parágrafo de continuação, o bloco de código e a citação continuam dentro do item. O que se perde é o `spread` do CommonMark: a lista frouxa volta apertada. Medido na carga da x05, `spread` vem `false` em listas e itens contra `true` no `parseDok`. Origem nos visitors do MDXEditor, que gravam `spread: false` (`LexicalListVisitor.js:6`, `LexicalListItemVisitor.js`) e representam parágrafos do item com par de `LineBreakNode` (`MdastParagraphVisitor.js:6-16`). Correção estimada em 1 a 1,5 dia, com `NodeState` para `spread` e modelo de item com blocos.
 
-### Achado: o corpus do ADR 002 não cobre lista frouxa
+### Achado: o corpus do ADR 002 cobre `listItem.spread`, não `list.spread`
 
-Nenhuma das 30 fixtures tem lista frouxa. A fixture 05 tem três listas vizinhas, todas apertadas. O E-01 30/30 não prova, portanto, que uma lista com parágrafo de continuação sobrevive ao round-trip no MDXEditor. Os casos `extra/` exigidos pela trava 2 são o que expõe a lacuna, e o corpus do ADR 002 fica com uma fatia de teste a acrescentar (dono: ADR 002, fatia F5).
+Varredura das 30 fixtures pelo `parseDok` do porte (`input.md` e `expected.md`, script em scratchpad):
+
+| Forma | No corpus | Nos casos `extra/` | MDXEditor |
+| --- | --- | --- | --- |
+| `listItem` com mais de um bloco | fixture 06 | x05, x06, x09, x11 | 06, x09 e x11 passam |
+| `listItem.spread = true` | fixture 06 | x05, x06, x09, x11 | 06, x09 e x11 passam |
+| `list.spread = true` (linha em branco entre itens irmãos) | **nenhuma** | x05, x06, x08, x09 | x08 e x09 passam, x05 e x06 falham |
+
+O corpus cobre item de vários blocos e item frouxo, e a fixture 06 passa. O que ele não cobre é `list.spread = true` no nível da raiz, a forma exata que x05 e x06 exercitam. Dentro de citação (x08, x09) e dentro de callout (x11) a mesma forma passa, o que localiza a falha no caminho de importação do editor raiz.
+
+O E-01 30/30 não prova, portanto, que uma lista com linha em branco entre itens sobrevive ao round-trip no MDXEditor. Os casos `extra/` exigidos pela trava 2 são o que expõe a lacuna, e o corpus do ADR 002 fica com uma fatia de teste a acrescentar (dono: ADR 002, fatia F5).
 
 ### Verificações de bundle (parada 3, item 2, e D-3)
 
