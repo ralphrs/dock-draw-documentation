@@ -1,0 +1,196 @@
+# Spike S-1 — MDXEditor 4.2.5
+
+Data: 2026-09-19. Porta: 5311. Comando: `SPIKE_PORT=5311 npx playwright test tests/mdxeditor 2>&1 | tee mdxeditor/playwright-output.txt`. `npx tsc --noEmit -p .` sem erro nos arquivos do MDXEditor.
+
+Resultado bruto da rodada final: 99 testes, 94 passaram, 5 falharam (1A 05, 1B 05, 9 D-2 26, 9 D-2 27, 10 05).
+
+## Placar
+
+| Teste | Resultado | Observação |
+| --- | --- | --- |
+| 1A | 24/25 | Falha: 05 (duas listas com marcador adjacentes viram uma). 09 passa só com ilha opaca (nota de rodapé preservada, não editável). |
+| 1B | 16/17 | Falha: 05, mesma causa. 14 passa só com ilha opaca para `linkReference`, `imageReference` e `definition`. |
+| 1C | 5/5 | a, b, c, d nas cinco fixtures. Responsabilidade do shell: o adaptador não monta. |
+| E-01 | Não passa | A 24/25 + C 5/5 = 29/30 e B 16/17. A única fixture que falha é a 05, nas duas partes. |
+| 2 | Passa | Callouts recriados pela UI do nó (título, tipo `danger`, `variant=bug`, `fold=closed`). Apagar o corpo exige o cursor num parágrafo do editor raiz antes de selecionar tudo. |
+| 3 | Passa | `Hora:agora` literal no WYSIWYG e no fonte, sem DOK-E003 e sem escape. `<Tabs>` e `<script>` no fonte: DOK-E002, save recusado. |
+| 4 | Parcial (desvio) | Linha 7 da fixture 23 exata e save `ok` (W103 só vem antes da descrição). O seletor de diagrama do shell abre e fecha sozinho. A inserção usou `handle.insertDirective` com o mesmo nó que o botão do seletor cria. Ver Desvios. |
+| 5 | Passa | "visão" e "C4" acham "Visão geral". Gera `[texto](dok:page/0192f0a1-…7183)` e `[nova](dok:page/new?title=P%C3%A1gina%20nova)`, save `ok` com W101. |
+| 6 | Passa | Cor e fundo da área editável iguais aos tokens nos dois temas. 1 regra sobrescrita. Nenhuma transição ou animação acima de 0,01 ms em 105 elementos. |
+| 7 | Passa | Landing sem chunk do editor. Navegação de cliente e carga direta sem erro de console nem de hidratação. |
+| 8 | Passa | Uma chamada de `importDialect` por colar, com `html`. Save sem HTML nem JSX. |
+| 9 (D-2) | 6/8 | Falham 26 e 27: link de título vivo `[](dok:page/…)` (texto vazio) não sai com selecionar tudo + Backspace e some ao ser inserido por `$insertNodes`. |
+| 10 (D-5) | 24/25 + edição no fonte passa | Falha só a 05 (mesma causa do teste 1). |
+| 11 (E-13) | Passa | `contenteditable=false` na raiz e nos 6 editores aninhados, campos do nó desabilitados, menu e UI de link ausentes, `getDok` inalterado, banner visível. |
+| 12 | Passa | Menu em portal sobre o editor, `elementFromPoint` no centro e em cada item cai no menu, dentro da viewport, Escape devolve o foco ao gatilho. |
+| 13 | 8/10 riscos sem pendência, 2 com falha ou lacuna registrada | Sem pendência: rótulo (com descriptor próprio), Mod+U (com bloqueio), colar HTML, autolink, parágrafo final, `<img onerror>`, referência (com ilha opaca), peso medido. Com falha: árvore colada com nó `html` (exceção no save). Com lacuna: notas de rodapé preservadas sem edição. Detalhe na tabela abaixo. |
+
+### Item 13, risco a risco
+
+| Risco | Medido | Resultado |
+| --- | --- | --- |
+| Rótulo `[..]` após editar o callout | Descriptor próprio: `:::note[Antes de começar]` preservado. `AdmonitionDirectiveDescriptor` oficial (modo sem mitigação): o save grava `:::note` e "Antes de começar" vira o primeiro parágrafo do corpo. | Confirmado o defeito da biblioteca. Corrigido no adaptador. |
+| Mod+U | Com bloqueio de `FORMAT_TEXT_COMMAND`: nada de `<u>`. Sem bloqueio: o save contém `<u> sublinhado</u>`, DOK-E002, save recusado. | Confirmado. Mitigado no adaptador. |
+| Colar HTML com `<u>`, `<sup>`, `<sub>`, `<span style>` | Com `text/html` + `text/plain`: o stub usa o texto, nenhuma tag no save. | Passa. |
+| Colar `text/plain` com tags literais | `antes <u>sub</u> e <sup>2</sup> depois`: o save **lança** `Cannot handle unknown node mdxJsxTextElement`. `<span style>` literal: erro de importação não capturado (`[Unhandled error] UnrecognizedMarkdownConstructError … "html"` no log do Vite), nada inserido. | Falha. Só acontece com nó `html` na árvore devolvida pela porta (hoje, o stub degradado). |
+| Notas de rodapé (09) | Ilha opaca: 4 nós preservados, `contenteditable=false`, save igual ao esperado. Sem ilha: `UnrecognizedMarkdownConstructError … footnoteReference`, corpo perdido no save. | C, 2 a 3 dias para edição real. |
+| Autolink literal (11) | 1A e 1B da 11 passam: o parser é o do DokMD, não o do editor. URL digitada no WYSIWYG vira `<https://exemplo.com.br/doc>` (AutoLinkPlugin do `linkPlugin`). | Passa. |
+| Link por referência (14, parte B) | Com ilha opaca, 1B 14 passa. Sem ilha: `UnrecognizedMarkdownConstructError … linkReference`. | C, 0,25 dia (ver Falhas). |
+| Parágrafo vazio no fim | Aparece: `getTree` termina em parágrafo vazio nas fixtures 16, 20 e 23, e `getDok` termina com `\n\n` a mais. O `normalizeDok` do save remove, e o save fica igual ao esperado. | Não afeta o save. Afeta `getDok` bruto. |
+| `<img src=x onerror=…>` | No fonte: `setMode('wysiwyg')` devolve `false`, save DOK-E002, `window.__pwned` indefinido. Colado como texto no WYSIWYG: nenhum `<img>` no DOM, `__pwned2` indefinido. | Nada executa. |
+| Peso | `npx vite build --outDir mdxeditor/dist-check`: chunk `Adapter-vQce0VTX.js` 420,41 kB, **132,88 kB gzip**. CSS `Adapter-n2eE73RR.css` 50,39 kB, 9,09 kB gzip. Chunks compartilhados com o shell (Radix, CodeMirror do modo fonte) fora da conta. | Medido. Saída em `mdxeditor/vite-build-output.txt`. |
+
+## Adaptador
+
+Arquivos em `src/editors/mdxeditor/`:
+
+| Arquivo | Linhas | Papel |
+| --- | --- | --- |
+| `Adapter.tsx` | 111 | `<MDXEditor markdown="" suppressHtmlProcessing>` com os plugins oficiais (`headings`, `quote`, `lists`, `link`, `table`, `thematicBreak`, `codeBlock`, `markdownShortcut`) e o `dokPlugin`. Descriptor de bloco de código com `textarea`. |
+| `dokPlugin.tsx` | 309 | `realmPlugin` próprio: entrada, saída, colar, bloqueio de formatos, flush dos editores aninhados, visitors próprios. |
+| `directives.tsx` | 207 | Descriptors gerados de `DIRECTIVE_NAMES` e `EDIT`. Um descriptor para os quatro callouts, um por nome para `tabs`, `tab`, `steps`, `diagram`. Rótulo fora do editor aninhado. |
+| `nodes.tsx` | 118 | `DokImageNode` (substitui o `imagePlugin`, sem `innerHTML`) e `DokOpaqueNode` (ilha opaca). |
+| `LinkUi.tsx` | 73 | Autocomplete de link interno por `props.searchPages`, link pendente por `pendingPageUri`. |
+| `adapter.css` | 55 | Tokens na área editável e nos campos do nó. |
+
+Total: 873 linhas (818 de TS/TSX). Testes em `tests/mdxeditor/`: 670 linhas.
+
+Chamadas da biblioteca no caminho de persistência:
+
+- Entrada: `importMdastTreeToLexical` (`node_modules/@mdxeditor/editor/dist/importMarkdownToLexical.js:76`), chamada em `dokPlugin.tsx:254` dentro de `rootEditor.update(…, { discrete: true })` no `postInit`, a partir de `structuredClone(props.initialTree)`. O `markdown=""` do componente é obrigatório (`MDXEditor.js`, `props.markdown.trim()`) e importa um parágrafo vazio, descartado pelo `$getRoot().clear()` antes do import.
+- Saída: `exportLexicalTreeToMdast` (`exportMarkdownFromLexical.js:8`), em `dokPlugin.tsx:286`, com `jsxIsAvailable` do realm e `addImportStatements: false`. O shell serializa com `serializeDok`.
+- Colar e `insertTree`: `importMdastTreeToLexical` num ponto de importação próprio + `$insertNodes` (`dokPlugin.tsx:181`), o mesmo desenho do `insertMarkdown$` sem o parser.
+- `insertDirective`: `insertDecoratorNode$` com `$createDirectiveNode(node)`, não `insertDirective$` (que zera `children` e perderia o rótulo).
+- Editores aninhados: só gravam no nó pai no blur (`NestedLexicalEditor.js:162-168`). O `getTree()` despacha `NESTED_EDITOR_UPDATED_COMMAND` em cada editor aninhado registrado, do mais fundo para o mais raso (`dokPlugin.tsx:278`). Sem isso, o save sem blur devolveria o mdast da carga.
+
+Fora do caminho de persistência, e declarado: o core mantém um listener que roda `exportMarkdownFromLexical` (com `toMarkdown`) a cada atualização para alimentar `markdown$` (`plugins/core/index.js:274-282`). O adaptador não lê esse valor. Ele lança se faltar handler, então o `dokPlugin` registra `directiveToMarkdown()` e `gfmToMarkdown()` só para ele. Nenhum `setMarkdown$`, `insertMarkdown$`, `getMarkdown`, `markdown$` nem `diffSourcePlugin` é usado.
+
+Visitors próprios que substituem ou completam os da 4.2.5 (prioridade 1):
+
+- Diretivas: cópia do `MdastDirectiveVisitor` e do `DirectiveVisitor` (não exportados), sem o ramo de text directive. O `directivesPlugin` oficial não é carregado.
+- Lista com `start`: `MdastListVisitor.js:6` cria a lista sem `start` e `LexicalListVisitor.js:6` exporta sem `start`. Na primeira rodada, com os visitors oficiais, a fixture 05 gravava `1. três` / `2. quatro`.
+- Quebra dura: `LexicalLinebreakVisitor.js:5` exporta `LineBreakNode` como texto `"\n"`. Na primeira rodada a fixture 10 perdia o `\` de `Linha com quebra\`. O visitor próprio exporta `break`, exceto o par de `LineBreakNode` que o `MdastParagraphVisitor` usa para separar parágrafos dentro de item de lista.
+
+Dependências importadas direto e que o app teria de declarar: `lexical`, `@lexical/link`, `@lexical/list`, `@lexical/react` (hoje só transitivas do MDXEditor).
+
+Dias: o spike consumiu uma sessão. Estimativas para produção dos itens "C":
+
+| Item | Estado no spike | Dias para produção |
+| --- | --- | --- |
+| Rótulo `[..]` de container (callout e `tab`) | Resolvido com descriptor próprio | 0,5 (UI de rótulo com formatação inline) |
+| Listas adjacentes do mesmo tipo (05) | Falha | 1 a 1,5 (substituir o `ListNode` ou impedir o merge) |
+| `start` de lista e quebra dura | Resolvidos com visitors próprios | 0,5 (modelo de parágrafos dentro de item sem o par de `LineBreakNode`) |
+| Notas de rodapé | Preservadas como ilha opaca, sem edição | 2 a 3 |
+| Referências e definições | Ilha opaca | 0,25 (ou normalizar no shell antes de montar, decisão fora do adaptador) |
+| Link de título vivo vazio (26, 27) | Falha no apagar e no colar | 1 (nó inline próprio para `[](dok:page/…)`) |
+| Árvore colada com nó `html` | Exceção no save e erro não capturado | 0,5 (recusar nós `html` e `mdxJsx*` no `insertTree`, com diagnóstico) |
+| Colar (Q-B) | Resolvido | 0,5 (colar dentro de célula de tabela não testado) |
+| UI de link interno | Mínima | 1 |
+| Editores de `tabs`, `tab`, `steps`, `diagram` | Genéricos, sem as restrições de estrutura | 1 a 2 |
+| Bloco de código | `textarea` | 1 (CodeMirror por bloco, se exigido) |
+| Tema da UI do MDXEditor (popups, toolbar) | Só a área editável mapeada | 0,5 |
+
+## Falhas
+
+### 1A 05, 1B 05, 10 05: listas adjacentes
+
+```diff
+ - um
+ - dois
++- outra lista
+ 
+-* outra lista
+-
+ 3. três
+ 4. quatro
+```
+
+Causa: o `ListNode` do Lexical 0.48 funde a lista seguinte do mesmo tipo no próprio `$transform` (`node_modules/@lexical/list/dist/LexicalList.dev.mjs:1083`, `mergeNextSiblingListIfSameType(node)`). A fusão já acontece na carga, antes de qualquer edição: o `getTree` logo após abrir a 05 devolve `["list:3","list:2"]` (três itens na primeira lista) e continua igual depois da edição trivial. Duas listas `bullet` vizinhas não existem no modelo do Lexical. O `*` do `expected.md` é o `bulletOther` que o `serializeDok` usa para separar listas irmãs, então a perda está na árvore, não na serialização. O `start` (`3.`) já sai correto com o visitor próprio. Alternativa descartada no spike: separar as listas com nó invisível, que criaria um nó sem forma DokMD.
+
+### 9 D-2 26 e 27: link de título vivo `[](dok:page/…)`
+
+26, esperado × obtido (fim da linha):
+
+```diff
+-… e [Página inexistente](dok:page/new?title=P%C3%A1gina%20inexistente).
++… e [Página inexistente](dok:page/new?title=P%C3%A1gina%20inexistente).[](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183)
+```
+
+27:
+
+```diff
+ ![arquitetura.png](dok:asset/0192f0a1-7e50-7c30-8d4e-5f6071829304)
+-
+-[](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183)
+```
+
+Causa, medida pela árvore do `getTree` em cada passo: depois de selecionar tudo e Backspace, sobra `paragraph[link(0)]` (o `LinkNode` sem texto não entra na seleção). No colar, `$insertNodes` junta o primeiro parágrafo colado ao que restou e descarta o parágrafo cujo único filho é o `LinkNode` vazio. Carregar as mesmas fixtures (1A 13, 26, 27) passa, porque o import não passa por `$insertNodes`. O defeito é do tratamento de elemento inline vazio no Lexical, e o DokMD usa esse formato para o título vivo.
+
+### 13b: árvore colada com nó `html`
+
+Saída: `exceção no save=page.evaluate: Error: Cannot handle unknown node mdxJsxTextElement`. O `getTree` após colar mostra `{"type":"html","value":"<u>"}` e `{"type":"mdxJsxTextElement","name":"sup",…}`. Cadeia: o `MdastFormattingVisitor` do core converte nós `html` `<u>`/`<sup>`/`<sub>` em formato de texto (`plugins/core/MdastFormattingVisitor.js:13` e `:19`), o `LexicalTextVisitor` exporta esses formatos como `mdxJsxTextElement`, e `convertUnderlineJsxToHtml` só converte `u` de volta para `html` (`exportMarkdownFromLexical.js:199`). O `sup` sobra como JSX e o `serializeDok` do shell lança. A conversão de `u` depende de `jsxIsAvailable` ser `false`: o cell nasce `false` (`plugins/core/index.js:114`) e só o `jsxPlugin` o liga (`plugins/jsx/index.js:78`), que o adaptador não carrega. O `getTree` medido confirma: `<u>` aparece como `{"type":"html","value":"<u>"}`, a forma que `convertUnderlineJsxToHtml` produz. Com `<span style>`, o nó `html` não tem visitor, a importação lança dentro do `editor.update` e o `onError` do editor (`plugins/core/lexicalExtensions.js:26`) relança fora do `try/catch` do adaptador. Hoje só o stub degradado devolve nó `html`, mas o contrato de `insertTree` não impede.
+
+## Desvios e limites
+
+- Teste 4: o `Popover` do seletor de diagrama (`src/shared/EditorShell.tsx`) aparece e fecha antes de 500 ms: o `MutationObserver` registra o `diagram-picker` e, em seguida, a contagem volta a 0. O item "Diagrama" só abre o `Popover` e não chama o adaptador. A hipótese, não confirmada, é o `DropdownMenu` devolver o foco ao gatilho e o `Popover` fechar por foco fora. Não foi medido no Plate. O arquivo é compartilhado e não foi alterado. O teste chama `handle.insertDirective(EDIT.diagram.create({ src, view, title, label: '' }))`, o mesmo nó do `onClick` do seletor, e segue pela UI do nó.
+- Teste 2: "apagar o corpo" com o cursor dentro de um callout seleciona só o editor aninhado. O teste põe o cursor no parágrafo final do editor raiz antes de selecionar tudo.
+- Edição trivial do teste 1: cursor no primeiro texto Lexical da página, que pode estar dentro de um editor aninhado (16 a 21). A fixture 23 não tem texto Lexical e recebe o clique na área editável.
+- Modo sem mitigação: a chave `localStorage` `spike-mdx-sem-mitigacao=1` troca os callouts pelo `AdmonitionDirectiveDescriptor` oficial, tira as ilhas opacas e libera `FORMAT_TEXT_COMMAND`. Existe só para o item 13 e sai do código de produção.
+- Ilhas opacas (`footnoteReference`, `footnoteDefinition`, `linkReference`, `imageReference`, `definition`): preservam o nó e mostram um texto de prévia, sem edição. 1A 09 e 1B 14 dependem delas.
+- `spread` de lista: o `ListImportVisitor` próprio não lê `spread` e o `ListExportVisitor` grava `spread: false`, como os oficiais. Lista frouxa (itens separados por linha em branco) não foi testada e tende a voltar compacta.
+- Não testado: colar dentro de célula de tabela e dentro de editor aninhado, desfazer e refazer entre editores aninhados, edição de tabela, atalhos de lista em `steps`, restrições de estrutura de `tabs` e `steps` na UI, tema das janelas do MDXEditor fora da área editável, acessibilidade.
+- `markdown=""`: exigido pelo tipo e pelo código do componente. O import inicial do core com texto vazio roda e é descartado.
+- `vite build` rodou sem alterar configs e sem mudar `src/routeTree.gen.ts` (mesmo MD5 antes e depois).
+
+## Saída real
+
+Saída completa em `mdxeditor/playwright-output.txt`. Trechos sem edição:
+
+```
+1C 03 a=true b=true c=true (setMode=false) d=true códigos=DOK-E001 manifest=DOK-E001
+1C 15 a=true b=true c=true (setMode=false) d=true códigos=DOK-E005,DOK-E006 manifest=DOK-E005,DOK-E006
+1C 22 a=true b=true c=true (setMode=false) d=true códigos=DOK-E008 manifest=DOK-E008
+1C 24 a=true b=true c=true (setMode=false) d=true códigos=DOK-E003,DOK-E004 manifest=DOK-E003,DOK-E004
+1C 30 a=true b=true c=true (setMode=false) d=true códigos=DOK-E002,DOK-E003,DOK-E008 manifest=DOK-E002,DOK-E003,DOK-E008
+```
+
+```
+2 PASS ok=true erro-adaptador=null
+3 WYSIWYG Hora:agora: contém literal=true escapado=false E003=false ok=true
+3 fonte <Tabs>/<script>: códigos=DOK-E002,DOK-E002 ok=false
+4 seletor de diagrama: apareceu=true aberto após 500 ms=false
+4 via=handle.insertDirective (desvio) linha 7 da fixture 23 presente=true ok=true códigos=DOK-W103
+5 interno=true pendente=true ok=true códigos=DOK-W101
+6 claro={"editColor":"oklch(0.2 0 0)","editBg":"oklch(0.99 0 0)","tokenFg":"oklch(0.2 0 0)","tokenBg":"oklch(0.99 0 0)"}
+6 escuro={"editColor":"oklch(0.95 0 0)","editBg":"oklch(0.18 0 0)","tokenFg":"oklch(0.95 0 0)","tokenBg":"oklch(0.18 0 0)"}
+6 movimento reduzido: elementos=105 acima de 0,01 ms=[]
+7 navegação de cliente: requisições do editor=14 erros=[]
+7 carga direta: erros acumulados=[] landing=[]
+8 save ok=true códigos= contém HTML/JSX=false erro-adaptador=null
+11 contenteditable raiz=false aninhados=["false","false","false","false","false","false"] campos habilitados=0 getDok inalterado=true menu Inserir=0 UI de link=0
+```
+
+```
+13a oficial: rótulo preservado=false ok=true
+
+:::note
+Antes de começar
+
+Você precisa de: agora
+```
+
+```
+13b sem bloqueio: tags no save=["<u>","</u>"] ok=false códigos=DOK-E002,DOK-E002
+13c sem ilha opaca: erro-adaptador=importação: UnrecognizedMarkdownConstructError: Parsing of the following markdown structure failed: {"type":"footnoteReference","name":"N/A"} save igual=false
+13e 23: getTree={"tipos":["leafDirective","leafDirective","paragraph"],"ultimoVazio":true} getDok termina com "a)\"}\n\n" save igual=true
+13f fonte: setMode(wysiwyg)=false save ok=false códigos=DOK-E002 __pwned=undefined
+13f colado: __pwned2=undefined erro-adaptador=null <img> no editor=0
+```
+
+Primeira rodada do teste 1, antes dos visitors próprios de lista e quebra (visitors oficiais da 4.2.5), fixture 10:
+
+```
+-Linha com quebra\
++Linha com quebra
+ seguinte.
+```

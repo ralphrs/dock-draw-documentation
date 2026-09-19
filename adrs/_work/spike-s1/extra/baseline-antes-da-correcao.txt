@@ -1,0 +1,1365 @@
+[WebServer] npm warn install-scripts .npmrc allow-scripts setting is being ignored because --allow-scripts was passed on the command line
+[WebServer] The plugin "vite-tsconfig-paths" is detected. Vite now supports tsconfig paths resolution natively via the resolve.tsconfigPaths option. You can remove the plugin and set resolve.tsconfigPaths: true in your Vite config instead.
+
+Running 36 tests using 1 worker
+
+14 x01-ul-ul carga FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -9,5 +9,4 @@
+ - um
+ - dois
+-
+-* três
+-* quatro
++- três
++- quatro
+
+  ✘   1 tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x01-ul-ul › 14 x01-ul-ul carga (1.8s)
+14 x01-ul-ul alternância voltou=true FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -9,5 +9,4 @@
+ - um
+ - dois
+-
+-* três
+-* quatro
++- três
++- quatro
+
+  ✘   2 tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x01-ul-ul › 14 x01-ul-ul alternância (1.4s)
+14 x01-ul-ul edição (textos em li=4) FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -9,5 +9,4 @@
+ - um
+ - dois
+-
+-* três
+-* quatro
++- três
++- quatro
+
+  ✘   3 tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x01-ul-ul › 14 x01-ul-ul edição na última lista (1.2s)
+14 x02-ol-ol carga FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -9,5 +9,4 @@
+ 1. um
+ 2. dois
+-
+-1) três
+-2) quatro
++3. três
++4. quatro
+
+  ✘   4 tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x02-ol-ol › 14 x02-ol-ol carga (1.2s)
+14 x02-ol-ol alternância voltou=true FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -9,5 +9,4 @@
+ 1. um
+ 2. dois
+-
+-1) três
+-2) quatro
++3. três
++4. quatro
+
+  ✘   5 tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x02-ol-ol › 14 x02-ol-ol alternância (1.4s)
+14 x02-ol-ol edição (textos em li=4) FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -9,5 +9,4 @@
+ 1. um
+ 2. dois
+-
+-1) três
+-2) quatro
++3. três
++4. quatro
+
+  ✘   6 tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x02-ol-ol › 14 x02-ol-ol edição na última lista (1.2s)
+14 x03-ul-ol carga PASS
+  ✓   7 tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x03-ul-ol › 14 x03-ul-ol carga (1.2s)
+14 x03-ul-ol alternância voltou=true PASS
+  ✓   8 tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x03-ul-ol › 14 x03-ul-ol alternância (1.4s)
+14 x03-ul-ol edição (textos em li=4) PASS
+  ✓   9 tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x03-ul-ol › 14 x03-ul-ol edição na última lista (1.2s)
+14 x04-ol-ul carga PASS
+  ✓  10 tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x04-ol-ul › 14 x04-ol-ul carga (1.2s)
+14 x04-ol-ul alternância voltou=true PASS
+  ✓  11 tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x04-ol-ul › 14 x04-ol-ul alternância (1.4s)
+14 x04-ol-ul edição (textos em li=4) PASS
+  ✓  12 tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x04-ol-ul › 14 x04-ol-ul edição na última lista (1.2s)
+14 x05-ul-ul-varios-blocos carga FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -10,12 +10,8 @@
+ 
+   continuação do um
+-
+ - dois
+-
+-* três
+-
++- três
+   ```ts
+   const x = 1
+   ```
+-
+-* quatro
++- quatro
+
+  ✘  13 tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x05-ul-ul-varios-blocos › 14 x05-ul-ul-varios-blocos carga (1.2s)
+14 x05-ul-ul-varios-blocos alternância voltou=true FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -10,12 +10,8 @@
+ 
+   continuação do um
+-
+ - dois
+-
+-* três
+-
++- três
+   ```ts
+   const x = 1
+   ```
+-
+-* quatro
++- quatro
+
+  ✘  14 tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x05-ul-ul-varios-blocos › 14 x05-ul-ul-varios-blocos alternância (1.4s)
+14 x05-ul-ul-varios-blocos edição (textos em li=5) FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -10,12 +10,8 @@
+ 
+   continuação do um
+-
+ - dois
+-
+-* três
+-
++- três
+   ```ts
+   const x = 1
+   ```
+-
+-* quatro
++- quatro
+
+  ✘  15 tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x05-ul-ul-varios-blocos › 14 x05-ul-ul-varios-blocos edição na última lista (1.3s)
+14 x06-ol-ol-varios-blocos carga FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -10,10 +10,6 @@
+ 
+    continuação do um
+-
+ 2. dois
+-
+-1) três
+-
++3. três
+    > citação no item
+-
+-2) quatro
++4. quatro
+
+  ✘  16 tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x06-ol-ol-varios-blocos › 14 x06-ol-ol-varios-blocos carga (1.2s)
+14 x06-ol-ol-varios-blocos alternância voltou=true FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -10,10 +10,6 @@
+ 
+    continuação do um
+-
+ 2. dois
+-
+-1) três
+-
++3. três
+    > citação no item
+-
+-2) quatro
++4. quatro
+
+  ✘  17 tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x06-ol-ol-varios-blocos › 14 x06-ol-ol-varios-blocos alternância (1.4s)
+14 x06-ol-ol-varios-blocos edição (textos em li=6) FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -10,10 +10,6 @@
+ 
+    continuação do um
+-
+ 2. dois
+-
+-1) três
+-
++3. três
+    > citação no item
+-
+-2) quatro
++4. quatro
+
+  ✘  18 tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x06-ol-ol-varios-blocos › 14 x06-ol-ol-varios-blocos edição na última lista (1.3s)
+14 x07-tres-ul-seguidas carga FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -8,6 +8,4 @@
+ 
+ - um
+-
+-* dois
+-
++- dois
+ - três
+
+  ✘  19 tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x07-tres-ul-seguidas › 14 x07-tres-ul-seguidas carga (1.2s)
+14 x07-tres-ul-seguidas alternância voltou=true FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -8,6 +8,4 @@
+ 
+ - um
+-
+-* dois
+-
++- dois
+ - três
+
+  ✘  20 tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x07-tres-ul-seguidas › 14 x07-tres-ul-seguidas alternância (1.4s)
+14 x07-tres-ul-seguidas edição (textos em li=3) FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -8,6 +8,4 @@
+ 
+ - um
+-
+-* dois
+-
++- dois
+ - três
+
+  ✘  21 tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x07-tres-ul-seguidas › 14 x07-tres-ul-seguidas edição na última lista (1.2s)
+14 x08-citacao-ul-ul carga FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -6,7 +6,5 @@
+ 
+ > - um
+->
+ > - dois
+->
+-> * três
+-> * quatro
++> - três
++> - quatro
+
+  ✘  22 tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x08-citacao-ul-ul › 14 x08-citacao-ul-ul carga (1.2s)
+14 x08-citacao-ul-ul alternância voltou=true FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -6,7 +6,5 @@
+ 
+ > - um
+->
+ > - dois
+->
+-> * três
+-> * quatro
++> - três
++> - quatro
+
+  ✘  23 tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x08-citacao-ul-ul › 14 x08-citacao-ul-ul alternância (1.4s)
+14 x08-citacao-ul-ul edição (textos em li=4) FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -6,7 +6,5 @@
+ 
+ > - um
+->
+ > - dois
+->
+-> * três
+-> * quatro
++> - três
++> - quatro
+
+  ✘  24 tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x08-citacao-ul-ul › 14 x08-citacao-ul-ul edição na última lista (1.2s)
+14 x09-citacao-ol-ol-varios-blocos carga FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -8,5 +8,4 @@
+ >
+ >    continuação
+->
+-> 1) dois
+-> 2) três
++> 2. dois
++> 3. três
+
+  ✘  25 tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x09-citacao-ol-ol-varios-blocos › 14 x09-citacao-ol-ol-varios-blocos carga (1.2s)
+14 x09-citacao-ol-ol-varios-blocos alternância voltou=true FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -8,5 +8,4 @@
+ >
+ >    continuação
+->
+-> 1) dois
+-> 2) três
++> 2. dois
++> 3. três
+
+  ✘  26 tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x09-citacao-ol-ol-varios-blocos › 14 x09-citacao-ol-ol-varios-blocos alternância (1.4s)
+14 x09-citacao-ol-ol-varios-blocos edição (textos em li=4) FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -8,5 +8,4 @@
+ >
+ >    continuação
+->
+-> 1) dois
+-> 2) três
++> 2. dois
++> 3. três
+
+  ✘  27 tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x09-citacao-ol-ol-varios-blocos › 14 x09-citacao-ol-ol-varios-blocos edição na última lista (1.2s)
+14 x10-callout-ul-ul carga FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -8,6 +8,5 @@
+ - um
+ - dois
+-
+-* três
+-* quatro
++- três
++- quatro
+ :::
+
+  ✘  28 tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x10-callout-ul-ul › 14 x10-callout-ul-ul carga (1.2s)
+14 x10-callout-ul-ul alternância voltou=true FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -8,6 +8,5 @@
+ - um
+ - dois
+-
+-* três
+-* quatro
++- três
++- quatro
+ :::
+
+  ✘  29 tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x10-callout-ul-ul › 14 x10-callout-ul-ul alternância (1.4s)
+14 x10-callout-ul-ul edição (textos em li=4) FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -8,6 +8,5 @@
+ - um
+ - dois
+-
+-* três
+-* quatro
++- três
++- quatro
+ :::
+
+  ✘  30 tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x10-callout-ul-ul › 14 x10-callout-ul-ul edição na última lista (1.3s)
+14 x11-callout-ol-ol-varios-blocos carga FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -9,7 +9,6 @@
+ 
+    continuação
++2. dois
+ 
+-1) dois
+-
+    outra continuação
+ :::
+
+  ✘  31 tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x11-callout-ol-ol-varios-blocos › 14 x11-callout-ol-ol-varios-blocos carga (1.2s)
+14 x11-callout-ol-ol-varios-blocos alternância voltou=true FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -9,7 +9,6 @@
+ 
+    continuação
++2. dois
+ 
+-1) dois
+-
+    outra continuação
+ :::
+
+  ✘  32 tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x11-callout-ol-ol-varios-blocos › 14 x11-callout-ol-ol-varios-blocos alternância (1.4s)
+14 x11-callout-ol-ol-varios-blocos edição (textos em li=4) FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -9,7 +9,6 @@
+ 
+    continuação
++2. dois
+ 
+-1) dois
+-
+    outra continuação
+ :::
+
+  ✘  33 tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x11-callout-ol-ol-varios-blocos › 14 x11-callout-ol-ol-varios-blocos edição na última lista (1.2s)
+14 x12-callout-ul-ol carga PASS
+  ✓  34 tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x12-callout-ul-ol › 14 x12-callout-ul-ol carga (1.2s)
+14 x12-callout-ul-ol alternância voltou=true PASS
+  ✓  35 tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x12-callout-ul-ol › 14 x12-callout-ul-ol alternância (1.4s)
+14 x12-callout-ul-ol edição (textos em li=2) PASS
+  ✓  36 tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x12-callout-ul-ol › 14 x12-callout-ul-ol edição na última lista (1.2s)
+
+
+  1) tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x01-ul-ul › 14 x01-ul-ul carga ───────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 3
+    + Received  + 2
+
+    @@ -6,9 +6,8 @@
+
+      A:
+
+      - um
+      - dois
+    -
+    - * três
+    + - três
+    - * quatro
+    + - quatro
+      ↵
+
+      25 |       const r = await spike.save(page)
+      26 |       console.log(`14 ${slug} carga ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+    > 27 |       expect(r.text).toBe(expected)
+         |                      ^
+      28 |     })
+      29 |     test(`14 ${slug} alternância`, async ({ page }) => {
+      30 |       const expected = readExtra(slug)
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:27:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-9f365-01-ul-ul-14-x01-ul-ul-carga/error-context.md
+
+  2) tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x01-ul-ul › 14 x01-ul-ul alternância ─
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 3
+    + Received  + 2
+
+    @@ -6,9 +6,8 @@
+
+      A:
+
+      - um
+      - dois
+    -
+    - * três
+    + - três
+    - * quatro
+    + - quatro
+      ↵
+
+      37 |       console.log(`14 ${slug} alternância voltou=${back} ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+      38 |       expect(back).toBe(true)
+    > 39 |       expect(r.text).toBe(expected)
+         |                      ^
+      40 |     })
+      41 |     test(`14 ${slug} edição na última lista`, async ({ page }) => {
+      42 |       const expected = readExtra(slug)
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:39:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-388aa-ul-14-x01-ul-ul-alternância/error-context.md
+
+  3) tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x01-ul-ul › 14 x01-ul-ul edição na última lista 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 3
+    + Received  + 2
+
+    @@ -6,9 +6,8 @@
+
+      A:
+
+      - um
+      - dois
+    -
+    - * três
+    + - três
+    - * quatro
+    + - quatro
+      ↵
+
+      46 |       console.log(`14 ${slug} edição (textos em li=${items}) ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+      47 |       expect(items).toBeGreaterThan(0)
+    > 48 |       expect(r.text).toBe(expected)
+         |                      ^
+      49 |     })
+      50 |   })
+      51 | }
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:48:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-514bb-l-ul-edição-na-última-lista/error-context.md
+
+  4) tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x02-ol-ol › 14 x02-ol-ol carga ───────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 3
+    + Received  + 2
+
+    @@ -6,9 +6,8 @@
+
+      A:
+
+      1. um
+      2. dois
+    -
+    - 1) três
+    + 3. três
+    - 2) quatro
+    + 4. quatro
+      ↵
+
+      25 |       const r = await spike.save(page)
+      26 |       console.log(`14 ${slug} carga ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+    > 27 |       expect(r.text).toBe(expected)
+         |                      ^
+      28 |     })
+      29 |     test(`14 ${slug} alternância`, async ({ page }) => {
+      30 |       const expected = readExtra(slug)
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:27:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-ec91e-02-ol-ol-14-x02-ol-ol-carga/error-context.md
+
+  5) tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x02-ol-ol › 14 x02-ol-ol alternância ─
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 3
+    + Received  + 2
+
+    @@ -6,9 +6,8 @@
+
+      A:
+
+      1. um
+      2. dois
+    -
+    - 1) três
+    + 3. três
+    - 2) quatro
+    + 4. quatro
+      ↵
+
+      37 |       console.log(`14 ${slug} alternância voltou=${back} ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+      38 |       expect(back).toBe(true)
+    > 39 |       expect(r.text).toBe(expected)
+         |                      ^
+      40 |     })
+      41 |     test(`14 ${slug} edição na última lista`, async ({ page }) => {
+      42 |       const expected = readExtra(slug)
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:39:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-90e8f-ol-14-x02-ol-ol-alternância/error-context.md
+
+  6) tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x02-ol-ol › 14 x02-ol-ol edição na última lista 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 3
+    + Received  + 2
+
+    @@ -6,9 +6,8 @@
+
+      A:
+
+      1. um
+      2. dois
+    -
+    - 1) três
+    + 3. três
+    - 2) quatro
+    + 4. quatro
+      ↵
+
+      46 |       console.log(`14 ${slug} edição (textos em li=${items}) ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+      47 |       expect(items).toBeGreaterThan(0)
+    > 48 |       expect(r.text).toBe(expected)
+         |                      ^
+      49 |     })
+      50 |   })
+      51 | }
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:48:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-9a1aa-l-ol-edição-na-última-lista/error-context.md
+
+  7) tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x05-ul-ul-varios-blocos › 14 x05-ul-ul-varios-blocos carga 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 6
+    + Received  + 2
+
+    @@ -7,16 +7,12 @@
+      A:
+
+      - um
+
+        continuação do um
+    -
+      - dois
+    -
+    - * três
+    + - três
+    -
+        ```ts
+        const x = 1
+        ```
+    -
+    - * quatro
+    + - quatro
+      ↵
+
+      25 |       const r = await spike.save(page)
+      26 |       console.log(`14 ${slug} carga ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+    > 27 |       expect(r.text).toBe(expected)
+         |                      ^
+      28 |     })
+      29 |     test(`14 ${slug} alternância`, async ({ page }) => {
+      30 |       const expected = readExtra(slug)
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:27:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-ff2d5-5-ul-ul-varios-blocos-carga/error-context.md
+
+  8) tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x05-ul-ul-varios-blocos › 14 x05-ul-ul-varios-blocos alternância 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 6
+    + Received  + 2
+
+    @@ -7,16 +7,12 @@
+      A:
+
+      - um
+
+        continuação do um
+    -
+      - dois
+    -
+    - * três
+    + - três
+    -
+        ```ts
+        const x = 1
+        ```
+    -
+    - * quatro
+    + - quatro
+      ↵
+
+      37 |       console.log(`14 ${slug} alternância voltou=${back} ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+      38 |       expect(back).toBe(true)
+    > 39 |       expect(r.text).toBe(expected)
+         |                      ^
+      40 |     })
+      41 |     test(`14 ${slug} edição na última lista`, async ({ page }) => {
+      42 |       const expected = readExtra(slug)
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:39:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-e182b-l-varios-blocos-alternância/error-context.md
+
+  9) tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x05-ul-ul-varios-blocos › 14 x05-ul-ul-varios-blocos edição na última lista 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 6
+    + Received  + 2
+
+    @@ -7,16 +7,12 @@
+      A:
+
+      - um
+
+        continuação do um
+    -
+      - dois
+    -
+    - * três
+    + - três
+    -
+        ```ts
+        const x = 1
+        ```
+    -
+    - * quatro
+    + - quatro
+      ↵
+
+      46 |       console.log(`14 ${slug} edição (textos em li=${items}) ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+      47 |       expect(items).toBeGreaterThan(0)
+    > 48 |       expect(r.text).toBe(expected)
+         |                      ^
+      49 |     })
+      50 |   })
+      51 | }
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:48:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-63a42-ocos-edição-na-última-lista/error-context.md
+
+  10) tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x06-ol-ol-varios-blocos › 14 x06-ol-ol-varios-blocos carga 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 6
+    + Received  + 2
+
+    @@ -7,14 +7,10 @@
+      A:
+
+      1. um
+
+         continuação do um
+    -
+      2. dois
+    -
+    - 1) três
+    + 3. três
+    -
+         > citação no item
+    -
+    - 2) quatro
+    + 4. quatro
+      ↵
+
+      25 |       const r = await spike.save(page)
+      26 |       console.log(`14 ${slug} carga ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+    > 27 |       expect(r.text).toBe(expected)
+         |                      ^
+      28 |     })
+      29 |     test(`14 ${slug} alternância`, async ({ page }) => {
+      30 |       const expected = readExtra(slug)
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:27:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-180fb-6-ol-ol-varios-blocos-carga/error-context.md
+
+  11) tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x06-ol-ol-varios-blocos › 14 x06-ol-ol-varios-blocos alternância 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 6
+    + Received  + 2
+
+    @@ -7,14 +7,10 @@
+      A:
+
+      1. um
+
+         continuação do um
+    -
+      2. dois
+    -
+    - 1) três
+    + 3. três
+    -
+         > citação no item
+    -
+    - 2) quatro
+    + 4. quatro
+      ↵
+
+      37 |       console.log(`14 ${slug} alternância voltou=${back} ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+      38 |       expect(back).toBe(true)
+    > 39 |       expect(r.text).toBe(expected)
+         |                      ^
+      40 |     })
+      41 |     test(`14 ${slug} edição na última lista`, async ({ page }) => {
+      42 |       const expected = readExtra(slug)
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:39:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-a7966-l-varios-blocos-alternância/error-context.md
+
+  12) tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x06-ol-ol-varios-blocos › 14 x06-ol-ol-varios-blocos edição na última lista 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 6
+    + Received  + 2
+
+    @@ -7,14 +7,10 @@
+      A:
+
+      1. um
+
+         continuação do um
+    -
+      2. dois
+    -
+    - 1) três
+    + 3. três
+    -
+         > citação no item
+    -
+    - 2) quatro
+    + 4. quatro
+      ↵
+
+      46 |       console.log(`14 ${slug} edição (textos em li=${items}) ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+      47 |       expect(items).toBeGreaterThan(0)
+    > 48 |       expect(r.text).toBe(expected)
+         |                      ^
+      49 |     })
+      50 |   })
+      51 | }
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:48:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-6de41-ocos-edição-na-última-lista/error-context.md
+
+  13) tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x07-tres-ul-seguidas › 14 x07-tres-ul-seguidas carga 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 3
+    + Received  + 1
+
+    @@ -5,10 +5,8 @@
+      ---
+
+      A:
+
+      - um
+    -
+    - * dois
+    + - dois
+    -
+      - três
+      ↵
+
+      25 |       const r = await spike.save(page)
+      26 |       console.log(`14 ${slug} carga ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+    > 27 |       expect(r.text).toBe(expected)
+         |                      ^
+      28 |     })
+      29 |     test(`14 ${slug} alternância`, async ({ page }) => {
+      30 |       const expected = readExtra(slug)
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:27:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-ffda8--x07-tres-ul-seguidas-carga/error-context.md
+
+  14) tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x07-tres-ul-seguidas › 14 x07-tres-ul-seguidas alternância 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 3
+    + Received  + 1
+
+    @@ -5,10 +5,8 @@
+      ---
+
+      A:
+
+      - um
+    -
+    - * dois
+    + - dois
+    -
+      - três
+      ↵
+
+      37 |       console.log(`14 ${slug} alternância voltou=${back} ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+      38 |       expect(back).toBe(true)
+    > 39 |       expect(r.text).toBe(expected)
+         |                      ^
+      40 |     })
+      41 |     test(`14 ${slug} edição na última lista`, async ({ page }) => {
+      42 |       const expected = readExtra(slug)
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:39:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-022e8-res-ul-seguidas-alternância/error-context.md
+
+  15) tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x07-tres-ul-seguidas › 14 x07-tres-ul-seguidas edição na última lista 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 3
+    + Received  + 1
+
+    @@ -5,10 +5,8 @@
+      ---
+
+      A:
+
+      - um
+    -
+    - * dois
+    + - dois
+    -
+      - três
+      ↵
+
+      46 |       console.log(`14 ${slug} edição (textos em li=${items}) ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+      47 |       expect(items).toBeGreaterThan(0)
+    > 48 |       expect(r.text).toBe(expected)
+         |                      ^
+      49 |     })
+      50 |   })
+      51 | }
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:48:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-e3778-idas-edição-na-última-lista/error-context.md
+
+  16) tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x08-citacao-ul-ul › 14 x08-citacao-ul-ul carga 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 4
+    + Received  + 2
+
+    @@ -3,11 +3,9 @@
+      id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+      title: x08-citacao-ul-ul
+      ---
+
+      > - um
+    - >
+      > - dois
+    - >
+    - > * três
+    + > - três
+    - > * quatro
+    + > - quatro
+      ↵
+
+      25 |       const r = await spike.save(page)
+      26 |       console.log(`14 ${slug} carga ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+    > 27 |       expect(r.text).toBe(expected)
+         |                      ^
+      28 |     })
+      29 |     test(`14 ${slug} alternância`, async ({ page }) => {
+      30 |       const expected = readExtra(slug)
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:27:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-3866a--14-x08-citacao-ul-ul-carga/error-context.md
+
+  17) tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x08-citacao-ul-ul › 14 x08-citacao-ul-ul alternância 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 4
+    + Received  + 2
+
+    @@ -3,11 +3,9 @@
+      id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+      title: x08-citacao-ul-ul
+      ---
+
+      > - um
+    - >
+      > - dois
+    - >
+    - > * três
+    + > - três
+    - > * quatro
+    + > - quatro
+      ↵
+
+      37 |       console.log(`14 ${slug} alternância voltou=${back} ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+      38 |       expect(back).toBe(true)
+    > 39 |       expect(r.text).toBe(expected)
+         |                      ^
+      40 |     })
+      41 |     test(`14 ${slug} edição na última lista`, async ({ page }) => {
+      42 |       const expected = readExtra(slug)
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:39:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-a7bc1-8-citacao-ul-ul-alternância/error-context.md
+
+  18) tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x08-citacao-ul-ul › 14 x08-citacao-ul-ul edição na última lista 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 4
+    + Received  + 2
+
+    @@ -3,11 +3,9 @@
+      id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+      title: x08-citacao-ul-ul
+      ---
+
+      > - um
+    - >
+      > - dois
+    - >
+    - > * três
+    + > - três
+    - > * quatro
+    + > - quatro
+      ↵
+
+      46 |       console.log(`14 ${slug} edição (textos em li=${items}) ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+      47 |       expect(items).toBeGreaterThan(0)
+    > 48 |       expect(r.text).toBe(expected)
+         |                      ^
+      49 |     })
+      50 |   })
+      51 | }
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:48:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-ed88c-l-ul-edição-na-última-lista/error-context.md
+
+  19) tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x09-citacao-ol-ol-varios-blocos › 14 x09-citacao-ol-ol-varios-blocos carga 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 3
+    + Received  + 2
+
+    @@ -5,9 +5,8 @@
+      ---
+
+      > 1. um
+      >
+      >    continuação
+    - >
+    - > 1) dois
+    + > 2. dois
+    - > 2) três
+    + > 3. três
+      ↵
+
+      25 |       const r = await spike.save(page)
+      26 |       console.log(`14 ${slug} carga ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+    > 27 |       expect(r.text).toBe(expected)
+         |                      ^
+      28 |     })
+      29 |     test(`14 ${slug} alternância`, async ({ page }) => {
+      30 |       const expected = readExtra(slug)
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:27:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-29b89-o-ol-ol-varios-blocos-carga/error-context.md
+
+  20) tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x09-citacao-ol-ol-varios-blocos › 14 x09-citacao-ol-ol-varios-blocos alternância 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 3
+    + Received  + 2
+
+    @@ -5,9 +5,8 @@
+      ---
+
+      > 1. um
+      >
+      >    continuação
+    - >
+    - > 1) dois
+    + > 2. dois
+    - > 2) três
+    + > 3. três
+      ↵
+
+      37 |       console.log(`14 ${slug} alternância voltou=${back} ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+      38 |       expect(back).toBe(true)
+    > 39 |       expect(r.text).toBe(expected)
+         |                      ^
+      40 |     })
+      41 |     test(`14 ${slug} edição na última lista`, async ({ page }) => {
+      42 |       const expected = readExtra(slug)
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:39:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-b01c2-l-varios-blocos-alternância/error-context.md
+
+  21) tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x09-citacao-ol-ol-varios-blocos › 14 x09-citacao-ol-ol-varios-blocos edição na última lista 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 3
+    + Received  + 2
+
+    @@ -5,9 +5,8 @@
+      ---
+
+      > 1. um
+      >
+      >    continuação
+    - >
+    - > 1) dois
+    + > 2. dois
+    - > 2) três
+    + > 3. três
+      ↵
+
+      46 |       console.log(`14 ${slug} edição (textos em li=${items}) ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+      47 |       expect(items).toBeGreaterThan(0)
+    > 48 |       expect(r.text).toBe(expected)
+         |                      ^
+      49 |     })
+      50 |   })
+      51 | }
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:48:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-7569f-ocos-edição-na-última-lista/error-context.md
+
+  22) tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x10-callout-ul-ul › 14 x10-callout-ul-ul carga 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 3
+    + Received  + 2
+
+    @@ -5,10 +5,9 @@
+      ---
+
+      :::note[Listas]
+      - um
+      - dois
+    -
+    - * três
+    + - três
+    - * quatro
+    + - quatro
+      :::
+      ↵
+
+      25 |       const r = await spike.save(page)
+      26 |       console.log(`14 ${slug} carga ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+    > 27 |       expect(r.text).toBe(expected)
+         |                      ^
+      28 |     })
+      29 |     test(`14 ${slug} alternância`, async ({ page }) => {
+      30 |       const expected = readExtra(slug)
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:27:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-e62e9--14-x10-callout-ul-ul-carga/error-context.md
+
+  23) tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x10-callout-ul-ul › 14 x10-callout-ul-ul alternância 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 3
+    + Received  + 2
+
+    @@ -5,10 +5,9 @@
+      ---
+
+      :::note[Listas]
+      - um
+      - dois
+    -
+    - * três
+    + - três
+    - * quatro
+    + - quatro
+      :::
+      ↵
+
+      37 |       console.log(`14 ${slug} alternância voltou=${back} ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+      38 |       expect(back).toBe(true)
+    > 39 |       expect(r.text).toBe(expected)
+         |                      ^
+      40 |     })
+      41 |     test(`14 ${slug} edição na última lista`, async ({ page }) => {
+      42 |       const expected = readExtra(slug)
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:39:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-0c5d6-0-callout-ul-ul-alternância/error-context.md
+
+  24) tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x10-callout-ul-ul › 14 x10-callout-ul-ul edição na última lista 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 3
+    + Received  + 2
+
+    @@ -5,10 +5,9 @@
+      ---
+
+      :::note[Listas]
+      - um
+      - dois
+    -
+    - * três
+    + - três
+    - * quatro
+    + - quatro
+      :::
+      ↵
+
+      46 |       console.log(`14 ${slug} edição (textos em li=${items}) ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+      47 |       expect(items).toBeGreaterThan(0)
+    > 48 |       expect(r.text).toBe(expected)
+         |                      ^
+      49 |     })
+      50 |   })
+      51 | }
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:48:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-a0f21-l-ul-edição-na-última-lista/error-context.md
+
+  25) tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x11-callout-ol-ol-varios-blocos › 14 x11-callout-ol-ol-varios-blocos carga 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 2
+    + Received  + 1
+
+    @@ -6,11 +6,10 @@
+
+      :::tip
+      1. um
+
+         continuação
+    -
+    - 1) dois
+    + 2. dois
+
+         outra continuação
+      :::
+      ↵
+
+      25 |       const r = await spike.save(page)
+      26 |       console.log(`14 ${slug} carga ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+    > 27 |       expect(r.text).toBe(expected)
+         |                      ^
+      28 |     })
+      29 |     test(`14 ${slug} alternância`, async ({ page }) => {
+      30 |       const expected = readExtra(slug)
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:27:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-03aa9-t-ol-ol-varios-blocos-carga/error-context.md
+
+  26) tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x11-callout-ol-ol-varios-blocos › 14 x11-callout-ol-ol-varios-blocos alternância 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 2
+    + Received  + 1
+
+    @@ -6,11 +6,10 @@
+
+      :::tip
+      1. um
+
+         continuação
+    -
+    - 1) dois
+    + 2. dois
+
+         outra continuação
+      :::
+      ↵
+
+      37 |       console.log(`14 ${slug} alternância voltou=${back} ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+      38 |       expect(back).toBe(true)
+    > 39 |       expect(r.text).toBe(expected)
+         |                      ^
+      40 |     })
+      41 |     test(`14 ${slug} edição na última lista`, async ({ page }) => {
+      42 |       const expected = readExtra(slug)
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:39:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-c0de6-l-varios-blocos-alternância/error-context.md
+
+  27) tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x11-callout-ol-ol-varios-blocos › 14 x11-callout-ol-ol-varios-blocos edição na última lista 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 2
+    + Received  + 1
+
+    @@ -6,11 +6,10 @@
+
+      :::tip
+      1. um
+
+         continuação
+    -
+    - 1) dois
+    + 2. dois
+
+         outra continuação
+      :::
+      ↵
+
+      46 |       console.log(`14 ${slug} edição (textos em li=${items}) ${r.text === expected ? 'PASS' : 'FAIL\n' + patch(expected, r.text)}`)
+      47 |       expect(items).toBeGreaterThan(0)
+    > 48 |       expect(r.text).toBe(expected)
+         |                      ^
+      49 |     })
+      50 |   })
+      51 | }
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t14-extra-listas.spec.ts:48:22
+
+    Error Context: test-results/mdxeditor-t14-extra-listas-6decd-ocos-edição-na-última-lista/error-context.md
+
+  27 failed
+    tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x01-ul-ul › 14 x01-ul-ul carga ────────
+    tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x01-ul-ul › 14 x01-ul-ul alternância ──
+    tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x01-ul-ul › 14 x01-ul-ul edição na última lista 
+    tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x02-ol-ol › 14 x02-ol-ol carga ────────
+    tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x02-ol-ol › 14 x02-ol-ol alternância ──
+    tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x02-ol-ol › 14 x02-ol-ol edição na última lista 
+    tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x05-ul-ul-varios-blocos › 14 x05-ul-ul-varios-blocos carga 
+    tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x05-ul-ul-varios-blocos › 14 x05-ul-ul-varios-blocos alternância 
+    tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x05-ul-ul-varios-blocos › 14 x05-ul-ul-varios-blocos edição na última lista 
+    tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x06-ol-ol-varios-blocos › 14 x06-ol-ol-varios-blocos carga 
+    tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x06-ol-ol-varios-blocos › 14 x06-ol-ol-varios-blocos alternância 
+    tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x06-ol-ol-varios-blocos › 14 x06-ol-ol-varios-blocos edição na última lista 
+    tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x07-tres-ul-seguidas › 14 x07-tres-ul-seguidas carga 
+    tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x07-tres-ul-seguidas › 14 x07-tres-ul-seguidas alternância 
+    tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x07-tres-ul-seguidas › 14 x07-tres-ul-seguidas edição na última lista 
+    tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x08-citacao-ul-ul › 14 x08-citacao-ul-ul carga 
+    tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x08-citacao-ul-ul › 14 x08-citacao-ul-ul alternância 
+    tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x08-citacao-ul-ul › 14 x08-citacao-ul-ul edição na última lista 
+    tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x09-citacao-ol-ol-varios-blocos › 14 x09-citacao-ol-ol-varios-blocos carga 
+    tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x09-citacao-ol-ol-varios-blocos › 14 x09-citacao-ol-ol-varios-blocos alternância 
+    tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x09-citacao-ol-ol-varios-blocos › 14 x09-citacao-ol-ol-varios-blocos edição na última lista 
+    tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x10-callout-ul-ul › 14 x10-callout-ul-ul carga 
+    tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x10-callout-ul-ul › 14 x10-callout-ul-ul alternância 
+    tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x10-callout-ul-ul › 14 x10-callout-ul-ul edição na última lista 
+    tests/mdxeditor/t14-extra-listas.spec.ts:22:5 › 14 extra x11-callout-ol-ol-varios-blocos › 14 x11-callout-ol-ol-varios-blocos carga 
+    tests/mdxeditor/t14-extra-listas.spec.ts:29:5 › 14 extra x11-callout-ol-ol-varios-blocos › 14 x11-callout-ol-ol-varios-blocos alternância 
+    tests/mdxeditor/t14-extra-listas.spec.ts:41:5 › 14 extra x11-callout-ol-ol-varios-blocos › 14 x11-callout-ol-ol-varios-blocos edição na última lista 
+  9 passed (1.0m)

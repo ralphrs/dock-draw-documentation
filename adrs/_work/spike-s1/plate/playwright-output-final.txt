@@ -1,0 +1,710 @@
+[WebServer] npm warn install-scripts .npmrc allow-scripts setting is being ignored because --allow-scripts was passed on the command line
+[WebServer] The plugin "vite-tsconfig-paths" is detected. Vite now supports tsconfig paths resolution natively via the resolve.tsconfigPaths option. You can remove the plugin and set resolve.tsconfigPaths: true in your Vite config instead.
+
+Running 98 tests using 1 worker
+
+1A 1: ok save.ok=true
+  ✓   1 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 01 expected (2.1s)
+1A 2: ok save.ok=true
+  ✓   2 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 02 expected (1.4s)
+1A 4: ok save.ok=true
+  ✓   3 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 04 expected (1.4s)
+1A 5: FALHA save.ok=true
++++ obtido
+@@ -7,7 +7,6 @@
+ - um
+ - dois
++- outra lista
+ 
+-* outra lista
+-
+ 3. três
+ 4. quatro
+
+  ✘   4 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 05 expected (1.4s)
+1A 6: FALHA save.ok=true
++++ obtido
+@@ -9,3 +9,3 @@
+   - sub item
+ 
+-    código indentado dentro do item
++código indentado dentro do item
+
+  ✘   5 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 06 expected (1.4s)
+1A 7: ok save.ok=true
+  ✓   6 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 07 expected (1.4s)
+1A 8: ok save.ok=true
+  ✓   7 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 08 expected (1.4s)
+1A 9: ok save.ok=true
+  ✓   8 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 09 expected (1.4s)
+1A 10: ok save.ok=true
+  ✓   9 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 10 expected (1.4s)
+1A 11: ok save.ok=true
+  ✓  10 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 11 expected (1.3s)
+1A 12: ok save.ok=true
+  ✓  11 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 12 expected (1.4s)
+1A 13: ok save.ok=true
+  ✓  12 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 13 expected (1.4s)
+1A 14: ok save.ok=true
+  ✓  13 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 14 expected (1.4s)
+1A 16: ok save.ok=true
+  ✓  14 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 16 expected (1.4s)
+1A 17: ok save.ok=true
+  ✓  15 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 17 expected (1.4s)
+1A 18: ok save.ok=true
+  ✓  16 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 18 expected (1.4s)
+1A 19: ok save.ok=true
+  ✓  17 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 19 expected (1.4s)
+1A 20: ok save.ok=true
+  ✓  18 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 20 expected (1.4s)
+1A 21: ok save.ok=true
+  ✓  19 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 21 expected (1.5s)
+1A 23: FALHA save.ok=true
++++ obtido
+@@ -6,4 +6,2 @@
+ 
+ ::diagram[Pessoa usa o Checkout, que chama o Gateway de pagamento]{src="dok:diagram/0192f0a1-6d4f-7b20-9c3d-4e5f60718293" view="0192f0a1-6d4f-7b20-9c3d-4e5f60718294" title="Contexto do Pagamento"}
+-
+-::diagram{src="dok:diagram/0192f0a1-6d4f-7b20-9c3d-4e5f60718293" view="0192f0a1-6d4f-7b20-9c3d-4e5f60718294" rev="0192f0a1-6d4f-7b20-9c3d-4e5f60718295" title="Contexto (versão aprovada)"}
+
+  ✘  20 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 23 expected (1.4s)
+1A 25: ok save.ok=true
+  ✓  21 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 25 expected (1.4s)
+1A 26: ok save.ok=true
+  ✓  22 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 26 expected (1.4s)
+1A 27: ok save.ok=true
+  ✓  23 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 27 expected (1.4s)
+1A 28: ok save.ok=true
+  ✓  24 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 28 expected (1.4s)
+1A 29: ok save.ok=true
+  ✓  25 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 29 expected (1.3s)
+1B 1: ok save.ok=true
+  ✓  26 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 01 input (1.3s)
+1B 2: ok save.ok=true
+  ✓  27 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 02 input (1.4s)
+1B 4: ok save.ok=true
+  ✓  28 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 04 input (1.4s)
+1B 5: FALHA save.ok=true
++++ obtido
+@@ -7,7 +7,6 @@
+ - um
+ - dois
++- outra lista
+ 
+-* outra lista
+-
+ 3. três
+ 4. quatro
+
+  ✘  29 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 05 input (1.4s)
+1B 6: FALHA save.ok=true
++++ obtido
+@@ -9,3 +9,3 @@
+   - sub item
+ 
+-    código indentado dentro do item
++código indentado dentro do item
+
+  ✘  30 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 06 input (1.4s)
+1B 7: ok save.ok=true
+  ✓  31 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 07 input (1.4s)
+1B 8: ok save.ok=true
+  ✓  32 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 08 input (1.4s)
+1B 9: ok save.ok=true
+  ✓  33 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 09 input (1.3s)
+1B 10: ok save.ok=true
+  ✓  34 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 10 input (1.4s)
+1B 11: ok save.ok=true
+  ✓  35 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 11 input (1.4s)
+1B 12: ok save.ok=true
+  ✓  36 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 12 input (1.4s)
+1B 13: ok save.ok=true
+  ✓  37 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 13 input (1.4s)
+1B 14: ok save.ok=true
+  ✓  38 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 14 input (1.4s)
+1B 16: ok save.ok=true
+  ✓  39 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 16 input (1.4s)
+1B 20: ok save.ok=true
+  ✓  40 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 20 input (1.4s)
+1B 23: FALHA save.ok=true
++++ obtido
+@@ -6,4 +6,2 @@
+ 
+ ::diagram[Pessoa usa o Checkout, que chama o Gateway de pagamento]{src="dok:diagram/0192f0a1-6d4f-7b20-9c3d-4e5f60718293" view="0192f0a1-6d4f-7b20-9c3d-4e5f60718294" title="Contexto do Pagamento"}
+-
+-::diagram{src="dok:diagram/0192f0a1-6d4f-7b20-9c3d-4e5f60718293" view="0192f0a1-6d4f-7b20-9c3d-4e5f60718294" rev="0192f0a1-6d4f-7b20-9c3d-4e5f60718295" title="Contexto (versão aprovada)"}
+
+  ✘  41 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 23 input (1.4s)
+1B 28: ok save.ok=true
+  ✓  42 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 28 input (1.4s)
+1C 3: ok {"a_mode":true,"a_semWysiwyg":true,"b_diagnostics":true,"c_source":true,"c_setModeFalse":true,"c_sourceDepois":true,"d_codes":true} codes=DOK-E001 manifest=DOK-E001
+  ✓  43 tests/plate/t01-corpus.spec.ts:34:3 › 1C fixture 03 erro (686ms)
+1C 15: ok {"a_mode":true,"a_semWysiwyg":true,"b_diagnostics":true,"c_source":true,"c_setModeFalse":true,"c_sourceDepois":true,"d_codes":true} codes=DOK-E005,DOK-E006 manifest=DOK-E005,DOK-E006
+  ✓  44 tests/plate/t01-corpus.spec.ts:34:3 › 1C fixture 15 erro (699ms)
+1C 22: ok {"a_mode":true,"a_semWysiwyg":true,"b_diagnostics":true,"c_source":true,"c_setModeFalse":true,"c_sourceDepois":true,"d_codes":true} codes=DOK-E008 manifest=DOK-E008
+  ✓  45 tests/plate/t01-corpus.spec.ts:34:3 › 1C fixture 22 erro (687ms)
+1C 24: ok {"a_mode":true,"a_semWysiwyg":true,"b_diagnostics":true,"c_source":true,"c_setModeFalse":true,"c_sourceDepois":true,"d_codes":true} codes=DOK-E003,DOK-E004 manifest=DOK-E003,DOK-E004
+  ✓  46 tests/plate/t01-corpus.spec.ts:34:3 › 1C fixture 24 erro (686ms)
+1C 30: ok {"a_mode":true,"a_semWysiwyg":true,"b_diagnostics":true,"c_source":true,"c_setModeFalse":true,"c_sourceDepois":true,"d_codes":true} codes=DOK-E002,DOK-E003,DOK-E008 manifest=DOK-E002,DOK-E003,DOK-E008
+  ✓  47 tests/plate/t01-corpus.spec.ts:34:3 › 1C fixture 30 erro (678ms)
+2 corpo depois de apagar pela UI: [{"children":[{"text":""}],"type":"p","id":"0VS1xglZWG"}]
+2: ok passos=rótulo digitado; parágrafo e lista digitados; tipo, variant e fold definidos pela UI save.ok=true
+  ✓  48 tests/plate/t02-t05-ui.spec.ts:28:1 › 2 recriar os callouts da fixture 16 pela UI (2.4s)
+3 fonte <Tabs>/<script>: codes= DOK-E002,DOK-E002 ok= false
+3 WYSIWYG Hora:agora: texto contém= true diretiva na árvore= false codes= 
+3 fonte Hora:agora: texto contém= true codes=  volta ao WYSIWYG= true diretiva= false
+  ✓  49 tests/plate/t02-t05-ui.spec.ts:76:1 › 3 E-02: <Tabs> e <script> no fonte dão DOK-E002; Hora:agora fica texto (3.3s)
+4 seletor: apareceu no DOM=true visível após 500 ms=true foco=pick-diagram-0192f0a1-6d4f-7b20-9c3d-4e5f60718293
+4: ok save.ok=true codes=DOK-W103
+linha esperada: ::diagram[Pessoa usa o Checkout, que chama o Gateway de pagamento]{src="dok:diagram/0192f0a1-6d4f-7b20-9c3d-4e5f60718293" view="0192f0a1-6d4f-7b20-9c3d-4e5f60718294" title="Contexto do Pagamento"}
+salvo:
+---
+dok: 1
+id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+title: Página mínima
+---
+
+Texto.
+
+::diagram[Pessoa usa o Checkout, que chama o Gateway de pagamento]{src="dok:diagram/0192f0a1-6d4f-7b20-9c3d-4e5f60718293" view="0192f0a1-6d4f-7b20-9c3d-4e5f60718294" title="Contexto do Pagamento"}
+
+  ✓  50 tests/plate/t02-t05-ui.spec.ts:120:1 › 4 E-03: diagrama pelo menu, seletor e descrição pela UI do nó (2.1s)
+4b: ok save.ok=true codes=DOK-W103
+---
+dok: 1
+id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+title: Página mínima
+---
+
+Texto.
+
+::diagram[Pessoa usa o Checkout, que chama o Gateway de pagamento]{src="dok:diagram/0192f0a1-6d4f-7b20-9c3d-4e5f60718293" view="0192f0a1-6d4f-7b20-9c3d-4e5f60718294" title="Contexto do Pagamento"}
+
+  ✓  51 tests/plate/t02-t05-ui.spec.ts:163:1 › 4b desvio: nó do diagrama criado como o seletor do shell cria, descrição pela UI do nó (1.4s)
+5 sugestões "visão": ["Visão geral"] alias "C4": ["Visão geral"] save.ok= true codes= DOK-W101 
+---
+dok: 1
+id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+title: Página mínima
+---
+
+Texto. Veja [Visão geral](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183) e [Página nova](dok:page/new?title=P%C3%A1gina%20nova)
+
+  ✓  52 tests/plate/t02-t05-ui.spec.ts:186:1 › 5 link interno com autocomplete e link pendente (1.5s)
+6 claro: {"html":"theme-light","color":"oklch(0.2 0 0)","background":"oklch(0.99 0 0)","want":{"color":"oklch(0.2 0 0)","background":"oklch(0.99 0 0)"}}
+6 escuro: {"html":"theme-dark","color":"oklch(0.95 0 0)","background":"oklch(0.18 0 0)","want":{"color":"oklch(0.95 0 0)","background":"oklch(0.18 0 0)"}}
+6 CSS de biblioteca carregado: []
+6 elementos com transição/animação > 0,01 ms sob reduced motion: 0 []
+  ✓  53 tests/plate/t06-t12-shell.spec.ts:9:1 › 6 tema por token e movimento reduzido (987ms)
+7 landing: requisições 182 chunks de biblioteca Plate/Slate: [] qualquer URL com plate/slate: ["http://localhost:5312/src/routes/edit.plate.tsx"]
+7 navegação de cliente: chunks Plate/Slate carregados: 9 erros: []
+7 carga direta: erros: []
+  ✓  54 tests/plate/t06-t12-shell.spec.ts:59:1 › 7 E-07: landing sem chunk do Plate; navegação de cliente e carga direta sem erro (2.8s)
+8 Google Docs tratado por: beforeinput
+8 GitHub tratado por: beforeinput
+8 chamadas: 1 → 2 [{"text":"Negrito do Docs e texto\n\n* item docs","html":true},{"text":"Texto do `GitHub`\n\n- item gh","html":true}] save.ok= true HTML/JSX no save= false 
+---
+dok: 1
+id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+title: Página mínima
+---
+
+Texto.
+
+Negrito do Docs e texto
+
+- item docs
+
+Texto do `GitHub`
+
+- item gh
+
+8 só text/html tratado por: beforeinput
+8 só text/html: chamadas= 3 save contém "só html"= false HTML no save= false
+  ✓  55 tests/plate/t06-t12-shell.spec.ts:117:1 › 8 colar Google Docs e GitHub passa pela porta importDialect (2.1s)
+9 17: ok corpo vazio=true chamadas=1 matched=17
+  ✓  56 tests/plate/t06-t12-shell.spec.ts:173:3 › 9 D-2 fixture 17: apagar e colar o input.md (1.4s)
+9 18: ok corpo vazio=true chamadas=1 matched=18
+  ✓  57 tests/plate/t06-t12-shell.spec.ts:173:3 › 9 D-2 fixture 18: apagar e colar o input.md (1.4s)
+9 19: ok corpo vazio=true chamadas=1 matched=19
+  ✓  58 tests/plate/t06-t12-shell.spec.ts:173:3 › 9 D-2 fixture 19: apagar e colar o input.md (1.4s)
+9 21: ok corpo vazio=true chamadas=1 matched=21
+  ✓  59 tests/plate/t06-t12-shell.spec.ts:173:3 › 9 D-2 fixture 21: apagar e colar o input.md (1.4s)
+9 25: ok corpo vazio=true chamadas=1 matched=25
+  ✓  60 tests/plate/t06-t12-shell.spec.ts:173:3 › 9 D-2 fixture 25: apagar e colar o input.md (1.4s)
+9 26: ok corpo vazio=true chamadas=1 matched=26
+  ✓  61 tests/plate/t06-t12-shell.spec.ts:173:3 › 9 D-2 fixture 26: apagar e colar o input.md (1.4s)
+9 27: ok corpo vazio=true chamadas=1 matched=27
+  ✓  62 tests/plate/t06-t12-shell.spec.ts:173:3 › 9 D-2 fixture 27: apagar e colar o input.md (1.4s)
+9 29: ok corpo vazio=true chamadas=1 matched=29
+  ✓  63 tests/plate/t06-t12-shell.spec.ts:173:3 › 9 D-2 fixture 29: apagar e colar o input.md (1.4s)
+10 1: ok
+  ✓  64 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 01 (1.0s)
+10 2: ok
+  ✓  65 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 02 (1.0s)
+10 4: ok
+  ✓  66 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 04 (1.0s)
+10 5: FALHA
++++ obtido
+@@ -7,7 +7,6 @@
+ - um
+ - dois
++- outra lista
+ 
+-* outra lista
+-
+ 3. três
+ 4. quatro
+
+  ✘  67 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 05 (1.0s)
+10 6: FALHA
++++ obtido
+@@ -9,3 +9,3 @@
+   - sub item
+ 
+-    código indentado dentro do item
++código indentado dentro do item
+
+  ✘  68 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 06 (1.0s)
+10 7: ok
+  ✓  69 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 07 (1.0s)
+10 8: ok
+  ✓  70 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 08 (1.0s)
+10 9: ok
+  ✓  71 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 09 (1.0s)
+10 10: ok
+  ✓  72 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 10 (1.0s)
+10 11: ok
+  ✓  73 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 11 (1.0s)
+10 12: ok
+  ✓  74 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 12 (1.0s)
+10 13: ok
+  ✓  75 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 13 (1.0s)
+10 14: ok
+  ✓  76 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 14 (1.0s)
+10 16: ok
+  ✓  77 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 16 (1.0s)
+10 17: ok
+  ✓  78 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 17 (1.0s)
+10 18: ok
+  ✓  79 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 18 (1.0s)
+10 19: ok
+  ✓  80 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 19 (1.0s)
+10 20: ok
+  ✓  81 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 20 (1.0s)
+10 21: ok
+  ✓  82 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 21 (1.0s)
+10 23: ok
+  ✓  83 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 23 (1.0s)
+10 25: ok
+  ✓  84 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 25 (1.0s)
+10 26: ok
+  ✓  85 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 26 (1.0s)
+10 27: ok
+  ✓  86 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 27 (1.0s)
+10 28: ok
+  ✓  87 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 28 (1.0s)
+10 29: ok
+  ✓  88 tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 29 (1.0s)
+10 edição no fonte: visível no WYSIWYG= true no save= true
+  ✓  89 tests/plate/t06-t12-shell.spec.ts:206:1 › 10 D-5 edição no fonte aparece no WYSIWYG e no save (1.2s)
+11 readOnly: getDok igual= true contenteditable= false menu Inserir= 0 campos da UI do nó desabilitados= true
+11 changesRequested: banner visível= true
+  ✓  90 tests/plate/t06-t12-shell.spec.ts:221:1 › 11 E-13 somente leitura e banner (1.9s)
+12 menu no topo= true cortado= false dentro da viewport= true foco após Escape= insert-menu caixa= {"x":156,"y":40,"width":71.328125,"height":170}
+  ✓  91 tests/plate/t06-t12-shell.spec.ts:243:1 › 12 portal Radix do menu Inserir sobre o editor (1.2s)
+13a tipos mdast (entrada parseDok sem yaml × getTree):
+01 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+02 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+04 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+05 expected perdidos=[list 3→2] ganhos=[] pai>filho perdidos=[root>list 3→2] pai>filho ganhos=[]
+06 expected perdidos=[] ganhos=[] pai>filho perdidos=[listItem>paragraph 4→3] pai>filho ganhos=[root>paragraph 0→1]
+07 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+08 expected perdidos=[] ganhos=[paragraph 0→9] pai>filho perdidos=[tableCell>text 9→0, tableCell>inlineCode 1→0] pai>filho ganhos=[tableCell>paragraph 0→9, paragraph>text 0→9, paragraph>inlineCode 0→1]
+09 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+10 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+11 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+12 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+13 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+14 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+16 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+17 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+18 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+19 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+20 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+21 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+23 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+25 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+26 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+27 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+28 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+29 expected perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+01 input    perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+02 input    perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+04 input    perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+05 input    perdidos=[list 3→2] ganhos=[] pai>filho perdidos=[root>list 3→2] pai>filho ganhos=[]
+06 input    perdidos=[] ganhos=[] pai>filho perdidos=[listItem>paragraph 4→3] pai>filho ganhos=[root>paragraph 0→1]
+07 input    perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+08 input    perdidos=[] ganhos=[paragraph 0→9] pai>filho perdidos=[tableCell>text 9→0, tableCell>inlineCode 1→0] pai>filho ganhos=[tableCell>paragraph 0→9, paragraph>text 0→9, paragraph>inlineCode 0→1]
+09 input    perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+10 input    perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+11 input    perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+12 input    perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+13 input    perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+14 input    perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+16 input    perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+20 input    perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+23 input    perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+28 input    perdidos=[] ganhos=[] pai>filho perdidos=[] pai>filho ganhos=[]
+13a fixtures com tipo perdido: 6 de 42 | console.warn "Unreachable code": 0 []
+  ✘  92 tests/plate/t13-riscos.spec.ts:24:1 › 13a nó mdast perdido nas duas direções (sem edição) e warn unreachable (37.7s)
+13a-nativo tipos mdast presentes no corpus do teste 1:
+break                chave=break                deserialize nativo=sim
+code                 chave=code_block           deserialize nativo=sim
+containerDirective   chave=containerDirective   deserialize nativo=NÃO
+definition           chave=definition           deserialize nativo=NÃO
+delete               chave=strikethrough        deserialize nativo=sim
+emphasis             chave=italic               deserialize nativo=sim
+footnoteDefinition   chave=footnoteDefinition   deserialize nativo=sim
+footnoteReference    chave=footnoteReference    deserialize nativo=sim
+heading              chave=heading              deserialize nativo=sim
+image                chave=img                  deserialize nativo=sim
+imageReference       chave=imageReference       deserialize nativo=NÃO
+inlineCode           chave=code                 deserialize nativo=sim
+leafDirective        chave=leafDirective        deserialize nativo=NÃO
+link                 chave=a                    deserialize nativo=sim
+linkReference        chave=linkReference        deserialize nativo=NÃO
+list                 chave=list                 deserialize nativo=sim
+listItem             chave=li                   deserialize nativo=NÃO
+paragraph            chave=p                    deserialize nativo=sim
+root                 chave=root                 deserialize nativo=NÃO
+strong               chave=bold                 deserialize nativo=sim
+table                chave=table                deserialize nativo=sim
+tableCell            chave=td                   deserialize nativo=NÃO
+tableRow             chave=tr                   deserialize nativo=NÃO
+text                 chave=text                 deserialize nativo=sim
+yaml                 chave=yaml                 deserialize nativo=NÃO
+  ✓  93 tests/plate/t13-riscos.spec.ts:47:1 › 13a-nativo tipos da DokAST do corpus sem regra nativa em defaultRules (174ms)
+13b callout: getTree=:"text","value":"Texto."}],"type":"paragraph"},{"attributes":[{"name":"id","type":"mdxJsxAttribute","value":"NPqoTFKMzZ"}],"children":[{"children":[{"type":"text","value":"dentro do callout"}],"type":"paragraph"}],"name":"callout","type":"mdxJsxFlowElement"}]}
+   erro getTree=null
+   nós mdxJsx no getTree=1 erro no save=Cannot handle unknown node `mdxJsxFlowElement`
+13b comment: getTree={"type":"root","children":[{"children":[{"type":"text","value":"Texto."}],"type":"paragraph"},{"children":[{"type":"text","value":"comentado"}],"type":"paragraph"}]}
+   erro getTree=null
+   nós mdxJsx no getTree=0 erro no save=null
+13b suggestion: getTree={"type":"root","children":[{"children":[{"type":"text","value":"Texto."}],"type":"paragraph"},{"children":[{"type":"text","value":"sugerido"}],"type":"paragraph"}]}
+   erro getTree=null
+   nós mdxJsx no getTree=0 erro no save=null
+13b warn unreachable= 0
+  ✓  94 tests/plate/t13-riscos.spec.ts:63:1 › 13b rules { callout: null, comment: null, suggestion: null } desligam a regra nativa? (2.8s)
+13c rótulo na carga: {"type":"paragraph","data":{"directiveLabel":true},"children":[{"type":"text","value":"Antes de começar"}]}
+13c após editar o corpo: contém ":::note[Antes de começar]"= true corpo editado= true
+13c após editar o rótulo: contém ":::note[Antes de começar!]"= true data.directiveLabel= {"directiveLabel":true}
+  ✓  95 tests/plate/t13-riscos.spec.ts:100:1 › 13c rótulo de container preservado na ida e volta e após editar (1.4s)
+13d input.md:
+---
+dok: 1
+id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+title: Fixture 14
+---
+
+Leia [a visão][v] e ![logo][l].
+
+[v]: dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183
+[l]: dok:asset/0192f0a1-7e50-7c30-8d4e-5f6071829304 "Logo"
+
+13d tipos perdidos com as regras do adaptador: [] save.ok= true 
+save:
+---
+dok: 1
+id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+title: Fixture 14
+---
+
+Leia [a visão](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183) e ![logo](dok:asset/0192f0a1-7e50-7c30-8d4e-5f6071829304 "Logo").
+
+13d com as regras nativas: ver plate/playwright-output-regras-nativas.txt, linha "1B 14"
+  ✓  96 tests/plate/t13-riscos.spec.ts:128:1 › 13d link por referência e definition (fixture 14, input) (991ms)
+13e elementos no DOM: {"refs":2,"defs":2} save.ok= true 
+---
+dok: 1
+id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+title: Fixture 09
+---
+
+Texto com nota[^fonte] e outra[^2].
+
+[^fonte]: Documento interno. Revisado.
+
+[^2]: Segunda nota.
+
+  ✓  97 tests/plate/t13-riscos.spec.ts:142:1 › 13e notas de rodapé (fixture 09) com @platejs/footnote (1.2s)
+13f seleção antes da troca: {"anchor":{"path":[0,0],"offset":7},"focus":{"path":[0,0],"offset":7}}
+13f depois da remontagem: {"selection":"null","focusInEditor":false,"undos":0}
+13f Ctrl/Cmd+Z após remontar desfaz o "A" anterior: não (histórico perdido)
+13f histórico novo: "B" digitado= true desfeito= true
+  ✓  98 tests/plate/t13-riscos.spec.ts:160:1 › 13f seleção e histórico depois da volta do modo fonte (remontagem) (1.8s)
+
+
+  1) tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 05 expected ───────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 2
+    + Received  + 1
+
+    @@ -4,11 +4,10 @@
+      title: Fixture 05
+      ---
+
+      - um
+      - dois
+    -
+    - * outra lista
+    + - outra lista
+
+      3. três
+      4. quatro
+      ↵
+
+      14 |     const pass = r.text === expected
+      15 |     console.log(`1A ${n}: ${pass ? 'ok' : 'FALHA'} save.ok=${r.ok}${pass ? '' : '\n' + diffOf(expected, r.text)}`)
+    > 16 |     expect(r.text).toBe(expected)
+         |                    ^
+      17 |   })
+      18 | }
+      19 |
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/plate/t01-corpus.spec.ts:16:20
+
+    Error Context: test-results/plate-t01-corpus-1A-fixture-05-expected/error-context.md
+
+  2) tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 06 expected ───────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 1
+    + Received  + 1
+
+    @@ -6,7 +6,7 @@
+
+      - [x] feito
+      - [ ] pendente
+        - sub item
+
+    -     código indentado dentro do item
+    + código indentado dentro do item
+      ↵
+
+      14 |     const pass = r.text === expected
+      15 |     console.log(`1A ${n}: ${pass ? 'ok' : 'FALHA'} save.ok=${r.ok}${pass ? '' : '\n' + diffOf(expected, r.text)}`)
+    > 16 |     expect(r.text).toBe(expected)
+         |                    ^
+      17 |   })
+      18 | }
+      19 |
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/plate/t01-corpus.spec.ts:16:20
+
+    Error Context: test-results/plate-t01-corpus-1A-fixture-06-expected/error-context.md
+
+  3) tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 23 expected ───────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 2
+    + Received  + 0
+
+    @@ -4,7 +4,5 @@
+      title: Fixture 23
+      ---
+
+      ::diagram[Pessoa usa o Checkout, que chama o Gateway de pagamento]{src="dok:diagram/0192f0a1-6d4f-7b20-9c3d-4e5f60718293" view="0192f0a1-6d4f-7b20-9c3d-4e5f60718294" title="Contexto do Pagamento"}
+
+    - ::diagram{src="dok:diagram/0192f0a1-6d4f-7b20-9c3d-4e5f60718293" view="0192f0a1-6d4f-7b20-9c3d-4e5f60718294" rev="0192f0a1-6d4f-7b20-9c3d-4e5f60718295" title="Contexto (versão aprovada)"}
+    -
+
+      14 |     const pass = r.text === expected
+      15 |     console.log(`1A ${n}: ${pass ? 'ok' : 'FALHA'} save.ok=${r.ok}${pass ? '' : '\n' + diffOf(expected, r.text)}`)
+    > 16 |     expect(r.text).toBe(expected)
+         |                    ^
+      17 |   })
+      18 | }
+      19 |
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/plate/t01-corpus.spec.ts:16:20
+
+    Error Context: test-results/plate-t01-corpus-1A-fixture-23-expected/error-context.md
+
+  4) tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 05 input ─────────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 2
+    + Received  + 1
+
+    @@ -4,11 +4,10 @@
+      title: Fixture 05
+      ---
+
+      - um
+      - dois
+    -
+    - * outra lista
+    + - outra lista
+
+      3. três
+      4. quatro
+      ↵
+
+      27 |     const pass = r.text === expected
+      28 |     console.log(`1B ${n}: ${pass ? 'ok' : 'FALHA'} save.ok=${r.ok}${pass ? '' : '\n' + diffOf(expected, r.text)}`)
+    > 29 |     expect(r.text).toBe(expected)
+         |                    ^
+      30 |   })
+      31 | }
+      32 |
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/plate/t01-corpus.spec.ts:29:20
+
+    Error Context: test-results/plate-t01-corpus-1B-fixture-05-input/error-context.md
+
+  5) tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 06 input ─────────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 1
+    + Received  + 1
+
+    @@ -6,7 +6,7 @@
+
+      - [x] feito
+      - [ ] pendente
+        - sub item
+
+    -     código indentado dentro do item
+    + código indentado dentro do item
+      ↵
+
+      27 |     const pass = r.text === expected
+      28 |     console.log(`1B ${n}: ${pass ? 'ok' : 'FALHA'} save.ok=${r.ok}${pass ? '' : '\n' + diffOf(expected, r.text)}`)
+    > 29 |     expect(r.text).toBe(expected)
+         |                    ^
+      30 |   })
+      31 | }
+      32 |
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/plate/t01-corpus.spec.ts:29:20
+
+    Error Context: test-results/plate-t01-corpus-1B-fixture-06-input/error-context.md
+
+  6) tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 23 input ─────────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 2
+    + Received  + 0
+
+    @@ -4,7 +4,5 @@
+      title: Fixture 23
+      ---
+
+      ::diagram[Pessoa usa o Checkout, que chama o Gateway de pagamento]{src="dok:diagram/0192f0a1-6d4f-7b20-9c3d-4e5f60718293" view="0192f0a1-6d4f-7b20-9c3d-4e5f60718294" title="Contexto do Pagamento"}
+
+    - ::diagram{src="dok:diagram/0192f0a1-6d4f-7b20-9c3d-4e5f60718293" view="0192f0a1-6d4f-7b20-9c3d-4e5f60718294" rev="0192f0a1-6d4f-7b20-9c3d-4e5f60718295" title="Contexto (versão aprovada)"}
+    -
+
+      27 |     const pass = r.text === expected
+      28 |     console.log(`1B ${n}: ${pass ? 'ok' : 'FALHA'} save.ok=${r.ok}${pass ? '' : '\n' + diffOf(expected, r.text)}`)
+    > 29 |     expect(r.text).toBe(expected)
+         |                    ^
+      30 |   })
+      31 | }
+      32 |
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/plate/t01-corpus.spec.ts:29:20
+
+    Error Context: test-results/plate-t01-corpus-1B-fixture-23-input/error-context.md
+
+  7) tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 05 ───────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 2
+    + Received  + 1
+
+    @@ -4,11 +4,10 @@
+      title: Fixture 05
+      ---
+
+      - um
+      - dois
+    -
+    - * outra lista
+    + - outra lista
+
+      3. três
+      4. quatro
+      ↵
+
+      200 |     const pass = r.text === expected
+      201 |     console.log(`10 ${n}: ${pass ? 'ok' : 'FALHA'}${pass ? '' : '\n' + diffOf(expected, r.text)}`)
+    > 202 |     expect(r.text).toBe(expected)
+          |                    ^
+      203 |   })
+      204 | }
+      205 |
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/plate/t06-t12-shell.spec.ts:202:20
+
+    Error Context: test-results/plate-t06-t12-shell-10-D-5-alternância-fixture-05/error-context.md
+
+  8) tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 06 ───────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 1
+    + Received  + 1
+
+    @@ -6,7 +6,7 @@
+
+      - [x] feito
+      - [ ] pendente
+        - sub item
+
+    -     código indentado dentro do item
+    + código indentado dentro do item
+      ↵
+
+      200 |     const pass = r.text === expected
+      201 |     console.log(`10 ${n}: ${pass ? 'ok' : 'FALHA'}${pass ? '' : '\n' + diffOf(expected, r.text)}`)
+    > 202 |     expect(r.text).toBe(expected)
+          |                    ^
+      203 |   })
+      204 | }
+      205 |
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/plate/t06-t12-shell.spec.ts:202:20
+
+    Error Context: test-results/plate-t06-t12-shell-10-D-5-alternância-fixture-06/error-context.md
+
+  9) tests/plate/t13-riscos.spec.ts:24:1 › 13a nó mdast perdido nas duas direções (sem edição) e warn unreachable 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 6
+
+      42 |   console.log('13a fixtures com tipo perdido:', losses, 'de', cases.length, '| console.warn "Unreachable code":', warns.length, JSON.stringify(warns.slice(0, 5)))
+      43 |   expect.soft(warns).toEqual([])
+    > 44 |   expect(losses).toBe(0)
+         |                  ^
+      45 | })
+      46 |
+      47 | test('13a-nativo tipos da DokAST do corpus sem regra nativa em defaultRules', async () => {
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/plate/t13-riscos.spec.ts:44:18
+
+    Error Context: test-results/plate-t13-riscos-13a-nó-md-b9bbc-m-edição-e-warn-unreachable/error-context.md
+
+  9 failed
+    tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 05 expected ────────────────────────────────────
+    tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 06 expected ────────────────────────────────────
+    tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 23 expected ────────────────────────────────────
+    tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 05 input ──────────────────────────────────────
+    tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 06 input ──────────────────────────────────────
+    tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 23 input ──────────────────────────────────────
+    tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 05 ────────────────────────
+    tests/plate/t06-t12-shell.spec.ts:192:3 › 10 D-5 alternância fixture 06 ────────────────────────
+    tests/plate/t13-riscos.spec.ts:24:1 › 13a nó mdast perdido nas duas direções (sem edição) e warn unreachable 
+  89 passed (2.9m)

@@ -1,0 +1,65 @@
+The plugin "vite-tsconfig-paths" is detected. Vite now supports tsconfig paths resolution natively via the resolve.tsconfigPaths option. You can remove the plugin and set resolve.tsconfigPaths: true in your Vite config instead.
+The plugin "vite-tsconfig-paths" is detected. Vite now supports tsconfig paths resolution natively via the resolve.tsconfigPaths option. You can remove the plugin and set resolve.tsconfigPaths: true in your Vite config instead.
+The plugin "vite-tsconfig-paths" is detected. Vite now supports tsconfig paths resolution natively via the resolve.tsconfigPaths option. You can remove the plugin and set resolve.tsconfigPaths: true in your Vite config instead.
+vite v8.1.5 building client environment for production...
+[2Ktransforming...✓ 1389 modules transformed.
+rendering chunks...
+computing gzip size...
+mdxeditor/dist-check/client/assets/styles-vyC0VL09.css           7.37 kB │ gzip:   2.24 kB
+mdxeditor/dist-check/client/assets/Adapter-n2eE73RR.css         50.39 kB │ gzip:   9.09 kB
+mdxeditor/dist-check/client/assets/read-D3Lyh_wI.js              0.24 kB │ gzip:   0.19 kB
+mdxeditor/dist-check/client/assets/diff-Dm0aGBgO.js              0.40 kB │ gzip:   0.30 kB
+mdxeditor/dist-check/client/assets/routes-Ez9uJ5dt.js            0.48 kB │ gzip:   0.25 kB
+mdxeditor/dist-check/client/assets/read-i_R-EXP0.js              0.50 kB │ gzip:   0.32 kB
+mdxeditor/dist-check/client/assets/edit.plate-BikBk_HW.js        0.58 kB │ gzip:   0.37 kB
+mdxeditor/dist-check/client/assets/diff-KqFgETIm.js              0.59 kB │ gzip:   0.38 kB
+mdxeditor/dist-check/client/assets/edit.mdxeditor-CaR1vRCQ.js    0.59 kB │ gzip:   0.36 kB
+mdxeditor/dist-check/client/assets/edit.plate-DgJgwiSC.js        0.87 kB │ gzip:   0.53 kB
+mdxeditor/dist-check/client/assets/edit.mdxeditor-BV-nN-DK.js    0.90 kB │ gzip:   0.54 kB
+mdxeditor/dist-check/client/assets/with-selector-CakU7Zf9.js     1.62 kB │ gzip:   0.72 kB
+mdxeditor/dist-check/client/assets/pageIndex-EY2neZnQ.js         5.34 kB │ gzip:   2.21 kB
+mdxeditor/dist-check/client/assets/jsx-runtime-B2XNDk3Z.js      12.69 kB │ gzip:   4.46 kB
+mdxeditor/dist-check/client/assets/revision-CoWHfYu-.js         12.84 kB │ gzip:   4.70 kB
+mdxeditor/dist-check/client/assets/link-CuRUu4bd.js             21.82 kB │ gzip:   8.19 kB
+mdxeditor/dist-check/client/assets/core-DYGdFEtw.js             28.07 kB │ gzip:   7.96 kB
+mdxeditor/dist-check/client/assets/loadParams-CE2LrFod.js       28.96 kB │ gzip:   8.06 kB
+mdxeditor/dist-check/client/assets/dist-DwGhngRV.js             73.23 kB │ gzip:  25.54 kB
+mdxeditor/dist-check/client/assets/index-BiTsWfr6.js           308.09 kB │ gzip:  96.48 kB
+mdxeditor/dist-check/client/assets/dokmd-C1D4i18P.js           324.53 kB │ gzip:  94.58 kB
+mdxeditor/dist-check/client/assets/Adapter-vQce0VTX.js         420.41 kB │ gzip: 132.88 kB
+mdxeditor/dist-check/client/assets/EditorShell-B_GBnxr9.js     547.68 kB │ gzip: 189.56 kB
+mdxeditor/dist-check/client/assets/Adapter-Csj75AJT.js         870.96 kB │ gzip: 265.05 kB
+
+✓ built in 393ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+vite v8.1.5 building ssr environment for production...
+[2Ktransforming...✓ 137 modules transformed.
+rendering chunks...
+computing gzip size...
+mdxeditor/dist-check/server/assets/start-5Z2QO8AU.js                        0.14 kB │ gzip:  0.13 kB
+mdxeditor/dist-check/server/assets/empty-plugin-adapters-D9UWiqvJ.js        0.22 kB │ gzip:  0.16 kB
+mdxeditor/dist-check/server/assets/core-DP0WkQLo.js                         0.38 kB │ gzip:  0.23 kB
+mdxeditor/dist-check/server/assets/read-BUyKPyz8.js                         0.41 kB │ gzip:  0.26 kB
+mdxeditor/dist-check/server/assets/read-CEtGBlrf.js                         0.42 kB │ gzip:  0.26 kB
+mdxeditor/dist-check/server/assets/edit.plate-Dd5n_gbN.js                   0.46 kB │ gzip:  0.28 kB
+mdxeditor/dist-check/server/assets/diff-Ip7rq0M4.js                         0.47 kB │ gzip:  0.30 kB
+mdxeditor/dist-check/server/assets/edit.mdxeditor-HK4YKoHq.js               0.47 kB │ gzip:  0.28 kB
+mdxeditor/dist-check/server/assets/diff-MORXsuh5.js                         0.64 kB │ gzip:  0.40 kB
+mdxeditor/dist-check/server/assets/routes-CmgJo7PG.js                       0.78 kB │ gzip:  0.34 kB
+mdxeditor/dist-check/server/assets/edit.plate-BdGhGyNm.js                   0.80 kB │ gzip:  0.47 kB
+mdxeditor/dist-check/server/assets/edit.mdxeditor-ShRoEx88.js               0.81 kB │ gzip:  0.47 kB
+mdxeditor/dist-check/server/assets/_tanstack-start-manifest_v-hc_WpYBp.js   2.00 kB │ gzip:  0.61 kB
+mdxeditor/dist-check/server/assets/router-C9Wk_dr9.js                       2.25 kB │ gzip:  0.91 kB
+mdxeditor/dist-check/server/assets/revision-vlQjAITG.js                     7.18 kB │ gzip:  2.34 kB
+mdxeditor/dist-check/server/assets/dokmd-Cqfir3ow.js                       10.36 kB │ gzip:  3.72 kB
+mdxeditor/dist-check/server/assets/EditorShell-Bxq6zOHg.js                 14.13 kB │ gzip:  4.55 kB
+mdxeditor/dist-check/server/assets/Adapter-77QsoNsX.js                     19.40 kB │ gzip:  4.97 kB
+mdxeditor/dist-check/server/assets/Adapter-CH7j1cSD.js                     23.86 kB │ gzip:  6.72 kB
+mdxeditor/dist-check/server/assets/loadParams-CKP054kR.js                  32.75 kB │ gzip:  6.39 kB
+mdxeditor/dist-check/server/server.js                                      59.49 kB │ gzip: 15.26 kB
+
+✓ built in 152ms

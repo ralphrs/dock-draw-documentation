@@ -1,0 +1,19 @@
+
+Running 1 test using 1 worker
+
+4 seletor de diagrama: apareceu=true aberto após 500 ms=true
+4 via=seletor linha 7 da fixture 23 presente=true ok=true códigos=DOK-W103
+4 texto salvo:
+---
+dok: 1
+id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+title: Página mínima
+---
+
+Texto.
+
+::diagram[Pessoa usa o Checkout, que chama o Gateway de pagamento]{src="dok:diagram/0192f0a1-6d4f-7b20-9c3d-4e5f60718293" view="0192f0a1-6d4f-7b20-9c3d-4e5f60718294" title="Contexto do Pagamento"}
+
+  ✓  1 tests/mdxeditor/t02-t05-edicao.spec.ts:86:1 › 4 E-03: inserir diagrama pelo menu e descrever pela UI do nó (2.3s)
+
+  1 passed (4.0s)

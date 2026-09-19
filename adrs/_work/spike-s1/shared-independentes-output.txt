@@ -1,0 +1,35 @@
+
+Running 3 tests using 1 worker
+
+E-10 saída:
+  ---
+  dok: 1
+  id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+  title: Fixture 16
+  ---
+  
+  :::note[Antes de começar]
+  Você precisa de:
+  
+  - Node 22
+  - acesso ao Supabase
+  :::
+  
+  :::danger{variant="bug" fold="closed"}
+- Não rode em produção.
++ Nunca rode em produção.
+  :::
++ 
++ Parágrafo novo.
+
+  ✓  1 tests/shared/independentes.spec.ts:5:1 › E-10 diff textual contra a publicada (316ms)
+E-11 blocos:
+eq:Antes de começarVocê precisa de:Node 22a
+del:Não rode em produção.
+add:Nunca rode em produção.
+add:Parágrafo novo.
+  ✓  2 tests/shared/independentes.spec.ts:14:1 › E-11 diff renderizado por bloco via fatia read (314ms)
+E-12 âncora: 10-15 erros de console: []
+  ✓  3 tests/shared/independentes.spec.ts:26:1 › E-12 seleção visual vira faixa de linhas do canônico, com SSR sem erro (874ms)
+
+  3 passed (2.2s)

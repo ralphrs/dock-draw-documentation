@@ -1,0 +1,297 @@
+
+Running 9 tests using 1 worker
+
+1A 5: FALHA save.ok=true
++++ obtido
+@@ -4,10 +4,2 @@
+ title: Fixture 05
+ ---
+-
+-- um
+-- dois
+-
+-* outra lista
+-
+-3. três
+-4. quatro
+
+  ✘  1 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 05 expected (2.0s)
+1A 6: FALHA save.ok=true
++++ obtido
+@@ -4,8 +4,2 @@
+ title: Fixture 06
+ ---
+-
+-- [x] feito
+-- [ ] pendente
+-  - sub item
+-
+-    código indentado dentro do item
+
+  ✘  2 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 06 expected (1.4s)
+1A 16: FALHA save.ok=true
++++ obtido
+@@ -7,7 +7,4 @@
+ :::note[Antes de começar]
+ Você precisa de:
+-
+-- Node 22
+-- acesso ao Supabase
+ :::
+ 
+
+  ✘  3 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 16 expected (1.4s)
+1A 20: ok save.ok=true
+  ✓  4 tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 20 expected (1.4s)
+1B 5: FALHA save.ok=true
++++ obtido
+@@ -4,10 +4,2 @@
+ title: Fixture 05
+ ---
+-
+-- um
+-- dois
+-
+-* outra lista
+-
+-3. três
+-4. quatro
+
+  ✘  5 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 05 input (1.4s)
+1B 6: FALHA save.ok=true
++++ obtido
+@@ -4,8 +4,2 @@
+ title: Fixture 06
+ ---
+-
+-- [x] feito
+-- [ ] pendente
+-  - sub item
+-
+-    código indentado dentro do item
+
+  ✘  6 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 06 input (1.4s)
+1B 16: FALHA save.ok=true
++++ obtido
+@@ -7,7 +7,4 @@
+ :::note[Antes de começar]
+ Você precisa de:
+-
+-- Node 22
+-- acesso ao Supabase
+ :::
+ 
+
+  ✘  7 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 16 input (1.4s)
+1B 20: ok save.ok=true
+  ✓  8 tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 20 input (1.4s)
+1C 22: ok {"a_mode":true,"a_semWysiwyg":true,"b_diagnostics":true,"c_source":true,"c_setModeFalse":true,"c_sourceDepois":true,"d_codes":true} codes=DOK-E008 manifest=DOK-E008
+  ✓  9 tests/plate/t01-corpus.spec.ts:34:3 › 1C fixture 22 erro (691ms)
+
+
+  1) tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 05 expected ───────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 8
+    + Received  + 0
+
+    @@ -2,13 +2,5 @@
+      dok: 1
+      id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+      title: Fixture 05
+      ---
+
+    - - um
+    - - dois
+    -
+    - * outra lista
+    -
+    - 3. três
+    - 4. quatro
+    -
+
+      14 |     const pass = r.text === expected
+      15 |     console.log(`1A ${n}: ${pass ? 'ok' : 'FALHA'} save.ok=${r.ok}${pass ? '' : '\n' + diffOf(expected, r.text)}`)
+    > 16 |     expect(r.text).toBe(expected)
+         |                    ^
+      17 |   })
+      18 | }
+      19 |
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/plate/t01-corpus.spec.ts:16:20
+
+    Error Context: test-results/plate-t01-corpus-1A-fixture-05-expected/error-context.md
+
+  2) tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 06 expected ───────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 6
+    + Received  + 0
+
+    @@ -2,11 +2,5 @@
+      dok: 1
+      id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+      title: Fixture 06
+      ---
+
+    - - [x] feito
+    - - [ ] pendente
+    -   - sub item
+    -
+    -     código indentado dentro do item
+    -
+
+      14 |     const pass = r.text === expected
+      15 |     console.log(`1A ${n}: ${pass ? 'ok' : 'FALHA'} save.ok=${r.ok}${pass ? '' : '\n' + diffOf(expected, r.text)}`)
+    > 16 |     expect(r.text).toBe(expected)
+         |                    ^
+      17 |   })
+      18 | }
+      19 |
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/plate/t01-corpus.spec.ts:16:20
+
+    Error Context: test-results/plate-t01-corpus-1A-fixture-06-expected/error-context.md
+
+  3) tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 16 expected ───────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 4
+    + Received  + 1
+
+    @@ -3,14 +3,11 @@
+      id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+      title: Fixture 16
+      ---
+
+      :::note[Antes de começar]
+    - Você precisa de:
+    -
+    - - Node 22
+    - - acesso ao Supabase
+    + Você precisa de:
+      :::
+
+      :::danger{variant="bug" fold="closed"}
+      Não rode em produção.
+      :::
+
+      14 |     const pass = r.text === expected
+      15 |     console.log(`1A ${n}: ${pass ? 'ok' : 'FALHA'} save.ok=${r.ok}${pass ? '' : '\n' + diffOf(expected, r.text)}`)
+    > 16 |     expect(r.text).toBe(expected)
+         |                    ^
+      17 |   })
+      18 | }
+      19 |
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/plate/t01-corpus.spec.ts:16:20
+
+    Error Context: test-results/plate-t01-corpus-1A-fixture-16-expected/error-context.md
+
+  4) tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 05 input ─────────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 8
+    + Received  + 0
+
+    @@ -2,13 +2,5 @@
+      dok: 1
+      id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+      title: Fixture 05
+      ---
+
+    - - um
+    - - dois
+    -
+    - * outra lista
+    -
+    - 3. três
+    - 4. quatro
+    -
+
+      27 |     const pass = r.text === expected
+      28 |     console.log(`1B ${n}: ${pass ? 'ok' : 'FALHA'} save.ok=${r.ok}${pass ? '' : '\n' + diffOf(expected, r.text)}`)
+    > 29 |     expect(r.text).toBe(expected)
+         |                    ^
+      30 |   })
+      31 | }
+      32 |
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/plate/t01-corpus.spec.ts:29:20
+
+    Error Context: test-results/plate-t01-corpus-1B-fixture-05-input/error-context.md
+
+  5) tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 06 input ─────────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 6
+    + Received  + 0
+
+    @@ -2,11 +2,5 @@
+      dok: 1
+      id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+      title: Fixture 06
+      ---
+
+    - - [x] feito
+    - - [ ] pendente
+    -   - sub item
+    -
+    -     código indentado dentro do item
+    -
+
+      27 |     const pass = r.text === expected
+      28 |     console.log(`1B ${n}: ${pass ? 'ok' : 'FALHA'} save.ok=${r.ok}${pass ? '' : '\n' + diffOf(expected, r.text)}`)
+    > 29 |     expect(r.text).toBe(expected)
+         |                    ^
+      30 |   })
+      31 | }
+      32 |
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/plate/t01-corpus.spec.ts:29:20
+
+    Error Context: test-results/plate-t01-corpus-1B-fixture-06-input/error-context.md
+
+  6) tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 16 input ─────────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 4
+    + Received  + 1
+
+    @@ -3,14 +3,11 @@
+      id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+      title: Fixture 16
+      ---
+
+      :::note[Antes de começar]
+    - Você precisa de:
+    -
+    - - Node 22
+    - - acesso ao Supabase
+    + Você precisa de:
+      :::
+
+      :::danger{variant="bug" fold="closed"}
+      Não rode em produção.
+      :::
+
+      27 |     const pass = r.text === expected
+      28 |     console.log(`1B ${n}: ${pass ? 'ok' : 'FALHA'} save.ok=${r.ok}${pass ? '' : '\n' + diffOf(expected, r.text)}`)
+    > 29 |     expect(r.text).toBe(expected)
+         |                    ^
+      30 |   })
+      31 | }
+      32 |
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/plate/t01-corpus.spec.ts:29:20
+
+    Error Context: test-results/plate-t01-corpus-1B-fixture-16-input/error-context.md
+
+  6 failed
+    tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 05 expected ────────────────────────────────────
+    tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 06 expected ────────────────────────────────────
+    tests/plate/t01-corpus.spec.ts:8:3 › 1A fixture 16 expected ────────────────────────────────────
+    tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 05 input ──────────────────────────────────────
+    tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 06 input ──────────────────────────────────────
+    tests/plate/t01-corpus.spec.ts:21:3 › 1B fixture 16 input ──────────────────────────────────────
+  3 passed (14.8s)

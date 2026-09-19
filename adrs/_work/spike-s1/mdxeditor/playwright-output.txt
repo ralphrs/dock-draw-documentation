@@ -1,0 +1,576 @@
+# Comando: SPIKE_PORT=5311 npx playwright test tests/mdxeditor  (data: 2026-09-19 17:15)
+[WebServer] npm warn install-scripts .npmrc allow-scripts setting is being ignored because --allow-scripts was passed on the command line
+[WebServer] The plugin "vite-tsconfig-paths" is detected. Vite now supports tsconfig paths resolution natively via the resolve.tsconfigPaths option. You can remove the plugin and set resolve.tsconfigPaths: true in your Vite config instead.
+
+Running 99 tests using 1 worker
+
+1A 01 PASS
+  ✓   1 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 01 (1.8s)
+1A 02 PASS
+  ✓   2 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 02 (1.2s)
+1A 04 PASS
+  ✓   3 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 04 (1.2s)
+1A 05 FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -7,7 +7,6 @@
+ - um
+ - dois
++- outra lista
+ 
+-* outra lista
+-
+ 3. três
+ 4. quatro
+
+  ✘   4 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 05 (1.2s)
+1A 06 PASS
+  ✓   5 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 06 (1.2s)
+1A 07 PASS
+  ✓   6 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 07 (1.2s)
+1A 08 PASS
+  ✓   7 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 08 (1.3s)
+1A 09 PASS
+  ✓   8 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 09 (1.2s)
+1A 10 PASS
+  ✓   9 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 10 (1.2s)
+1A 11 PASS
+  ✓  10 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 11 (1.2s)
+1A 12 PASS
+  ✓  11 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 12 (1.2s)
+1A 13 PASS
+  ✓  12 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 13 (1.2s)
+1A 14 PASS
+  ✓  13 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 14 (1.2s)
+1A 16 PASS
+  ✓  14 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 16 (1.2s)
+1A 17 PASS
+  ✓  15 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 17 (1.2s)
+1A 18 PASS
+  ✓  16 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 18 (1.2s)
+1A 19 PASS
+  ✓  17 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 19 (1.2s)
+1A 20 PASS
+  ✓  18 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 20 (1.2s)
+1A 21 PASS
+  ✓  19 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 21 (1.2s)
+1A 23 PASS
+  ✓  20 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 23 (1.2s)
+1A 25 PASS
+  ✓  21 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 25 (1.2s)
+1A 26 PASS
+  ✓  22 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 26 (1.2s)
+1A 27 PASS
+  ✓  23 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 27 (1.2s)
+1A 28 PASS
+  ✓  24 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 28 (1.2s)
+1A 29 PASS
+  ✓  25 tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 29 (1.2s)
+1B 01 PASS
+  ✓  26 tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 01 (1.2s)
+1B 02 PASS
+  ✓  27 tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 02 (1.2s)
+1B 04 PASS
+  ✓  28 tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 04 (1.2s)
+1B 05 FAIL
+===================================================================
+--- esperado
++++ obtido
+@@ -7,7 +7,6 @@
+ - um
+ - dois
++- outra lista
+ 
+-* outra lista
+-
+ 3. três
+ 4. quatro
+
+  ✘  29 tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 05 (1.2s)
+1B 06 PASS
+  ✓  30 tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 06 (1.2s)
+1B 07 PASS
+  ✓  31 tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 07 (1.2s)
+1B 08 PASS
+  ✓  32 tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 08 (1.3s)
+1B 09 PASS
+  ✓  33 tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 09 (1.2s)
+1B 10 PASS
+  ✓  34 tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 10 (1.2s)
+1B 11 PASS
+  ✓  35 tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 11 (1.2s)
+1B 12 PASS
+  ✓  36 tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 12 (1.2s)
+1B 13 PASS
+  ✓  37 tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 13 (1.2s)
+1B 14 PASS
+  ✓  38 tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 14 (1.2s)
+1B 16 PASS
+  ✓  39 tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 16 (1.2s)
+1B 20 PASS
+  ✓  40 tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 20 (1.2s)
+1B 23 PASS
+  ✓  41 tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 23 (1.2s)
+1B 28 PASS
+  ✓  42 tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 28 (1.2s)
+1C 03 a=true b=true c=true (setMode=false) d=true códigos=DOK-E001 manifest=DOK-E001
+  ✓  43 tests/mdxeditor/t01-corpus.spec.ts:39:5 › 1C fixtures de erro › 1C 03 (685ms)
+1C 15 a=true b=true c=true (setMode=false) d=true códigos=DOK-E005,DOK-E006 manifest=DOK-E005,DOK-E006
+  ✓  44 tests/mdxeditor/t01-corpus.spec.ts:39:5 › 1C fixtures de erro › 1C 15 (693ms)
+1C 22 a=true b=true c=true (setMode=false) d=true códigos=DOK-E008 manifest=DOK-E008
+  ✓  45 tests/mdxeditor/t01-corpus.spec.ts:39:5 › 1C fixtures de erro › 1C 22 (693ms)
+1C 24 a=true b=true c=true (setMode=false) d=true códigos=DOK-E003,DOK-E004 manifest=DOK-E003,DOK-E004
+  ✓  46 tests/mdxeditor/t01-corpus.spec.ts:39:5 › 1C fixtures de erro › 1C 24 (685ms)
+1C 30 a=true b=true c=true (setMode=false) d=true códigos=DOK-E002,DOK-E003,DOK-E008 manifest=DOK-E002,DOK-E003,DOK-E008
+  ✓  47 tests/mdxeditor/t01-corpus.spec.ts:39:5 › 1C fixtures de erro › 1C 30 (698ms)
+2 corpo depois de apagar (tipos no getTree): ["paragraph"]
+2 parágrafos no editor raiz depois do 1º callout: 3
+2 getDok bruto:
+---
+dok: 1
+id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+title: Fixture 16
+---
+
+
+
+:::note[Antes de começar]
+Você precisa de:
+
+- Node 22
+- acesso ao Supabase
+:::
+
+
+
+:::danger{variant="bug" fold="closed"}
+Não rode em produção.
+:::
+
+
+2 PASS ok=true erro-adaptador=null
+  ✓  48 tests/mdxeditor/t02-t05-edicao.spec.ts:15:1 › 2 recriar os callouts da fixture 16 pela UI (1.5s)
+3 WYSIWYG Hora:agora: contém literal=true escapado=false E003=false ok=true
+3 WYSIWYG diretiva criada no getTree: false
+3 fonte Hora:agora: contém=true E003=false ok=true
+3 fonte <Tabs>/<script>: códigos=DOK-E002,DOK-E002 ok=false
+  ✓  49 tests/mdxeditor/t02-t05-edicao.spec.ts:54:1 › 3 E-02: <Tabs>/<script> no fonte e Hora:agora no WYSIWYG e no fonte (1.4s)
+4 seletor de diagrama: apareceu=true aberto após 500 ms=false
+4 via=handle.insertDirective (desvio) linha 7 da fixture 23 presente=true ok=true códigos=DOK-W103
+4 texto salvo:
+---
+dok: 1
+id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+title: Página mínima
+---
+
+Texto.
+
+::diagram[Pessoa usa o Checkout, que chama o Gateway de pagamento]{src="dok:diagram/0192f0a1-6d4f-7b20-9c3d-4e5f60718293" view="0192f0a1-6d4f-7b20-9c3d-4e5f60718294" title="Contexto do Pagamento"}
+
+  ✓  50 tests/mdxeditor/t02-t05-edicao.spec.ts:86:1 › 4 E-03: inserir diagrama pelo menu e descrever pela UI do nó (1.8s)
+5 sugestões "visão"=["Visão geral (Visão C4)"] "C4"=["Visão geral (Visão C4)"]
+5 interno=true pendente=true ok=true códigos=DOK-W101
+5 texto salvo:
+---
+dok: 1
+id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+title: Página mínima
+---
+
+Texto. Veja [texto](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183) e [nova](dok:page/new?title=P%C3%A1gina%20nova)
+
+  ✓  51 tests/mdxeditor/t02-t05-edicao.spec.ts:123:1 › 5 link interno com autocomplete e link pendente (1.4s)
+6 claro={"editColor":"oklch(0.2 0 0)","editBg":"oklch(0.99 0 0)","tokenFg":"oklch(0.2 0 0)","tokenBg":"oklch(0.99 0 0)"}
+6 escuro={"editColor":"oklch(0.95 0 0)","editBg":"oklch(0.18 0 0)","tokenFg":"oklch(0.95 0 0)","tokenBg":"oklch(0.18 0 0)"}
+6 CSS de tema sobrescrito: src/editors/mdxeditor/adapter.css, 1 regra (.dok-mdx .dok-mdx-content) sobre ._contentEditable_er3ed_379 {color: var(--baseTextContrast)} do @mdxeditor/editor/style.css
+6 movimento reduzido: elementos=105 acima de 0,01 ms=[]
+  ✓  52 tests/mdxeditor/t06-t12-shell.spec.ts:21:1 › 6 tema por token e movimento reduzido (1.2s)
+7 landing: requisições=182 chunks de editor=[] módulos de rota (sem o adaptador, que é React.lazy)=["http://localhost:5311/src/routes/edit.mdxeditor.tsx","http://localhost:5311/src/routes/edit.plate.tsx"]
+7 navegação de cliente: requisições do editor=14 erros=[]
+7 carga direta: erros acumulados=[] landing=[]
+  ✓  53 tests/mdxeditor/t06-t12-shell.spec.ts:54:1 › 7 E-07 rota lazy: landing sem chunk do editor, navegação de cliente e carga direta sem erro (2.0s)
+11 contenteditable raiz=false aninhados=["false","false","false","false","false","false"] campos habilitados=0 getDok inalterado=true menu Inserir=0 UI de link=0
+11 banner changes_requested visível=true
+  ✓  54 tests/mdxeditor/t06-t12-shell.spec.ts:81:1 › 11 E-13 somente leitura e banner (2.2s)
+12 menu={"rect":[156,40,71.328125,170],"inViewport":true,"onTop":true,"itemsOnTop":[true,true,true,true,true,true,true],"portal":true,"overEditor":true} foco após Escape=insert-menu
+  ✓  55 tests/mdxeditor/t06-t12-shell.spec.ts:106:1 › 12 portal Radix do menu Inserir sobre o editor (1.2s)
+8 chamadas importDialect: gdocs=1 github=1 detalhe=[{"html":true,"text":"Título do doc\nitem um\nitem doi","matched":null},{"html":true,"text":"## Instalação\n\n- `npm i`\n- dep","matched":null}]
+8 save ok=true códigos= contém HTML/JSX=false erro-adaptador=null
+8 texto salvo:
+---
+dok: 1
+id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+title: Página mínima
+---
+
+Tex
+
+Título do doc
+item um
+item dois
+
+## Instalação
+
+- `npm i`
+- depois **rode**
+
+to.
+
+  ✓  56 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:15:1 › 8 colar trecho do Google Docs e do GitHub (1.2s)
+9 D-2 17 PASS chamadas=1 casada=17 erro-adaptador=null
+  ✓  57 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:41:5 › 9 D-2 colar input.md das fixtures import › 9 D-2 17 (1.3s)
+9 D-2 18 PASS chamadas=1 casada=18 erro-adaptador=null
+  ✓  58 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:41:5 › 9 D-2 colar input.md das fixtures import › 9 D-2 18 (1.2s)
+9 D-2 19 PASS chamadas=1 casada=19 erro-adaptador=null
+  ✓  59 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:41:5 › 9 D-2 colar input.md das fixtures import › 9 D-2 19 (1.2s)
+9 D-2 21 PASS chamadas=1 casada=21 erro-adaptador=null
+  ✓  60 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:41:5 › 9 D-2 colar input.md das fixtures import › 9 D-2 21 (1.2s)
+9 D-2 25 PASS chamadas=1 casada=25 erro-adaptador=null
+  ✓  61 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:41:5 › 9 D-2 colar input.md das fixtures import › 9 D-2 25 (1.2s)
+9 D-2 26 FAIL chamadas=1 casada=26 erro-adaptador=null
+===================================================================
+--- esperado
++++ obtido
+@@ -5,3 +5,3 @@
+ ---
+ 
+-[](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183), [a visão](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183), [](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183#contexto), [Visão C4](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183) e [Página inexistente](dok:page/new?title=P%C3%A1gina%20inexistente).
++[](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183), [a visão](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183), [](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183#contexto), [Visão C4](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183) e [Página inexistente](dok:page/new?title=P%C3%A1gina%20inexistente).[](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183)
+
+  ✘  62 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:41:5 › 9 D-2 colar input.md das fixtures import › 9 D-2 26 (1.2s)
+9 D-2 27 FAIL chamadas=1 casada=27 erro-adaptador=null
+===================================================================
+--- esperado
++++ obtido
+@@ -6,4 +6,2 @@
+ 
+ ![arquitetura.png](dok:asset/0192f0a1-7e50-7c30-8d4e-5f6071829304)
+-
+-[](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183)
+
+  ✘  63 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:41:5 › 9 D-2 colar input.md das fixtures import › 9 D-2 27 (1.2s)
+9 D-2 29 PASS chamadas=1 casada=29 erro-adaptador=null
+  ✓  64 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:41:5 › 9 D-2 colar input.md das fixtures import › 9 D-2 29 (1.2s)
+10 01 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  65 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 01 (1.3s)
+10 02 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  66 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 02 (1.3s)
+10 04 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  67 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 04 (1.3s)
+10 05 FAIL setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+===================================================================
+--- esperado
++++ obtido
+@@ -7,7 +7,6 @@
+ - um
+ - dois
++- outra lista
+ 
+-* outra lista
+-
+ 3. três
+ 4. quatro
+
+  ✘  68 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 05 (1.3s)
+10 06 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  69 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 06 (1.3s)
+10 07 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  70 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 07 (1.3s)
+10 08 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  71 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 08 (1.4s)
+10 09 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  72 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 09 (1.3s)
+10 10 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  73 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 10 (1.4s)
+10 11 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  74 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 11 (1.3s)
+10 12 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  75 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 12 (1.4s)
+10 13 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  76 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 13 (1.3s)
+10 14 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  77 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 14 (1.3s)
+10 16 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  78 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 16 (1.4s)
+10 17 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  79 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 17 (1.4s)
+10 18 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  80 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 18 (1.4s)
+10 19 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  81 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 19 (1.3s)
+10 20 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  82 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 20 (1.4s)
+10 21 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  83 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 21 (1.4s)
+10 23 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  84 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 23 (1.3s)
+10 25 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  85 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 25 (1.3s)
+10 26 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  86 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 26 (1.3s)
+10 27 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  87 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 27 (1.3s)
+10 28 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  88 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 28 (1.3s)
+10 29 PASS setMode(source)=true setMode(wysiwyg)=true erro-adaptador=null
+  ✓  89 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 29 (1.3s)
+10 editar no fonte: visível no WYSIWYG=true no save=true ok=true
+  ✓  90 tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:75:3 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 editar no fonte e voltar (1.3s)
+13a com descriptor próprio: rótulo preservado=true ok=true
+
+:::note[Antes de começar]
+Você precisa de: agora
+
+- Node 22
+- acesso ao Supabase
+:::
+  ✓  91 tests/mdxeditor/t13-riscos.spec.ts:26:1 › 13a rótulo [..] do callout depois de editar o conteúdo (1.2s)
+13a oficial: rótulo preservado=false ok=true
+
+:::note
+Antes de começar
+
+Você precisa de: agora
+
+- Node 22
+- acesso ao Supabase
+  ✓  92 tests/mdxeditor/t13-riscos.spec.ts:33:1 › 13a sem mitigação (AdmonitionDirectiveDescriptor oficial) (1.2s)
+13b com bloqueio: tags no save=[] ok=true códigos=
+---
+dok: 1
+id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+title: Página mínima
+---
+
+Texto. sublinhado
+
+antes colado depois
+
+  ✓  93 tests/mdxeditor/t13-riscos.spec.ts:53:1 › 13b sublinhado (Mod+U) e colar HTML com <u>/<sup>/<sub>/<span style> (1.2s)
+13b sem bloqueio: tags no save=["<u>","</u>"] ok=false códigos=DOK-E002,DOK-E002
+---
+dok: 1
+id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+title: Página mínima
+---
+
+Tex<u> sublinhado</u>
+
+antes colado depoisto.
+
+  ✓  94 tests/mdxeditor/t13-riscos.spec.ts:60:1 › 13b sem mitigação (FORMAT_TEXT_COMMAND livre) (1.2s)
+13b text/plain <u>/<sup>: tags=[] ok=false códigos= erro-adaptador=null exceção no save=page.evaluate: Error: Cannot handle unknown node `mdxJsxTextElement`
+13b text/plain <span style>: erro-adaptador=null tags=[] ok=false exceção no save=page.evaluate: Error: Cannot handle unknown node `mdxJsxTextElement`
+13b getTree após colar: [{"type":"paragraph","children":[{"type":"text","value":"antes "},{"type":"html","value":"<u>"},{"type":"text","value":"sub"},{"type":"html","value":"</u>"},{"type":"text","value":" e "},{"type":"mdxJsxTextElement","name":"sup","children":[{"type":"text","value":"2"}],"attributes":[]},{"type":"text","value":" depois"}]},{"type":"paragraph","children":[{"type":"text","value":"to."}]}]
+  ✓  95 tests/mdxeditor/t13-riscos.spec.ts:66:1 › 13b colar text/plain com tags literais (o stub degrada para parseDok) (1.2s)
+[WebServer] 17:18:01 [vite] (client) [Unhandled error] UnrecognizedMarkdownConstructError: Parsing of the following markdown structure failed: {"type":"html","name":"N/A"}
+[WebServer]  > visit node_modules/@mdxeditor/editor/dist/importMarkdownToLexical.js:115:14
+[WebServer]  > node_modules/@mdxeditor/editor/dist/importMarkdownToLexical.js:106:6
+[WebServer]  > visitChildren node_modules/@mdxeditor/editor/dist/importMarkdownToLexical.js:105:23
+[WebServer]  > Object.addAndStepInto node_modules/@mdxeditor/editor/dist/importMarkdownToLexical.js:138:12
+[WebServer]  > Object.visitNode node_modules/@mdxeditor/editor/dist/plugins/core/MdastParagraphVisitor.js:15:14
+[WebServer]  > visit node_modules/@mdxeditor/editor/dist/importMarkdownToLexical.js:123:12
+[WebServer]  > node_modules/@mdxeditor/editor/dist/importMarkdownToLexical.js:106:6
+[WebServer]  > Object.visitChildren node_modules/@mdxeditor/editor/dist/importMarkdownToLexical.js:105:23
+[WebServer] 
+13c com ilha opaca: nós=["footnoteReference:[^fonte]","footnoteReference:[^2]","footnoteDefinition:[^fonte]: Documento interno.","footnoteDefinition:[^2]: Segunda nota."] contenteditable=["false","false","false","false"] save igual=true
+13c sem ilha opaca: erro-adaptador=importação: UnrecognizedMarkdownConstructError: Parsing of the following markdown structure failed: {"type":"footnoteReference","name":"N/A"} save igual=false
+---
+dok: 1
+id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+title: Fixture 09
+---
+
+Texto com nota
+
+  ✓  96 tests/mdxeditor/t13-riscos.spec.ts:90:1 › 13c notas de rodapé (fixture 09) com e sem ilha opaca (2.3s)
+13d autolink digitado: "Texto. veja <https://exemplo.com.br/doc> e fim" ok=true
+13d fixture 14 input sem ilha opaca: erro-adaptador=importação: UnrecognizedMarkdownConstructError: Parsing of the following markdown structure failed: {"type":"linkReference","name":"N/A"}
+13d fixture 14 input com ilha opaca: nós=["linkReference:[a visão][v]","imageReference:![logo][l]","definition:[v]: dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183","definition:[l]: dok:asset/0192f0a1-7e50-7c30-8d4e-5f6071829304"]
+  ✓  97 tests/mdxeditor/t13-riscos.spec.ts:106:1 › 13d autolink literal digitado e link por referência (fixture 14 input) sem ilha opaca (3.4s)
+13e 20: getTree={"tipos":["containerDirective","paragraph"],"ultimoVazio":true} getDok termina com "::::\n\n" save igual=true
+13e 23: getTree={"tipos":["leafDirective","leafDirective","paragraph"],"ultimoVazio":true} getDok termina com "a)\"}\n\n" save igual=true
+13e 16: getTree={"tipos":["containerDirective","containerDirective","paragraph"],"ultimoVazio":true} getDok termina com "\n:::\n\n" save igual=true
+  ✓  98 tests/mdxeditor/t13-riscos.spec.ts:123:1 › 13e parágrafo vazio acrescentado no fim (3.9s)
+[WebServer] 17:18:14 [vite] (client) [Unhandled error] UnrecognizedMarkdownConstructError: Parsing of the following markdown structure failed: {"type":"html","name":"N/A"}
+[WebServer]  > visit node_modules/@mdxeditor/editor/dist/importMarkdownToLexical.js:115:14
+[WebServer]  > node_modules/@mdxeditor/editor/dist/importMarkdownToLexical.js:106:6
+[WebServer]  > Object.visitChildren node_modules/@mdxeditor/editor/dist/importMarkdownToLexical.js:105:23
+[WebServer]  > Object.visitNode node_modules/@mdxeditor/editor/dist/plugins/core/MdastRootVisitor.js:4:12
+[WebServer]  > visit node_modules/@mdxeditor/editor/dist/importMarkdownToLexical.js:123:12
+[WebServer]  > importMdastTreeToLexical node_modules/@mdxeditor/editor/dist/importMarkdownToLexical.js:180:2
+[WebServer]  > editor.update.discrete src/editors/mdxeditor/dokPlugin.tsx:181:10
+[WebServer]     179 |            const collected: LexicalNode[] = []
+[WebServer]     180 |            const point = { append: (n: LexicalNode) => void collected.push(n), getType: () => 'root' }
+[WebServer]     181 |            importMdastTreeToLexical({
+[WebServer]         |            ^
+[WebServer]     182 |              root: point,
+[WebServer]     183 |              mdastRoot,
+[WebServer]  > $processNestedUpdates node_modules/lexical/dist/Lexical.dev.mjs:12671:8
+[WebServer]  > $beginUpdate node_modules/lexical/dist/Lexical.dev.mjs:12721:21
+[WebServer] 
+13f fonte: setMode(wysiwyg)=false save ok=false códigos=DOK-E002 __pwned=undefined
+13f colado: __pwned2=undefined erro-adaptador=null <img> no editor=0
+  ✓  99 tests/mdxeditor/t13-riscos.spec.ts:138:1 › 13f <img src=x onerror> no modo fonte e colado (3.9s)
+
+
+  1) tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 05 ───────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 2
+    + Received  + 1
+
+    @@ -4,11 +4,10 @@
+      title: Fixture 05
+      ---
+
+      - um
+      - dois
+    -
+    - * outra lista
+    + - outra lista
+
+      3. três
+      4. quatro
+      ↵
+
+      15 |       const ok = r.text === expected
+      16 |       console.log(`1A ${pad(n)} ${ok ? 'PASS' : 'FAIL'}${err ? ` erro-adaptador="${err}"` : ''}${ok ? '' : '\n' + patch(expected, r.text)}`)
+    > 17 |       expect(r.text).toBe(expected)
+         |                      ^
+      18 |     })
+      19 |   }
+      20 | })
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t01-corpus.spec.ts:17:22
+
+    Error Context: test-results/mdxeditor-t01-corpus-1A-expected-md-1A-05/error-context.md
+
+  2) tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 05 ───────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 2
+    + Received  + 1
+
+    @@ -4,11 +4,10 @@
+      title: Fixture 05
+      ---
+
+      - um
+      - dois
+    -
+    - * outra lista
+    + - outra lista
+
+      3. três
+      4. quatro
+      ↵
+
+      30 |       const ok = r.text === expected
+      31 |       console.log(`1B ${pad(n)} ${ok ? 'PASS' : 'FAIL'}${err ? ` erro-adaptador="${err}"` : ''}${ok ? '' : '\n' + patch(expected, r.text)}`)
+    > 32 |       expect(r.text).toBe(expected)
+         |                      ^
+      33 |     })
+      34 |   }
+      35 | })
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t01-corpus.spec.ts:32:22
+
+    Error Context: test-results/mdxeditor-t01-corpus-1B-input-md-canonical-1B-05/error-context.md
+
+  3) tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:41:5 › 9 D-2 colar input.md das fixtures import › 9 D-2 26 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 1
+    + Received  + 1
+
+    @@ -2,7 +2,7 @@
+      dok: 1
+      id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+      title: Fixture 26
+      ---
+
+    - [](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183), [a visão](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183), [](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183#contexto), [Visão C4](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183) e [Página inexistente](dok:page/new?title=P%C3%A1gina%20inexistente).
+    + [](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183), [a visão](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183), [](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183#contexto), [Visão C4](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183) e [Página inexistente](dok:page/new?title=P%C3%A1gina%20inexistente).[](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183)
+      ↵
+
+      51 |       console.log(`9 D-2 ${pad(n)} ${ok ? 'PASS' : 'FAIL'} chamadas=${calls.length} casada=${last?.matchedFixture ?? 'nenhuma'} erro-adaptador=${await importError(page)}` + (r.text === expected ? '' : '\n' + patch(expected, r.text)))
+      52 |       expect(last?.matchedFixture).toBe(n)
+    > 53 |       expect(r.text).toBe(expected)
+         |                      ^
+      54 |     })
+      55 |   }
+      56 | })
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:53:22
+
+    Error Context: test-results/mdxeditor-t08-t10-colar-al-5d119-as-fixtures-import-9-D-2-26/error-context.md
+
+  4) tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:41:5 › 9 D-2 colar input.md das fixtures import › 9 D-2 27 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 2
+    + Received  + 0
+
+    @@ -4,7 +4,5 @@
+      title: Fixture 27
+      ---
+
+      ![arquitetura.png](dok:asset/0192f0a1-7e50-7c30-8d4e-5f6071829304)
+
+    - [](dok:page/0192f0a1-5c3e-7a10-8b2c-3d4e5f607183)
+    -
+
+      51 |       console.log(`9 D-2 ${pad(n)} ${ok ? 'PASS' : 'FAIL'} chamadas=${calls.length} casada=${last?.matchedFixture ?? 'nenhuma'} erro-adaptador=${await importError(page)}` + (r.text === expected ? '' : '\n' + patch(expected, r.text)))
+      52 |       expect(last?.matchedFixture).toBe(n)
+    > 53 |       expect(r.text).toBe(expected)
+         |                      ^
+      54 |     })
+      55 |   }
+      56 | })
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:53:22
+
+    Error Context: test-results/mdxeditor-t08-t10-colar-al-ca862-as-fixtures-import-9-D-2-27/error-context.md
+
+  5) tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 05 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 2
+    + Received  + 1
+
+    @@ -4,11 +4,10 @@
+      title: Fixture 05
+      ---
+
+      - um
+      - dois
+    -
+    - * outra lista
+    + - outra lista
+
+      3. três
+      4. quatro
+      ↵
+
+      69 |       const ok = r.text === expected
+      70 |       console.log(`10 ${pad(n)} ${ok ? 'PASS' : 'FAIL'} setMode(source)=${a} setMode(wysiwyg)=${b} erro-adaptador=${await importError(page)}` + (ok ? '' : '\n' + patch(expected, r.text)))
+    > 71 |       expect(r.text).toBe(expected)
+         |                      ^
+      72 |     })
+      73 |   }
+      74 |
+        at /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/adrs/_work/spike-s1/tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:71:22
+
+    Error Context: test-results/mdxeditor-t08-t10-colar-al-d1886-WYG-→-fonte-→-WYSIWYG-10-05/error-context.md
+
+  5 failed
+    tests/mdxeditor/t01-corpus.spec.ts:9:5 › 1A expected.md › 1A 05 ────────────────────────────────
+    tests/mdxeditor/t01-corpus.spec.ts:24:5 › 1B input.md canonical › 1B 05 ────────────────────────
+    tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:41:5 › 9 D-2 colar input.md das fixtures import › 9 D-2 26 
+    tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:41:5 › 9 D-2 colar input.md das fixtures import › 9 D-2 27 
+    tests/mdxeditor/t08-t10-colar-alternancia.spec.ts:60:5 › 10 alternância WYSIWYG → fonte → WYSIWYG › 10 05 
+  94 passed (2.3m)

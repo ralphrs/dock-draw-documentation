@@ -1,0 +1,20 @@
+
+Running 1 test using 1 worker
+
+4 seletor: apareceu no DOM=true visível após 500 ms=true foco=pick-diagram-0192f0a1-6d4f-7b20-9c3d-4e5f60718293
+4: ok save.ok=true codes=DOK-W103
+linha esperada: ::diagram[Pessoa usa o Checkout, que chama o Gateway de pagamento]{src="dok:diagram/0192f0a1-6d4f-7b20-9c3d-4e5f60718293" view="0192f0a1-6d4f-7b20-9c3d-4e5f60718294" title="Contexto do Pagamento"}
+salvo:
+---
+dok: 1
+id: 0192f0a1-5c3e-7a10-8b2c-3d4e5f607182
+title: Página mínima
+---
+
+Texto.
+
+::diagram[Pessoa usa o Checkout, que chama o Gateway de pagamento]{src="dok:diagram/0192f0a1-6d4f-7b20-9c3d-4e5f60718293" view="0192f0a1-6d4f-7b20-9c3d-4e5f60718294" title="Contexto do Pagamento"}
+
+  ✓  1 tests/plate/t02-t05-ui.spec.ts:120:1 › 4 E-03: diagrama pelo menu, seletor e descrição pela UI do nó (2.5s)
+
+  1 passed (4.0s)

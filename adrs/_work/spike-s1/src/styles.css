@@ -1,0 +1,34 @@
+@import 'tailwindcss';
+
+/* Tokens do spike. O app real define os seus; aqui só o necessário para o teste 6. */
+@layer base {
+  .theme-light {
+    --background: oklch(0.99 0 0);
+    --foreground: oklch(0.2 0 0);
+    --muted: oklch(0.95 0 0);
+    --border: oklch(0.88 0 0);
+    --accent: oklch(0.6 0.2 280);
+    --danger: oklch(0.6 0.2 25);
+  }
+  .theme-dark {
+    --background: oklch(0.18 0 0);
+    --foreground: oklch(0.95 0 0);
+    --muted: oklch(0.25 0 0);
+    --border: oklch(0.35 0 0);
+    --accent: oklch(0.7 0.18 280);
+    --danger: oklch(0.7 0.18 25);
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
