@@ -279,3 +279,32 @@ Saída real da correção:
 14 x11-callout-ol-ol-varios-blocos carga PASS
 14 x12-callout-ul-ol carga PASS
 ```
+
+### Por que x08 passa e x05/x06 não: causa exata (T-0002)
+
+Diagnóstico feito com o dev server do spike (porta 5311) e com chamadas diretas a `parseDok` sobre texto reconstruído à mão, sem alterar `extra/`, o corpus ou o adaptador. Peças do mecanismo, cada uma verificada:
+
+**1. O `save()` do shell faz duas serializações, não uma.** `saveDok = normalizeDok(getDok())`, e `normalizeDok` reparseia o texto já serializado uma vez (`parseDok(texto) → serializeDok`). Instrumentando `mdast-util-to-markdown/lib/util/container-flow.js` (`between()`, revertido depois da medição) e capturando o console do navegador, cada `save()` de uma fixture com lista mostra dois conjuntos de chamadas de `join`, um por passagem.
+
+**2. Na primeira passagem, o item-item de qualquer lista sai apertado.** O `getTree()` do adaptador grava `spread: false` em todo `list` e `listItem` (achado já registrado acima). `mdast-util-to-markdown@9.0.0` decide a quebra entre itens irmãos por `parent.spread` (`node_modules/mdast-util-to-markdown/lib/join.js:25-38`, função `joinDefaults`): `spread` falso devolve `0`, que vira `\n`.repeat(1) em `container-flow.js:74-76`, ou seja uma linha só, sem branco. A junção entre dois parágrafos do mesmo item (`left.type === 'paragraph' && left.type === right.type`) é a única exceção, sempre incondicional (`join.js:26-35`), o que explica por que o parágrafo de continuação nunca se perde, só a linha em branco ao redor dele.
+
+**3. A segunda passagem reparseia esse texto já apertado, e o resultado depende de onde a lista está.** `mdast-util-from-markdown@2.0.3`, função `prepareList` (`node_modules/mdast-util-from-markdown/lib/index.js:278-382`), decide `list.spread` andando para trás a partir do ponto em que a lista fecha (linha 330: o gatilho é tanto "começa o próximo item" quanto "a própria lista fecha", `containerBalance === -1`). Se esse fechamento encontra uma linha em branco logo antes (linhas 336-343), marca `listSpread = true` para a lista inteira, mesmo que a linha em branco pertença à separação para a lista seguinte, não a um item interno. `containerBalance` conta `blockQuote` do mesmo jeito que `listOrdered`/`listUnordered` (linhas 292-304), e uma linha em branco dentro de uma citação (uma linha só com `>`) é absorvida como conteúdo contínuo da citação em vez de fechar o contêiner de forma limpa. Na raiz, a mesma linha em branco fecha a lista de forma limpa, sem contaminar o `spread`.
+
+**4. Verificação direta com `parseDok`, sem o editor, isolando a variável:**
+
+```
+lista apertada de 2 itens + lista diferente logo depois, na raiz:
+  list spread= false   (fecha limpo, sem contaminação)
+
+a mesma forma dentro de citação (> ):
+  list spread= true    (a linha em branco da citação contamina a lista anterior)
+
+a mesma forma dentro de citação, com item de vários blocos:
+  list spread= true    (contamina do mesmo jeito, com ou sem parágrafo extra)
+```
+
+Isso prova que a diferença não está no parágrafo de continuação. Está em a lista estar dentro de uma citação (ou, por extensão de código, de qualquer contêiner que o `containerBalance` de `prepareList` trate como `blockQuote`) e ser seguida por outra lista. x08 tem exatamente essa forma e se autocorrige na segunda passagem, por acidente do reparse, não porque o exportador do MDXEditor preserva `spread`. x05 e x06 estão na raiz e não têm esse acidente para se apoiar.
+
+**5. Por que x09, x10, x11 e x12 passam sem depender desse acidente.** Nenhum deles tem uma lista com dois ou mais itens que precise de linha em branco entre irmãos: x09 e x11 têm listas de um item só (a mudança de marcador `1.`/`1)` cria uma lista nova de um item, não dois itens na mesma lista), x10 e x12 têm listas tight ou também de um item. O único caso da suíte `extra/` que testa "linha em branco entre itens irmãos sobrevive ao save" é x08, e ele passa pelo acidente do item 3, não por correção real.
+
+**Conclusão para a fatia F4:** a estimativa de 1 a 1,5 dia (seção "Adaptador" acima) segue de pé. A correção precisa gravar o `spread` real de `list` e `listItem` no `NodeState` do Lexical na importação e lê-lo de volta na exportação, o que resolve a raiz (passo 2) e torna irrelevante o acidente do passo 3. Depois da correção, x08 passa pela razão certa, não mais pelo reparse. O ponto novo desta análise: hoje nenhuma fixture do corpus do ADR 002 e só um caso de `extra/` (x08) exercitam essa forma, e esse único caso passa por um efeito colateral do `mdast-util-from-markdown` dentro de citação, não por o MDXEditor preservar a informação. A cobertura real de "lista frouxa com itens irmãos" é, na prática, zero.

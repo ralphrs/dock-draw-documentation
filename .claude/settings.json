@@ -1,5 +1,8 @@
 {
   "permissions": {
+    "additionalDirectories": [
+      "/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app"
+    ],
     "allow": [
       "WebSearch",
       "WebFetch",
@@ -8,17 +11,25 @@
       "Read(adrs/**)",
       "Read(guia-sessoes/**)",
       "Read(tasks/**)",
+      "Read(~/workspace/000-Pessoal/codebase/dok-draw-app/**)",
       "Edit(adrs/_work/**)",
       "Edit(tasks/**)",
       "Bash(guia-sessoes/bin/wait-for.sh:*)",
       "Bash(guia-sessoes/bin/move.sh:*)",
       "Bash(guia-sessoes/bin/next-id.sh:*)",
-      "Bash(guia-sessoes/bin/seen.sh:*)"
+      "Bash(guia-sessoes/bin/seen.sh:*)",
+      "Bash(git -C /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app diff:*)",
+      "Bash(git -C /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app log:*)",
+      "Bash(git -C /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app show:*)",
+      "Bash(git -C /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app status:*)",
+      "Bash(git -C /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app branch:*)"
     ],
     "deny": [
       "Edit(insumos/**)",
       "Edit(prompts/**)",
-      "Edit(guia-sessoes/**)"
+      "Edit(guia-sessoes/**)",
+      "Edit(~/workspace/000-Pessoal/codebase/dok-draw-app/**)",
+      "Read(~/workspace/000-Pessoal/codebase/dok-draw-app/.env*)"
     ]
   }
 }

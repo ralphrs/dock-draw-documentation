@@ -12,7 +12,8 @@ Seja direto: proposta primeiro, justificativa depois. Discorde quando eu estiver
 | `adrs/` | ADRs gerados (`ADR-NNN-slug.md`) e `LEDGER.md` | Você, com minha aprovação |
 | `adrs/_work/` | Escopo aprovado, fichas de pesquisa por candidata, rascunhos | Você, livremente |
 | `guia-sessoes/` | Protocolo entre a sessão A (arquiteto) e a sessão B (executor), modelos e scripts | Só eu. Não edite |
-| `tasks/` | Tarefas, dúvidas e respostas trocadas entre as sessões A e B | As sessões, pelos scripts de `guia-sessoes/bin/` |
+| `tasks/` | Tarefas, dúvidas e respostas trocadas entre as sessões A, B e C | As sessões, pelos scripts de `guia-sessoes/bin/` |
+| `/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app` | Projeto do app Lovable (`dok-draw-app`), fonte de verdade da arquitetura base | A e B: só leitura. C: desenvolvimento em branch `dev/D-*` |
 
 ## Regras de toda sessão
 
@@ -24,6 +25,15 @@ Seja direto: proposta primeiro, justificativa depois. Discorde quando eu estiver
 - ADRs em Markdown puro, com alertas GFM (`> [!NOTE]`), não callouts `:::`.
 - **Estilo:** toda prosa de ADR (inclusive os textos livres do contrato YAML) segue `insumos/ESTILO-ADR.md`. Sem travessão, sem ponto e vírgula ligando orações, sem primeira pessoa, sem "optou-se", toda decisão com alternativa descartada e custo aceito, lacuna declarada em vez de coberta por prosa.
 - Os prompts dizem "Colar o Bloco 0" e "Anexar": isso já está resolvido por `insumos/BASE.md`, `adrs/LEDGER.md` e os arquivos em `adrs/` e `insumos/`. Se um anexo citado não existir, pare e me diga.
+
+## Projeto do app (`dok-draw-app`)
+
+O app Lovable fica em `/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app`, pasta irmã deste repositório. É a **fonte de verdade da arquitetura base**: `package.json` com as versões reais, os tipos do Supabase, a estrutura de rotas e componentes.
+
+- **Leitura livre.** Prefira sempre o arquivo do app a uma cópia em `insumos/`. `insumos/package.json` e `insumos/supabase-types-dokdraw.ts` são retratos de 2026-09-19. Se divergirem, vale o app, e a divergência vira pendência no ledger.
+- **Só a sessão C altera o app**, por tarefas `D` que a sessão A cria a partir das fatias dos ADRs aceitos, sempre numa branch `dev/D-NNNN-slug`. As sessões A e B só leem. Merge na `main`, `push`, dependência nova, migration e política RLS são a categoria `app-release` do protocolo e exigem aprovação do humano. O Lovable sincroniza com a `main` do GitHub, então o que chega lá aparece no projeto do Lovable.
+- **Spike nunca roda no app.** Spike continua em `adrs/_work/`.
+- **Nunca ler nem editar** `.env*` do app.
 
 ## Superpowers
 

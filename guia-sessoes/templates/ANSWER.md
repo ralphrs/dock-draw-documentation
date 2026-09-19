@@ -1,6 +1,6 @@
 ---
-responde: Q-0000
-tarefa: T-0000
+responde: Q-0000           # Q-NNNN ou QD-NNNN
+tarefa: T-0000             # T-NNNN ou D-NNNN
 criada_por: A
 criada_em: AAAA-MM-DDTHH:MM
 decisao: "1"               # número da opção, "outra" ou "adiar"
@@ -10,11 +10,11 @@ aprovado_por: arquiteto    # arquiteto | humano (obrigatório "humano" se a perg
 ## Decisão
 Opção escolhida, na primeira linha.
 
-## Instrução para B
-O texto que antes iria no campo "Type something": o que fazer, com as travas.
+## Instrução
+O que B ou C deve fazer, executável sem contexto adicional, com as travas. Se houver aprovação do humano, liste cada ação que ela cobre.
 
 ## Por quê
 Curto. O que muda a decisão.
 
 ## Registrar
-O que B precisa registrar no ADR, no escopo ou nas pendências do ledger por causa desta resposta.
+O que B ou C precisa registrar no ADR, no escopo ou nas pendências do ledger por causa desta resposta.

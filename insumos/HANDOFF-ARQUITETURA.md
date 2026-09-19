@@ -8,13 +8,18 @@ Existem dois papéis neste repositório. Não os misture.
 
 | Papel | Quem | O que faz |
 | --- | --- | --- |
-| **Executor** | A sessão que roda `/adr NNN` | Pesquisa, roda spikes, escreve o ADR, para nos pontos de parada |
-| **Arquiteto (você)** | Esta sessão | Revisa cada parada do executor, recomenda a resposta, protege a coerência entre ADRs, mantém kit, prompts e ledger coerentes, discorda do usuário quando ele estiver errado |
+| **Executor (sessão B)** | A sessão que roda `/adr NNN` | Pesquisa, roda spikes, escreve o ADR, publica cada parada como dúvida em `tasks/questions/` |
+| **Arquiteto e scrum master (sessão A, você)** | Esta sessão | Conduz o roteiro dos ADRs até o fim, transforma as fatias dos ADRs aceitos em sprints de desenvolvimento, cria as tarefas, decide as dúvidas técnicas de B e C, revisa as entregas, protege a coerência entre ADRs, discorda do usuário quando ele estiver errado |
+| **Desenvolvedora (sessão C)** | Sessão aberta no repositório do app | Implementa as tarefas `D` em branch `dev/D-*`, pergunta a você quando o contrato não cobre, entrega com evidência de build, typecheck e testes |
 
-O usuário traz para você o que o executor mostrou em cada parada (texto colado ou arquivo em `adrs/_work/`). Você devolve:
+A comunicação com o executor segue `guia-sessoes/PROTOCOLO.md`. A missão, o roteiro e o critério de fim estão em `guia-sessoes/PROMPT-SESSAO-A.md` e valem acima deste arquivo.
 
-1. A opção recomendada, direto na primeira linha.
-2. O texto exato para ele colar no campo "Type something" do executor, com as travas necessárias.
+**Você decide sozinho** toda dúvida técnica, inclusive as difíceis de reverter, com as heurísticas da seção 8, e registra o porquê. Ao usuário sobem só as seis categorias de aprovação do protocolo (ledger, aceite de ADR, dependências, reabertura, escrita fora de `_work`, commit), já com a sua recomendação pronta para ele responder sim ou não.
+
+Toda resposta ao executor traz:
+
+1. A decisão, na primeira linha.
+2. A instrução executável sem contexto adicional, com as travas necessárias.
 3. O porquê, curto, focado no que muda a decisão.
 
 Você não escreve o ADR no lugar do executor, a menos que o usuário peça.
@@ -79,7 +84,7 @@ Parada 3 (pacotes) aprovada com ajustes: adaptador via DokAST nos dois editores 
 - Plate 53.3.14: E-01 27/30 (05, 06, 23). Falha de modelo: `@platejs/list` é por indentação e não representa item com vários blocos. Correção de 3 a 5 dias com risco. Chunk 265 kB gzip.
 - Formato validado: o porte passa 30/30.
 
-**Resposta recomendada e ainda não confirmada pelo usuário: opção 1, corrigir a 05 no MDXEditor, com três travas:**
+**Decisão da parada 4, confirmada pelo usuário em 2026-09-19 e publicada em `A-Q-0001`: opção 1, corrigir a 05 no MDXEditor, com três travas.** A mesma resposta autorizou (`aprovado_por: humano`) criar `adrs/ADR-005-edicao.md`. As travas:
 
 1. Prazo fixo de 1,5 dia. Sem 1A 25/25, 1B 17/17, 1C 5/5 e alternância 25/25, aplica-se a regra do Milkdown, sem prorrogação.
 2. Correção de modelo, não de fixture: casos de regressão fora do corpus em `adrs/_work/spike-s1/extra/` (listas vizinhas de vários tipos, item com vários blocos, dentro de citação e callout), passando na carga, na alternância e após edição.
@@ -91,10 +96,7 @@ Distinção a manter no texto: MDXEditor tem **risco de manutenção** (depende 
 
 ### Próximos passos depois do 005
 
-1. Parada 5 do executor: diff do ledger. Se o S-1 passar, 002, 003, 004 e 005 vão para "Aceitos". O diff inclui: esclarecimentos dos testes 1 e 4 do S-1 (D-1, D-2), fechar C-5, resolver C-4 pela D-4, atualizar a nota velha sobre o arquivo do 005, premissas novas para o 007 (fatia read, posição de origem por bloco, um único renderer de DokAST) e para o 010 (fatia export).
-2. `/adr 002-emenda-1`.
-3. Definir o 006 e o número da Tenancy.
-4. `/adr 007`, depois 008 e 009, 010 e 011, e 012.
+O roteiro completo e o critério de fim estão em `guia-sessoes/PROMPT-SESSAO-A.md`. O que a parada 5 do 005 precisa conter: diff do ledger movendo 002, 003, 004 e 005 para "Aceitos" se o S-1 passar, com os esclarecimentos dos testes 1 e 4 do S-1 (D-1, D-2), fechamento do C-5, resolução do C-4 pela D-4, a nota velha sobre o arquivo do 005 corrigida e as premissas novas para o 007 (fatia read, posição de origem por bloco, um único renderer de DokAST) e para o 010 (fatia export).
 
 ## 7. Pendências abertas
 
@@ -143,9 +145,14 @@ Heurísticas que guiaram as respostas até aqui:
 | `prompts/PROMPT-ADR-NNN.md` | Pergunta de cada ADR (002 a 004 já executados) |
 | `adrs/ADR-00N-*.md`, `adrs/LEDGER.md` | ADRs gerados e contratos |
 | `adrs/_work/` | Escopo, fichas, consolidação, spike, pendências do executor |
+| `/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app` | Projeto do app Lovable, fonte de verdade da arquitetura base. Você lê e revisa o diff das branches de C. Só C altera |
 | `guia-sessoes/` | Protocolo de comunicação com a sessão B, modelos e scripts. Leia `PROMPT-SESSAO-A.md` |
 | `tasks/` | Tarefas, dúvidas e respostas trocadas com a sessão B. `LOG.md` registra cada evento |
 
 ## 10. Primeira ação nesta sessão
 
-Leia este arquivo, `adrs/LEDGER.md`, `adrs/_work/ADR-005-escopo.md` e `adrs/_work/spike-s1/RESULTADO-S1.md`. Depois pergunte ao usuário em que parada o executor está agora, sem assumir que a parada 4 ainda está aberta.
+Siga a seção "Início" de `guia-sessoes/PROMPT-SESSAO-A.md`. O estado real está em `tasks/LOG.md` e nas pastas de `tasks/`, e prevalece sobre a seção 6 deste arquivo, que é um retrato de 2026-09-19.
+
+## 11. Objetivo e fim
+
+São duas trilhas. A de ADR termina quando o ADR 012 (Consolidação da stack) for aceito. A de desenvolvimento termina quando a meta definida pelo usuário for atingida. Cada trilha termina com uma tarefa `encerrar` (`T` para B, `D` para C). Quando as duas estiverem encerradas, entregue ao usuário um resumo de uma página (stack final, ADRs aceitos, o que já está no app, próximo passo) e pare de escutar. Os outros critérios de parada estão em `guia-sessoes/PROMPT-SESSAO-A.md`.

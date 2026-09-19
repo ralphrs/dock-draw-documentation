@@ -4,7 +4,7 @@ titulo: ""
 criada_por: A
 criada_em: AAAA-MM-DDTHH:MM
 adr: "005"                 # ADR a que a tarefa pertence, ou "kit" para manutenção do repositório
-tipo: executar             # executar | pesquisar | escrever | revisar | corrigir
+tipo: executar             # executar | pesquisar | escrever | revisar | corrigir | encerrar
 depende_de: []             # ids de tarefas que precisam estar em done/ antes
 exige_aprovacao_humana: false
 ---

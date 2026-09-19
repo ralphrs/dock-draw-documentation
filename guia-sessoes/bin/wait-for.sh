@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # Espera aparecer arquivo pendente em uma ou mais pastas.
-# Uso: wait-for.sh <sessao A|B> <timeout_s> <pasta:glob> [pasta:glob ...]
+# Uso: wait-for.sh <sessao A|B|C> <timeout_s> <pasta:glob> [pasta:glob ...]
 # Saída: uma linha "NEW <caminho>" por arquivo pendente, ou "TIMEOUT".
 # Pendente = casa com o glob, não termina em .tmp e não está no seen da sessão.
 set -u
+# Roda a partir da raiz de dok-draw-documentation, de onde quer que seja chamado.
+cd "$(cd "$(dirname "$0")/../.." && pwd)"
 sessao=$1; timeout=$2; shift 2
 state="tasks/.state/$sessao.seen"
 touch "$state"

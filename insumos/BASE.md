@@ -12,6 +12,7 @@ DokDraw é uma plataforma de documentação técnica. A Wiki (estilo Confluence,
 - Animações respeitam prefers-reduced-motion. Tudo funciona em dark e light.
 - Backend: Supabase (Postgres, Auth, RLS, Storage). Multi-inquilino.
 - Motor de diagrama: @xyflow/react (React Flow), decidido no ADR 001; o modelo do diagrama vive no Supabase.
+- Código do app: `/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app` (`dok-draw-app`). É a referência real de versões, schema do Supabase e estrutura. Leitura livre. Só a sessão C (desenvolvedora) altera, em branch; merge, push, dependência e migration exigem aprovação do humano.
 - Ambiente: projeto Lovable; instalação só pelo registro npm, sem build nativo nem postinstall que baixa binário.
 - Segurança: conteúdo de usuário nunca é compilado nem avaliado como código.
 - Versões: sempre a última estável, conferida na data da pesquisa, com link da fonte.
