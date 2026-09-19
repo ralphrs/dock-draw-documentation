@@ -33,3 +33,15 @@ O arquivo e as linhas citados (`lib/join.js:25-38`, `container-flow.js:74-76`) e
 
 - Não mexer em `adrs/ADR-005-edicao.md` por esta tarefa. T-0003 é dona desse arquivo agora, e o número errado não aparece lá.
 - Não commitar. Os commits desta etapa estão autorizados em `A-Q-0002`, depois do ledger aplicado.
+
+## Resultado
+
+### Entregáveis
+
+`adrs/_work/spike-s1/mdxeditor/RESULTADO.md`, uma linha corrigida.
+
+### Critério de pronto
+
+1. **Versão correta.** ✔ `node -p "require('./adrs/_work/spike-s1/node_modules/mdast-util-to-markdown/package.json').version"` devolve `2.1.2`. Citação corrigida de `mdast-util-to-markdown@9.0.0` para `mdast-util-to-markdown@2.1.2`.
+2. **Varredura completa.** ✔ `grep -rnoE "[a-zA-Z@/_.-]+@[0-9]+\.[0-9]+\.[0-9]+" --include="*.md" .` em `adrs/_work/spike-s1/` (recursivo, exclui `node_modules`) encontrou três citações no total: `zod@3.25.76` em `AMBIENTE.md` (versão do app, já marcada como tal no texto: "zod-app (alias de `zod@3.25.76`)"), `mdast-util-to-markdown@9.0.0` (corrigida) e `mdast-util-from-markdown@2.0.3` em `mdxeditor/RESULTADO.md`. A última conferida contra `node -p "require('./node_modules/mdast-util-from-markdown/package.json').version"`: `2.0.3`, já correta, sem alteração.
+3. **Nenhuma outra alteração.** ✔ `git diff -- adrs/_work/spike-s1/mdxeditor/RESULTADO.md` mostra uma linha removida e uma adicionada, só o número da versão muda.

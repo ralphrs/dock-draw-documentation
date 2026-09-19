@@ -1,6 +1,6 @@
 # ADR 005: Edição
 
-Status: Proposto
+Status: Aceito
 Data: 2026-09-19
 Camada: Edição (Authoring)
 Depende de: ADR 001 (Motor de diagrama, Aceito), ADR 002 (Formato de conteúdo, Proposto vinculante), ADR 003 (Armazenamento e versionamento, Proposto vinculante), ADR 004 (Fluxo editorial, Proposto vinculante)
@@ -241,7 +241,7 @@ Em ordem de dependência:
 ```yaml
 adr: "005"
 camada: "Edição"
-status: "Proposto"
+status: "Aceito"
 data: "2026-09-19"
 decisao: "Editor WYSIWYG MDXEditor 4.2.5, com adaptador próprio via DokAST (nunca o parser Markdown da biblioteca), modo fonte CodeMirror 6 compartilhado, e as fatias lista frouxa e exceção ao colar de nó html obrigatórias antes da liberação"
 dependencias:

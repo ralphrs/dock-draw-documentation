@@ -20,3 +20,8 @@ Uma linha por evento, anexada pelos scripts de `guia-sessoes/bin/`. Não editar 
 2026-09-19T20:36:32 B claim    T-0003-corrigir-texto-adr-005.md -> tasks/in-progress
 2026-09-19T20:37:15 A create   T-0004-corrigir-versao-citada.md -> tasks/todo
 2026-09-19T20:42:44 B complete T-0003-corrigir-texto-adr-005.md -> tasks/done
+2026-09-19T20:43:42 A create   T-0005-aplicar-ledger-e-commitar.md -> tasks/todo
+2026-09-19T20:48:43 B claim    T-0004-corrigir-versao-citada.md -> tasks/in-progress
+2026-09-19T20:49:24 B complete T-0004-corrigir-versao-citada.md -> tasks/done
+2026-09-19T20:49:28 B claim    T-0005-aplicar-ledger-e-commitar.md -> tasks/in-progress
+2026-09-19T20:50:29 B complete T-0005-aplicar-ledger-e-commitar.md -> tasks/done

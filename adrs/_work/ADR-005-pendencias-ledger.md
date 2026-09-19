@@ -1,6 +1,6 @@
 # ADR 005 — Pendências para o diff do LEDGER (parada 5)
 
-Acumuladas durante a sessão de 2026-09-19. Nenhuma foi aplicada. Viram o diff proposto na parada 5.
+Acumuladas durante a sessão de 2026-09-19. Todas as 14 aplicadas em `adrs/LEDGER.md` em 2026-09-19, por `A-Q-0002` (`aprovado_por: humano`, decisão 2, categorias `ledger` e `aceite-adr`). Diff completo em `adrs/_work/ADR-005-ledger-diff.md`.
 
 ## Texto do ledger (pedidas na aprovação da Etapa 0)
 
@@ -41,4 +41,6 @@ Acumuladas durante a sessão de 2026-09-19. Nenhuma foi aplicada. Viram o diff p
 
     Um editor pode passar em 30/30 e ainda perder a forma da lista, e o único caso da suíte informal que sugeria o contrário passa pelo motivo errado. Dono: ADR 002, fatia F5 (fixtures), que ganha um caso com lista frouxa na raiz e um caso com lista frouxa fora de citação/callout, para não repetir a lacuna que `extra/x08` mascarou. Só aviso de cobertura, não muda decisão nem número do S-1.
 
-    **Fatia obrigatória no ADR 005 (F4, seção 10):** antes de liberar o editor, o adaptador precisa gravar o `spread` real de `list` e `listItem` no `NodeState` do Lexical na importação e lê-lo de volta na exportação. Critério de pronto: os 12 casos de `extra/` passando na carga, na alternância e depois de uma edição (36/36), mais um caso novo de lista frouxa na raiz sem citação nem callout equivalente a `x05`/`x06` mas fora do escopo desta correção. Estimativa mantida em 1 a 1,5 dia: a causa raiz (visitors gravando `spread: false` incondicionalmente) já estava certa antes desta análise, e o acidente do reparse não muda o que precisa ser corrigido, só explica por que `x08` enganava.
+    **Fatia obrigatória no ADR 005 (F4, seção 11):** antes de liberar o editor, o adaptador precisa gravar o `spread` real de `list` e `listItem` no `NodeState` do Lexical na importação e lê-lo de volta na exportação. Critério de pronto: os 12 casos de `extra/` passando na carga, na alternância e depois de uma edição (36/36), mais um caso novo de lista frouxa na raiz sem citação nem callout equivalente a `x05`/`x06` mas fora do escopo desta correção. Estimativa mantida em 1 a 1,5 dia: a causa raiz (visitors gravando `spread: false` incondicionalmente) já estava certa antes desta análise, e o acidente do reparse não muda o que precisa ser corrigido, só explica por que `x08` enganava.
+
+**Aplicado ao ledger em 2026-09-19** (ajuste 2 de `A-Q-0002`): entrou em `riscos_abertos` do ADR 002 no ledger, mesmo tratamento do item 13.

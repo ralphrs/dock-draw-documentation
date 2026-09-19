@@ -95,3 +95,10 @@ Mapa completo das correções de referência (número antigo → número novo, o
 | YAML, gatilhos_de_reabertura | correção descrita em | seção 6 | seção 1 |
 
 Mantidas sem mudança (já corretas, ou autocorrigidas pela renumeração +1 das seções 6 a 13): seção 9 (consequência negativa, Decisão), seção 11 (fatia planejada, Decisão), seção 11 (fatia obrigatória, Verificação de compat.), seção 11 (Gatilhos), todas as citações a "ADR 002 (seção 8.2)" (documento externo, fora do escopo desta renumeração).
+
+## Revisão do arquiteto
+
+- **Veredito:** aceita.
+- **Motivo:** a seção 6 nova resolve o defeito de fundo, que não era numeração e sim decisão publicada sem corpo. A ancoragem descreve o caminho inteiro, do `data-line-start` até `anchor_start_line` em `content.revision_comments`, diz por que vale sobre revisão imutável e não sobre rascunho, e nomeia a lacuna residual com dono. O modo fonte registra o que foi medido no S-1 (CodeMirror 6 externo) e deixa o nativo do MDXEditor fora de uso com a condição de entrada escrita. O registry descreve as quatro fatias, a proibição de o servidor importar `edit` e o limite de escopo. Conferido no arquivo: 14 seções, a renumeração bate, e a tabela de correções em "Notas de execução" permite auditar cada referência.
+- **Ressalva menor, sem tarefa:** o item 4 do critério de pronto não pôde usar `git diff` porque o arquivo ainda não tem baseline no índice. A conferência por leitura é aceita neste caso. Depois do commit da etapa, `git diff` passa a valer para as próximas revisões deste arquivo.
+- **Tarefas derivadas:** nenhuma. T-0005 aplica o ledger, conforme a autorização de `A-Q-0002`.

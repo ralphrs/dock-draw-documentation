@@ -4,7 +4,7 @@ Não aplicado. Requer `categoria_aprovacao: ledger` e `categoria_aprovacao: acei
 
 ## Mudança 1: nota de regra de status (topo do ledger)
 
-O aviso `[!IMPORTANT]` no topo explica por que 002, 003 e 004 ficam em "Propostos vinculantes" até o S-1 passar. O S-1 passou (ADR 005, seção 7). O aviso perde a razão de existir tal como está escrito e vira nota histórica.
+O aviso `[!IMPORTANT]` no topo explica por que 002, 003 e 004 ficam em "Propostos vinculantes" até o S-1 passar. O S-1 passou (ADR 005, seção 8). O aviso perde a razão de existir tal como está escrito e vira nota histórica.
 
 **Antes:**
 
@@ -22,7 +22,7 @@ O aviso `[!IMPORTANT]` no topo explica por que 002, 003 e 004 ficam em "Proposto
 
 ```md
 > [!NOTE]
-> **Histórico de processo.** Entre 2026-09-18 e 2026-09-19 os ADRs 002, 003 e 004 ficaram em "Propostos vinculantes", contratos que os ADRs seguintes deviam respeitar como se estivessem aceitos, enquanto o spike S-1 (definido no ADR 002, seção 8.2) não rodava. O S-1 passou com o MDXEditor 4.2.5 em 2026-09-19 (ADR 005, seção 7), e os três ADRs, junto com o 005, passam para "Aceitos". A seção "Propostos vinculantes" volta a existir se um ADR futuro precisar do mesmo mecanismo.
+> **Histórico de processo.** Entre 2026-09-18 e 2026-09-19 os ADRs 002, 003 e 004 ficaram em "Propostos vinculantes", contratos que os ADRs seguintes deviam respeitar como se estivessem aceitos, enquanto o spike S-1 (definido no ADR 002, seção 8.2) não rodava. O S-1 passou com o MDXEditor 4.2.5 em 2026-09-19 (ADR 005, seção 8), e os três ADRs, junto com o 005, passam para "Aceitos". A seção "Propostos vinculantes" volta a existir se um ADR futuro precisar do mesmo mecanismo.
 ```
 
 ## Mudança 2: mover ADR 002 para "Aceitos"
@@ -43,10 +43,11 @@ status: "Proposto"
 status: "Aceito"
 ```
 
-Acrescentar ao fim de `riscos_abertos`, item novo (achado do S-1, pendência 13):
+Acrescentar ao fim de `riscos_abertos`, dois itens novos (achados do S-1, pendências 13 e 14):
 
 ```yaml
   - "DOK-W103 falso no validador de referência do harness: em leafDirective, o rótulo vira filhos diretos (phrasing) sem parágrafo com data.directiveLabel, e o check de conformidade emite o aviso mesmo quando o rótulo está correto. O porte usado no S-1 (ADR 005) mantém o comportamento do harness. Dono: fatia F2 (validação)"
+  - "O corpus de 30 fixtures não exercita list.spread = true (linha em branco entre itens irmãos de lista na raiz). O critério de aceite de 30/30 do S-1 foi medido sem essa forma. A fatia F5 do ADR 002 acrescenta o caso ao corpus"
 ```
 
 Corrigir a dependência `zod` (pendência 6, achado do S-1):
@@ -136,17 +137,106 @@ Vazia em 2026-09-19. Os ADRs 002, 003 e 004 passaram para "Aceitos" quando o S-1
 
 Novo bloco, depois do ADR 004 (agora em "Aceitos"):
 
-```md
+````md
 ## ADR 005 — Edição
 
 Arquivo: `ADR-005-edicao.md` · Status: Aceito.
 
-\`\`\`yaml
-[conteúdo integral da seção 12 do adrs/ADR-005-edicao.md]
-\`\`\`
+```yaml
+adr: "005"
+camada: "Edição"
+status: "Aceito"
+data: "2026-09-19"
+decisao: "Editor WYSIWYG MDXEditor 4.2.5, com adaptador próprio via DokAST (nunca o parser Markdown da biblioteca), modo fonte CodeMirror 6 compartilhado, e as fatias lista frouxa e exceção ao colar de nó html obrigatórias antes da liberação"
+dependencias:
+  - pacote: "@mdxeditor/editor"
+    versao: "4.2.5"
+    licenca: "MIT"
+    verificado_em: "2026-09-19 https://www.npmjs.com/package/@mdxeditor/editor/v/4.2.5"
+  - pacote: "lexical"
+    versao: "0.48.0"
+    licenca: "MIT"
+    verificado_em: "2026-09-19 https://www.npmjs.com/package/lexical/v/0.48.0 (passa de transitiva a direta por causa da correção da seção 1)"
+  - pacote: "@lexical/list"
+    versao: "0.48.0"
+    licenca: "MIT"
+    verificado_em: "2026-09-19 https://www.npmjs.com/package/@lexical/list/v/0.48.0"
+  - pacote: "@lexical/link"
+    versao: "0.48.0"
+    licenca: "MIT"
+    verificado_em: "2026-09-19 https://www.npmjs.com/package/@lexical/link/v/0.48.0"
+  - pacote: "@lexical/react"
+    versao: "0.48.0"
+    licenca: "MIT"
+    verificado_em: "2026-09-19 https://www.npmjs.com/package/@lexical/react/v/0.48.0"
+  - pacote: "@codemirror/state"
+    versao: "^6.7.5"
+    licenca: "MIT"
+    verificado_em: "2026-09-19 https://www.npmjs.com/package/@codemirror/state"
+  - pacote: "@codemirror/view"
+    versao: "^6.43.12"
+    licenca: "MIT"
+    verificado_em: "2026-09-19 https://www.npmjs.com/package/@codemirror/view"
+  - pacote: "@codemirror/commands"
+    versao: "^6.11.1"
+    licenca: "MIT"
+    verificado_em: "2026-09-19 https://www.npmjs.com/package/@codemirror/commands"
+  - pacote: "@codemirror/language"
+    versao: "^6.12.4"
+    licenca: "MIT"
+    verificado_em: "2026-09-19 https://www.npmjs.com/package/@codemirror/language"
+  - pacote: "@codemirror/lang-markdown"
+    versao: "^6.5.2"
+    licenca: "MIT"
+    verificado_em: "2026-09-19 https://www.npmjs.com/package/@codemirror/lang-markdown"
+  - pacote: "@codemirror/lint"
+    versao: "^6.9.7"
+    licenca: "MIT"
+    verificado_em: "2026-09-19 https://www.npmjs.com/package/@codemirror/lint"
+interfaces_publicadas:
+  - nome: "AdapterContract (AdapterProps, AdapterHandle)"
+    tipo: "tipo TS"
+    descricao: "src/editors/contract.ts. getTree() converte o estado real da biblioteca para mdast, sem cache do initialTree. insertTree ignora nó yaml. insertDirective usa o registry edit. importDialect e searchPages injetados por prop"
+  - nome: "src/content-components/{core,edit}"
+    tipo: "tipo TS e componente React"
+    descricao: "Registry de diretivas chaveado por DokDirective['name']. core sem React. edit publica create() e o componente de edição por diretiva. Teste de completude por nome contra o registro do ADR 002"
+  - nome: "Ancoragem de comentário por faixa de linhas"
+    tipo: "atributo de dados"
+    descricao: "data-line-start/data-line-end por bloco, emitidos pelo renderer da fatia read (ADR 007) dentro de RevisionView, não pelo editor"
+  - nome: "RevisionDiff / RevisionView"
+    tipo: "componente React"
+    descricao: "Usam a fatia read do ADR 007. Único renderizador de DokAST no app, compartilhado por diff textual (E-10), diff renderizado (E-11) e ancoragem (E-12)"
+restricoes_impostas:
+  - "O adaptador do editor nunca chama o parser ou o serializador Markdown da biblioteca no caminho de persistência, só a conversão de árvore para árvore (mdast)"
+  - "Toda escrita passa por normalizeDok + validateDok no servidor, qualquer DOK-E bloqueia o save, inclusive vindo do modo fonte"
+  - "Conteúdo com DOK-E, depois de normalizeDok, abre só no modo fonte, nunca no WYSIWYG"
+  - "Nenhum nó do editor serializa text directive nem HTML/JSX fora do que o registro do ADR 002 permite"
+  - "insertTree recusa nó html e mdxJsx* com diagnóstico visível, nunca lança exceção não capturada"
+  - "Nome novo de diretiva no registry só entra por adição ao registro de diretivas do ADR 002, nunca por código específico do adaptador do editor"
+premissas_sobre_camadas_futuras:
+  - camada: "Renderização (ADR 007)"
+    premissa: "Implementa a fatia read de src/content-components para todos os nomes do registro, e o renderer emite data-line-start/data-line-end por bloco, consumido por RevisionView para a ancoragem de comentário (E-12)"
+  - camada: "Exportação e sincronização (ADR 010)"
+    premissa: "Implementa a fatia export de src/content-components para todos os nomes do registro, por destino do Apêndice B do ADR 002"
+  - camada: "Persistência (ADR 003)"
+    premissa: "getDok() do editor alimenta saveDraft/submitRevision sem transformação adicional além de normalizeDok + validateDok"
+riscos_abertos:
+  - "Lista frouxa (linha em branco entre itens irmãos) falha no MDXEditor fora de contexto de citação. O adaptador grava spread false incondicionalmente na exportação, causa isolada em mdxeditor/RESULTADO.md. O único caso da suíte extra/ que parecia passar (x08, dentro de citação) deve o resultado a um acidente do reparse de normalizeDok sobre mdast-util-from-markdown, não à preservação real da informação. Correção estimada em 1 a 1,5 dia, fatia obrigatória F4 antes de liberar o editor (seção 11). O corpus de 30 fixtures do ADR 002 não exercita essa forma, pendência 14 do ledger"
+  - "Colar de árvore com nó html lança exceção não capturada no save. Fatia obrigatória F3 (seção 11)"
+  - "Link de título vivo com texto vazio (dok:page/… sem rótulo) falha ao apagar por seleção total e ao ser inserido por colar. Fixtures 26 e 27 do D-2. Fatia não obrigatória F6, 1 dia"
+  - "Notas de rodapé ficam como ilha opaca, sem edição direta do texto da nota. Fatia não obrigatória F7, 2 a 3 dias"
+  - "A correção da seção 1 depende de getStaticNodeConfig, API pública do pacote lexical sem garantia formal de estabilidade entre minors. A suíte deste ADR precisa rodar a cada atualização de lexical ou de @mdxeditor/editor"
+  - "Comentários da revisão anterior dentro do rascunho: quando as linhas do rascunho não coincidem com as da revisão comentada, o mapeamento exige diff entre as duas. Sem dono de implementação definido nesta sessão, fica na fatia F5"
+gatilhos_de_reabertura:
+  - "Lexical publica major que muda o registro estático de $config e quebra a correção da seção 1"
+  - "Atualização de @mdxeditor/editor ou lexical falha na suíte de listas (extra/, 12 casos) antes de F4 entrar em produção"
+  - "O corpus do ADR 002 ganha fixture com list.spread = true e o MDXEditor falha nela antes de F4"
+  - "MDXEditor descontinua manutenção ou muda de licença para fora de MIT/Apache-2.0/BSD/ISC"
+  - "Produto exige modo sugestão na v1 (reabre D-7 e a avaliação de Q-F)"
 ```
+````
 
-O conteúdo do bloco YAML é a seção 12 ("Contrato de saída") de `adrs/ADR-005-edicao.md`, copiado sem edição.
+O conteúdo do bloco YAML é a seção 13 ("Contrato de saída") de `adrs/ADR-005-edicao.md`, copiado sem edição em 2026-09-19 depois de `T-0002` e `T-0003`.
 
 ## Mudança 7: tabela "Numeração oficial"
 
@@ -253,4 +343,4 @@ Resolvido pelo ADR 005: a ancoragem acontece em `<RevisionView>`, fora do editor
 | C-6 | Em aberto | Parcialmente resolvido (diff visual). Resto continua em aberto, dono inalterado |
 | Pendência 6 (zod) | Contrato do 002 desatualizado | Corrigido |
 | Pendência 13 (W103) | Achado do S-1, sem registro no ledger | Registrado em `riscos_abertos` do 002 |
-| Pendência 14 (lista frouxa fora do corpus) | Achado do S-1, sem registro no ledger | Não incluída nesta mudança do ledger. É pendência de fixture do ADR 002 (fatia F5), a tratar quando o 002 for reaberto por outro motivo, não gatilho de reabertura por si só |
+| Pendência 14 (lista frouxa fora do corpus) | Achado do S-1, sem registro no ledger | Registrado em `riscos_abertos` do 002 (mesmo tratamento do W103, ajuste 2 de `A-Q-0002`). É pendência de fixture (fatia F5 do ADR 002), não muda decisão nem número do S-1, e não vira gatilho de reabertura por si só |
