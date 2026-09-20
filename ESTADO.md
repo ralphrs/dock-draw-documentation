@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 06:10
+**Atualizado em:** 2026-09-20, 06:25
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -160,6 +160,8 @@ Protocolo em `guia-sessoes/PROTOCOLO.md`. Decisões em `decisoes/REGISTRO.md`. A
 **O original, de 2026-09-19.** Em 2026-09-19 foram criados o kit de sessões, o mapa de skills, o registro de decisões, os papéis novos e o knowledge do Lovable. O `src/` do app não ganhou uma linha. A sprint 1 é a correção disso, e nenhuma peça de processo nova entra até ela entregar. Em 2026-09-20 o protocolo mudou duas vezes mesmo assim, e as duas precisam de justificativa para não virarem exceção de conveniência: a regra de escopo de commit conserta um defeito que corrompeu evidência de spike, e o canal do Lovable mudou porque o humano ligou o conector do Jira lá. Nenhuma das duas é processo inventado por antecipação.
 
 **O argumento de um número de contrato já caiu uma vez.** A medição de desempenho da Emenda 1 não se reproduziu quando o instrumento foi reentregue. Isso foi apanhado porque a revisão exigiu o harness de volta. Todo número que vira contrato precisa do instrumento junto.
+
+**Vinte e oito das 37 restrições do ledger não têm verificação nenhuma hoje**, porque pertencem a camadas que o app ainda não tem. A auditoria de 2026-09-20 (`decisoes/AUDITORIA-2026-09-20-restricao-x-mecanismo.md`) mediu isso. O que protege essas 28 é uma regra de processo, não um comando: a ordem de cada fatia entrega a tabela de restrição por mecanismo, e a revisão começa por ela. Se a regra for afrouxada, o projeto volta ao estado em que cinco defeitos do mesmo tipo passaram num dia só.
 
 **O corpus de 30 fixtures estava ao alcance de um comando de rotina.** `bun run format` é `prettier --write .`, o Prettier formata Markdown, e 16 fixtures estão fora do formato dele. Rodá-lo acrescenta ponto e vírgula ao JavaScript dentro do bloco de código da fixture 07, indenta o `:::` que fecha o callout da 16 e insere linha em branco nas tabs da 20, com `input` e `expected` reescritos na mesma passada, sem a suíte acusar nada. A fatia F1 passa a pôr a pasta no `.prettierignore`. Até esse commit existir, o risco continua de pé, e vale para qualquer pessoa que rode o script, dentro ou fora do processo.
 

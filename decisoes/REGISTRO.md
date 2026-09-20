@@ -18,6 +18,7 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 
 | Id | Data | Decisão | Quem decidiu |
 | --- | --- | --- | --- |
+| [AUDITORIA: restrição × mecanismo](AUDITORIA-2026-09-20-restricao-x-mecanismo.md) | 2026-09-20 | As 37 restrições do ledger auditadas contra o comando que reprova cada uma. Quatro lacunas sobre código existente, 28 restrições sem verificação porque a camada não existe | Arquiteto, por delegação |
 | [DEC-0011](DEC-0011-sequenciamento-do-diagram-studio.md) | 2026-09-20 | As doze notações do Diagram Studio entram por inteiro, depois que a meta de `DEC-0004` fechar. Nenhuma fatia da Wiki é adiada por elas | Humano |
 | [ADR 006 aceito](../adrs/ADR-006-shell-da-wiki.md) | 2026-09-20 | Shell da Wiki: rotas sob `_authenticated`, autosave 2 s/30 s, os dois conflitos do ADR 003 por gravidade, separação `edit`/`read` por lint. Estende a lista de funções do 003 e do 004 com uma assinatura cada | Arquiteto, aprovado pelo humano (`DDP-66`) |
 | [ACHADO: bateria de escopo aberto](ACHADO-2026-09-20-bateria-de-verificacao-de-escopo-aberto.md) | 2026-09-20 | Comando de projeto inteiro numa ordem de escopo recortado ou viola a restrição, ou trava o aceite. Toda bateria passa a rodar no escopo da ordem | Arquiteto, por delegação |
