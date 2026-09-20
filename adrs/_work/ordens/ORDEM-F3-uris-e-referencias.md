@@ -245,3 +245,13 @@ bunx eslint src/content-format/refs.ts src/content-format/testing/refs.test.ts
 - Não edite `fixtures.test.ts`, `environment.test.ts`, `eslint.config.js`, `package.json`.
 - Em `vite.content-format-check.config.ts`, só a linha do `entry` (passo 3).
 - Não toque `.env*`. Não commite, não despache.
+
+---
+
+## Nota pós-execução, 2026-09-20
+
+O texto acima é o que foi despachado em `DDP-85` e executado, e não é reescrito: ele precisa continuar idêntico à descrição daquela issue.
+
+Uma correção de fato, registrada aqui em vez de aplicada acima: a seção 3 cita 367 módulos transformados pelo build de verificação. O número foi medido num sandbox e está errado. O build real, no app, transforma **337 módulos**, medido pela sessão C em `DDP-82` e confirmado pela execução em `DDP-85` e pela revisão em `DDP-87`.
+
+O critério de pronto nunca foi a contagem, e sim o código de saída e a ausência de `UNRESOLVED_IMPORT`, então a divergência não reprovou nada. Fica registrada porque o arquivo é referência para a fatia F4.
