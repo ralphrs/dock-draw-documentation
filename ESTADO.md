@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 11:30
+**Atualizado em:** 2026-09-20, 12:00
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -145,8 +145,8 @@ A sprint 1 está parada esperando duas respostas do dono do produto, e as sessõ
 | Sessão | Papel | Agora |
 | :--- | :--- | :--- |
 | **A** | Arquiteto principal, gerente de projeto, scrum master | Fechou a sprint 1 e a primeira migração. Aplicou `DEC-0012` e `DEC-0013` |
-| **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Escrevendo a ordem da sub-fatia S1b (`DDP-109`), a segunda das seis do schema |
-| **C** | Especialista em arquitetura, UX e UI, revisora | Sem tarefa aberta. Fechou a sprint 1 e a primeira migração, esta última devolvendo a falta de evidência em vez de um veredito |
+| **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | **A sessão não está rodando.** `DDP-109` parada na fila dela desde 2026-09-20 10:47 |
+| **C** | Especialista em arquitetura, UX e UI, revisora | Sem tarefa aberta, e sem nada a fazer até a sessão B entregar a ordem da S1b |
 | **Lovable** | Implementador. Executa ordem, não decide | Lê o quadro `DDP` direto, desde 2026-09-20. Canal verificado em `DDP-6` |
 
 O quadro `DDP` guarda o backlog inteiro desde 2026-09-20: 34 issues de estoque com o rótulo `backlog` e sem responsável, 2 ativas, 8 concluídas. O humano cria issue direto lá, com `draft` enquanto escreve e `liberada` quando quer que a sessão A refine no padrão.
@@ -154,6 +154,14 @@ O quadro `DDP` guarda o backlog inteiro desde 2026-09-20: 34 issues de estoque c
 Protocolo em `guia-sessoes/PROTOCOLO.md`. Decisões em `decisoes/REGISTRO.md`. As sessões conversam por issues do projeto `DDP` em `https://dokdrawapp.atlassian.net` (`decisoes/DEC-0009-comunicacao-por-jira.md`). A pasta `tasks/` guarda só o histórico até 2026-09-20.
 
 ---
+
+## 4.1. O que está travando agora
+
+**A sessão B não está rodando.** A issue `DDP-109`, a ordem da sub-fatia S1b, está na fila dela em `A FAZER` desde 2026-09-20 10:47 e não foi tocada. A JQL de escuta da sessão B casa com essa issue, então o listener dela teria disparado se a sessão estivesse de pé.
+
+Tudo o mais está parado por dependência disso, e não por falta de decisão: a fila do dono do produto está vazia, a sessão C não tem o que revisar até a ordem existir, e a sessão A não escreve ordem.
+
+Quem destrava é o humano, abrindo a sessão B.
 
 ## 5. Esperando o humano
 
