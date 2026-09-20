@@ -2,7 +2,7 @@
 
 **Data:** 2026-09-20
 **Origem:** pedido do dono do produto, doze famílias de diagrama a acrescentar ao Diagram Studio
-**Estado:** escopo para aprovação. O ADR não começa antes da decisão de prioridade (`DDP-75`)
+**Estado:** escopo aprovado em 2026-09-20 (`DDP-75`). O ADR é escrito depois que a meta de `DEC-0004` fechar
 
 ## 1. O pedido
 
@@ -44,7 +44,7 @@ Levantamento em 2026-09-20 sobre a `main` do `dok-draw-app`.
 
 A lista de doze famílias agrupa problemas de arquitetura diferentes. Tratá-los como um só produz uma decisão grande demais para revisar, que é o defeito que o `PROTOCOLO.md` passou a barrar por tamanho em 2026-09-20.
 
-### Problema A: registro de notação sobre o núcleo genérico
+### Problema 1: registro de notação sobre o núcleo genérico
 
 **Famílias:** C4, UML estrutural (classe sem compartimento, componentes, implantação, casos de uso), DFD, fluxograma simples, BPMN básico, topologia de rede lógica, sitemap.
 
@@ -52,7 +52,7 @@ A lista de doze famílias agrupa problemas de arquitetura diferentes. Tratá-los
 
 **Custo:** renomear `src/domain/c4/` para um núcleo sem nome de notação, acrescentar a dimensão de notação ao registro, e crescer o vocabulário de formas primitivas. **Sem migração de banco.**
 
-### Problema B: biblioteca de ícones
+### Problema 2: biblioteca de ícones
 
 **Famílias:** arquitetura cloud (AWS, GCP, Azure, OCI), topologia de rede com símbolos Cisco, rack.
 
@@ -60,7 +60,7 @@ A lista de doze famílias agrupa problemas de arquitetura diferentes. Tratá-los
 
 **Restrição eliminatória, não nota de rodapé:** a licença de cada conjunto de ícones precisa ser conferida na web, com link e data, antes de qualquer candidata sobreviver. Os conjuntos dos provedores de nuvem têm termos próprios de redistribuição, e o conjunto da Cisco é marca registrada. Isso é pesquisa da sessão B, com o resultado no ADR, e não afirmação deste escopo.
 
-### Problema C: compartimentos dentro do elemento
+### Problema 3: compartimentos dentro do elemento
 
 **Famílias:** UML classe, ERD.
 
@@ -68,7 +68,7 @@ A lista de doze famílias agrupa problemas de arquitetura diferentes. Tratá-los
 
 **Custo:** toca o schema. É o único dos quatro que exige migration.
 
-### Problema D: posição derivada da semântica
+### Problema 4: posição derivada da semântica
 
 **Famílias:** UML sequência, raias e pools, rack, jornada do usuário.
 
@@ -78,7 +78,7 @@ A lista de doze famílias agrupa problemas de arquitetura diferentes. Tratá-los
 
 ## 4. O que o ADR 015 decide
 
-Os problemas A e B, que são uma decisão só: como uma notação entra no produto, e de onde vêm as formas e os ícones dela.
+Os problemas 1 e 2, que são uma decisão só: como uma notação entra no produto, e de onde vêm as formas e os ícones dela.
 
 1. O conceito de notação: o que uma notação declara, onde essa declaração vive e como `projects.kind` a seleciona.
 2. O renome do núcleo de `c4` para um nome sem notação, e a fronteira entre núcleo genérico e declaração de notação.
@@ -92,8 +92,8 @@ Os problemas A e B, que são uma decisão só: como uma notação entra no produ
 
 | Assunto | Dono proposto |
 | :--- | :--- |
-| Compartimento de atributos e métodos (UML classe, ERD) | ADR novo, problema C. Toca schema |
-| Posição derivada (sequência, raia, rack, jornada) | ADR novo, problema D. Tamanho desconhecido |
+| Compartimento de atributos e métodos (UML classe, ERD) | ADR novo, problema 3. Toca schema |
+| Posição derivada (sequência, raia, rack, jornada) | ADR novo, problema 4. Tamanho desconhecido |
 | Wireframes e mockups | Sem dono. Conteúdo aninhado com texto editável aproxima mais de ferramenta de design que de grafo, e nenhum dos quatro problemas o cobre inteiro |
 | Geração estática de SVG/PNG de uma view fora do canvas | Conflito C-2, já registrado, dono ADR 007 |
 | Versionamento de diagrama | Conflito C-1, já registrado, extensão do ADR 001 |
@@ -117,6 +117,6 @@ Os problemas A e B, que são uma decisão só: como uma notação entra no produ
 
 `DEC-0004` fixa a meta da trilha de desenvolvimento: editar e publicar uma página da Wiki ponta a ponta. O `insumos/BASE.md` diz que a Wiki é o produto principal, e que o Diagram Studio compõe as páginas dela.
 
-Este pedido é maior que a meta em aberto. A meta tem 17 fatias restantes e 29 dias estimados. O ADR 015 sozinho publica fatias novas em número ainda desconhecido, e os problemas C e D abrem dois ADRs a mais.
+Este pedido é maior que a meta em aberto. A meta tem 17 fatias restantes e 29 dias estimados. O ADR 015 sozinho publica fatias novas em número ainda desconhecido, e os problemas 3 e 4 abrem dois ADRs a mais.
 
-A decisão de sequenciamento é do dono do produto, em `DDP-75`, e o ADR não começa antes dela.
+**Decidido em 2026-09-20 (`DDP-75`): depois da meta.** A trilha da Wiki segue até `DEC-0004` fechar, e o ADR 015 é escrito quando a meta for atingida. As doze famílias entram por inteiro, sem corte de escopo. Registro em `decisoes/DEC-0011-sequenciamento-do-diagram-studio.md`.

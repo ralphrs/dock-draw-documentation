@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 05:45
+**Atualizado em:** 2026-09-20, 05:55
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -22,7 +22,7 @@ Do `insumos/BASE.md`. Nada aqui é entrega, é o alvo.
 | Capacidade | Estado |
 | :--- | :--- |
 | **Wiki** estilo Confluence, dialeto Starlight. O produto principal | Decidida até a edição. Nada no código |
-| **Diagram Studio** C4, AWS, UML, para compor as páginas | **Funcionando no app**, só com a notação C4. Doze famílias pedidas em 2026-09-20, escopo escrito, prioridade em aberto (`DDP-75`) |
+| **Diagram Studio** C4, AWS, UML, para compor as páginas | **Funcionando no app**, só com a notação C4. Doze famílias pedidas e aprovadas em 2026-09-20, para entrar depois da meta (`DEC-0011`) |
 | Segundo cérebro: wikilinks, aliases, backlinks, compatível com Obsidian | Decidido no ADR 002. Nada no código |
 | Export para `.md`, vault Obsidian, projeto Starlight e `.docx` | ADR 010, não escrito |
 | Sync de mão única para nuvem, Google Drive primeiro | ADR 010, não escrito. Placeholder de schema decidido no ADR 003 |
@@ -54,7 +54,7 @@ Do `insumos/BASE.md`. Nada aqui é entrega, é o alvo.
 | 012 | Consolidação da stack | Não escrito | Audita todos. Encerra a trilha |
 | 013 | Tenancy e acesso | Não escrito | Resolve C-3 e C-7 |
 | 014 | Developer Portal | Não escrito | Depende do 007 |
-| 015 | Notações do Diagram Studio | Não escrito. Escopo aprovado em `adrs/_work/ADR-015-escopo.md` | Número, recorte e extensão ao ADR 001 aprovados em `DDP-75`. **Espera só a letra de prioridade** |
+| 015 | Notações do Diagram Studio | Não escrito. Escopo aprovado, no backlog (`DDP-78`) | Doze famílias por inteiro, **depois da meta de `DEC-0004`** (`DEC-0011`). Escopo, número e extensão ao ADR 001 já resolvidos |
 
 **Agora:** a Emenda 1 foi aceita em 2026-09-20 (`DDP-8`), e o contrato dela está no `LEDGER.md`. Seis ADRs valem para implementação. O próximo passo da trilha de ADR é o 013, Tenancy e acesso, que fecha os conflitos C-3 e C-7.
 

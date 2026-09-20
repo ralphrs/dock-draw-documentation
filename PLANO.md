@@ -1,6 +1,6 @@
 # Plano e previsão de fim
 
-**Escrito em:** 2026-09-20 · **Revisado em:** 2026-09-20, 05:30
+**Escrito em:** 2026-09-20 · **Revisado em:** 2026-09-20, 05:55
 **Mantido por:** sessão A
 
 O `ESTADO.md` diz onde o projeto está. Este arquivo diz quanto falta e quando acaba, com o número que sustenta cada afirmação e com as lacunas declaradas em vez de preenchidas por estimativa confortável.
@@ -11,7 +11,7 @@ O `ESTADO.md` diz onde o projeto está. Este arquivo diz quanto falta e quando a
 
 Duas trilhas, e a de desenvolvimento cresce a cada ADR aceito, porque cada ADR publica fatias novas.
 
-### Trilha de ADR: 8 ADRs restantes
+### Trilha de ADR: 9 ADRs restantes
 
 | ADR | Camada | Depende de | Fatias que vai gerar |
 | :--- | :--- | :--- | :--- |
@@ -23,6 +23,7 @@ Duas trilhas, e a de desenvolvimento cresce a cada ADR aceito, porque cada ADR p
 | 011 | Publicação | 004, 007, 008, 009 | Desconhecido |
 | 014 | Developer Portal | 002, 007 | Desconhecido |
 | 012 | Consolidação da stack | Todos | Nenhuma. Audita os outros e encerra a trilha |
+| 015 | Notações do Diagram Studio | 001 | Desconhecido. Escopo aprovado, entra **depois da meta** (`DEC-0011`). Doze famílias, quatro problemas, dois deles sem medição |
 
 O ADR 006 saiu desta lista: **aceito em 2026-09-20** (`DDP-66`), com três fatias publicadas (G1 rotas e listagem, 2 dias; G2 edição e autosave, 3; G3 fila de revisão, 2). Sete dos oito restantes publicam fatias de implementação que ainda não existem no backlog abaixo. **O backlog de desenvolvimento de hoje é parcial por construção**, e não há como somar o total do projeto antes de o ADR 012 fechar.
 
@@ -146,4 +147,6 @@ As nove fatias de `ux-ui` são o número que merece atenção: nenhuma tela do p
 | 4 | ADR 005: F1 adaptador, F2 registry, F3 colar `html`, F4 lista frouxa | Editor real sobre o DokMD |
 | — | **Meta `DEC-0004` atingida** | Editar e publicar uma página da Wiki, ponta a ponta |
 
-Depois da meta, a trilha de ADR retoma pelo 013, e o backlog de desenvolvimento cresce com as fatias que cada ADR novo publicar.
+Depois da meta, a trilha de ADR retoma pelo 013, e o backlog de desenvolvimento cresce com as fatias que cada ADR novo publicar. O ADR 015, das notações do Diagram Studio, entra na mesma fila, por `DEC-0011`.
+
+**O que a trilha do Diagram Studio acrescenta ao total ainda não é estimável.** As doze famílias se dividem em quatro problemas de arquitetura, e dois deles, compartimentos de atributo e posição derivada da semântica, não têm medição nenhuma por trás e abrem ADR próprio. Qualquer número antes do ADR 015 ser escrito seria invenção.
