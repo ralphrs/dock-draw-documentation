@@ -322,6 +322,23 @@ loop:
 - Nada novo na fila: espere de novo, sem comentar.
 - O custo real de escutar não é a chamada, é o contexto da sessão, que viaja inteiro a cada volta. Por isso a volta vazia não deve produzir texto nenhum: nem resumo, nem "nada novo até agora", nem atualização de painel.
 
+## Agrupadores: a sprint que o Jira não tem
+
+O projeto `DDP` é do tipo business, que não tem board ágil nem sprint nativa: sprint é recurso do Jira Software. O que existe é hierarquia, e o tipo de item **Fluxo de trabalho** fica um nível acima de Tarefa.
+
+Sete agrupadores cobrem o quadro inteiro, e toda issue tem um pai:
+
+| Agrupador | O que junta |
+| --- | --- |
+| `Sprint 1` a `Sprint 4` | As fatias que estão no caminho da meta de `DEC-0004`, uma sprint por ADR |
+| `Backlog fora da meta` | Fatias de ADR aceito que a meta deixou de fora |
+| `Trilha de ADR` | Os ADRs por escrever e o trabalho de contrato |
+| `Governança e processo` | Aprovações, decisões de processo, verificação de canal, correção do kit. Separado de propósito, para que a contagem de entregas de produto não seja inflada por trabalho de processo |
+
+**Para que serve na prática.** Filtrando o quadro por um agrupador, a coluna `CONCLUÍDA` mostra só o que aquela sprint fechou, em vez de todo o histórico do projeto. É o substituto do fechamento de sprint, que o tipo de projeto não oferece.
+
+Sprint nova é um item `Fluxo de trabalho` novo, criado pela sessão A ao abrir a sprint, com o objetivo dela na descrição.
+
 ## Backlog e realimentação do quadro
 
 Toda fatia de implementação de ADR aceito e todo ADR não escrito têm issue no quadro, com o rótulo `backlog` e **sem responsável**. Sem responsável significa fora da fila de B e de C, que filtram por `assignee`: o backlog é estoque visível, não trabalho despachado.
