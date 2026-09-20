@@ -242,6 +242,11 @@ O destino do sim é `EM ANDAMENTO` e não `CONCLUÍDA` porque `CONCLUÍDA` quer 
 
 Uma issue de aprovação é escrita para caber nesse gesto: a lista de ações que o sim cobre é fechada e numerada, e A não faz nada fora dela.
 
+> [!IMPORTANT]
+> **A sessão A nunca move uma issue de rótulo `aprovacao-humana` para `EM ANDAMENTO`.** Esse movimento é a assinatura do humano, e é a única coisa que distingue uma aprovação dada de uma aprovação pedida. O conector do Atlassian é da conta, não da sessão, então todo comentário e toda transição das três sessões e do Lovable aparecem com o mesmo autor do humano. O histórico do cartão não sabe dizer quem arrastou. A separação entre pedir e aprovar existe porque a sessão A se abstém do gesto, e não porque o Jira a impeça.
+>
+> Os movimentos que A faz numa issue de aprovação são dois: criar em `AGUARDANDO APROVAÇÃO`, e fechar em `CONCLUÍDA` depois de executar. Se uma issue de aprovação aparecer em `EM ANDAMENTO` e A não souber de resposta nenhuma, a saída é perguntar ao humano, nunca presumir o sim.
+
 Nos dois caminhos, A registra o sim no comentário de resposta com `aprovado_por: humano`, porque B e C leem a issue, não a conversa.
 
 ## Escuta
