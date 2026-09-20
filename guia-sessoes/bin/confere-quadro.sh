@@ -198,6 +198,24 @@ HISTORICAS = {
 
 TETO = 10000
 
+# --------------------------------------------------------------------------
+# 8. Issue que pede aprovação sem fazer pergunta. Defeito medido em
+#    2026-09-20: DDP-140, DDP-141 e DDP-142 nasceram afirmando e propondo,
+#    sem uma linha pedindo decisão. O humano então precisa adivinhar o que o
+#    arraste do cartão significa, e o gesto de aprovar perde o sentido.
+#    O sinal é a seção "A pergunta" na descrição, não num comentário: quem
+#    abre o cartão pela primeira vez lê a descrição.
+# --------------------------------------------------------------------------
+PEDE = ('project = DDP AND labels = "aprovacao-humana" '
+        'AND status != "CONCLUÍDA"')
+for i in busca(PEDE, "key,summary,description"):
+    desc = i["fields"].get("description") or ""
+    if not re.search(r"^h[1-6]\.\s*A pergunta\s*$", desc, re.M):
+        achados.append((i["key"],
+            "pede aprovação humana e não tem seção \"A pergunta\" na descrição. "
+            "Cartão que só afirma obriga o humano a adivinhar o que o arraste "
+            "aprova. Escreva a pergunta cuja resposta muda o trabalho."))
+
 import pathlib
 dir_ordens = pathlib.Path(os.environ["raiz"]) / "adrs" / "_work" / "ordens"
 for arq in sorted(dir_ordens.glob("*.md")):

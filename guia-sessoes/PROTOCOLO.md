@@ -325,6 +325,10 @@ O destino do sim é `EM ANDAMENTO` e não `CONCLUÍDA` porque `CONCLUÍDA` quer 
 
 Uma issue de aprovação é escrita para caber nesse gesto: a lista de ações que o sim cobre é fechada e numerada, e A não faz nada fora dela.
 
+**Toda issue de aprovação termina numa seção `A pergunta`, na descrição.** Não num comentário, porque quem abre o cartão pela primeira vez lê a descrição. A pergunta é aquela cuja resposta muda o trabalho, e o texto diz o que cada resposta faria de diferente. Depois dela vem uma linha dizendo o que o arraste significa naquele cartão específico.
+
+Cartão que só afirma e propõe obriga o humano a inferir o que o gesto aprova, e o gesto é justamente a única assinatura que existe. `DDP-140`, `DDP-141` e `DDP-142` nasceram assim em 2026-09-20 e precisaram ser corrigidas depois de abertas. O check 8 reprova por máquina.
+
 > [!IMPORTANT]
 > **A sessão A nunca move uma issue de rótulo `aprovacao-humana` para `EM ANDAMENTO`.** Esse movimento é a assinatura do humano, e é a única coisa que distingue uma aprovação dada de uma aprovação pedida. O conector do Atlassian é da conta, não da sessão, então todo comentário e toda transição das três sessões e do Lovable aparecem com o mesmo autor do humano. O histórico do cartão não sabe dizer quem arrastou. A separação entre pedir e aprovar existe porque a sessão A se abstém do gesto, e não porque o Jira a impeça.
 >
@@ -383,7 +387,7 @@ loop:
 
 Toda regra deste arquivo nasceu de um defeito medido, e por muito tempo todas viviam só como prosa aqui. Prosa depende de alguém lembrar de ler, o que é exatamente o defeito que a auditoria de 2026-09-20 nomeou nas restrições do ledger: afirmação sem mecanismo que a reprove. As regras de processo tinham a mesma falha, e a prova é que a sessão A violou a regra de formato de canal quinze minutos depois de escrevê-la.
 
-`guia-sessoes/bin/confere-quadro.sh` reprova, por máquina, sete defeitos que já aconteceram:
+`guia-sessoes/bin/confere-quadro.sh` reprova, por máquina, oito defeitos que já aconteceram:
 
 | # | O que reprova | De onde veio |
 | :-- | :--- | :--- |
@@ -394,6 +398,7 @@ Toda regra deste arquivo nasceu de um defeito medido, e por muito tempo todas vi
 | 5 | Emenda da sessão A com código só em comentário, fora da descrição | `DDP-113`, entregue sem a coluna que a emenda pedia |
 | 6 | Ordem versionada acima de 10.000 bytes | O teto da S1c foi descoberto na mão, com a ordem já escrita, e a da S1c1 estourou de novo na volta da revisão (`DDP-124`) |
 | 7 | `information_schema` dentro de bloco SQL executável | `DDP-121`. A view filtra por privilégio e devolve zero linha sem provar nada (`DDP-125`) |
+| 8 | Issue de rótulo `aprovacao-humana` sem a seção `A pergunta` na descrição | `DDP-140`, `DDP-141` e `DDP-142`, abertas afirmando e propondo, sem nada a responder |
 
 **Ela roda dentro do `aguarda-fila.sh`, na partida da escuta da sessão A**, e não como comando à parte. Religar a escuta é o único ponto por onde a sessão passa em todo ciclo, então é onde a conferência não pode ser esquecida: esquecê-la significa parar de escutar, que é parar de trabalhar. A saída aparece no mesmo lugar onde a sessão lê o motivo de ter acordado.
 
