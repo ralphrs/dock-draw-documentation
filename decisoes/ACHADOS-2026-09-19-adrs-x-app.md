@@ -75,5 +75,13 @@ São três fontes discordando sobre o mesmo fato. O ledger é a fonte de verdade
 | 4 | Classes de tema: `.theme-*` ou `.dark` | proposta ao humano, e afeta o teste 6 do ADR 005 | aguarda o humano |
 | 5 | `nitro` beta | proposta ao humano | aguarda o humano |
 | 6 | Custo das flags estritas de TS para `src/content-format` | tarefa `T`, entra na Emenda 1 ou numa emenda própria | a criar |
-| 7 | Verificar o alvo real do Nitro abrindo o preset do Lovable | tarefa `T`, qualifica a seção 1 da Emenda 1 | a criar |
+| 7 | Verificar o alvo real do Nitro abrindo o preset do Lovable | tarefa `T`, qualifica a seção 1 da Emenda 1 | **verificado**, correção do texto em T-0009 |
 | 8 | Dependências do ADR 001 ausentes do contrato no ledger | `ledger` | aguarda o humano |
+
+## Adendo de 2026-09-20: o alvo real do Nitro (pendência 7)
+
+Verificado pela sessão B durante a T-0008, baixando e inspecionando o pacote no registro npm: `@lovable.dev/vite-tanstack-config@2.20.0` força `nitroOpts.preset = "cloudflare-module"` com `cloudflare: { nodeCompat: true, ... }` dentro de um build do Lovable.
+
+Efeito sobre a Emenda 1: a seção 1 justifica a proibição de builtin de Node em `src/content-format` dizendo que o Cloudflare Workers não tem Node a menos que `nodejs_compat` seja ligado. A exceção está ligada no preset do app, então a razão citada não sustenta mais a restrição. A restrição continua de pé por outro motivo, o navegador, que carrega o mesmo módulo pelo adaptador do editor do ADR 005 e não admite exceção equivalente. A correção do texto é a T-0009.
+
+A ordem F0 já usa a razão certa: a verificação que ela manda rodar é o build de plataforma browser.

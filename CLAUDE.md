@@ -12,15 +12,15 @@ Seja direto: proposta primeiro, justificativa depois. Discorde quando eu estiver
 | `adrs/` | ADRs gerados (`ADR-NNN-slug.md`) e `LEDGER.md` | Você, com minha aprovação |
 | `adrs/_work/` | Escopo aprovado, fichas de pesquisa por candidata, rascunhos | Você, livremente |
 | `decisoes/` | Decisão que não é contrato de camada: numeração, sequenciamento, meta de trilha, processo, regra do kit. Mais `sprints/` e o índice `REGISTRO.md` | A sessão A. B registra no "Resultado" da tarefa e A promove |
-| `guia-sessoes/` | Protocolo entre a sessão A (arquiteto) e a sessão B (executor), modelos e scripts | Só eu. Não edite |
-| `tasks/` | Tarefas, dúvidas e respostas trocadas entre as sessões A, B e C | As sessões, pelos scripts de `guia-sessoes/bin/` |
-| `/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app` | Projeto do app Lovable (`dok-draw-app`), fonte de verdade da arquitetura base | A e B: só leitura. C: desenvolvimento em branch `dev/D-*` |
+| `guia-sessoes/` | Protocolo das sessões A, B e C, prompts de abertura, modelos de issue e de comentário | A sessão A, com a edição aparecendo na tela |
+| `tasks/` | Histórico do protocolo por arquivo, usado até 2026-09-20. As sessões hoje conversam por issues do Jira, projeto `DDP` (`decisoes/DEC-0009-comunicacao-por-jira.md`) | Ninguém. Só leitura |
+| `/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app` | Projeto do app Lovable (`dok-draw-app`), fonte de verdade da arquitetura base | Todas as sessões só leem. Quem escreve código é o agente do Lovable (`decisoes/DEC-0007-lovable-como-implementador.md`) |
 
 ## Regras de toda sessão
 
 - Antes de propor qualquer tecnologia, leia `insumos/BASE.md` e `adrs/LEDGER.md`. O ledger é a fonte de verdade das decisões, incluindo a seção "Propostos vinculantes".
 - Candidata que viola a arquitetura base ou um contrato do ledger é eliminada, a menos que você proponha **explicitamente** reabrir o ADR anterior, com custo. Nunca contorne um contrato em silêncio.
-- **Nunca edite `adrs/LEDGER.md` nem um ADR existente sem minha aprovação explícita.** Proponha o diff e espere. Quando as sessões trabalham pelo protocolo de `guia-sessoes/PROTOCOLO.md`, aprovação explícita é uma resposta `A-Q-*` com `aprovado_por: humano`, e nada mais.
+- **Nunca edite `adrs/LEDGER.md` nem um ADR existente sem minha aprovação explícita.** Proponha o diff e espere. Quando as sessões trabalham pelo protocolo de `guia-sessoes/PROTOCOLO.md`, aprovação explícita é um comentário de resposta da sessão A com `aprovado_por: humano`, e nada mais.
 - Um ADR por sessão. Se surgir necessidade de mudar outro ADR, pare e me diga.
 - Versões e licenças sempre conferidas na web na data da pesquisa, com link. README não é evidência.
 - ADRs em Markdown puro, com alertas GFM (`> [!NOTE]`), não callouts `:::`.
@@ -32,7 +32,7 @@ Seja direto: proposta primeiro, justificativa depois. Discorde quando eu estiver
 O app Lovable fica em `/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app`, pasta irmã deste repositório. É a **fonte de verdade da arquitetura base**: `package.json` com as versões reais, os tipos do Supabase, a estrutura de rotas e componentes.
 
 - **Leitura livre.** Prefira sempre o arquivo do app a uma cópia em `insumos/`. `insumos/package.json` e `insumos/supabase-types-dokdraw.ts` são retratos de 2026-09-19. Se divergirem, vale o app, e a divergência vira pendência no ledger.
-- **Só a sessão C altera o app**, por tarefas `D` que a sessão A cria a partir das fatias dos ADRs aceitos, sempre numa branch `dev/D-NNNN-slug`. As sessões A e B só leem. Merge na `main`, `push`, dependência nova, migration e política RLS são a categoria `app-release` do protocolo e exigem aprovação do humano. O Lovable sincroniza com a `main` do GitHub, então o que chega lá aparece no projeto do Lovable.
+- **Nenhuma sessão escreve código no app.** Quem implementa é o agente do Lovable, que recebe uma ordem por `send_message`, escrita pela sessão B a partir do contrato da fatia e revisada pela sessão C antes de rodar. O Lovable commita direto na `main`, sem branch, e o commit atualiza o preview sem alterar a produção. Publicar é a ação separada `deploy_project`, categoria `app-release`, junto com dependência nova, migration e política RLS, e exige aprovação do humano. Desenho completo em `decisoes/DEC-0007-lovable-como-implementador.md`.
 - **Spike nunca roda no app.** Spike continua em `adrs/_work/`.
 - **Nunca ler nem editar** `.env*` do app.
 

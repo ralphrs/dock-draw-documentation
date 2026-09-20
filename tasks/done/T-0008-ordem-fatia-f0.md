@@ -85,3 +85,47 @@ A ordem amplia isso com o que o levantamento mostrou ser necessário para a fati
 ## Nota sobre aprovação
 
 A ordem final inclui mudança no `package.json` do app, que é categoria `app-release`. Essa aprovação é da sessão A com o humano, depois que a ordem passar pela revisão da sessão C. Você não precisa pedir nada.
+
+## Resultado
+
+### Entregáveis
+
+`adrs/_work/ordens/ORDEM-F0-fundacao-content-format.md`, com a ordem (bloco de código, 10 passos numerados) e a derivação (tabela de 16 linhas). Nenhum arquivo do app tocado, nenhum commit.
+
+### Critério de pronto
+
+1. **A ordem nomeia cada pacote com a versão exata do contrato.** ✔ Os 14 pacotes do passo 1 mais `@types/mdast` do passo 2 copiados um a um de `adrs/LEDGER.md`, bloco do ADR 002, conferidos linha a linha nesta sessão contra o arquivo real.
+2. **A ordem resolve o `zod`.** ✔ Passo 1: "Não instale `zod`... importa sempre de `zod/v4`, nunca de `zod` direto", com o motivo (o app já tem `^3.25.76`, aceito pelo contrato) na derivação.
+3. **A ordem especifica o runner de teste.** ✔ `vitest@5.0.1`, script `test`, `environment: 'node'` com justificativa (passo 5). Versão escolhida por já ter rodado no S-1 sobre a mesma versão de Vite do app, peer dependency conferida no registro npm nesta sessão (`vitest@^8.0.0` aceito, app tem `vite@8.1.5`).
+4. **A ordem diz onde as fixtures ficam e em que formato chegam, com a decisão registrada.** ✔ Cópia versionada dentro de `dok-draw-app` (`src/content-format/testing/fixtures/`), decisão e alternativa descartada na seção "Decisões tomadas" da própria ordem. Achado durante a escrita: o Lovable não alcança `dok-draw-documentation`, então a cópia virou pré-requisito de despacho (feito por quem envia a ordem), não um passo dentro do bloco que o Lovable executa. Sem `fs` no código de produção: o teste que lê as fixtures fica em `src/content-format/testing/`, fora do `entry` do build de plataforma browser e coberto pelo `ignores` do bloco de ESLint.
+5. **A ordem inclui as três verificações de fronteira**, cada uma com comando. ✔ Passo 5 (ambiente Vitest), passo 7 (ESLint restrito), passo 8 (build de plataforma browser, `bun run check:content-format-env`).
+6. **Critério de pronto verificável por comando.** ✔ Passo 10 lista seis comandos, cada um com o código de saída ou a contagem esperada (2 de 2 testes, zero linhas `UNRESOLVED_IMPORT`).
+7. **A ordem proíbe o que é fácil de violar.** ✔ Seção "Restrições": sem `tailwind.config`, sem editar `tsconfig.json`, sem pacote fora da lista, sem editar arquivo fora do escopo nomeado, sem `.env*`, sem deploy.
+8. **Nenhuma decisão em aberto.** Duas rodadas de releitura encontraram e corrigiram duas ambiguidades reais antes de considerar a ordem pronta:
+   - O passo original de copiar fixtures pedia ao Lovable acessar `../dok-draw-documentation/...`, caminho que o agente não alcança (ele só opera dentro de `dok-draw-app`). Corrigido: virou pré-requisito de despacho, fora do bloco que o Lovable recebe.
+   - O padrão `node:*` do bloco de ESLint não cobre `node:fs/promises` (asterisco simples não cruza `/` em glob). Corrigido para `node:**`.
+
+   Depois das duas correções, releitura final não achou frase que admita duas implementações diferentes.
+9. **Estilo conforme `insumos/ESTILO-ADR.md`, inclusive dentro da ordem.** ✔ Verificado por comando:
+   ```
+   $ grep -n "—" adrs/_work/ordens/ORDEM-F0-fundacao-content-format.md; grep -n ";" ...
+   (vazio)
+   $ grep -niE "\beu\b|\bnós\b|\bnosso\b|optou-se|decidimos|escolhemos" ...
+   (vazio)
+   ```
+   Os seis blocos de código TS/JS/JSON foram validados com o compilador TypeScript real do spike (`ts.transpileModule`, sem erro de sintaxe em nenhum), e o `manifest.json` real das fixtures conferido em 30 entradas.
+
+### Decisões tomadas
+
+A ordem em si registra quatro decisões na própria seção "Decisões tomadas" do arquivo (fixtures como cópia versionada, cópia como pré-requisito de despacho em vez de passo do Lovable, `vitest.config.ts` separado do `vite.config.ts` do app, `index.ts` como placeholder de uma linha). Resumo aqui, por completude do registro desta tarefa:
+
+- **Justificativa da restrição de ambiente (navegador) escolhida no lugar da justificativa da Emenda 1 (Cloudflare).** Achado ao baixar e inspecionar `@lovable.dev/vite-tanstack-config@2.20.0` do registro npm nesta sessão: o preset força `nitroOpts.preset = "cloudflare-module"` com `cloudflare: { nodeCompat: true, ... }` dentro de um build do Lovable. `nodeCompat: true` habilita compatibilidade com Node dentro do Workers, o que enfraquece "Cloudflare não tem Node" como razão. Alternativa descartada: manter a justificativa da Emenda 1 sem qualificação. Custo aceito: a Emenda 1 (seção 1, `riscos_abertos`) fica com uma premissa desatualizada até quem revisar decidir se atualiza o texto à luz de `nodeCompat: true`, achado que não estava em `decisoes/ACHADOS-2026-09-19-adrs-x-app.md`. Esta tarefa não editou a Emenda 1 nem `ACHADOS`, por estarem fora do escopo de `T-0008` e de `decisoes/`.
+- **`group: ["node:**"]`** em vez de `["node:*"]` no bloco de ESLint, para cobrir subcaminhos como `node:fs/promises`. Sem custo aceito relevante, é a forma correta do glob para o que a regra já pretendia fazer.
+
+## Revisão do arquiteto
+
+- **Veredito:** aceita.
+- **Motivo:** a ordem é executável sem decisão em aberto, que é o único critério que importa num texto que vai para um agente que não pergunta. Dois achados feitos durante a escrita valem mais que o texto em si: o Lovable não alcança `dok-draw-documentation`, o que mata o passo de copiar fixtures de fora e o transforma em pré-requisito de despacho, e `node:*` não cobre `node:fs/promises` em glob. Os dois seriam falha silenciosa na primeira execução.
+- **Conferido pelo arquiteto, contra o registro npm e o `package.json` do app:** `vitest` 5.0.1 é a versão atual e aceita `vite ^6.4.0 || ^7.0.0 || ^8.0.0`, o app tem `vite 8.1.5` e `zod ^3.25.76`. As três escolhas da ordem batem.
+- **Achado que sai desta tarefa:** `@lovable.dev/vite-tanstack-config@2.20.0` força `nitroOpts.preset = "cloudflare-module"` com `cloudflare.nodeCompat: true`. A Emenda 1 ao ADR 002 justifica a restrição de ambiente com "Cloudflare não tem Node", premissa que `nodeCompat: true` enfraquece. B agiu certo ao não editar a Emenda por conta própria. Vira T-0009.
+- **Tarefas derivadas:** T-0009 (atualizar a premissa de ambiente da Emenda 1 e o `ACHADOS`), D-0001 (revisão e despacho da ordem F0).

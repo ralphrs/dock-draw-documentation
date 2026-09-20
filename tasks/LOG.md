@@ -38,3 +38,9 @@ Uma linha por evento, anexada pelos scripts de `guia-sessoes/bin/`. Não editar 
 2026-09-19T23:19:49 B consume  Q-0003-T-0007.md -> tasks/done
 2026-09-19T23:19:49 B consume  A-Q-0003.md -> tasks/done
 2026-09-19T23:20:05 B claim    T-0008-ordem-fatia-f0.md -> tasks/in-progress
+2026-09-19T23:32:53 B complete T-0008-ordem-fatia-f0.md -> tasks/done
+2026-09-19T23:57:51 A create   D-0001-revisar-ordem-f0.md -> tasks/todo
+2026-09-19T23:57:55 C claim    D-0001-revisar-ordem-f0.md -> tasks/in-progress
+2026-09-19T23:58:18 A create   T-0009-premissa-de-ambiente-emenda-1.md -> tasks/todo
+2026-09-19T23:58:55 A create   T-0010-custo-das-flags-estritas.md -> tasks/todo
+2026-09-20T00:03:58 C complete D-0001-revisar-ordem-f0.md -> tasks/done
