@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 02:20
+**Atualizado em:** 2026-09-20, 02:35
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo. A sessão A atualiza a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -55,7 +55,7 @@ Do `insumos/BASE.md`. Nada aqui é entrega, é o alvo.
 | 013 | Tenancy e acesso | Não escrito | Resolve C-3 e C-7 |
 | 014 | Developer Portal | Não escrito | Depende do 007 |
 
-**Agora:** a Emenda 1 está a uma tarefa de ser proposta ao ledger. A seção 3 foi reescrita, o alvo real do Nitro foi verificado (`DDP-1`) e o custo das flags estritas foi medido (`DDP-2`). Falta `DDP-7`: a quinta rodada de conferência do harness pôs três faixas numéricas da seção 3 fora do que o texto declara, e número de contrato conferido é o que separa esta emenda da primeira medição, que caiu quando o instrumento foi reentregue.
+**Agora:** a Emenda 1 está com o humano, em `DDP-8`, esperando sim ou não. Tudo o que travava foi fechado: a seção 3 reescrita, o alvo do Nitro verificado (`DDP-1`), o custo das flags estritas medido (`DDP-2`) e a quinta rodada de conferência incorporada (`DDP-7`), que corrigiu três faixas numéricas fora do que o texto declarava.
 
 **Depois:** 013 Tenancy → 007 → 008 e 009 → 010 e 011 → 014 → 012.
 
@@ -126,8 +126,8 @@ A fatia F0 é maior do que a seção 11 do ADR 002 previa, porque o critério de
 
 | Sessão | Papel | Agora |
 | :--- | :--- | :--- |
-| **A** | Arquiteto principal, gerente de projeto, scrum master | Fechou `DDP-1`, `DDP-2`, `DDP-5` e `DDP-6`. Abriu `DDP-7` |
-| **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Entregou `DDP-1` e `DDP-2`, as duas aceitas. Tem `DDP-7` em A FAZER |
+| **A** | Arquiteto principal, gerente de projeto, scrum master | Fechou `DDP-1`, `DDP-2`, `DDP-5`, `DDP-6` e `DDP-7`. Esperando o humano em `DDP-8` |
+| **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Entregou `DDP-1`, `DDP-2` e `DDP-7`, as três aceitas. Sem issue aberta |
 | **C** | Especialista em arquitetura, UX e UI, revisora | Revisou o resultado da F0 (`DDP-5`, aceita). Sem issue aberta |
 | **Lovable** | Implementador. Executa ordem, não decide | Lê o quadro `DDP` direto, desde 2026-09-20. Canal verificado em `DDP-6` |
 
@@ -139,9 +139,9 @@ Protocolo em `guia-sessoes/PROTOCOLO.md`. Decisões em `decisoes/REGISTRO.md`. A
 
 | O que | Categoria | Desde |
 | :--- | :--- | :--- |
-| Nada aberto | | O `bun` 1.4.2 foi instalado, e o `app-release` da F0 já foi aprovado e executado |
+| `DDP-8`: aplicar a Emenda 1 | `ledger`, `aceite-adr`, `fora-de-work` | 2026-09-20 |
 | Ordem das colunas do quadro e campos da tela de criação | configuração do Jira | Só pela interface, o MCP não expõe administração. Não bloqueia nada |
-| Aplicar a Emenda 1 ao ADR 002 e ao ledger | `ledger`, `aceite-adr` e `fora-de-work` | Ainda não pedido. Espera `DDP-7`, a última conferência numérica |
+| Aplicar a Emenda 1 ao ADR 002 e ao ledger | `ledger`, `aceite-adr` e `fora-de-work` | **`DDP-8`, pedido em 2026-09-20.** Recomendação: aplicar. As quatro ações que o sim cobre estão listadas na issue |
 
 ---
 
