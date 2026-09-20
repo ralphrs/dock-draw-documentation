@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 11:00
+**Atualizado em:** 2026-09-20, 11:20
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -132,7 +132,7 @@ A fatia F0 é maior do que a seção 11 do ADR 002 previa, porque o critério de
 
 A sprint 1 está parada esperando duas respostas do dono do produto, e as sessões B e C ficariam ociosas. O recorte da primeira fatia do ADR 003 começou (`DDP-94`), porque não depende de nada da sprint 1 e a execução é gated de qualquer forma.
 
-**A primeira migração do projeto está aplicada e aceita** (`493586b`, `DDP-103`), conferida contra o catálogo do Postgres coluna por coluna. **As cinco sub-fatias seguintes estão paradas** na decisão de `DDP-102`, sobre os dois históricos de migração.
+**A primeira migração do projeto está aplicada e aceita** (`493586b`, `DDP-103`), conferida contra o catálogo do Postgres coluna por coluna. A decisão sobre o mecanismo saiu (`DEC-0013`): os dois históricos ficam, com a fronteira em 2026-09-20, e a sequência voltou a andar pela S1b (`DDP-109`).
 
 **A fatia S1 não cabe numa ordem.** Os blocos SQL do ADR 003 somam 15.313 caracteres, só de DDL, contra um teto de 10.000 para a ordem inteira. Ela precisa ser recortada em sub-fatias antes de virar ordem, cada uma aplicável sozinha e deixando o schema consistente.
 
