@@ -216,16 +216,31 @@ A troca de editor depois de aceito exige reescrever o adaptador (`src/editors/md
 
 Em ordem de dependência:
 
-| Fatia | Critério de pronto | Obrigatória antes de liberar o editor? |
-| --- | --- | --- |
-| F1: adaptador via DokAST, entrada e saída | `importMdastTreeToLexical`/`exportLexicalTreeToMdast` integrados ao shell real, 30/30 no ambiente de produção (não só no spike descartável) | Sim |
-| F2: registry `core` + `edit`, teste de completude por nome | Toda diretiva do registro do ADR 002 tem entrada `edit`, o build falha se faltar uma | Sim |
-| F3: exceção ao colar de árvore com nó `html` | `insertTree` recusa nós `html` e `mdxJsx*` com diagnóstico visível, sem lançar exceção não capturada (falha confirmada na seção 7 e em `mdxeditor/RESULTADO.md`, "13b") | Sim |
-| F4: lista frouxa (`spread` real de `list` e `listItem` via `NodeState` do Lexical, na importação e na exportação) | Os 12 casos de `extra/` passam na carga, na alternância e depois de uma edição (36/36), mais um caso novo de lista frouxa fora de citação e de callout que a fatia F5 do ADR 002 acrescenta ao corpus (pendência 14 do ledger). `x08-citacao-ul-ul` passa pela correção, não mais pelo acidente de reparse descrito em `mdxeditor/RESULTADO.md` | Sim |
-| F5: `<RevisionView>` com posição de origem por bloco | Depende do ADR 007 implementar a fatia `read`. Critério de pronto do 007, premissa registrada na seção 7 | Não desta fatia, mas bloqueia E-12 em produção |
-| F6: link de título vivo vazio (D-2, fixtures 26 e 27) | `save === expected.md` nas duas, no apagar e no colar | Não |
-| F7: notas de rodapé editáveis | Substitui a ilha opaca por edição real de `footnoteReference`/`footnoteDefinition` | Não |
-| F8: UI de restrição de estrutura (`tabs` só contém `tab`, `steps` só uma lista ordenada) | Inserção fora da estrutura bloqueada na UI, não só no `validateDok` | Não |
+| Fatia | Critério de pronto | Obrigatória antes de liberar o editor? | Dias |
+| --- | --- | --- | ---: |
+| F1: adaptador via DokAST, entrada e saída | `importMdastTreeToLexical`/`exportLexicalTreeToMdast` integrados ao shell real, 30/30 no ambiente de produção (não só no spike descartável) | Sim | 3 |
+| F2: registry `core` + `edit`, teste de completude por nome | Toda diretiva do registro do ADR 002 tem entrada `edit`, o build falha se faltar uma | Sim | 1 |
+| F3: exceção ao colar de árvore com nó `html` | `insertTree` recusa nós `html` e `mdxJsx*` com diagnóstico visível, sem lançar exceção não capturada (falha confirmada na seção 7 e em `mdxeditor/RESULTADO.md`, "13b") | Sim | 0,5 |
+| F4: lista frouxa (`spread` real de `list` e `listItem` via `NodeState` do Lexical, na importação e na exportação) | Os 12 casos de `extra/` passam na carga, na alternância e depois de uma edição (36/36), mais um caso novo de lista frouxa fora de citação e de callout que a fatia F5 do ADR 002 acrescenta ao corpus (pendência 14 do ledger). `x08-citacao-ul-ul` passa pela correção, não mais pelo acidente de reparse descrito em `mdxeditor/RESULTADO.md` | Sim | 1,5 |
+| F5: `<RevisionView>` com posição de origem por bloco | Depende do ADR 007 implementar a fatia `read`. Critério de pronto do 007, premissa registrada na seção 7 | Não desta fatia, mas bloqueia E-12 em produção | 2 |
+| F6: link de título vivo vazio (D-2, fixtures 26 e 27) | `save === expected.md` nas duas, no apagar e no colar | Não | 1 |
+| F7: notas de rodapé editáveis | Substitui a ilha opaca por edição real de `footnoteReference`/`footnoteDefinition` | Não | 3 |
+| F8: UI de restrição de estrutura (`tabs` só contém `tab`, `steps` só uma lista ordenada) | Inserção fora da estrutura bloqueada na UI, não só no `validateDok` | Não | 2 |
+
+**Meta de `DEC-0004` (F1 a F4): 6 dias.** Total do ADR (F1 a F8): 14 dias. A coluna de dias não muda nenhum critério de pronto nem a obrigatoriedade já decidida, só acrescenta o esforço estimado de cada fatia, ausente na aceitação original.
+
+### Base da estimativa
+
+O número de cada fatia aponta para o que sustenta, não para um cálculo à parte:
+
+- **F1 (3 dias).** O adaptador já existe e já passou pelo S-1: `src/editors/mdxeditor/` no spike soma 873 linhas (818 de TS/TSX) e uma suíte Playwright de 670 linhas, entre 94 e 99 testes passando (`mdxeditor/RESULTADO.md`, seção "Adaptador"). O trabalho da fatia é portar esse código para o shell real do app e reverificar 30/30 em produção, não escrevê-lo do zero. Três dias cobrem a integração com rotas, props reais (`searchPages`, `pendingPageUri`, hoje só stub no spike) e a nova rodada de verificação, acima do que só copiar arquivo exigiria.
+- **F2 (1 dia).** O registry `core` (37 linhas) e `edit` (89 linhas) também já existem no spike (`src/content-components/`). Falta o teste de completude por nome, que não existe ainda em nenhum lugar, e a integração ao shell real. Um dia cobre um registry pequeno e já prototipado mais um teste novo e pequeno.
+- **F3 (0,5 dia).** Medido no próprio spike: `mdxeditor/RESULTADO.md`, tabela do item 13, linha "Árvore colada com nó html": "0,5 (recusar nós html e mdxJsx* no insertTree, com diagnóstico)". Não é estimativa desta tarefa, é o número que o spike já registrou ao caracterizar a falha.
+- **F4 (1,5 dias).** Já estava na seção 13 (`riscos_abertos`): "Correção estimada em 1 a 1,5 dia". O teto da própria faixa vira o número da tabela, mesmo critério usado pela trava de prazo da parada 4 do spike (seção 8), que também fixou 1,5 dia para o mesmo trabalho.
+- **F5 (2 dias).** Sem protótipo no spike, porque depende do ADR 007, ainda não escrito. O desenho já está fechado na seção 6 ("Ancoragem de comentário e resolução do C-4"): ouvir a seleção do usuário em `<RevisionView>`, converter para faixa de linhas a partir de `data-line-start`/`data-line-end`, gravar em `content.revision_comments`. Dois dias cobrem esse fluxo com o desenho já resolvido, sem decisão de arquitetura pendente.
+- **F6 (1 dia).** Já estava na seção 9: "Fica como fatia não obrigatória, estimada em 1 dia."
+- **F7 (3 dias).** Já estava na seção 9: "Edição real estimada em 2 a 3 dias". O teto da faixa vira o número da tabela, mesmo critério do F4.
+- **F8 (2 dias).** Sem protótipo no spike e sem medição. O escopo é estreito (só dois nomes de diretiva, `tabs` e `steps`, com a regra de estrutura já descrita nesta seção), mas exige mexer no ciclo de vida de nó do Lexical (transform ou validação de estado do editor) para bloquear na UI o que hoje só o `validateDok` recusa no save. Dois dias é estimativa informada pela natureza do trabalho, não medição, e fica marcada como tal.
 
 ## 12. Fora de escopo
 
