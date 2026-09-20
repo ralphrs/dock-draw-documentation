@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 09:05
+**Atualizado em:** 2026-09-20, 09:40
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -128,6 +128,8 @@ A fatia F0 é maior do que a seção 11 do ADR 002 previa, porque o critério de
 
 A sprint 1 está parada esperando duas respostas do dono do produto, e as sessões B e C ficariam ociosas. O recorte da primeira fatia do ADR 003 começou (`DDP-94`), porque não depende de nada da sprint 1 e a execução é gated de qualquer forma.
 
+**A ordem da primeira sub-fatia está pronta e publicada** (`DDP-98`), aprovada pela sessão C em duas passadas, com a aprovação de crédito e `app-release` esperando em `DDP-99`.
+
 **A fatia S1 não cabe numa ordem.** Os blocos SQL do ADR 003 somam 15.313 caracteres, só de DDL, contra um teto de 10.000 para a ordem inteira. Ela precisa ser recortada em sub-fatias antes de virar ordem, cada uma aplicável sozinha e deixando o schema consistente.
 
 **É a primeira fatia do projeto que toca banco.** Três coisas mudam: migração é categoria `app-release` e exige aprovação separada da de crédito; desfazer não é `git revert`, porque reverter o arquivo não desfaz o que foi aplicado; e o mecanismo tem formato próprio, `supabase/migrations/` com carimbo de tempo.
@@ -163,6 +165,10 @@ Protocolo em `guia-sessoes/PROTOCOLO.md`. Decisões em `decisoes/REGISTRO.md`. A
 ---
 
 ## 6. Riscos que eu estou observando
+
+**O gargalo mudou de lugar, e agora é a aprovação.** Nas primeiras fatias o gargalo era a qualidade da ordem: a F1 levou três passadas de revisão e quatro famílias de defeito. Depois das seis regras que saíram dela, a F4 passou de primeira e a S1a em duas. Em 2026-09-20, das 09:00 às 09:40, três itens ficaram parados esperando resposta do dono do produto enquanto as sessões B e C terminavam tudo que não dependia dele.
+
+Isso não é queixa, é medição. Se a espera virar regra em vez de exceção, vale discutir pré-autorizar categorias de baixo risco, por exemplo crédito abaixo de um teto por fatia. Nenhuma proposta nesse sentido foi feita, porque a amostra é de um dia.
 
 **O processo cresceu mais rápido que o produto, e a regra que impedia isso foi quebrada quatro vezes.** A contagem e o teste que passa a valer estão na seção 4 do `PLANO.md`: mudança de processo só entra se alguém estiver parado esperando por ela.
 
