@@ -18,6 +18,7 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 
 | Id | Data | Decisão | Quem decidiu |
 | --- | --- | --- | --- |
+| [DEC-0008](DEC-0008-adr-006-vago.md) | 2026-09-19 | O ADR 006 fica vago em vez de receber camada inventada, e o prompt antigo dele é descartado | Arquiteto, por delegação |
 | [DEC-0007](DEC-0007-lovable-como-implementador.md) | 2026-09-19 | O Lovable implementa e não decide, a sessão C vira revisora de arquitetura, e o gate de publicação passa do merge para o `deploy_project` | Humano |
 | [DEC-0006](DEC-0006-quatro-decisoes-delegadas.md) | 2026-09-19 | Status dos ADRs 002 a 004 corrigido, o app manda sobre o BASE em tema e formatador, portal em DokMD no git e com o número 014 | Arquiteto, por delegação |
 | [ACHADOS](ACHADOS-2026-09-19-adrs-x-app.md) | 2026-09-19 | Levantamento dos ADRs contra o código real. A Wiki não existe no app, e nenhuma das 27 dependências dos ADRs 002 e 005 está instalada | Arquiteto |
