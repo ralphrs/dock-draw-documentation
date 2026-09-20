@@ -23,7 +23,9 @@
       "Bash(git -C /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app log:*)",
       "Bash(git -C /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app show:*)",
       "Bash(git -C /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app status:*)",
-      "Bash(git -C /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app branch:*)"
+      "Bash(git -C /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app branch:*)",
+      "Bash(guia-sessoes/bin/espera.sh:*)",
+      "Bash(guia-sessoes/bin/instalar-fixtures.sh:*)"
     ],
     "deny": [
       "Edit(~/workspace/000-Pessoal/codebase/dok-draw-app/**)",

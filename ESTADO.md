@@ -113,7 +113,7 @@ Fora da meta: busca, export, sync, publicação pública, navegação. E a rende
 
 | # | Fatia | Estado |
 | :--- | :--- | :--- |
-| 1 | ADR 002 F0: dependências, runner de teste, fixtures no app | **Ordem escrita e aprovada.** Espera o `app-release` em `DDP-3` |
+| 1 | ADR 002 F0: dependências, runner de teste, fixtures no app | **Despachada ao Lovable.** Fixtures na `main` do app (`8cf007c`), ordem enviada |
 | 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | Não começou |
 | 3 | ADR 002 F2: validação | Não começou |
 | 4 | ADR 002 F3: URIs e referências | Não começou |
@@ -139,7 +139,7 @@ Protocolo em `guia-sessoes/PROTOCOLO.md`. Decisões em `decisoes/REGISTRO.md`. A
 
 | O que | Categoria | Desde |
 | :--- | :--- | :--- |
-| Push das fixtures na `main` e despacho da ordem F0 ao Lovable | `app-release` | Pedido em `DDP-3`, em AGUARDANDO APROVAÇÃO |
+| Nada aberto | | O `app-release` da fatia F0 foi aprovado e executado em 2026-09-20 (`DDP-3`) |
 | Ordem das colunas do quadro e campos da tela de criação | configuração do Jira | Só pela interface, o MCP não expõe administração. Não bloqueia nada |
 | Aplicar a Emenda 1 ao ADR 002 e ao ledger | `ledger` e `fora-de-work` | Ainda não pedido. Espera a reescrita da seção 3 e a verificação do Nitro |
 

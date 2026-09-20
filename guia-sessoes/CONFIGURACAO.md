@@ -16,6 +16,8 @@ A pasta `tasks/` guarda o histórico do protocolo por arquivo, usado até 2026-0
 
 **Documentação** (`.claude/settings.json`, usado por A e B): só regras `Edit(...)` (as `Write(...)` foram descontinuadas pelo Claude Code). Liberado: `Edit(adrs/_work/**)`, `Edit(tasks/**)`, `Edit(decisoes/**)`, os scripts de `guia-sessoes/bin/` e leitura do app, incluindo `git diff`, `log`, `show` e `status` no app para A revisar os commits do Lovable. Bloqueado: `insumos/`, `prompts/` e `.env*` do app.
 
+**Exceção nomeada, e a única escrita de uma sessão no app:** `Bash(guia-sessoes/bin/instalar-fixtures.sh:*)`. O script copia as fixtures do ADR 002 para `src/content-format/testing/fixtures/` no app e commita, sem push. Existe porque o agente do Lovable não alcança o repositório da documentação, e o critério de pronto da fatia F1 são as 30 fixtures rodando no app. O script confere que origem e destino ficam idênticos, e não toca em mais nada. O push continua fora dele, porque publicar na `main` do app é `app-release`.
+
 `guia-sessoes/` não está nem liberado nem bloqueado: toda edição no kit pede confirmação no momento, e o kit é da sessão A. A e B compartilham este arquivo, então não há como separá-las por permissão. A confirmação existe para que uma edição de B no kit apareça na tela em vez de passar em silêncio. A mesma limitação vale para `decisoes/`, que é de A por regra escrita no `PROMPT-SESSAO-B.md`, não por permissão.
 
 **App** (`.claude/settings.local.json` dentro de `dok-draw-app`, usado por C):
