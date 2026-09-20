@@ -14,7 +14,7 @@ A plataforma grava a migração pela ferramenta própria dela, com journal em `d
 
 | Restrição (`LEDGER.md`, ADR 003) | Como se confere |
 | :--- | :--- |
-| "A identidade de página é id (uuid); slug é só cosmético e nunca aparece em `dok:page/<uuid>`" | `content.pages.id` é `uuid primary key default gen_random_uuid()`; `slug` é coluna separada, sem uso em identidade. Verificação abaixo lê o `id` gerado e confirma que `slug` não é chave |
+| "A identidade de página é id (uuid); slug é só cosmético e nunca aparece em `dok:page/<uuid>`" | Primeira metade, coberta: `content.pages.id` é `uuid primary key default gen_random_uuid()`, `slug` é coluna separada, fora da chave primária. Consulta a `information_schema` no passo 2 confirma. Segunda metade, sem mecanismo nesta fatia: "nunca aparece em `dok:page/<uuid>`" é sobre o formato de referência do DokMD, camada de `src/content-format`, que este DDL de schema não constrói nem viola. Lacuna declarada, não coberta por este passo |
 
 Esta sub-fatia não faz RLS (S2), não faz server function (S3). As restrições de `page_revisions` (imutabilidade, status como evento) e a de seed automático de `workspace_members` já estão cobertas: a primeira entra na ordem de S1c, a segunda foi construída e verificada pela S1a.
 
@@ -71,6 +71,18 @@ SQL puro, sem meta-comando de cliente. Escolha antes um `user_id` real de `auth.
 ```sql
 BEGIN;
 
+-- 1. a chave primária de content.pages é id, slug fica fora dela
+SELECT kcu.column_name
+  FROM information_schema.table_constraints tc
+  JOIN information_schema.key_column_usage kcu
+    ON kcu.constraint_name = tc.constraint_name
+   AND kcu.constraint_schema = tc.constraint_schema
+ WHERE tc.table_schema = 'content'
+   AND tc.table_name = 'pages'
+   AND tc.constraint_type = 'PRIMARY KEY';
+-- esperado: uma linha, column_name = 'id'
+
+-- 2. id nasce gerado, sem depender do slug informado
 INSERT INTO public.workspaces (name, owner_id) VALUES ('teste-s1b', '<user_id real>');
 
 INSERT INTO content.spaces (workspace_id, name, slug, created_by)
@@ -87,7 +99,7 @@ SELECT p.id, p.slug, p.published_revision_id
   FROM content.pages p
   JOIN public.workspaces w ON w.id = p.workspace_id
  WHERE w.name = 'teste-s1b';
--- esperado: uma linha; id é um uuid gerado (não o slug); published_revision_id é null
+-- esperado: uma linha; id é um uuid gerado; published_revision_id é null
 
 ROLLBACK;
 ```
