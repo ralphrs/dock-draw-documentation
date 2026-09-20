@@ -135,7 +135,31 @@ Não é decisão. É a proposta que o ADR confirma ou derruba com argumento:
 | Paleta lateral persistente, com busca | Pegar forma | Ação repetida, fica ao lado do trabalho em vez de por cima |
 | Agrupamento por família na paleta, mostrando só o que está ligado | Manter a lista navegável | Doze famílias ligadas de uma vez são inutilizáveis sem isso |
 
-Duas coisas que o ADR precisa decidir e que esta entrada não resolve: onde fica o estado de "biblioteca ligada" (por projeto, por usuário, ou derivado da notação do `projects.kind`), e se a busca é por nome do tipo, por rótulo visível, ou pelos dois.
+### Misturar famílias é permitido, decidido em 2026-09-20
+
+> **O comportamento é o do draw.io: o diagrama não é limitado, e famílias se misturam.** Um diagrama C4 pode conter ícone da AWS, um fluxograma pode conter forma de UML, e nada no produto impede.
+
+Isso resolve uma das duas perguntas em aberto e muda o peso de várias decisões do ADR.
+
+**O que fica resolvido.** O estado de "biblioteca ligada" não precisa morar no banco. Se nada restringe o que entra no diagrama, ligar uma biblioteca deixa de ser decisão de modelo e passa a ser conveniência de paleta: filtra o que aparece para escolher, sem mudar o que pode existir. Pode viver por pessoa, como no draw.io, sem migração nenhuma. A alternativa por projeto só se justificaria se a escolha restringisse o conteúdo, e ela não restringe.
+
+**O que isso faz com `projects.kind`.** Deixa de ser um portão e vira, no máximo, um padrão: qual conjunto de bibliotecas já vem ligado num projeto novo. O ADR pode decidir que ele nem serve para isso, e aí o campo continua sem uso.
+
+**O que isso faz com o tipo do elemento.** Se qualquer forma entra em qualquer diagrama, `model_elements.type` precisa de espaço de nomes por família, algo como `aws/rds` ou `uml/class`, em vez dos dezesseis nomes soltos de hoje. Sem isso, duas famílias que tenham uma forma com o mesmo nome colidem, e é questão de tempo até acontecer.
+
+**A pergunta nova que isso cria, e ela é de produto.** A paleta de hoje é filtrada por nível: `groupsForLevel(view.level)` mostra só os tipos cujo `levels` inclui o nível da visão, e cada um dos dezesseis tipos declara em que níveis aparece. Nível é semântica de C4: contexto, contêiner, componente. **Um ícone da AWS não tem nível.**
+
+Três saídas, e o ADR escolhe uma:
+
+| Saída | O que acontece |
+| :--- | :--- |
+| O filtro de nível vale só para a família C4 | Formas de outras famílias aparecem em qualquer nível. Simples, e o nível deixa de ser universal |
+| Cada família declara o próprio eixo de filtro, e nível é o do C4 | Mais geral e mais caro. BPMN teria "processo, colaboração"; UML teria diagrama de classe, de sequência |
+| O filtro de nível some | A paleta filtra só por biblioteca ligada e por busca. Perde-se a ajuda que o C4 dá hoje de mostrar só o que faz sentido naquele nível |
+
+### O que continua em aberto
+
+A segunda pergunta da conversa de 2026-09-20: **a busca procura pelo quê**. Pelo nome técnico do tipo, pelo rótulo visível, ou também por palavras alternativas escritas à mão por forma. A terceira acha "banco" quando a forma se chama "Amazon RDS", e custa curadoria manual em centenas de ícones.
 
 ## 7. Exigências sobre as fatias
 
