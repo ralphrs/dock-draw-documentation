@@ -6,7 +6,7 @@ Primeira metade da sub-fatia S1c do ADR 003 (seção 6.2, bloco 2), partida em `
 
 **S1c1 (esta ordem):** armazenamento append-only de revisões e status como evento. Sozinha já cumpre as duas restrições do bloco 2: revisão imutável, status sempre evento.
 
-**S1c2 (depois, tarefa própria):** `content.revision_current_status` (projeção, também com `workspace_id`) e a função/trigger `revision_status_events_apply`, que atualiza `pages.published_revision_id`, `title` e `updated_at` quando o status vira `published`. Projeção nasce vazia: "sem evento anterior" ou backfill fica para quem escrever a S1c2.
+**S1c2 (depois, tarefa própria):** `content.revision_current_status` (projeção, também com `workspace_id`) e a função `content.apply_revision_status_event()` com o trigger `revision_status_events_apply`, que atualiza `pages.published_revision_id`, `title` e `updated_at` quando o status vira `published`. Projeção nasce vazia: "sem evento anterior" ou backfill fica para quem escrever a S1c2.
 
 `content.page_revisions` não precisa de `project_id` (`DEC-0014`): o projeto vive na página, a revisão herda por `page_id`.
 
@@ -27,7 +27,7 @@ A plataforma grava pela ferramenta própria (journal em `drizzle/migrations/`, `
 
 ### `workspace_id` em `revision_status_events`, redundante por desenho
 
-Fora da chave primária (`id bigint identity`). Mesma estratégia de multi-inquilino do ADR 003 (seção 6.1, decisão 8), aplicada por igual pelo `DEC-0014`. Faltou na entrega original porque o ledger só registrou três das cinco linhas da `DEC-0014`. As três que faltavam entraram no ledger em `DDP-134`, aprovadas pelo humano.
+Fora da chave primária (`id bigint identity`). Mesma estratégia de multi-inquilino do ADR 003 (seção 6.1, decisão 8), aplicada por igual pelo `DEC-0014`. Registrada no ledger, linhas do ADR 003 (`DDP-134`).
 
 ## 1. Criar a migração
 
@@ -182,7 +182,7 @@ ROLLBACK;
 
 ## Restrições
 
-- Só este SQL. Não crie `content.revision_current_status`, nem a função/trigger `revision_status_events_apply`: são da S1c2.
+- Só este SQL. Não crie `content.revision_current_status`, nem a função `content.apply_revision_status_event()`, nem o trigger `revision_status_events_apply`: são da S1c2.
 - Não recrie `content.pages`, `content.spaces`, `content.space_members` nem `content.workspace_members`.
 - Não aplique sem aprovação humana explícita (`app-release`).
 - Nenhum contrato do ledger muda.
