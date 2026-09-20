@@ -18,6 +18,8 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 
 | Id | Data | Decisão | Quem decidiu |
 | --- | --- | --- | --- |
+| [DEC-0006](DEC-0006-quatro-decisoes-delegadas.md) | 2026-09-19 | Status dos ADRs 002 a 004 corrigido, o app manda sobre o BASE em tema e formatador, portal em DokMD no git e com o número 014 | Arquiteto, por delegação |
+| [ACHADOS](ACHADOS-2026-09-19-adrs-x-app.md) | 2026-09-19 | Levantamento dos ADRs contra o código real. A Wiki não existe no app, e nenhuma das 27 dependências dos ADRs 002 e 005 está instalada | Arquiteto |
 | [DEC-0005](DEC-0005-numero-do-adr-de-tenancy.md) | 2026-09-19 | Tenancy e acesso recebe o número 013. Dá dono aos conflitos C-3 e C-7 | Humano |
 | [DEC-0004](DEC-0004-meta-da-trilha-de-desenvolvimento.md) | 2026-09-19 | Meta da trilha C: editar e publicar uma página da Wiki no app, ponta a ponta | Humano |
 | [DEC-0003](DEC-0003-aspas-no-watcher.md) | 2026-09-19 | O comando de escuta passa os padrões entre aspas simples, porque o shell é zsh | Arquiteto |

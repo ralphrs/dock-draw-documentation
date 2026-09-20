@@ -2,7 +2,7 @@
 
 | Campo       | Valor                                                                                                                    |
 | :---------- | :------------------------------------------------------------------------------------------------------------------------ |
-| Status      | **Proposto** — vira Aceito junto com o ADR 002 (depende estruturalmente dele; sem spike próprio pendente)                |
+| Status      | **Aceito** em 2026-09-19, junto com o ADR 002, do qual depende estruturalmente                                           |
 | Data        | 2026-09-18                                                                                                                |
 | Camada      | Armazenamento e versionamento (revisões, espaços, árvore de páginas, assets, integridade referencial)                    |
 | Depende de  | Arquitetura base; ADR 001 (motor de diagrama); ADR 002 (formato de conteúdo, Proposto)                                    |
@@ -791,7 +791,7 @@ Total: 9 dias.
 ```yaml
 adr: "003"
 camada: "Armazenamento e versionamento"
-status: "Proposto"
+status: "Aceito"
 data: "2026-09-18"
 decisao: "Postgres puro no Supabase: page_revisions append-only e imutável (snapshot completo, não delta); status editorial em log de eventos à parte, projetado em revision_current_status; pages.published_revision_id aponta a revisão publicada; page_drafts mutável, um por autor por página; page_refs derivada de collectRefs para backlinks e integridade."
 dependencias: []

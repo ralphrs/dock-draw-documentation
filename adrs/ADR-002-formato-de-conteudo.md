@@ -2,7 +2,7 @@
 
 | Campo       | Valor                                                                                                                                                                              |
 | :---------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Status      | **Proposto** — vira Aceito quando o spike S-1 (editores) passar                                                                                                                    |
+| Status      | **Aceito** em 2026-09-19. O spike S-1 passou 30/30 com o MDXEditor 4.2.5 (ADR 005)                                                                                                 |
 | Data        | 2026-09-18                                                                                                                                                                         |
 | Camada      | Formato de conteúdo (dialeto de escrita/armazenamento + AST)                                                                                                                       |
 | Depende de  | Arquitetura base; ADR 001 (motor de diagrama)                                                                                                                                      |
@@ -362,7 +362,7 @@ Total: 10 dias. Exportadores ficam no ADR 010, com o Apêndice B como especifica
 ```yaml
 adr: "002"
 camada: "Formato de conteúdo"
-status: "Proposto"
+status: "Aceito"
 data: "2026-09-18"
 decisao: "Páginas escritas e armazenadas em DokMD v1 (CommonMark + GFM + frontmatter YAML + directives só de bloco, conjunto fechado), AST mdast, referências por URI dok: com id; MDX/wikilink/alerts só na entrada."
 dependencias:

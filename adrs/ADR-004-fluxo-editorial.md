@@ -2,7 +2,7 @@
 
 | Campo       | Valor                                                                                                                                    |
 | :---------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| Status      | **Proposto** — vira Aceito junto com os ADRs 002 e 003 (dependência estrutural direta); sem spike bloqueante próprio                       |
+| Status      | **Aceito** em 2026-09-19, junto com os ADRs 002 e 003, dos quais depende estruturalmente                                                   |
 | Data        | 2026-09-18                                                                                                                                |
 | Camada      | Fluxo editorial (estados de revisão, papéis e permissões, política de aprovação por espaço, comentários ancorados, notificações, auditoria) |
 | Depende de  | Arquitetura base; ADR 002 (formato de conteúdo, Proposto); ADR 003 (armazenamento e versionamento, Proposto)                               |
@@ -599,7 +599,7 @@ Total: 7 dias.
 ```yaml
 adr: "004"
 camada: "Fluxo editorial"
-status: "Proposto"
+status: "Aceito"
 data: "2026-09-18"
 decisao: "Máquina de estados própria em Postgres, estendendo o ADR 003: revision_reviews (votos append-only) agrega para revision_status_events conforme a política de space_editorial_policies; revision_comments (ancorados por faixa de linha) e notifications são tabelas aditivas; a regra e o mecanismo de fixação de diagrama via page_refs.target_rev_id ficam definidos para quando o ADR 001 versionar diagramas — hoje a coluna é sempre null e o DokMD nunca é reescrito para incluir rev."
 dependencias: []
