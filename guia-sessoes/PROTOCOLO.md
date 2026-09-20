@@ -214,22 +214,29 @@ Resposta errada não se edita. A escreve uma issue nova ou quem perguntou abre o
 - **Rótulo de opção não se repete em nenhuma outra lista da mesma issue.** Issue de aprovação que oferece escolha numera as opções com um esquema que não aparece em mais nenhum lugar do texto. A aprovação das notações do Diagram Studio usou A, B, C e D para os quatro problemas de arquitetura na análise e para as quatro opções de sequenciamento na pergunta, e a resposta "A, B, C e D" leu a primeira lista. Custou uma volta com o dono do produto, que é o recurso mais caro do processo.
 - **A sessão A nunca põe nem deixa uma issue num status que a própria JQL dela vigia.** Ao terminar de tratar uma issue, ela vai para onde o próximo passo de fato está: `CONCLUÍDA` se acabou, `EM ANDAMENTO` se outra sessão continua, `AGUARDANDO APROVAÇÃO` se voltou a depender do humano, e `A FAZER` se está aprovada e só espera a vez. O último caso é o mais fácil de esquecer, porque a issue *parece* resolvida: a aprovação chegou, e o que falta é sequência. A escuta usa status como sinal de que outra sessão ou o humano agiu. Status posto pela sessão A é sinal falso, e o custo é um ciclo inteiro de escuta gasto com trabalho que ela mesma acabou de fazer. Aconteceu quatro vezes em 2026-09-20: a ordem da fatia F1 deixada em `EM REVISÃO` depois de lida, a issue de revisão do dono do produto criada em `EM ANDAMENTO`, uma aprovação respondida em parte deixada em `EM ANDAMENTO` enquanto esperava o resto da resposta, e uma aprovação inteira deixada ali enquanto a sessão A a segurava por sequência de despacho.
 - **Toda issue que a sessão A recebe de EM REVISÃO muda de status no mesmo ciclo em que é lida.** Ou vai para CONCLUÍDA, ou volta para EM ANDAMENTO com a próxima etapa apontada em comentário. Issue que fica parada em EM REVISÃO depois de lida acorda a sessão a cada tique do `aguarda-fila.sh` sem trabalho novo, porque a JQL vigia o status, não o que já foi respondido.
-- **Issue do Jira se escreve em Markdown puro, com cerca de três crases no código.** Medido em 2026-09-20 contra o campo renderizado, que é o que o leitor de fato vê: `##` vira cabeçalho, crase vira código, cerca de três crases vira bloco, tabela de canos vira tabela. Nenhum literal vaza.
+- **O formato de texto do Jira depende do caminho de escrita, não do Jira.** Medido em 2026-09-20, quatro vezes, sempre contra o campo renderizado:
 
-  **A regra anterior mandava o contrário, e hoje ela é que quebra.** Ela dizia que todo bloco de código ia entre `{code}` e `{code}`, porque o campo era wiki markup e texto cru era interpretado: `(n)` e `(x)` viravam emoticon, `-texto-` virava tachado, `|` virava separador, `?texto?` virava citação. A ordem da fatia F1 chegou ao executor com regex, união de tipos e parâmetros deturpados (`DDP-74`), e o `{code}` consertou aquilo.
+  | Caminho de escrita | Formato que renderiza | Medição |
+  | :--- | :--- | :--- |
+  | Conector MCP do Atlassian | **Markdown**, porque o conector converte | Descrição em Markdown rendeu três blocos `<pre>` com o SQL exato |
+  | `curl` direto na REST v2 | **wiki markup** | Markdown por `curl` saiu com crase literal, sem negrito e sem código. O mesmo texto em wiki markup saiu correto |
 
-  O canal mudou depois disso. Na aprovação `DDP-110` o `{code:sql}` não abriu macro nenhum: o HTML renderizado saiu sem `<pre>`, com `{code:sql}` visível como texto solto no meio da prosa. A mesma descrição reescrita em Markdown rendeu três blocos de código com o SQL exato.
+  **Escrever no formato do caminho errado corrompe em silêncio.** O campo cru guarda o que foi enviado, e só o campo renderizado mostra o que o leitor recebe.
 
-  **A conferência não é opcional e não se faz pelo campo cru.** O campo cru devolve o que foi gravado, não o que o leitor vê, e foi por isso que a corrupção da F1 sobreviveu à entrega. Quem publica ordem ou aprovação lê o campo renderizado antes de despachar:
+  A regra anterior mandava envolver todo bloco de código em `{code}`, e nasceu certa: o canal era wiki markup e texto cru era interpretado, com `(n)` e `(x)` virando emoticon, `-texto-` virando tachado, `|` virando separador e `?texto?` virando citação. A ordem da fatia F1 chegou ao executor com regex, união de tipos e parâmetros deturpados (`DDP-74`).
+
+  O que ela não previu foi o conector passar a converter Markdown. Na aprovação `DDP-110` o `{code:sql}` foi enviado por ele, que inseriu espaços depois do abridor e o macro não abriu: o HTML saiu sem `<pre>`, com `{code:sql}` visível como texto solto. Cerca de crases no mesmo caminho não quebra, porque tolera o espaço.
+
+  **A conferência é obrigatória antes de despachar ordem ou publicar aprovação**, e não se faz pelo campo cru:
 
   ```
   curl -s -u "$JIRA_EMAIL:$JIRA_TOKEN" \
     "https://dokdrawapp.atlassian.net/rest/api/2/issue/<CHAVE>?expand=renderedFields&fields=description"
   ```
 
-  Verde é bloco `<pre>` para cada trecho de código, nenhuma crase sobrando, nenhum `{code` sobrando, nenhum `#` sobrando.
+  Verde é um bloco `<pre>` para cada trecho de código, e nenhum marcador sobrando: nada de crase, `{code`, `{{` ou `#` literais no HTML.
 
-  **A regra que sobrevive às duas versões:** o formato do canal é premissa que envelhece, e premissa de canal se mede a cada uso, nunca se herda. A ordem da F1 e a aprovação `DDP-110` são o mesmo defeito com o remédio trocado de lado.
+  **O que sobrevive a todas as versões desta regra:** formato de canal é premissa de infraestrutura, muda sem aviso e não se herda de uma entrega para a seguinte. Três regras diferentes em um dia, cada uma correta na hora em que foi escrita. A que não envelhece é a de medir o renderizado a cada uso.
 - **A sessão A confere o commit contra a ordem versionada, caractere a caractere, antes de mandar para a revisão de resultado.** O executor pode ter reconstruído o que recebeu deturpado, e o relato dele de que reconstruiu certo não é evidência. Na F1 a conferência deu idêntico nos três arquivos, e foi o que permitiu seguir.
 - **Uma ordem entrega uma fatia, e tem teto de tamanho.** O teto é 10.000 caracteres de texto de ordem. Fatia cujo código não cabe nisso é dividida em sub-fatias antes de a ordem ser escrita, cada uma com bateria própria e com a `main` verde ao fim. Quem escreve a ordem confere, antes de entregar, que o conjunto de símbolos exportados é o da fatia e não o do arquivo inteiro de onde o código veio.
 
