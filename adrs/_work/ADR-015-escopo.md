@@ -107,9 +107,15 @@ Os problemas 1 e 2, que são uma decisão só: como uma notação entra no produ
 
 **Não depende** dos ADRs 003, 004, 005 e 006, que formam a trilha da Wiki.
 
-## 6.1. Entrada de produto sobre a paleta, de 2026-09-20
+## 6.1. A intenção do dono do produto para o "mais formas", de 2026-09-20
 
-O dono do produto propôs um drawer centralizado com miniaturas, um card por família (AWS, GCP, Azure, UML, BPMN), em vez de lista de nomes. A proposta foi discutida e fica registrada com o recorte que saiu dela, porque o ADR vai precisar decidir isto e a conversa não sobrevive fora daqui.
+> **Intenção registrada, ainda não decidida.** O dono do produto pediu que ficasse escrita e disse que a discussão continua. O que está abaixo da intenção é análise da sessão A, para essa discussão ter de onde partir, e não conclusão fechada.
+
+### A intenção, nas palavras do pedido
+
+O "mais formas" é **um drawer centralizado com uma lista de cards em miniatura**, um por família de diagrama: AWS, GCP, Azure, UML, BPMN, e as demais. Em vez de mostrar só o nome da forma, cada card mostra **a miniatura da forma**. Para as famílias que não têm ícone pronto (UML, BPMN), a miniatura é criada.
+
+O que motiva: nome de forma não comunica. Miniatura comunica.
 
 **A miniatura já é o padrão certo no app, e o motivo importa.** `PaletteItem` renderiza o mesmo `<ElementShape>` que desenha no canvas, em 40 por 28. A miniatura não é um asset separado, é o renderizador real em tamanho pequeno, e por isso nunca diverge da forma de verdade. Gerar imagem de miniatura por forma quebraria essa propriedade na primeira mudança de cor ou de traço.
 
@@ -119,7 +125,9 @@ O dono do produto propôs um drawer centralizado com miniaturas, um card por fam
 
 **A razão real do drawer não é descoberta, é manter a paleta utilizável.** A paleta de hoje mostra tudo que o nível permite. Com doze famílias ligadas ao mesmo tempo ela vira lista infinita. Biblioteca ligada e desligada é o mecanismo que impede isso.
 
-O desenho que sai da conversa, para o ADR confirmar ou derrubar com argumento:
+### O desenho que a sessão A propõe para a discussão continuar
+
+Não é decisão. É a proposta que o ADR confirma ou derruba com argumento:
 
 | Elemento | Função | Por quê |
 | :--- | :--- | :--- |
