@@ -388,6 +388,14 @@ A issue não pede um parecer genérico. Ela diz o que olhar:
 
 **Fatia sem interface também gera issue**, e o que ela pede é o contrário: confirmar que **nada mudou**. O Diagram Studio é a única parte do app que funciona hoje, e uma fatia de módulo interno pode quebrá-lo sem que teste nenhum apanhe, porque o app não tem teste de interface. A issue nomeia as telas que precisam continuar iguais.
 
+**Issue de aprovação que oferece opções nomeia a recomendada.** O gesto de aprovar é arrastar o cartão, e arrastar só carrega um bit. Uma issue que pergunta "qual das três" e não diz qual a sessão A recomenda deixa o arrasto sem destino: o cartão volta movido, sem comentário, e nada foi decidido.
+
+Aconteceu em `DDP-110`, em 2026-09-20. A issue expôs três saídas para o `unique` de `content.pages` com o custo de cada uma, lado a lado, sem recomendação. O cartão voltou para `EM ANDAMENTO` às 13:26 sem uma palavra, e a sessão A não tinha como saber qual saída tinha sido escolhida. Um ciclo inteiro gasto, e a decisão no mesmo lugar.
+
+O formato que funciona: a recomendação com as razões primeiro, as alternativas depois, e uma frase dizendo o que o arrasto significa. "Se concorda com a saída 1, arraste de volta. Se prefere outra, comente só o número e arraste." Quem responde gasta um gesto no caso comum, e escreve só quando discorda.
+
+**A sessão A nunca supre a resposta que faltou.** Decisão de contrato adivinhada a partir de um status é decisão sem dono, e o custo aparece quando alguém procurar quem decidiu.
+
 **A issue nasce em `AGUARDANDO APROVAÇÃO`**, nunca em `EM ANDAMENTO`. A JQL de escuta da sessão A lê `EM ANDAMENTO` com o rótulo `revisao-humana` como resposta já dada, então uma issue criada nesse status se anuncia respondida antes de ser lida.
 
 **Como ele responde**, pelo mesmo gesto das aprovações: arrastar para `EM ANDAMENTO` quando estiver bom, ou para `BLOQUEADA` quando achar problema, com o problema em comentário. Problema achado aqui vira ordem nova para o Lovable, nunca ajuste direto no código.
