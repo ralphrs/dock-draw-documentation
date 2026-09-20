@@ -7,7 +7,7 @@ Três sessões do Claude Code trabalham juntas e se comunicam por **issues do Ji
 | **A** | Arquiteto principal, gerente de projeto e scrum master. Conduz o roteiro dos ADRs, transforma fatias em tarefas, opera o Lovable, decide dúvidas técnicas, escala ao humano só as categorias de aprovação | `dok-draw-documentation/` | `insumos/HANDOFF-ARQUITETURA.md`, `guia-sessoes/PROMPT-SESSAO-A.md` |
 | **B** | Arquiteto especialista que escreve. Produz os ADRs pelo `/adr`, os spikes, a pesquisa e as ordens de implementação | `dok-draw-documentation/` | `CLAUDE.md`, `.claude/commands/adr.md`, `guia-sessoes/PROMPT-SESSAO-B.md` |
 | **C** | Especialista em arquitetura, revisora. Aprova a ordem antes de rodar e o resultado depois, contra os contratos. Não escreve código de produto | `dok-draw-app/` | `guia-sessoes/PROMPT-SESSAO-C.md` |
-| **Lovable** | Implementador. Executa a ordem que A envia pelo MCP. Não decide nada | nuvem, commita na `main` | `decisoes/DEC-0007-lovable-como-implementador.md` |
+| **Lovable** | Implementador. Lê a ordem na issue do Jira, executa e comenta o resultado. Não decide nada | nuvem, commita na `main` | `decisoes/DEC-0007-lovable-como-implementador.md` |
 
 Caminhos:
 
@@ -68,6 +68,7 @@ O conector do Atlassian é autorizado na conta Claude, não por sessão, então 
 | `trilha-adr`, `trilha-dev` | Qual das duas trilhas |
 | `adr-002`, `adr-005`, ... | ADR de origem. O projeto é business e não tem Epic, então o rótulo é o agrupador |
 | `sprint-1`, ... | Sprint da trilha de desenvolvimento |
+| `lovable` | A issue é uma ordem de implementação. A descrição é o texto que o agente do Lovable executa |
 | `revisar-ordem`, `revisar-resultado`, `encerrar` | Tipo de tarefa, quando não é implementação comum |
 | `aprovacao-humana` mais a categoria (`ledger`, `app-release`, ...) | O que a issue espera do humano |
 
@@ -176,7 +177,10 @@ Resposta errada não se edita. A escreve uma issue nova ou quem perguntou abre o
 ## Desenvolvimento no app (Lovable executa, C revisa)
 
 - **Só se implementa o que está decidido.** A cria tarefa apenas para fatias de ADR com status **Aceito** no `LEDGER.md`, ou para trabalho de infraestrutura que não depende de ADR. Fatia de ADR Proposto espera.
-- **Quem escreve código é o Lovable.** A sessão C não implementa. O agente do Lovable recebe uma ordem por `send_message`, escrita por B a partir do contrato da fatia e revisada por C antes de rodar.
+- **Quem escreve código é o Lovable.** A sessão C não implementa. A ordem é escrita por B a partir do contrato da fatia e revisada por C antes de rodar.
+- **A ordem é a issue.** Desde 2026-09-20 o agente do Lovable tem o conector Atlassian ligado e lê o quadro `DDP` direto. A ordem vai na descrição de uma issue de rótulo `lovable`, e o `send_message` encolhe para uma mensagem curta que nomeia a chave. Existe uma cópia só do texto, que é a que C revisa e a que o Lovable executa. O arquivo em `adrs/_work/ordens/` continua sendo a fonte versionada, e traz a chave da issue no cabeçalho.
+- **A descrição da ordem congela quando o Lovable é acordado.** Até lá, A corrige a descrição pelo que C apontou. Depois disso, correção vai como comentário de emenda e nova execução, porque editar por baixo de quem está executando produz um resultado que ninguém revisou.
+- **O Lovable escreve pouco no quadro.** Comenta o resultado com a primeira linha `Lovable: resultado`, move a própria issue para `EM REVISÃO`, e nada além disso. Não cria issue, não edita descrição, não fecha cartão, não responde dúvida de outro. As regras estão no knowledge do projeto no Lovable, que A mantém.
 - **O Lovable commita na `main`.** Não há branch. O commit atualiza o preview do projeto e **não** altera a produção: publicar é a ação separada `deploy_project`, categoria `app-release`, que só acontece com o sim do humano.
 - **A revisão acontece duas vezes, e a primeira é a que paga.** O rótulo `revisar-ordem` roda antes de qualquer código existir e pergunta se sobra decisão para quem executa. O rótulo `revisar-resultado` roda depois, contra o diff, o build e o preview. Erro apanhado na primeira custa uma leitura, na segunda custa crédito, tempo e um revert na `main`.
 - **Pronto é verificável, e a evidência é de C.** O Lovable não entrega saída de build, de typecheck nem de teste. C roda no repositório local depois do `git pull` e anexa a saída real ao comentário de resultado.
@@ -187,12 +191,13 @@ Resposta errada não se edita. A escreve uma issue nova ou quem perguntou abre o
 Ciclo de uma fatia:
 
 ```
-1. A abre issue para B   ->  B escreve a ordem derivada do contrato da fatia
-2. A abre issue para C   ->  rótulo revisar-ordem. Ambiguidade vira correção antes de custar crédito
-3. A pede o sim humano   ->  send_message consome crédito do workspace
-4. A envia ao Lovable    ->  commit na main, preview atualiza, produção intacta
-5. A abre issue para C   ->  rótulo revisar-resultado. Diff, build, typecheck, preview
-6. A pede app-release    ->  deploy_project só com o sim do humano
+1. A abre issue para B   ->  B escreve a ordem derivada do contrato da fatia, em adrs/_work/ordens/
+2. A publica a ordem     ->  issue de rótulo lovable, a descrição é o texto da ordem
+3. A abre issue para C   ->  rótulo revisar-ordem, apontando a issue da ordem. Ajuste antes de custar crédito
+4. A pede o sim humano   ->  send_message consome crédito do workspace
+5. A acorda o Lovable    ->  mensagem curta com a chave. Ele executa, comenta e move para EM REVISÃO
+6. A abre issue para C   ->  rótulo revisar-resultado. Diff, build, typecheck, preview
+7. A pede app-release    ->  deploy_project só com o sim do humano
 ```
 
 ## Quem decide

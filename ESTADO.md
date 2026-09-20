@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 02:00
+**Atualizado em:** 2026-09-20, 02:20
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo. A sessão A atualiza a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -55,7 +55,7 @@ Do `insumos/BASE.md`. Nada aqui é entrega, é o alvo.
 | 013 | Tenancy e acesso | Não escrito | Resolve C-3 e C-7 |
 | 014 | Developer Portal | Não escrito | Depende do 007 |
 
-**Agora:** a Emenda 1 espera duas coisas antes de virar contrato. A reescrita da seção 3 (`A-Q-0003`, medição derrubou o argumento original) e a verificação do alvo real do Nitro.
+**Agora:** a Emenda 1 está a uma tarefa de ser proposta ao ledger. A seção 3 foi reescrita, o alvo real do Nitro foi verificado (`DDP-1`) e o custo das flags estritas foi medido (`DDP-2`). Falta `DDP-7`: a quinta rodada de conferência do harness pôs três faixas numéricas da seção 3 fora do que o texto declara, e número de contrato conferido é o que separa esta emenda da primeira medição, que caiu quando o instrumento foi reentregue.
 
 **Depois:** 013 Tenancy → 007 → 008 e 009 → 010 e 011 → 014 → 012.
 
@@ -114,7 +114,7 @@ Fora da meta: busca, export, sync, publicação pública, navegação. E a rende
 | # | Fatia | Estado |
 | :--- | :--- | :--- |
 | 1 | ADR 002 F0: dependências, runner de teste, fixtures no app | **Aceita** (`ccc3ce2`, `DDP-5`). Typecheck, build, teste 2/2 e verificação de ambiente verdes. Sobram 27 problemas de formatação nos quatro arquivos novos, que a ordem da F1 resolve |
-| 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | Não começou |
+| 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | Não começou. A ordem carrega dois itens vindos de revisão: os 27 problemas de `prettier` da F0 e o padrão de correção das flags estritas (`DDP-2`) |
 | 3 | ADR 002 F2: validação | Não começou |
 | 4 | ADR 002 F3: URIs e referências | Não começou |
 
@@ -126,10 +126,10 @@ A fatia F0 é maior do que a seção 11 do ADR 002 previa, porque o critério de
 
 | Sessão | Papel | Agora |
 | :--- | :--- | :--- |
-| **A** | Arquiteto principal, gerente de projeto, scrum master | Migrou a comunicação para o Jira e povoou o quadro `DDP` |
-| **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Entregou a ordem F0. Tem `DDP-1` e `DDP-2` em A FAZER |
-| **C** | Especialista em arquitetura, UX e UI, revisora | Aprovou a ordem F0 e apanhou a aprovação que faltava para o push das fixtures |
-| **Lovable** | Implementador. Executa ordem, não decide | Parado. Knowledge e skill de contratos já instalados |
+| **A** | Arquiteto principal, gerente de projeto, scrum master | Fechou `DDP-1`, `DDP-2`, `DDP-5` e `DDP-6`. Abriu `DDP-7` |
+| **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Entregou `DDP-1` e `DDP-2`, as duas aceitas. Tem `DDP-7` em A FAZER |
+| **C** | Especialista em arquitetura, UX e UI, revisora | Revisou o resultado da F0 (`DDP-5`, aceita). Sem issue aberta |
+| **Lovable** | Implementador. Executa ordem, não decide | Lê o quadro `DDP` direto, desde 2026-09-20. Canal verificado em `DDP-6` |
 
 Protocolo em `guia-sessoes/PROTOCOLO.md`. Decisões em `decisoes/REGISTRO.md`. As sessões conversam por issues do projeto `DDP` em `https://dokdrawapp.atlassian.net` (`decisoes/DEC-0009-comunicacao-por-jira.md`). A pasta `tasks/` guarda só o histórico até 2026-09-20.
 
@@ -141,13 +141,13 @@ Protocolo em `guia-sessoes/PROTOCOLO.md`. Decisões em `decisoes/REGISTRO.md`. A
 | :--- | :--- | :--- |
 | Nada aberto | | O `bun` 1.4.2 foi instalado, e o `app-release` da F0 já foi aprovado e executado |
 | Ordem das colunas do quadro e campos da tela de criação | configuração do Jira | Só pela interface, o MCP não expõe administração. Não bloqueia nada |
-| Aplicar a Emenda 1 ao ADR 002 e ao ledger | `ledger` e `fora-de-work` | Ainda não pedido. Espera a reescrita da seção 3 e a verificação do Nitro |
+| Aplicar a Emenda 1 ao ADR 002 e ao ledger | `ledger`, `aceite-adr` e `fora-de-work` | Ainda não pedido. Espera `DDP-7`, a última conferência numérica |
 
 ---
 
 ## 6. Riscos que eu estou observando
 
-**O processo cresceu mais rápido que o produto.** Em 2026-09-19 foram criados o kit de sessões, o mapa de skills, o registro de decisões, os papéis novos e o knowledge do Lovable. O `src/` do app não ganhou uma linha. A sprint 1 é a correção disso, e nenhuma peça de processo nova entra até ela entregar.
+**O processo cresceu mais rápido que o produto.** Em 2026-09-19 foram criados o kit de sessões, o mapa de skills, o registro de decisões, os papéis novos e o knowledge do Lovable. O `src/` do app não ganhou uma linha. A sprint 1 é a correção disso, e nenhuma peça de processo nova entra até ela entregar. Em 2026-09-20 o protocolo mudou duas vezes mesmo assim, e as duas precisam de justificativa para não virarem exceção de conveniência: a regra de escopo de commit conserta um defeito que corrompeu evidência de spike, e o canal do Lovable mudou porque o humano ligou o conector do Jira lá. Nenhuma das duas é processo inventado por antecipação.
 
 **O argumento de um número de contrato já caiu uma vez.** A medição de desempenho da Emenda 1 não se reproduziu quando o instrumento foi reentregue. Isso foi apanhado porque a revisão exigiu o harness de volta. Todo número que vira contrato precisa do instrumento junto.
 

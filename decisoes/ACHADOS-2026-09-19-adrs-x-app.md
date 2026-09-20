@@ -74,7 +74,7 @@ São três fontes discordando sobre o mesmo fato. O ledger é a fonte de verdade
 | 3 | Formatador: `oxfmt` ou `prettier` | proposta ao humano | aguarda o humano |
 | 4 | Classes de tema: `.theme-*` ou `.dark` | proposta ao humano, e afeta o teste 6 do ADR 005 | aguarda o humano |
 | 5 | `nitro` beta | proposta ao humano | aguarda o humano |
-| 6 | Custo das flags estritas de TS para `src/content-format` | tarefa `T`, entra na Emenda 1 ou numa emenda própria | a criar |
+| 6 | Custo das flags estritas de TS para `src/content-format` | tarefa `T`, entra na Emenda 1 ou numa emenda própria | **fechada** em `DDP-2`. Oito erros, dois padrões mecânicos, medidos em `adrs/_work/ADR-002-custo-flags-estritas.md`. Não vira item de emenda: o conserto é da fatia F1 |
 | 7 | Verificar o alvo real do Nitro abrindo o preset do Lovable | tarefa `T`, qualifica a seção 1 da Emenda 1 | **verificado**, correção do texto em T-0009 |
 | 8 | Dependências do ADR 001 ausentes do contrato no ledger | `ledger` | aguarda o humano |
 

@@ -51,3 +51,21 @@ A primeira é a que paga. Erro apanhado ali custa uma leitura. O mesmo erro apan
 ## Restrição que a decisão cria
 
 Com o Lovable virando executor puro, as restrições da arquitetura base e dos contratos precisam estar onde ele as lê, e não só nos ADRs. O `get_project_knowledge` do projeto DokDraw voltou vazio nesta data: nada guiava o agente. Essa lacuna é fechada junto com esta decisão, escrevendo o knowledge do projeto e uma skill de workspace a partir do `LEDGER.md` e do `insumos/BASE.md`, já com as duas correções de `DEC-0006` (`.dark` e `prettier`).
+
+## Adendo de 2026-09-20: a ordem passa a ser a issue do Jira
+
+O humano ligou o conector Atlassian no workspace do Lovable (`mcp_atlassian_ABZ1s`). O agente lê e escreve o quadro `DDP` direto, e o desenho do despacho muda.
+
+**Antes.** B escrevia a ordem num arquivo de `adrs/_work/ordens/`, C revisava esse arquivo, e A colava o texto dentro de um `send_message`. Duas cópias do mesmo texto, e a que o Lovable executava não era a que C tinha lido.
+
+**Agora.** A ordem vai na descrição de uma issue de rótulo `lovable`. C revisa essa issue. O `send_message` encolhe para uma mensagem curta que nomeia a chave, e o agente lê a descrição. O arquivo em `adrs/_work/ordens/` continua sendo a fonte versionada em git, com a chave da issue no cabeçalho, porque o Jira não guarda histórico de diff e o ADR precisa apontar para algo estável.
+
+O defeito que motiva a mudança é concreto. Na fatia F0, a ordem executada dizia ao Lovable o conteúdo exato de quatro arquivos, escrito num estilo que contrariava o `.prettierrc` do repositório, e o resultado foram 27 problemas de `prettier/prettier` que nem a revisão de ordem nem a revisão da sessão A apanharam. Uma cópia só do texto não teria impedido esse erro específico, mas remove a classe inteira de divergência entre o que foi revisado e o que foi executado.
+
+**O que o agente pode fazer no quadro:** comentar o resultado com a primeira linha `Lovable: resultado` e mover a própria issue para `EM REVISÃO`. Nada mais. Ele não cria issue, não edita descrição, não fecha cartão e não responde dúvida de outro participante. A regra vive no knowledge do projeto, que a sessão A mantém.
+
+**Identidade.** O conector do Atlassian é compartilhado por todos os participantes, então o comentário do Lovable aparece com o mesmo autor dos das sessões. O prefixo da primeira linha é o que diz quem escreveu, pelo mesmo caminho que `DEC-0009` adotou para A, B e C. Não existe usuário Jira para o Lovable, então a issue de ordem fica com a sessão A como responsável, e o rótulo `lovable` é o que a marca como ordem de implementação.
+
+**Custo aceito.** A descrição da issue vira um objeto editável que precisa congelar em algum ponto. O ponto é o despacho: até o Lovable ser acordado, A corrige a descrição pelo que C apontou; depois disso, correção vai como comentário de emenda e nova execução.
+
+**Verificado em** `DDP-6`, antes de qualquer ordem real depender do canal: o agente leu a descrição, respondeu quatro perguntas conferíveis, moveu o cartão e não tocou em nenhum arquivo. Custo de um crédito do workspace.
