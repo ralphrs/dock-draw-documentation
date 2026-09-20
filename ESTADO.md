@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 06:50
+**Atualizado em:** 2026-09-20, 07:05
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -119,7 +119,7 @@ Fora da meta: busca, export, sync, publicação pública, navegação. E a rende
 | 1 | ADR 002 F0: dependências, runner de teste, fixtures no app | **Aceita** (`ccc3ce2`, `DDP-5`). Typecheck, build, teste 2/2 e verificação de ambiente verdes. A dívida de formatação dos quatro arquivos novos ficou: 17 problemas só em `environment.test.ts`, que a F1 não pode tocar. Vai para `DDP-61` |
 | 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | **Fechada por inteiro** (`3185728`). Ciclo de oito passos rodado do começo ao fim, com revisão do dono do produto (`DDP-76`) |
 | 3 | ADR 002 F2: validação | **Entregue junto com a F1.** O critério de pronto foi conferido item a item contra a `main` e está cumprido. Sobra só a checagem automática de `DDP-68` (`DDP-12`) |
-| 4 | ADR 002 F3: URIs e referências | Ordem em 9.995 caracteres contra os 31.449 da F1. A sessão C testou as cinco linhas da tabela de restrições quebrando cada uma: quatro reprovam, uma não era restrição do ledger e sai (`DDP-83`). Depois disso, passada curta e despacho |
+| 4 | ADR 002 F3: URIs e referências | **Ordem publicada** em `DDP-85`, 9.981 caracteres, com os quatro blocos de código em `{code}` e o canal conferido. Espera o sim de crédito (`DDP-86`) |
 
 A fatia F0 é maior do que a seção 11 do ADR 002 previa, porque o critério de pronto da F1 são as 30 fixtures rodando, e não há onde rodá-las.
 
@@ -162,6 +162,8 @@ Protocolo em `guia-sessoes/PROTOCOLO.md`. Decisões em `decisoes/REGISTRO.md`. A
 **O argumento de um número de contrato já caiu uma vez.** A medição de desempenho da Emenda 1 não se reproduziu quando o instrumento foi reentregue. Isso foi apanhado porque a revisão exigiu o harness de volta. Todo número que vira contrato precisa do instrumento junto.
 
 **Vinte e oito das 37 restrições do ledger não têm verificação nenhuma hoje**, porque pertencem a camadas que o app ainda não tem. A auditoria de 2026-09-20 (`decisoes/AUDITORIA-2026-09-20-restricao-x-mecanismo.md`) mediu isso. O que protege essas 28 é uma regra de processo, não um comando: a ordem de cada fatia entrega a tabela de restrição por mecanismo, e a revisão começa por ela. Se a regra for afrouxada, o projeto volta ao estado em que cinco defeitos do mesmo tipo passaram num dia só.
+
+**~~O canal de ordem corrompia o código na leitura.~~** Resolvido em 2026-09-20 (`DDP-74`): blocos de código da ordem entram em `{code}`, o que desliga a interpretação de wiki markup. Provado com os nove padrões exatos que se corromperam na fatia F1, todos íntegros pelos três caminhos de leitura.
 
 **O corpus de 30 fixtures estava ao alcance de um comando de rotina.** `bun run format` é `prettier --write .`, o Prettier formata Markdown, e 16 fixtures estão fora do formato dele. Rodá-lo acrescenta ponto e vírgula ao JavaScript dentro do bloco de código da fixture 07, indenta o `:::` que fecha o callout da 16 e insere linha em branco nas tabs da 20, com `input` e `expected` reescritos na mesma passada, sem a suíte acusar nada. A fatia F1 passa a pôr a pasta no `.prettierignore`. Até esse commit existir, o risco continua de pé, e vale para qualquer pessoa que rode o script, dentro ou fora do processo.
 
