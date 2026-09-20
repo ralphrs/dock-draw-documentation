@@ -107,6 +107,28 @@ Os problemas 1 e 2, que são uma decisão só: como uma notação entra no produ
 
 **Não depende** dos ADRs 003, 004, 005 e 006, que formam a trilha da Wiki.
 
+## 6.1. Entrada de produto sobre a paleta, de 2026-09-20
+
+O dono do produto propôs um drawer centralizado com miniaturas, um card por família (AWS, GCP, Azure, UML, BPMN), em vez de lista de nomes. A proposta foi discutida e fica registrada com o recorte que saiu dela, porque o ADR vai precisar decidir isto e a conversa não sobrevive fora daqui.
+
+**A miniatura já é o padrão certo no app, e o motivo importa.** `PaletteItem` renderiza o mesmo `<ElementShape>` que desenha no canvas, em 40 por 28. A miniatura não é um asset separado, é o renderizador real em tamanho pequeno, e por isso nunca diverge da forma de verdade. Gerar imagem de miniatura por forma quebraria essa propriedade na primeira mudança de cor ou de traço.
+
+**Pegar forma e ligar biblioteca são duas funções, e o nome "mais formas" as junta.** Pegar forma é ação repetida: abre, escolhe, fecha, desenha, precisa de outra. Um drawer centralizado cobre o canvas justamente quando a pessoa decide o que encaixa nele. Ligar biblioteca é ação rara, e aí o drawer centralizado com card por família é a forma certa, porque uma miniatura decide "quero AWS ligado" muito melhor que a palavra AWS.
+
+**A escala quebra a miniatura como navegação primária.** Os conjuntos de nuvem têm centenas de ícones, contra uma dezena de uma notação UML. Ninguém encontra um serviço específico olhando uma grade de trezentos quadrados. Acima de algumas dezenas de formas, busca por nome é o meio de chegar, e a miniatura serve para confirmar que o resultado é o certo.
+
+**A razão real do drawer não é descoberta, é manter a paleta utilizável.** A paleta de hoje mostra tudo que o nível permite. Com doze famílias ligadas ao mesmo tempo ela vira lista infinita. Biblioteca ligada e desligada é o mecanismo que impede isso.
+
+O desenho que sai da conversa, para o ADR confirmar ou derrubar com argumento:
+
+| Elemento | Função | Por quê |
+| :--- | :--- | :--- |
+| Drawer centralizado, card por família com formas representativas | Ligar e desligar biblioteca | Ação rara, decisão visual, não compete com o canvas |
+| Paleta lateral persistente, com busca | Pegar forma | Ação repetida, fica ao lado do trabalho em vez de por cima |
+| Agrupamento por família na paleta, mostrando só o que está ligado | Manter a lista navegável | Doze famílias ligadas de uma vez são inutilizáveis sem isso |
+
+Duas coisas que o ADR precisa decidir e que esta entrada não resolve: onde fica o estado de "biblioteca ligada" (por projeto, por usuário, ou derivado da notação do `projects.kind`), e se a busca é por nome do tipo, por rótulo visível, ou pelos dois.
+
 ## 7. Exigências sobre as fatias
 
 1. Cada fatia precisa ser executável por quem não participou da decisão, com teto de 10.000 caracteres de ordem, pela regra que o `PROTOCOLO.md` passou a impor.
