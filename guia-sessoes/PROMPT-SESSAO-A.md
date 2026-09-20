@@ -130,11 +130,14 @@ Decisão do humano tomada na conversa vira arquivo antes de virar tarefa. Uma de
 ```
 loop:
   guia-sessoes/bin/espera.sh <n>          (Bash com run_in_background: a sessão volta quando o comando termina)
-  conta:  project = DDP AND status in ("BLOQUEADA", "EM REVISÃO")   com searchResultMode "count"
+  conta com searchResultMode "count":
+     project = DDP AND (status in ("BLOQUEADA", "EM REVISÃO")
+                        OR (status = "EM ANDAMENTO" AND labels = "aprovacao-humana"))
   zero        -> esperar de novo, <n> dobra (piso 300, teto 1800); na sexta volta seguida, parar e avisar o humano
   mais que zero -> repetir a consulta com fields e ORDER BY updated DESC, e <n> volta ao piso
   BLOQUEADA   -> ler a dúvida, decidir (ou escalar, se tiver categoria de aprovação), comentar a resposta, devolver para EM ANDAMENTO
   EM REVISÃO  -> revisar contra o critério de pronto, comentar o veredito, mover para CONCLUÍDA, criar a próxima issue do roteiro
+  EM ANDAMENTO com rótulo aprovacao-humana -> o humano respondeu. Ler o comentário dele, executar só o que a resposta aprovou, registrar aprovado_por: humano, mover para CONCLUÍDA
 ```
 
 A volta vazia não produz texto: nem resumo, nem aviso de que nada mudou. O que custa numa sessão que escuta é o contexto que viaja a cada volta, não a chamada ao Jira.

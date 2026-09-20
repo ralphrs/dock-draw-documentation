@@ -223,7 +223,26 @@ Ciclo de uma fatia:
 
 Paradas do `/adr` são sempre dúvidas. A parada 3 leva `dependencias`. A parada 5 leva `ledger` e `aceite-adr`.
 
-O humano responde comentando na issue, ou direto na conversa com A. Nos dois casos A registra o sim no comentário de resposta, porque B e C leem a issue, não a conversa.
+### Como o humano responde
+
+Dois caminhos valem, e a diferença é só quando A fica sabendo.
+
+**Pela conversa com A.** Resposta imediata, A age na hora. É o caminho para quando os dois estão na mesma janela.
+
+**Pelo quadro, sem A estar por perto.** Um arrasto do cartão, e o destino é a resposta:
+
+| Destino | Significa |
+| --- | --- |
+| `EM ANDAMENTO` | **Sim.** Aprova todas as ações que a seção "O que a aprovação cobre" da issue lista, e só elas. Sem precisar comentar |
+| `BLOQUEADA` | **Não**, ou sim com ressalva. Aqui o comentário é obrigatório, com o motivo ou com o que fica de fora |
+
+O movimento é o que faz A acordar. Comentário sozinho não aparece em consulta nenhuma, porque JQL não sabe procurar por comentário novo, e um cartão parado em `AGUARDANDO APROVAÇÃO` é indistinguível de um que ninguém leu.
+
+O destino do sim é `EM ANDAMENTO` e não `CONCLUÍDA` porque `CONCLUÍDA` quer dizer que as ações aprovadas já aconteceram. Fechar o cartão no momento da aprovação deixa o quadro afirmando um trabalho que ainda não foi feito, e apaga o rastro caso a execução falhe no meio. Quem move para `CONCLUÍDA` é A, depois de executar e dizer o que executou.
+
+Uma issue de aprovação é escrita para caber nesse gesto: a lista de ações que o sim cobre é fechada e numerada, e A não faz nada fora dela.
+
+Nos dois caminhos, A registra o sim no comentário de resposta com `aprovado_por: humano`, porque B e C leem a issue, não a conversa.
 
 ## Escuta
 
@@ -258,7 +277,7 @@ loop:
 
 | Sessão | JQL da fila |
 | --- | --- |
-| A | `project = DDP AND status in ("BLOQUEADA", "EM REVISÃO")` |
+| A | `project = DDP AND (status in ("BLOQUEADA", "EM REVISÃO") OR (status = "EM ANDAMENTO" AND labels = "aprovacao-humana"))` |
 | B | `project = DDP AND assignee = "712020:ec30868f-8e34-4c25-97e2-cd920e5da679" AND status in ("A FAZER", "EM ANDAMENTO")` |
 | C | `project = DDP AND assignee = "712020:6ac2f667-9728-4b07-bffb-eaa19704a4c9" AND status in ("A FAZER", "EM ANDAMENTO")` |
 
