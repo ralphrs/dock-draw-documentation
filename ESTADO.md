@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 03:55
+**Atualizado em:** 2026-09-20, 04:05
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -114,7 +114,7 @@ Fora da meta: busca, export, sync, publicação pública, navegação. E a rende
 | # | Fatia | Estado |
 | :--- | :--- | :--- |
 | 1 | ADR 002 F0: dependências, runner de teste, fixtures no app | **Aceita** (`ccc3ce2`, `DDP-5`). Typecheck, build, teste 2/2 e verificação de ambiente verdes. A dívida de formatação dos quatro arquivos novos ficou: 17 problemas só em `environment.test.ts`, que a F1 não pode tocar. Vai para `DDP-61` |
-| 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | **Ordem reprovada na revisão** (`DDP-57`). Quatro defeitos: `validateDok` sem `DOK-E011`, e três de bateria de escopo aberto. Volta para a sessão B em `DDP-59`, depois para nova revisão, e só então despacha |
+| 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | Ordem reprovada em `DDP-57` com quatro defeitos, corrigida em `DDP-59` e conferida. **Em segunda revisão com a sessão C** (`DDP-62`), com três pontos nomeados. Despacha se voltar limpa |
 | 3 | ADR 002 F2: validação | Não começou |
 | 4 | ADR 002 F3: URIs e referências | Não começou |
 
@@ -126,9 +126,9 @@ A fatia F0 é maior do que a seção 11 do ADR 002 previa, porque o critério de
 
 | Sessão | Papel | Agora |
 | :--- | :--- | :--- |
-| **A** | Arquiteto principal, gerente de projeto, scrum master | Conferiu a revisão da ordem da F1 e achou mais dois defeitos. Abriu `DDP-59`, `DDP-60` e `DDP-61` |
-| **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Cinco tarefas entregues e aceitas, as últimas `DDP-9` e `DDP-10`. Tem `DDP-58` (escrever o ADR 006) e `DDP-59` (corrigir a ordem da F1) |
-| **C** | Especialista em arquitetura, UX e UI, revisora | Entregou a revisão da ordem da F1 (`DDP-57`), com dois achados bloqueantes confirmados. Sem tarefa aberta até a ordem voltar corrigida |
+| **A** | Arquiteto principal, gerente de projeto, scrum master | Conferiu a ordem corrigida e abriu a segunda revisão. Aplicou a aprovação do ADR 005 |
+| **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Seis tarefas entregues e aceitas, a última `DDP-59`. Tem `DDP-58`, escrever o ADR 006 |
+| **C** | Especialista em arquitetura, UX e UI, revisora | Os dois achados de `DDP-57` procederam. Está na segunda revisão da mesma ordem (`DDP-62`), que inclui medir o custo de dois parses contra o orçamento de 300 ms |
 | **Lovable** | Implementador. Executa ordem, não decide | Lê o quadro `DDP` direto, desde 2026-09-20. Canal verificado em `DDP-6` |
 
 O quadro `DDP` guarda o backlog inteiro desde 2026-09-20: 34 issues de estoque com o rótulo `backlog` e sem responsável, 2 ativas, 8 concluídas. O humano cria issue direto lá, com `draft` enquanto escreve e `liberada` quando quer que a sessão A refine no padrão.
