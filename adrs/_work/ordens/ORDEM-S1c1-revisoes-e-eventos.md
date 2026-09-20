@@ -27,7 +27,7 @@ A plataforma grava pela ferramenta própria (journal em `drizzle/migrations/`, `
 
 ### `workspace_id` em `revision_status_events`, redundante por desenho
 
-Fora da chave primária (`id bigint identity`). Mesma estratégia de multi-inquilino do ADR 003 (seção 6.1, decisão 8), aplicada por igual pelo `DEC-0014`. Faltou na entrega original porque o ledger só registrou três das cinco linhas da `DEC-0014`; registro completo é pendência separada (`DDP-134`), sem travar esta ordem.
+Fora da chave primária (`id bigint identity`). Mesma estratégia de multi-inquilino do ADR 003 (seção 6.1, decisão 8), aplicada por igual pelo `DEC-0014`. Faltou na entrega original porque o ledger só registrou três das cinco linhas da `DEC-0014`. As três que faltavam entraram no ledger em `DDP-134`, aprovadas pelo humano.
 
 ## 1. Criar a migração
 

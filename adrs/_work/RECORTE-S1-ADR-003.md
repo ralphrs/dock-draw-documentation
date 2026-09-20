@@ -42,7 +42,7 @@ O bloco 2 sozinho (4.248 caracteres de DDL) não cabe numa ordem: a proporção 
 
 O corte segue o mesmo critério das demais sub-fatias: cada parte deixa o schema em estado consistente. `page_revisions` e `revision_status_events`, com os dois triggers de imutabilidade e a constraint fechada de `pages.published_revision_id`, cumprem sozinhas as duas restrições do ledger que o bloco 2 constrói (revisão imutável, status sempre evento). O que sobra, `revision_current_status` (projeção de leitura) e o trigger `revision_status_events_apply` (que marca a página como publicada, atualizando `pages.published_revision_id`, `title` e `updated_at`), não é necessário para essas restrições valerem: é otimização e automação, adiável sem deixar buraco.
 
-`revision_status_events` (S1c1) e `revision_current_status` (S1c2) levam `workspace_id`, denormalizado, pela `DEC-0014` decisão 4: toda tabela de dado de tenant carrega a chave dele sem depender de join. Essa coluna faltava no recorte original desta sub-fatia porque o ledger só tinha registrado três das cinco linhas da `DEC-0014`; registro completo é pendência separada (`DDP-134`).
+`revision_status_events` (S1c1) e `revision_current_status` (S1c2) levam `workspace_id`, denormalizado, pela `DEC-0014` decisão 4: toda tabela de dado de tenant carrega a chave dele sem depender de join. Essa coluna faltava no recorte original desta sub-fatia porque o ledger só tinha registrado três das cinco linhas da `DEC-0014`. As três que faltavam entraram no ledger em `DDP-134`, aprovadas pelo humano.
 
 Duas partes, não três: o gatilho de revisão do `DEC-0015` ("três partes para um bloco significa que o critério de corte por bloco não serve para este bloco") não foi acionado.
 
