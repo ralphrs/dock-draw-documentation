@@ -45,16 +45,28 @@ A medição roda em Node, não no isolado V8 do Cloudflare Workers nem num naveg
 
 ## 3. Tamanho máximo de página
 
-Medição da mesma forma da seção 2, variando o tamanho da página sintética. Mesmo harness (`adrs/_work/spike-s1/content-format/perf.ts`), rodadas de conferência e o que se reproduziu em `PERF.md` no mesmo diretório.
+Medição da mesma forma da seção 2, variando o tamanho da página sintética. Harness em `adrs/_work/spike-s1/content-format/perf.ts`, quatro rodadas de conferência em `PERF.md` no mesmo diretório.
 
 | Linhas | Bytes (texto canônico) | `normalizeDok` + `validateDok`, p50 | p95 | max |
 | ---: | ---: | ---: | ---: | ---: |
-| 5.003 | 74 KB | 181 ms | 200 ms | 200 ms |
-| 10.002 | 148 KB | 408 ms | 619 ms | 633 ms |
-| 20.002 | 297 KB | 930 ms | 952 ms | 959 ms |
-| 40.002 | 594 KB | 2.349 ms | 4.330 ms | 4.383 ms |
+| 5.003 | 74 KB | 189 ms | 271 ms | 305 ms |
+| 10.002 | 148 KB | 407 ms | 437 ms | 643 ms |
+| 20.002 | 297 KB | 940 ms | 962 ms | 967 ms |
+| 40.002 | 594 KB | 2.360 ms | 2.442 ms | 2.465 ms |
 
-Até 20 mil linhas, o máximo de cada amostra fica perto do p95 (959 ms contra 952 ms), sinal de que a cauda continua contida. Em 40 mil linhas, o máximo passa a quase o dobro do p50 (4.383 ms contra 2.349 ms), sinal de que a coleta de lixo do V8 começa a dominar o tempo antes desse ponto. O limite desta emenda fica no último ponto onde a cauda ainda está contida: **20.000 linhas, ou 300.000 bytes de texto canônico** (a correlação bytes/linha ficou estável em ≈ 14,8 nas três amostras maiores, mas varia com a mistura de conteúdo: um documento denso em tabelas ou blocos de código atinge o teto em bytes antes das 20 mil linhas).
+O p50 é a única estatística estável entre rodadas: varia menos de 3% de uma rodada para outra em cada tamanho, e cresce de forma superlinear a cada duplicação do tamanho, com fator entre 2,15x e 2,54x, consistente nas quatro rodadas registradas em `PERF.md`.
+
+O `max` e o `p95` não sustentam argumento nesta suíte. Cada um é uma estatística de valor extremo (o maior e o 29º de 30 amostras), e o resultado depende de uma pausa de coleta de lixo do V8 cair ou não dentro da janela de 30 execuções, uma questão de quando a pausa acontece, não uma função do tamanho da página. Nas quatro rodadas de `PERF.md`, a razão `max/p50` cresce entre 20 mil e 40 mil linhas em duas delas e não cresce nas outras duas. Isolar a máquina (nenhum outro processo Node rodando ao mesmo tempo) não separa os dois grupos: das duas rodadas isoladas, uma reproduz o crescimento e a outra não.
+
+A curva do p50 cresce de forma suave entre 5 mil e 40 mil linhas, sem descontinuidade em nenhum dos quatro tamanhos medidos. A medição não indica um ponto de corte natural. O limite desta emenda é escolha de produto, ancorada em dois fatos medidos e num limiar declarado:
+
+- Em 20 mil linhas, o pipeline completo do save fica entre 934 ms e 957 ms nas quatro rodadas, abaixo de um segundo em todas.
+- Em 40 mil linhas, fica entre 2.360 ms e 2.409 ms, acima de dois segundos em todas.
+- Um segundo é o limiar em que a resposta deixa de parecer imediata, e o save é operação síncrona do ponto de vista de quem escreve.
+
+O corte fica em **20.000 linhas, ou 300.000 bytes de texto canônico** (a correlação bytes/linha ficou estável em ≈ 14,8 nas três amostras maiores, mas varia com a mistura de conteúdo: um documento denso em tabelas ou blocos de código atinge o teto em bytes antes das 20 mil linhas). Nenhuma medição desta emenda distingue 20 mil linhas de 15 mil ou de 25 mil, o corte exato é decisão de produto, não achado de spike.
+
+O orçamento da seção 2 (300 ms p95 para uma página de 5 mil linhas) e o limite desta seção não se contradizem, porque medem coisas diferentes. A seção 2 fixa o caso comum, o tempo que uma gravação típica deve levar. Esta seção fixa o caso patológico, o tamanho que o save recusa. Uma página de 20 mil linhas excede o orçamento da seção 2 em várias vezes e ainda assim é aceita: o teto existe para impedir o inviável, não para garantir o confortável.
 
 Acima do limite, o save é recusado com um diagnóstico novo:
 
@@ -65,9 +77,6 @@ DOK-E011: página excede o tamanho máximo (300.000 bytes de texto canônico)
 `validateDok` calcula o tamanho em bytes UTF-8 do texto que `normalizeDok` devolveu (não do texto bruto de entrada, que pode ser maior ou menor depois da normalização) e emite `DOK-E011` antes de qualquer outra checagem, porque o diagnóstico não depende de percorrer a árvore. O autor recebe o diagnóstico com o tamanho atual e o limite, e precisa dividir o conteúdo em mais de uma página. Esta emenda não desenha um mecanismo de divisão automática: fica fora de escopo, sem dono definido.
 
 Alternativa descartada: limitar por número de linhas em vez de bytes. O número de linhas depende da mistura de conteúdo (uma tabela GFM de 50 colunas cabe numa linha e pesa mais que 50 linhas de prosa), então bytes do texto canônico é a medida estável para uma coluna `text` do Postgres, que é o que `content.page_revisions.content_dokmd` de fato guarda (ADR 003). O custo aceito é que o autor não vê "linhas restantes" na UI, só bytes, menos intuitivo de acompanhar durante a digitação.
-
-> [!WARNING]
-> Lacuna: o argumento acima ("a cauda continua contida até 20 mil linhas, abre em 40 mil") não se reproduziu em todas as rodadas de conferência do harness. Duas de quatro rodadas mostram a razão `max/p50` crescendo entre 20 mil e 40 mil linhas, duas não. O p50 de cada tamanho, por outro lado, se reproduziu nas quatro rodadas com variação menor que 3%. Detalhe completo em `adrs/_work/spike-s1/content-format/PERF.md`. O número desta seção (300.000 bytes, 20.000 linhas) não muda enquanto a dúvida está aberta. Dono: `tasks/questions/Q-0003-T-0007.md` (ou `tasks/done/`, se já respondida).
 
 ## 4. Estratégia de testes
 
@@ -135,6 +144,7 @@ riscos_abertos:
   - "O orçamento de 300 ms p95 (seção 2) foi medido em Node num laptop, não no isolado V8 do Cloudflare Workers nem num navegador real. Mesma família de motor (V8), número exato em produção não confirmado. Dono: quem implementar a fatia F1, antes de travar o orçamento como gate de CI"
   - "O plano do Cloudflare Workers em produção (gratuito, com teto de 10 ms de CPU por requisição, ou pago, com 30 s por padrão) não está registrado em nenhum ADR. Um pipeline de save de página grande no plano gratuito estouraria o teto de CPU. Dono: quem decidir o plano de hospedagem"
   - "O limite de 300.000 bytes assume uma correlação bytes/linha medida em conteúdo misto (headings, listas, código, tabela, callout, tabs, steps, diagrama). Uma página real muito mais densa em um único tipo de bloco (por exemplo, só tabelas largas) pode atingir o teto de bytes bem antes das 20 mil linhas usadas como referência de UX na seção 3"
+  - "O limite de 300.000 bytes não marca uma descontinuidade medida. A curva do p50 cresce de forma suave e superlinear entre 5 mil e 40 mil linhas, sem joelho. O corte é escolha de produto ancorada no limiar de um segundo, e uma revisão que decida por 150.000 ou por 600.000 bytes não contraria nenhuma medição desta emenda. Dono: quem implementar a fatia F4 do ADR 002, ao observar tamanhos reais de página"
 gatilhos_de_reabertura:
   - "A medição em ambiente real (Cloudflare Workers de preview) diverge da ordem de grandeza medida em Node por mais de 2x"
   - "O ADR 010 decide um runtime para o job agendado que não é um isolado V8 (por exemplo, uma função Node tradicional), e passa a poder usar builtins do Node sem quebrar a restrição desta emenda, o que reabre a seção 1 só para esse consumidor"

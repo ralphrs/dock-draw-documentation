@@ -32,3 +32,9 @@ Uma linha por evento, anexada pelos scripts de `guia-sessoes/bin/`. Não editar 
 2026-09-19T22:59:55 B claim    T-0007-harness-de-medicao.md -> tasks/in-progress
 2026-09-19T23:07:21 A create   T-0008-ordem-fatia-f0.md -> tasks/todo
 2026-09-19T23:12:30 B ask      Q-0003-T-0007.md -> tasks/questions
+2026-09-19T23:16:54 A answer   A-Q-0003.md -> tasks/in-progress
+2026-09-19T23:16:54 A answer   Q-0003-T-0007.md -> tasks/in-progress
+2026-09-19T23:17:12 B complete T-0007-harness-de-medicao.md -> tasks/done
+2026-09-19T23:19:49 B consume  Q-0003-T-0007.md -> tasks/done
+2026-09-19T23:19:49 B consume  A-Q-0003.md -> tasks/done
+2026-09-19T23:20:05 B claim    T-0008-ordem-fatia-f0.md -> tasks/in-progress

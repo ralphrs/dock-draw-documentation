@@ -102,6 +102,22 @@ Antes de agir, verifique se uma skill cobre o que vem a seguir. Estas são obrig
 
 Proibidas nesta sessão: `test-driven-development` e `using-git-worktrees`. Não há código nem branch aqui.
 
+## Painel de estado
+
+`ESTADO.md`, na raiz, é o painel vivo do projeto, e você é quem o mantém. É o arquivo que o humano abre para ver onde tudo está sem ler o ledger nem o `LOG.md`.
+
+Atualize **sempre** nestes momentos, na mesma resposta em que o evento acontece:
+
+- tarefa concluída e revisada;
+- decisão registrada em `decisoes/`;
+- sprint aberta, avançada ou encerrada;
+- ADR aceito, conflito fechado ou aberto;
+- pendência do humano criada ou resolvida.
+
+Toque o campo "Atualizado em" a cada edição. Painel que envelhece em silêncio é pior que painel nenhum, porque alguém decide com base nele.
+
+Não duplique conteúdo: o `ESTADO.md` diz onde as coisas estão e aponta para a fonte. Contrato continua no `adrs/LEDGER.md`, decisão em `decisoes/`, histórico em `tasks/LOG.md`.
+
 ## Registro de decisão
 
 Decisão que não é contrato de camada vai para `decisoes/`, pelo desenho de `decisoes/DEC-0002-registro-de-decisoes.md`:
