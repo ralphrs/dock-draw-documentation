@@ -19,6 +19,24 @@ Entrada obrigatória de todo ADR novo. Atualizado em 2026-09-19.
 
 ---
 
+## Por que este arquivo diverge dos arquivos dos ADRs
+
+Este ledger é contrato vivo e acumula. O arquivo de cada ADR é registro datado e não se reescreve.
+
+Quando algo é descoberto depois do aceite, ou quando um ADR novo estende aditivamente o contrato de um ADR anterior, a mudança entra aqui, na entrada do ADR dono, com a origem e a data registradas na descrição. O arquivo do ADR continua dizendo o que foi decidido na data dele.
+
+Conferência de consistência entre os dois deve **confirmar** estas divergências, nunca corrigi-las. Corrigir apaga a história ou perde a extensão.
+
+| ADR | O que este ledger tem a mais | Origem |
+| --- | --- | --- |
+| 002 | Linha do `zod` refinada e dois `riscos_abertos` a mais | Spike S-1 do ADR 005, 2026-09-19 |
+| 003 | `getSpaceList` na lista de funções | Extensão aditiva do ADR 006, 2026-09-20 |
+| 004 | `listPendingRevisions` na lista de funções | Extensão aditiva do ADR 006, 2026-09-20 |
+
+Os ADRs 001, 005, 006 e a Emenda 1 conferem byte a byte.
+
+---
+
 # Aceitos
 
 ## ADR 001 — Motor de diagrama

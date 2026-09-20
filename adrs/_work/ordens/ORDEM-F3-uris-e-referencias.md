@@ -1,16 +1,16 @@
 # Ordem F3: URIs e referências
 
-Fatia F3 do ADR 002 (seção 11), depende só da F1 (aceita, `3185728`). Entrega `collectRefs`, `extractText` e `anchorSlug` num arquivo novo, `src/content-format/refs.ts`, sem tocar `index.ts`. `parseDokUri`, símbolo da tabela de fatias, é o mesmo trabalho que `classifyUrl` já faz, publicado pela Emenda 1 seção 5 e entregue pela F1: não cria símbolo novo para isso.
+Fatia F3 do ADR 002 (seção 11), depende só da F1 (aceita, `3185728`). Entrega `collectRefs`, `extractText`, `anchorSlug` em `src/content-format/refs.ts`, sem tocar `index.ts`. `parseDokUri` (tabela de fatias) é `classifyUrl` (Emenda 1 seção 5, já na F1): sem símbolo novo.
 
-## Tabela de restrições do contrato
+## Restrições do contrato
 
-| Restrição (`LEDGER.md`) | Cumprida por |
+| Restrição (`LEDGER.md`) | Como se confere |
 | :--- | :--- |
-| Nenhuma camada parseia Markdown por conta própria | `refs.ts` só recebe `Root` já parseada, nunca chama `fromMarkdown` |
-| Links, imagens, diagramas referenciados por id em URI `dok:` | `collectRefs` obtém `id` só via `classifyUrl`, nunca lê atributo bruto como id |
-| `src/content-format` (fora de `testing`) sem builtin do Node | `refs.ts` importa só `mdast`, `unist-util-visit`, `github-slugger`, `./index` |
-| `extractText` percorre a mdast sem renderizar (seção 7.5) | `extractText` só concatena string, nenhum JSX/HTML gerado |
-| `extractText` exclui URL e atributos técnicos (seção 7.5) | `inlineText` nunca lê `n.url` nem `attributes`. `diagram-title` lê só `title` |
+| Nenhuma camada parseia Markdown por conta própria | Assinatura `tree: Root`, TS rejeita chamada com `string` |
+| Links, imagens, diagramas por id em URI `dok:` | Testes de `collectRefs` (fixtures 12-14, 23, 28) comparam o `id` de cada uma |
+| `src/content-format` (fora de `testing`) sem builtin do Node | ESLint de `src/content-format/**` (direto) e o build do passo 3 (transitiva) |
+| `extractText` percorre a mdast sem renderizar (seção 7.5) | `refs.ts` não importa `react` nem lib de render |
+| `extractText` exclui URL e atributo técnico (seção 7.5) | Teste de `extractText` espera `"Texto com link."`, sem a URL (linha 194) |
 
 ## 1. Criar `src/content-format/refs.ts`
 
@@ -127,7 +127,7 @@ export function anchorSlug(headingText: string): string {
 
 ## 2. Criar `src/content-format/testing/refs.test.ts`
 
-Arquivo novo, conteúdo inteiro. Não toca `fixtures.test.ts` nem `environment.test.ts`:
+Arquivo novo. Não toca `fixtures.test.ts` nem `environment.test.ts`:
 
 ```ts
 import { readFileSync } from "node:fs";
@@ -204,28 +204,43 @@ describe("anchorSlug", () => {
 });
 ```
 
-## 3. Bateria, no escopo desta fatia
+## 3. Acrescentar `refs.ts` ao build de verificação
+
+Em `vite.content-format-check.config.ts`, só o `entry` muda:
+
+```ts
+entry: ["src/content-format/index.ts", "src/content-format/refs.ts"],
+```
+
+Alternativa descartada: reexportar `refs.ts` em `index.ts`, o que fecharia um ciclo de import sem necessidade (contrato não exige a F3 saindo por `index.ts`).
+
+Medido: build limpo, 367 módulos, sem `UNRESOLVED_IMPORT`. Saída lista três arquivos, não dois (as duas entries mais um chunk compartilhado). Critério: código de saída e ausência de `UNRESOLVED_IMPORT`/`Rolldown failed to resolve`, não a contagem.
+
+## 4. Bateria, no escopo desta fatia
 
 ```
 bunx prettier --write src/content-format/refs.ts src/content-format/testing/refs.test.ts
 bun run typecheck
 bun run build
 bun run test
+bun run check:content-format-env
 bunx eslint src/content-format/refs.ts src/content-format/testing/refs.test.ts
 ```
 
-`typecheck` e `build` rodam abertos: medidos limpos (código 0) em 2026-09-20. `bun run test` precisa reportar 3 arquivos verdes (`environment.test.ts`, `fixtures.test.ts`, `refs.test.ts` novo, 7 testes). `bunx eslint` escopado aos dois arquivos novos precisa terminar sem problema. Não rode `bun run lint` nem `prettier --check .` abertos: acusam 704 e 47 pré-existentes, medidos hoje, fora da definição de pronto desta fatia.
+`typecheck`/`build` abertos: medidos limpos (código 0) em 2026-09-20. `bun run test` reporta 3 arquivos verdes (`environment.test.ts`, `fixtures.test.ts`, `refs.test.ts`, 7 testes). `check:content-format-env`: código 0, sem `UNRESOLVED_IMPORT`/`Rolldown failed to resolve` (seção 3). `eslint` nos dois arquivos: sem problema. Não rode `bun run lint` nem `prettier --check .` abertos: 704 e 47 pré-existentes, fora do pronto desta fatia.
 
 ## O que fazer se algo falhar
 
 - `typecheck` falha em `refs.ts`: não desligue flag, não use `as any`. Pare e devolva a saída.
 - `refs.test.ts` falha numa fixture: não edite a fixture. Pare e devolva a saída.
-- `eslint` acusa builtin do Node em `refs.ts`: `github-slugger` e `unist-util-visit` não são builtin. Confira se o import não é `node:*`. Se for erro real, pare e devolva a saída.
+- `check:content-format-env` acusa `UNRESOLVED_IMPORT`: não adicione a `rollupOptions.external`, devolva a saída com a linha do import.
+- `eslint` acusa builtin em `refs.ts`: `github-slugger`/`unist-util-visit` não são builtin, confira se o import não é `node:*`. Se for erro real, pare e devolva a saída.
 - Qualquer outro código diferente de 0: pare, não tente outra abordagem, devolva a saída completa.
 
 ## Restrições
 
-- Não edite `parseDok`, `serializeDok`, `normalizeDok`, `validateDok` nem qualquer linha de `index.ts`.
-- Nenhum pacote novo (`github-slugger` já instalado pela F0).
+- Não edite `parseDok`, `serializeDok`, `normalizeDok`, `validateDok` nem nenhuma linha de `index.ts`.
+- Nenhum pacote novo (`github-slugger` já instalado).
 - Não edite `fixtures.test.ts`, `environment.test.ts`, `eslint.config.js`, `package.json`.
-- Não toque em `.env*`. Não commite, não despache.
+- Em `vite.content-format-check.config.ts`, só a linha do `entry` (passo 3).
+- Não toque `.env*`. Não commite, não despache.
