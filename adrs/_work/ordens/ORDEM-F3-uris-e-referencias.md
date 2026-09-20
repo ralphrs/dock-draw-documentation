@@ -9,8 +9,9 @@ Fatia F3 do ADR 002 (seção 11), depende só da F1 (aceita, `3185728`). Entrega
 | Nenhuma camada parseia Markdown por conta própria | Assinatura `tree: Root`, TS rejeita chamada com `string` |
 | Links, imagens, diagramas por id em URI `dok:` | Testes de `collectRefs` (fixtures 12-14, 23, 28) comparam o `id` de cada uma |
 | `src/content-format` (fora de `testing`) sem builtin do Node | ESLint de `src/content-format/**` (direto) e o build do passo 3 (transitiva) |
-| `extractText` percorre a mdast sem renderizar (seção 7.5) | `refs.ts` não importa `react` nem lib de render |
 | `extractText` exclui URL e atributo técnico (seção 7.5) | Teste de `extractText` espera `"Texto com link."`, sem a URL (linha 194) |
+
+Esta ordem não importa biblioteca de UI em `refs.ts`, por coerência com módulo de transformação pura. Não é restrição do ledger, sem mecanismo que reprove, fora da tabela. Proposta de restrição nova em `DDP-84`.
 
 ## 1. Criar `src/content-format/refs.ts`
 
@@ -212,9 +213,9 @@ Em `vite.content-format-check.config.ts`, só o `entry` muda:
 entry: ["src/content-format/index.ts", "src/content-format/refs.ts"],
 ```
 
-Alternativa descartada: reexportar `refs.ts` em `index.ts`, o que fecharia um ciclo de import sem necessidade (contrato não exige a F3 saindo por `index.ts`).
+Alternativa descartada: reexportar `refs.ts` em `index.ts`, fecharia ciclo sem necessidade (contrato não exige a F3 saindo por `index.ts`).
 
-Medido: build limpo, 367 módulos, sem `UNRESOLVED_IMPORT`. Saída lista três arquivos, não dois (as duas entries mais um chunk compartilhado). Critério: código de saída e ausência de `UNRESOLVED_IMPORT`/`Rolldown failed to resolve`, não a contagem.
+Medido: build limpo, 367 módulos, sem `UNRESOLVED_IMPORT`. Saída lista três arquivos (as duas entries mais um chunk compartilhado). Critério: código e ausência de `UNRESOLVED_IMPORT`/`Rolldown failed to resolve`, não a contagem.
 
 ## 4. Bateria, no escopo desta fatia
 
@@ -227,7 +228,7 @@ bun run check:content-format-env
 bunx eslint src/content-format/refs.ts src/content-format/testing/refs.test.ts
 ```
 
-`typecheck`/`build` abertos: medidos limpos (código 0) em 2026-09-20. `bun run test` reporta 3 arquivos verdes (`environment.test.ts`, `fixtures.test.ts`, `refs.test.ts`, 7 testes). `check:content-format-env`: código 0, sem `UNRESOLVED_IMPORT`/`Rolldown failed to resolve` (seção 3). `eslint` nos dois arquivos: sem problema. Não rode `bun run lint` nem `prettier --check .` abertos: 704 e 47 pré-existentes, fora do pronto desta fatia.
+`typecheck`/`build`: código 0 em 2026-09-20. `bun run test`: 3 arquivos (`environment.test.ts`, `fixtures.test.ts`, `refs.test.ts`, 7 testes). `check:content-format-env`: código 0, sem `UNRESOLVED_IMPORT`/`Rolldown failed to resolve` (seção 3). `eslint`: sem problema. Não rode `bun run lint` nem `prettier --check .`: 704 e 47 pré-existentes, fora do pronto.
 
 ## O que fazer se algo falhar
 
