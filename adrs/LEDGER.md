@@ -30,6 +30,7 @@ Conferência de consistência entre os dois deve **confirmar** estas divergênci
 | ADR | O que este ledger tem a mais | Origem |
 | --- | --- | --- |
 | 002 | Linha do `zod` refinada e dois `riscos_abertos` a mais | Spike S-1 do ADR 005, 2026-09-19 |
+| 002 | Restrição de não importar biblioteca de interface | Revisão da ordem da fatia F3, 2026-09-20 |
 | 003 | `getSpaceList` na lista de funções | Extensão aditiva do ADR 006, 2026-09-20 |
 | 004 | `listPendingRevisions` na lista de funções | Extensão aditiva do ADR 006, 2026-09-20 |
 
@@ -174,6 +175,7 @@ restricoes_impostas:
   - "Conteúdo não carrega estilo: sem HTML, class, style ou atributos fora do registro"
   - "Datas, autor, status editorial, slug e hierarquia não moram no conteúdo"
   - "Mudança no que o parser reconhece só com incremento de dok, migração e fixtures novas; nome novo no registro de diretivas é aditivo e não incrementa"
+  - "src/content-format, exceto src/content-format/testing, não importa biblioteca de interface (react, react-dom ou equivalente). É módulo de transformação de dados: entra texto ou árvore, sai texto ou árvore. Verificado por no-restricted-imports no bloco de ESLint do módulo. Acrescentada em 2026-09-20, origem na revisão da ordem da fatia F3 (DDP-84)"
 premissas_sobre_camadas_futuras:
   - camada: "Edição (ADR 005)"
     premissa: "O editor produz DokAST/DokMD sem perda de significado nas fixtures e suporta directives só de bloco; o servidor normaliza no save"

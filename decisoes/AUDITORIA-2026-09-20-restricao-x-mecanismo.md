@@ -82,6 +82,12 @@ A restrição diz que todo produtor e consumidor usa DokAST via `src/content-for
 
 **Conserto barato:** bloco de ESLint com `no-restricted-imports` sobre `src/**`, exceto `src/content-format/**`, proibindo os pacotes de parse e serialização de Markdown do contrato.
 
+### Lacuna 6: a restrição nova de biblioteca de interface ainda não tem mecanismo
+
+Acrescentada ao ledger em 2026-09-20 (`DDP-84`), depois que a revisão da ordem da fatia F3 mostrou que a propriedade era desejada e não contratada. A regra de `no-restricted-imports` que a reprova entra em `DDP-80`, junto com as lacunas 3 e 4.
+
+Enquanto isso, é restrição sem mecanismo, o que a auditoria trata como lacuna mesmo quando está sendo cumprida. Nenhum arquivo de `src/content-format` importa `react` hoje.
+
 ### Lacuna 4: nada impede avaliar código
 
 A restrição proíbe avaliar código e compilar MDX dentro do app. O `eslint.config.js` não tem `no-eval`, `no-new-func` nem `no-implied-eval`, e o app não usa nenhum dos três hoje.

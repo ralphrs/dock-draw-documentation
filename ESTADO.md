@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 07:05
+**Atualizado em:** 2026-09-20, 07:15
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -119,7 +119,7 @@ Fora da meta: busca, export, sync, publicação pública, navegação. E a rende
 | 1 | ADR 002 F0: dependências, runner de teste, fixtures no app | **Aceita** (`ccc3ce2`, `DDP-5`). Typecheck, build, teste 2/2 e verificação de ambiente verdes. A dívida de formatação dos quatro arquivos novos ficou: 17 problemas só em `environment.test.ts`, que a F1 não pode tocar. Vai para `DDP-61` |
 | 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | **Fechada por inteiro** (`3185728`). Ciclo de oito passos rodado do começo ao fim, com revisão do dono do produto (`DDP-76`) |
 | 3 | ADR 002 F2: validação | **Entregue junto com a F1.** O critério de pronto foi conferido item a item contra a `main` e está cumprido. Sobra só a checagem automática de `DDP-68` (`DDP-12`) |
-| 4 | ADR 002 F3: URIs e referências | **Ordem publicada** em `DDP-85`, 9.981 caracteres, com os quatro blocos de código em `{code}` e o canal conferido. Espera o sim de crédito (`DDP-86`) |
+| 4 | ADR 002 F3: URIs e referências | **O Lovable está executando** (`DDP-85`). Primeira ordem do projeto a passar pelo canal consertado |
 
 A fatia F0 é maior do que a seção 11 do ADR 002 previa, porque o critério de pronto da F1 são as 30 fixtures rodando, e não há onde rodá-las.
 
