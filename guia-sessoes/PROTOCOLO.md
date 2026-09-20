@@ -180,6 +180,7 @@ Resposta errada não se edita. A escreve uma issue nova ou quem perguntou abre o
 - **Quem escreve código é o Lovable.** A sessão C não implementa. A ordem é escrita por B a partir do contrato da fatia e revisada por C antes de rodar.
 - **A ordem é a issue.** Desde 2026-09-20 o agente do Lovable tem o conector Atlassian ligado e lê o quadro `DDP` direto. A ordem vai na descrição de uma issue de rótulo `lovable`, e o `send_message` encolhe para uma mensagem curta que nomeia a chave. Existe uma cópia só do texto, que é a que C revisa e a que o Lovable executa. O arquivo em `adrs/_work/ordens/` continua sendo a fonte versionada, e traz a chave da issue no cabeçalho.
 - **A descrição da ordem congela quando o Lovable é acordado.** Até lá, A corrige a descrição pelo que C apontou. Depois disso, correção vai como comentário de emenda e nova execução, porque editar por baixo de quem está executando produz um resultado que ninguém revisou.
+- **O Lovable não escuta o quadro.** Ele não tem ciclo, não consulta fila e não descobre trabalho sozinho. Quem vigia a fila de rótulo `lovable` é a sessão A, que despacha quando a ordem está revisada por C e, quando for o caso, aprovada pelo humano. O retorno dele cai na fila de A sem nada especial, porque ele move a própria issue para `EM REVISÃO`, que já é o status que A escuta.
 - **O Lovable escreve pouco no quadro.** Comenta o resultado com a primeira linha `Lovable: resultado`, move a própria issue para `EM REVISÃO`, e nada além disso. Não cria issue, não edita descrição, não fecha cartão, não responde dúvida de outro. As regras estão no knowledge do projeto no Lovable, que A mantém.
 - **O Lovable commita na `main`.** Não há branch. O commit atualiza o preview do projeto e **não** altera a produção: publicar é a ação separada `deploy_project`, categoria `app-release`, que só acontece com o sim do humano.
 - **A revisão acontece duas vezes, e a primeira é a que paga.** O rótulo `revisar-ordem` roda antes de qualquer código existir e pergunta se sobra decisão para quem executa. O rótulo `revisar-resultado` roda depois, contra o diff, o build e o preview. Erro apanhado na primeira custa uma leitura, na segunda custa crédito, tempo e um revert na `main`.
@@ -226,28 +227,54 @@ O humano responde comentando na issue, ou direto na conversa com A. Nos dois cas
 
 ## Escuta
 
-Não há mais watcher de arquivo. Cada sessão alterna espera e consulta:
+Não há mais watcher de arquivo. A espera de uma sessão pode acontecer em dois lugares, e o lugar muda o custo por ordem de grandeza.
+
+### Modo preferido: a espera acontece fora da sessão
+
+```
+guia-sessoes/bin/aguarda-fila.sh <A|B|C> 60 3600      (Bash, run_in_background)
+```
+
+O script consulta a contagem da fila a cada 60 segundos e **só termina quando a fila tem alguma coisa**, ou quando o limite de uma hora estoura. Enquanto a fila está vazia, a sessão continua bloqueada no comando em segundo plano: nenhuma chamada de ferramenta, nenhum token, nenhum texto. Ela volta a pensar uma vez, já sabendo que há trabalho.
+
+A diferença não é a requisição ao Jira, que é barata nos dois modos. É o contexto da sessão, que viaja inteiro a cada volta que o modelo dá. Uma noite parada custa uma volta por hora em vez de sete.
+
+O script precisa de uma credencial de API do Atlassian, num arquivo fora deste repositório (`~/.config/dokdraw/jira.env`, com `JIRA_EMAIL` e `JIRA_TOKEN`). Nenhuma sessão lê esse arquivo: só o script o abre, e a leitura dele está negada nas permissões.
+
+> [!WARNING]
+> `/rest/api/3/search/approximate-count` responde `{"count":0}` com HTTP 200 mesmo sem autenticação válida. Credencial quebrada fica indistinguível de fila vazia, e a sessão esperaria para sempre por trabalho que ela nunca veria. Por isso o script confere a credencial em `/rest/api/3/myself` antes de entrar no laço e aborta com código 2 se ela não autenticar.
+
+### Modo de reserva: a espera acontece dentro da sessão
+
+Quando a credencial não está disponível, vale o par espera mais consulta, em duas etapas: primeiro um número, só depois o conteúdo.
 
 ```
 loop:
-  guia-sessoes/bin/espera.sh 540      (Bash, run_in_background: a sessão volta quando o comando termina)
-  consulta JQL da sua fila
-  trata o que apareceu, ou nada
+  guia-sessoes/bin/espera.sh <n>      (Bash, run_in_background: a sessão volta quando o comando termina)
+  conta a fila:  searchResultMode "count", sem campos
+  0 resultados  -> dorme de novo, e <n> dobra até o teto
+  1 ou mais     -> consulta de novo com os campos, trata, e <n> volta ao piso
 ```
 
-| Sessão | JQL |
+| Sessão | JQL da fila |
 | --- | --- |
-| A | `project = DDP AND status in ("BLOQUEADA", "EM REVISÃO") ORDER BY updated DESC` |
-| B | `project = DDP AND assignee = "712020:ec30868f-8e34-4c25-97e2-cd920e5da679" AND status in ("A FAZER", "EM ANDAMENTO") ORDER BY updated DESC` |
-| C | `project = DDP AND assignee = "712020:6ac2f667-9728-4b07-bffb-eaa19704a4c9" AND status in ("A FAZER", "EM ANDAMENTO") ORDER BY updated DESC` |
+| A | `project = DDP AND status in ("BLOQUEADA", "EM REVISÃO")` |
+| B | `project = DDP AND assignee = "712020:ec30868f-8e34-4c25-97e2-cd920e5da679" AND status in ("A FAZER", "EM ANDAMENTO")` |
+| C | `project = DDP AND assignee = "712020:6ac2f667-9728-4b07-bffb-eaa19704a4c9" AND status in ("A FAZER", "EM ANDAMENTO")` |
+
+**A contagem é a volta normal.** `searchResultMode` em `count` devolve um número e nada mais, cerca de 250 tokens. A mesma consulta pedindo campos devolve de 3.000 a 5.000, porque o Jira manda junto URL de avatar, link de API e categoria de status de cada issue. Como a volta sem novidade é a maioria absoluta das voltas, é ela que precisa ser barata.
+
+**Quando a contagem for maior que zero**, repita a consulta com `fields` e `ORDER BY updated DESC` para saber o que apareceu, e use `getJiraIssue` com `fields: ["summary","description","comment","status"]` na issue que interessa. Nunca peça `*all`.
+
+**O intervalo dobra enquanto o quadro está parado.** Piso de 300 segundos, teto de 1800. A sessão começa no piso, dobra a cada volta vazia (300, 600, 1200, 1800, 1800...) e volta ao piso assim que tratar qualquer coisa. Uma fila parada de madrugada custa duas consultas por hora em vez de sete, e uma fila ativa continua respondendo em cinco minutos.
 
 - B e C incluem `EM ANDAMENTO` na consulta porque é o status para onde A devolve uma issue respondida. Ao ver uma issue própria em `EM ANDAMENTO` com comentário novo, leia o comentário antes de retomar.
-- A consulta custa uma chamada de ferramenta por volta, com ou sem novidade. É o preço de trocar evento por consulta (`decisoes/DEC-0009-comunicacao-por-jira.md`).
 - Nada novo na fila: espere de novo, sem comentar.
+- O custo real de escutar não é a chamada, é o contexto da sessão, que viaja inteiro a cada volta. Por isso a volta vazia não deve produzir texto nenhum: nem resumo, nem "nada novo até agora", nem atualização de painel.
 
 ## Ociosidade
 
-Depois de seis voltas seguidas sem novidade (cerca de uma hora), a sessão para de escutar e escreve ao humano uma linha: o que está pendente e de quem.
+Depois de seis voltas seguidas sem novidade, a sessão para de escutar e escreve ao humano uma linha: o que está pendente e de quem. Com o intervalo dobrando, seis voltas vazias somam cerca de duas horas.
 
 ## Paralelismo
 

@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+# Espera até a fila de uma sessão ter trabalho no quadro DDP, e só então retorna.
+#
+# Substitui o par espera.sh + consulta JQL dentro da sessão. A diferença é onde a
+# espera acontece: aqui ela é um laço de shell, fora do modelo. Enquanto a fila
+# está vazia o custo é uma requisição HTTP por intervalo e zero token, porque a
+# sessão continua bloqueada no comando em segundo plano. Ela só volta a pensar
+# quando há trabalho de verdade, ou quando o limite estoura.
+#
+# Uso: aguarda-fila.sh <A|B|C> [intervalo_s] [limite_s]
+#   intervalo padrão 60s, limite padrão 3600s.
+#
+# Credencial: um arquivo fora deste repositório, com JIRA_EMAIL e JIRA_TOKEN.
+# Padrão ~/.config/dokdraw/jira.env, sobrescrito por DOKDRAW_JIRA_ENV.
+# O token é criado em https://id.atlassian.com/manage-profile/security/api-tokens
+set -eu
+
+cred=${DOKDRAW_JIRA_ENV:-$HOME/.config/dokdraw/jira.env}
+if [ ! -f "$cred" ]; then
+  echo "ERRO: credencial não encontrada em $cred" >&2
+  echo "Crie o arquivo com JIRA_EMAIL=<email> e JIRA_TOKEN=<api token>, com permissão 600." >&2
+  exit 1
+fi
+# shellcheck disable=SC1090
+. "$cred"
+: "${JIRA_EMAIL:?JIRA_EMAIL não definido em $cred}"
+: "${JIRA_TOKEN:?JIRA_TOKEN não definido em $cred}"
+
+site=${JIRA_SITE:-https://dokdrawapp.atlassian.net}
+sessao=${1:?uso: aguarda-fila.sh <A|B|C> [intervalo_s] [limite_s]}
+intervalo=${2:-60}
+limite=${3:-3600}
+
+case "$sessao" in
+  A | a) jql='project = DDP AND status in ("BLOQUEADA", "EM REVISÃO")' ;;
+  B | b) jql='project = DDP AND assignee = "712020:ec30868f-8e34-4c25-97e2-cd920e5da679" AND status in ("A FAZER", "EM ANDAMENTO")' ;;
+  C | c) jql='project = DDP AND assignee = "712020:6ac2f667-9728-4b07-bffb-eaa19704a4c9" AND status in ("A FAZER", "EM ANDAMENTO")' ;;
+  *)
+    echo "ERRO: sessão '$sessao' não é A, B nem C" >&2
+    exit 1
+    ;;
+esac
+
+corpo=$(printf '%s' "$jql" | python3 -c 'import json,sys; print(json.dumps({"jql": sys.stdin.read()}))')
+
+# A credencial é conferida antes do laço, e a conferência não é opcional.
+# /rest/api/3/search/approximate-count responde {"count":0} com HTTP 200 mesmo
+# sem autenticação válida, então uma credencial quebrada é indistinguível de uma
+# fila vazia: a sessão esperaria para sempre por trabalho que ela nunca veria.
+# /rest/api/3/myself distingue os dois casos, porque exige autenticação.
+eu=$(curl -sS --max-time 30 -u "$JIRA_EMAIL:$JIRA_TOKEN" "$site/rest/api/3/myself" 2>/dev/null |
+  python3 -c 'import json,sys
+try:
+    d = json.load(sys.stdin)
+    print(d["accountId"] + " " + d.get("displayName", ""))
+except Exception:
+    print("")')
+if [ -z "$eu" ]; then
+  echo "ERRO: a credencial de $cred não autentica em $site." >&2
+  echo "Confira JIRA_EMAIL e JIRA_TOKEN. O token é criado em https://id.atlassian.com/manage-profile/security/api-tokens" >&2
+  exit 2
+fi
+printf 'Autenticado como %s. Escutando a fila da sessão %s a cada %ss, por até %ss.\n' "$eu" "$sessao" "$intervalo" "$limite" >&2
+
+conta() {
+  resposta=$(curl -sS --max-time 30 -u "$JIRA_EMAIL:$JIRA_TOKEN" \
+    -H 'Content-Type: application/json' \
+    -w '\n%{http_code}' \
+    -X POST "$site/rest/api/3/search/approximate-count" \
+    -d "$corpo" 2>/dev/null)
+  codigo=$(printf '%s' "$resposta" | tail -n 1)
+  [ "$codigo" = "200" ] || { echo -1; return 0; }
+  printf '%s' "$resposta" | sed '$d' | python3 -c 'import json,sys
+try:
+    print(int(json.load(sys.stdin)["count"]))
+except Exception:
+    print(-1)'
+}
+
+fim=$(($(date +%s) + limite))
+falhas=0
+while :; do
+  n=$(conta || echo -1)
+  case "$n" in
+  '' | *[!0-9-]*) n=-1 ;;
+  esac
+
+  if [ "$n" -gt 0 ]; then
+    printf 'FILA %s: %s issue(s) esperando, %s\n' "$sessao" "$n" "$(date +%Y-%m-%dT%H:%M:%S)"
+    exit 0
+  fi
+
+  if [ "$n" -lt 0 ]; then
+    falhas=$((falhas + 1))
+    if [ "$falhas" -ge 5 ]; then
+      printf 'ERRO: cinco consultas seguidas falharam. Confira a credencial em %s\n' "$cred" >&2
+      exit 2
+    fi
+  else
+    falhas=0
+  fi
+
+  if [ "$(date +%s)" -ge "$fim" ]; then
+    printf 'LIMITE %s: %ss sem novidade na fila, %s\n' "$sessao" "$limite" "$(date +%Y-%m-%dT%H:%M:%S)"
+    exit 0
+  fi
+  sleep "$intervalo"
+done

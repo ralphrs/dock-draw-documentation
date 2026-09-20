@@ -135,11 +135,15 @@ Você nunca edita descrição de issue nem comentário da sessão A, e nunca ass
 
 ```
 loop:
-  /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/guia-sessoes/bin/espera.sh 540
+  /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/guia-sessoes/bin/espera.sh <n>
       (Bash com run_in_background: a sessão volta quando o comando termina)
-  JQL: project = DDP AND assignee = "712020:6ac2f667-9728-4b07-bffb-eaa19704a4c9"
-       AND status in ("A FAZER", "EM ANDAMENTO") ORDER BY updated DESC
+  conta com searchResultMode "count", sem campos:
+       project = DDP AND assignee = "712020:6ac2f667-9728-4b07-bffb-eaa19704a4c9"
+       AND status in ("A FAZER", "EM ANDAMENTO")
+  zero                 -> esperar de novo, <n> dobra (piso 300, teto 1800); na sexta volta seguida, parar e avisar o humano
+  mais que zero        -> repetir com fields e ORDER BY updated DESC, e <n> volta ao piso
   A FAZER              -> transição 31, revisar, entregar com veredito
   EM ANDAMENTO com comentário novo de A -> conferir aprovado_por, aplicar a instrução, retomar
-  nada novo            -> esperar de novo; na sexta volta seguida, parar e avisar o humano
 ```
+
+A volta vazia não produz texto nenhum. O custo de escutar é o contexto da sessão viajando a cada volta, não a chamada ao Jira.

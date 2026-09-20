@@ -25,6 +25,7 @@
       "Bash(git -C /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app status:*)",
       "Bash(git -C /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app branch:*)",
       "Bash(guia-sessoes/bin/espera.sh:*)",
+      "Bash(guia-sessoes/bin/aguarda-fila.sh:*)",
       "Bash(guia-sessoes/bin/instalar-fixtures.sh:*)",
       "mcp__claude_ai_Atlassian_Rovo__searchJiraIssuesUsingJql",
       "mcp__claude_ai_Atlassian_Rovo__getJiraIssue",
@@ -39,7 +40,8 @@
     ],
     "deny": [
       "Edit(~/workspace/000-Pessoal/codebase/dok-draw-app/**)",
-      "Read(~/workspace/000-Pessoal/codebase/dok-draw-app/.env*)"
+      "Read(~/workspace/000-Pessoal/codebase/dok-draw-app/.env*)",
+      "Read(~/.config/dokdraw/**)"
     ]
   }
 }

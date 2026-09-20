@@ -54,13 +54,17 @@ Decisão nenhuma fica só na sua conversa. A sessão A não a vê.
 
 ```
 loop:
-  guia-sessoes/bin/espera.sh 540     (Bash com run_in_background: a sessão volta quando o comando termina)
-  JQL: project = DDP AND assignee = "712020:ec30868f-8e34-4c25-97e2-cd920e5da679"
-       AND status in ("A FAZER", "EM ANDAMENTO") ORDER BY updated DESC
+  guia-sessoes/bin/espera.sh <n>     (Bash com run_in_background: a sessão volta quando o comando termina)
+  conta com searchResultMode "count", sem campos:
+       project = DDP AND assignee = "712020:ec30868f-8e34-4c25-97e2-cd920e5da679"
+       AND status in ("A FAZER", "EM ANDAMENTO")
+  zero                 -> esperar de novo, <n> dobra (piso 300, teto 1800); na sexta volta seguida, parar e avisar o humano
+  mais que zero        -> repetir com fields e ORDER BY updated DESC, e <n> volta ao piso
   A FAZER              -> transição 31 (EM ANDAMENTO) e executar. Rótulo encerrar: conferir, entregar, parar
   EM ANDAMENTO com comentário novo de A -> conferir aprovado_por, aplicar a instrução, retomar
-  nada novo            -> esperar de novo; na sexta volta seguida, parar e avisar o humano
 ```
+
+A volta vazia não produz texto nenhum. O custo de escutar é o contexto da sessão viajando a cada volta, não a chamada ao Jira.
 
 Toda chamada ao Jira passa o `cloudId` `5f3024da-2ee6-4363-81e4-ec0230c86f6e`. Ids de transição no protocolo, seção "O quadro". Todo comentário seu começa com `Sessão B:`, porque o conector do Atlassian é o mesmo para as três sessões.
 
