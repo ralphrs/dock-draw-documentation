@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 02:50
+**Atualizado em:** 2026-09-20, 02:55
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -130,6 +130,8 @@ A fatia F0 é maior do que a seção 11 do ADR 002 previa, porque o critério de
 | **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Entregou `DDP-1`, `DDP-2` e `DDP-7`, as três aceitas. Tem `DDP-9` (ordem da F1) e `DDP-10` (estimar as fatias do ADR 005) |
 | **C** | Especialista em arquitetura, UX e UI, revisora | Revisou o resultado da F0 (`DDP-5`, aceita). Sem issue aberta |
 | **Lovable** | Implementador. Executa ordem, não decide | Lê o quadro `DDP` direto, desde 2026-09-20. Canal verificado em `DDP-6` |
+
+O quadro `DDP` guarda o backlog inteiro desde 2026-09-20: 34 issues de estoque com o rótulo `backlog` e sem responsável, 2 ativas, 8 concluídas. O humano cria issue direto lá, com `draft` enquanto escreve e `liberada` quando quer que a sessão A refine no padrão.
 
 Protocolo em `guia-sessoes/PROTOCOLO.md`. Decisões em `decisoes/REGISTRO.md`. As sessões conversam por issues do projeto `DDP` em `https://dokdrawapp.atlassian.net` (`decisoes/DEC-0009-comunicacao-por-jira.md`). A pasta `tasks/` guarda só o histórico até 2026-09-20.
 

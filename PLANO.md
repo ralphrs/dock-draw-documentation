@@ -106,7 +106,22 @@ Três coisas, em ordem de valor:
 
 ---
 
-## 6. Ordem de execução
+## 6. Onde o backlog vive
+
+Desde 2026-09-20, no quadro `DDP`. Toda fatia de implementação e todo ADR por escrever tem issue, com o rótulo `backlog` e sem responsável, o que os mantém fora da fila de B e de C. São 34 issues de estoque, contra 2 de trabalho ativo e 8 concluídas.
+
+Os rótulos de disciplina cortam o quadro por natureza do trabalho, e a soma passa de 34 porque uma issue pode ter mais de uma:
+
+| Disciplina | Issues | O que é |
+| :--- | ---: | :--- |
+| `desenvolvimento` | 28 | Código no app, executado pelo agente do Lovable |
+| `arquitetura` | 11 | Decidir contrato: ADR, emenda, aceite no ledger |
+| `analise` | 11 | Medir, estimar, escrever ordem, revisar ordem |
+| `ux-ui` | 9 | Fatia com interface, que exige revisão de UX antes e depois |
+
+As nove fatias de `ux-ui` são o número que merece atenção: nenhuma tela do produto foi desenhada até agora, e a meta de `DEC-0004` termina numa página publicada sem tela de leitura própria, porque a renderização depende do ADR 007. Quem olhar só a contagem de `desenvolvimento` vai subestimar o trabalho de interface.
+
+## 7. Ordem de execução
 
 | Sprint | Conteúdo | Alvo |
 | :--- | :--- | :--- |
