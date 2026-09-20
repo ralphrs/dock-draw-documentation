@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 04:35
+**Atualizado em:** 2026-09-20, 04:45
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -114,8 +114,8 @@ Fora da meta: busca, export, sync, publicação pública, navegação. E a rende
 | # | Fatia | Estado |
 | :--- | :--- | :--- |
 | 1 | ADR 002 F0: dependências, runner de teste, fixtures no app | **Aceita** (`ccc3ce2`, `DDP-5`). Typecheck, build, teste 2/2 e verificação de ambiente verdes. A dívida de formatação dos quatro arquivos novos ficou: 17 problemas só em `environment.test.ts`, que a F1 não pode tocar. Vai para `DDP-61` |
-| 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | Duas revisões reprovadas, duas correções feitas. Parse único, `DOK-E011` na frente e a árvore clonada antes de normalizar, porque normalizar apagaria o `DOK-E010`. `p50` de 220,05 ms contra orçamento de 300. **Terceira e última revisão** (`DDP-65`) |
-| 3 | ADR 002 F2: validação | Não começou |
+| 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | **Ordem aprovada** na terceira revisão (`DDP-65`), publicada em `DDP-67` com os 31.449 caracteres conferidos byte a byte. Espera o sim de crédito (`DDP-69`) para o Lovable executar |
+| 3 | ADR 002 F2: validação | **Absorvida pela ordem da F1**, que portou o arquivo inteiro do spike. Vira verificação em vez de código novo quando a F1 fechar (`DDP-12`) |
 | 4 | ADR 002 F3: URIs e referências | Não começou |
 
 A fatia F0 é maior do que a seção 11 do ADR 002 previa, porque o critério de pronto da F1 são as 30 fixtures rodando, e não há onde rodá-las.
@@ -143,6 +143,7 @@ Protocolo em `guia-sessoes/PROTOCOLO.md`. Decisões em `decisoes/REGISTRO.md`. A
 | :--- | :--- | :--- |
 | Colar as linhas de `insumos/ORDEM.md` | proposta ao humano (`insumos/` é bloqueado) | 2026-09-20. Texto pronto nos comentários de `DDP-8` e `DDP-47` |
 | Ordem das colunas do quadro e campos da tela de criação | configuração do Jira | Só pela interface, o MCP não expõe administração. Não bloqueia nada |
+| Autorizar o crédito para o Lovable executar a ordem da F1 | `credito` | 2026-09-20, `DDP-69`. Última porta antes de código novo no app |
 | Aceitar o ADR 006 e aplicar o contrato no ledger | `aceite-adr`, `ledger` | 2026-09-20, `DDP-66`. Estende a lista de funções do ADR 003 e do 004 com uma assinatura cada |
 | ~~Aprovar a coluna de estimativa do ADR 005~~ | `fora-de-work` | **Aprovada e aplicada em 2026-09-20** (`DDP-60`, commit `2f46167`) |
 | ~~Aplicar a Emenda 1 ao ADR 002 e ao ledger~~ | `ledger`, `aceite-adr`, `fora-de-work` | **Aprovada e aplicada em 2026-09-20** (`DDP-8`) |
