@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 03:45
+**Atualizado em:** 2026-09-20, 03:55
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -141,9 +141,9 @@ Protocolo em `guia-sessoes/PROTOCOLO.md`. Decisões em `decisoes/REGISTRO.md`. A
 
 | O que | Categoria | Desde |
 | :--- | :--- | :--- |
-| Aprovar a coluna de estimativa acrescentada ao ADR 005 | `fora-de-work` (edita ADR aceito) | 2026-09-20, `DDP-60`. **`adrs/ADR-005-edicao.md` está editado e sem commit** até a resposta |
 | Colar as linhas de `insumos/ORDEM.md` | proposta ao humano (`insumos/` é bloqueado) | 2026-09-20. Texto pronto nos comentários de `DDP-8` e `DDP-47` |
 | Ordem das colunas do quadro e campos da tela de criação | configuração do Jira | Só pela interface, o MCP não expõe administração. Não bloqueia nada |
+| ~~Aprovar a coluna de estimativa do ADR 005~~ | `fora-de-work` | **Aprovada e aplicada em 2026-09-20** (`DDP-60`, commit `2f46167`) |
 | ~~Aplicar a Emenda 1 ao ADR 002 e ao ledger~~ | `ledger`, `aceite-adr`, `fora-de-work` | **Aprovada e aplicada em 2026-09-20** (`DDP-8`) |
 
 ---
