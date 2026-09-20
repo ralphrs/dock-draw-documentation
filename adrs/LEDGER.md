@@ -300,7 +300,7 @@ riscos_abertos:
   - "public.invites não tem workspace_id hoje; não há fluxo formal para popular content.workspace_members além do seed automático do owner — alguém precisa decidir como um segundo usuário entra num workspace"
   - "Performance de content.effective_role() em RLS não verificada em escala (spike não bloqueante, seção 8)"
   - "page_refs.target_id para diagramas (public.projects/public.views) não tem FK de banco; integridade depende de disciplina de aplicação, não do Postgres"
-  - "page_refs.target_rev_id não tem o que referenciar hoje: public.views/model_elements/relationships são mutáveis, sem histórico — rev fica sempre null até o ADR 001 decidir versionar diagramas"
+  - "page_refs.target_rev_id fica null por decisão (DEC-0019): a página vincula o id do diagrama e renderiza sempre a versão mais recente, mesmo depois de o ADR 001 versionar diagramas"
 gatilhos_de_reabertura:
   - "Volume de revisões por página torna snapshot completo caro o suficiente para justificar deltas"
   - "effective_role() não escala e precisa sair de subquery para claim de JWT"
@@ -317,7 +317,7 @@ adr: "004"
 camada: "Fluxo editorial"
 status: "Aceito"
 data: "2026-09-18"
-decisao: "Máquina de estados própria em Postgres, estendendo o ADR 003: revision_reviews (votos append-only) agrega para revision_status_events conforme a política de space_editorial_policies; revision_comments (ancorados por faixa de linha) e notifications são tabelas aditivas; a regra e o mecanismo de fixação de diagrama via page_refs.target_rev_id ficam definidos para quando o ADR 001 versionar diagramas — hoje a coluna é sempre null e o DokMD nunca é reescrito para incluir rev."
+decisao: "Máquina de estados própria em Postgres, estendendo o ADR 003: revision_reviews (votos append-only) agrega para revision_status_events conforme a política de space_editorial_policies; revision_comments (ancorados por faixa de linha) e notifications são tabelas aditivas; a fixação de diagrama por revisão foi descartada pela DEC-0019: a página vincula o id do diagrama e a renderização resolve sempre a versão mais recente, então page_refs.target_rev_id fica null por decisão, e o DokMD nunca é reescrito para incluir rev."
 dependencias: []
 interfaces_publicadas:
   - nome: "RevisionStatus (enum)"
@@ -340,13 +340,13 @@ restricoes_impostas:
   - "revision_reviews é append-only (trigger forbid_mutation do ADR 003, reaproveitada); um novo voto do mesmo revisor é uma linha nova, nunca um UPDATE"
   - "Autoaprovação (revisor = autor da revisão) é bloqueada a menos que space_editorial_policies.allow_self_approval = true"
   - "Só revisões publicadas (pages.published_revision_id) aparecem para leitores, na busca pública, na publicação e no sync — salvo ação manual do próprio autor exportando seu rascunho"
-  - "Diagrama referenciado sem rev explícito nunca tem o DokMD reescrito para incluí-lo; a fixação em page_refs.target_rev_id é o mecanismo definido para quando o ADR 001 versionar diagramas — até lá a coluna fica null e a resolução é sempre dinâmica"
+  - "Diagrama referenciado nunca tem o DokMD reescrito para incluir rev. A resolução é sempre dinâmica, pela DEC-0019, inclusive em revisão publicada antiga: page_refs.target_rev_id fica null por decisão, não por falta de histórico"
   - "page_revisions permanece imutável; nenhuma tabela ou função deste ADR insere, altera ou apaga uma linha ali além de leitura"
 premissas_sobre_camadas_futuras:
   - camada: "Edição (ADR 005)"
     premissa: "Implementa diff textual e renderizado contra a versão publicada, modo de comentário ancorado por faixa de linha, indicador de revisão em changes_requested e modo somente leitura; decide se e como entra modo de sugestão de edição"
   - camada: "Renderização (ADR 007)"
-    premissa: "Hoje resolve todo embed de diagrama dinamicamente, em rascunho ou em qualquer revisão, porque page_refs.target_rev_id é sempre null; quando o ADR 001 versionar diagramas, passa a resolver revisões específicas pelo target_rev_id fixado, mantendo resolução dinâmica só para rascunhos"
+    premissa: "Resolve todo embed de diagrama dinamicamente, em rascunho ou em qualquer revisão, e continua assim depois de o ADR 001 versionar diagramas (DEC-0019). Nunca resolve por target_rev_id"
   - camada: "Busca (ADR 009)"
     premissa: "Indexa exclusivamente via pages.published_revision_id; nenhuma revisão em submitted/in_review/changes_requested/approved é exposta à busca pública"
   - camada: "Exportação e sync (ADR 010)"
@@ -358,14 +358,14 @@ riscos_abertos:
   - "revision_reviews_current é VIEW, não materializada; performance sob alto volume de votos não verificada"
   - "Provedor de e-mail e templates de notificação não escolhidos — só a tabela notifications está pronta para alimentar isso depois"
   - "Concorrência de voto (dois revisores votando ao mesmo tempo) precisa de verificação não bloqueante — seção 8"
-  - "page_refs.target_rev_id fica sempre null hoje: diagramas do ADR 001 (public.views/model_elements/relationships) são mutáveis, sem histórico — mesmo risco que o ADR 003 já registrou, herdado aqui porque a regra de negócio de fixação é deste ADR"
+  - "Revisão publicada de página não é reproduzível: o texto é imutável, e o diagrama que ela mostra é sempre o mais recente (DEC-0019). Quem precisa do diagrama de uma data vai ao histórico do diagrama, não à página. Custo aceito, não risco a fechar"
 gatilhos_de_reabertura:
   - "Produto pedir papel dedicado de publicador, separado de quem aprova"
   - "Aprovação por categoria de revisor (não só contagem) virar requisito"
   - "Modo de sugestão de edição inline virar requisito"
   - "E-mail transacional virar requisito obrigatório"
   - "effective_role() não escalar sob a carga das novas policies (agrava o gatilho já registrado no ADR 003)"
-  - "ADR 001 (ou extensão dele) versionar diagramas — ativa de fato a fixação por revisão da seção 6.4"
+  - "Produto exigir que uma revisão publicada mostre o diagrama como estava na data da publicação — reabre a DEC-0019, não o gatilho antigo de ativar a fixação"
 ```
 
 ## ADR 005 — Edição

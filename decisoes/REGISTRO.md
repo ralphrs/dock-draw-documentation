@@ -18,6 +18,7 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 
 | Id | Data | Decisão | Quem decidiu |
 | --- | --- | --- | --- |
+| [DEC-0019](DEC-0019-diagrama-versiona-e-o-vinculo-e-sempre-o-ultimo.md) | 2026-09-20 | Diagrama versiona no mesmo id, a página vincula o id e renderiza sempre o último. `target_rev_id` fica nulo por decisão | Humano |
 | [DEC-0018](DEC-0018-a-arvore-e-a-forma-do-projeto.md) | 2026-09-20 | A wiki é a tela inicial do projeto e o Diagram Studio vira árvore. Pasta nas duas, e as duas árvores continuam separadas | Humano |
 | [DEC-0017](DEC-0017-a-wiki-vive-dentro-do-projeto.md) | 2026-09-20 | A wiki entra pelo projeto, não pelo espaço. Reabre o ADR 006 nas rotas e promove a `DDP-114` | Humano |
 | [DEC-0016](DEC-0016-trilha-de-processo-e-trabalho-ocioso.md) | 2026-09-20 | Melhoria de processo vira trilha própria sob `DDP-55`, com o rótulo `processo`, sem responsável, e só roda com a fila vazia. Dez itens, todos de defeito medido. A prioridade em tempo ocioso sai executável do `aguarda-fila.sh`, em vez de ficar em prosa | Arquiteto, por delegação. Revisão aberta ao humano em `DDP-133` |
