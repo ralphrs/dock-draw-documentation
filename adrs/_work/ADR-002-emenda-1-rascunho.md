@@ -47,7 +47,7 @@ A medição roda em Node, não no isolado V8 do Cloudflare Workers nem num naveg
 
 ## 3. Tamanho máximo de página
 
-Medição da mesma forma da seção 2, variando o tamanho da página sintética. Harness em `adrs/_work/spike-s1/content-format/perf.ts`, quatro rodadas de conferência em `PERF.md` no mesmo diretório.
+Medição da mesma forma da seção 2, variando o tamanho da página sintética. Harness em `adrs/_work/spike-s1/content-format/perf.ts`, cinco rodadas de conferência em `PERF.md` no mesmo diretório.
 
 | Linhas | Bytes (texto canônico) | `normalizeDok` + `validateDok`, p50 | p95 | max |
 | ---: | ---: | ---: | ---: | ---: |
@@ -56,14 +56,14 @@ Medição da mesma forma da seção 2, variando o tamanho da página sintética.
 | 20.002 | 297 KB | 940 ms | 962 ms | 967 ms |
 | 40.002 | 594 KB | 2.360 ms | 2.442 ms | 2.465 ms |
 
-O p50 é a única estatística estável entre rodadas: varia menos de 3% de uma rodada para outra em cada tamanho, e cresce de forma superlinear a cada duplicação do tamanho, com fator entre 2,15x e 2,54x, consistente nas quatro rodadas registradas em `PERF.md`.
+O p50 é a estatística mais estável entre rodadas, ainda que não perfeitamente estável: varia entre 3,13% e 3,65% de uma rodada para outra em cada tamanho (mínimo e máximo entre as cinco rodadas, cada tamanho medido de novo), e cresce de forma superlinear a cada duplicação do tamanho, com fator entre 2,13x e 2,54x, consistente nas cinco rodadas registradas em `PERF.md`.
 
-O `max` e o `p95` não sustentam argumento nesta suíte. Cada um é uma estatística de valor extremo (o maior e o 29º de 30 amostras), e o resultado depende de uma pausa de coleta de lixo do V8 cair ou não dentro da janela de 30 execuções, uma questão de quando a pausa acontece, não uma função do tamanho da página. Nas quatro rodadas de `PERF.md`, a razão `max/p50` cresce entre 20 mil e 40 mil linhas em duas delas e não cresce nas outras duas. Isolar a máquina (nenhum outro processo Node rodando ao mesmo tempo) não separa os dois grupos: das duas rodadas isoladas, uma reproduz o crescimento e a outra não.
+O `max` e o `p95` não sustentam argumento nesta suíte, e a quinta rodada reforça essa conclusão em vez de contradizê-la. Cada um é uma estatística de valor extremo (o maior e o 29º de 30 amostras), e o resultado depende de uma pausa de coleta de lixo do V8 cair ou não dentro da janela de 30 execuções, uma questão de quando a pausa acontece, não uma função do tamanho da página. Nas cinco rodadas de `PERF.md`, a razão `max/p50` cresce entre 20 mil e 40 mil linhas em três delas e não cresce nas outras duas. Isolar a máquina (nenhum outro processo Node rodando ao mesmo tempo) não separa os dois grupos: das três rodadas isoladas, duas reproduzem o crescimento e uma não. Na quinta rodada, o `p95` de 40 mil linhas chegou a 4.557 ms, contra um p50 de 2.435 ms na mesma rodada, quase o dobro. É a maior discrepância entre `p95` e p50 das cinco rodadas, e apareceu numa rodada isolada, não numa contaminada por outro processo.
 
 A curva do p50 cresce de forma suave entre 5 mil e 40 mil linhas, sem descontinuidade em nenhum dos quatro tamanhos medidos. A medição não indica um ponto de corte natural. O limite desta emenda é escolha de produto, ancorada em dois fatos medidos e num limiar declarado:
 
-- Em 20 mil linhas, o pipeline completo do save fica entre 934 ms e 957 ms nas quatro rodadas, abaixo de um segundo em todas.
-- Em 40 mil linhas, fica entre 2.360 ms e 2.409 ms, acima de dois segundos em todas.
+- Em 20 mil linhas, o pipeline completo do save fica entre 934 ms e 963 ms nas cinco rodadas, abaixo de um segundo em todas.
+- Em 40 mil linhas, fica entre 2.360 ms e 2.435 ms, acima de dois segundos em todas.
 - Um segundo é o limiar em que a resposta deixa de parecer imediata, e o save é operação síncrona do ponto de vista de quem escreve.
 
 O corte fica em **20.000 linhas, ou 300.000 bytes de texto canônico** (a correlação bytes/linha ficou estável em ≈ 14,8 nas três amostras maiores, mas varia com a mistura de conteúdo: um documento denso em tabelas ou blocos de código atinge o teto em bytes antes das 20 mil linhas). Nenhuma medição desta emenda distingue 20 mil linhas de 15 mil ou de 25 mil, o corte exato é decisão de produto, não achado de spike.
