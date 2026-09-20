@@ -173,11 +173,11 @@ A resposta do dono do produto em `DDP-110` chegou no meio do ciclo e mudou o des
 
 ### O que vem pela frente, e por que a primeira tela demora
 
-Restam quatro sub-fatias de schema (S1c a S1f), depois a RLS (S2) e as server functions (S3). Só então as fatias de tela do ADR 006 (`DDP-70` a `DDP-72`) têm o que chamar.
+A `DEC-0015` reordenou o caminho, sem cortar escopo. A ordem passou a ser S1c, depois `effective_role`, depois `page_drafts`, depois a RLS e as server functions recortadas ao que a primeira tela chama, e então as telas do ADR 006 (`DDP-70` a `DDP-72`). `page_refs`, `assets`, `sync_state` e `position_between` saíram do caminho crítico e voltam depois.
 
-**Nenhuma dessas etapas mostra coisa alguma no preview.** O dono do produto pediu para ver a wiki funcionando cedo, e o caminho atual entrega tela só no fim. Existe um recorte alternativo, proposto e ainda não decidido: `content.spaces` e `content.pages` já existem, então a tela de listar espaço e criar página poderia vir depois de funções mínimas e da RLS dessas duas tabelas, sem esperar revisões, rascunhos, assets e sync.
+A S1c foi partida em duas na `DDP-122`, por exigência de teto: o bloco 2 do DDL tem 4.248 caracteres e dois triggers de imutabilidade, que pedem roteiro de verificação maior. As sub-fatias de schema que restam são cinco, S1c1, S1c2, S1d, S1e e S1f, e não quatro.
 
-O custo do atalho é a página nascer sem histórico e sem fluxo de aprovação até a sprint fechar. A decisão é de sequenciamento e pertence ao dono do produto.
+**Nenhuma etapa de schema mostra coisa alguma no preview.** O custo aceito na `DEC-0015` está escrito lá: a primeira tela mostra uma wiki sem imagem, sem backlink e sem ordenação manual, com página, texto, histórico e aprovação.
 
 ### Conferência de processo
 

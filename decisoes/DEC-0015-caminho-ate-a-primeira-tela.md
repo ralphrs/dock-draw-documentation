@@ -39,9 +39,9 @@ A necessidade apareceu. Esta decisão usa a folga que a análise de dependência
 
 ## O achado que veio junto: a S1c não cabe numa ordem
 
-O bloco 2 tem 4.290 caracteres de DDL. A ordem da S1b fechou em 9.812 caracteres com 3.563 de SQL, ou seja, cerca de 6.250 de prosa: restrições, roteiro de verificação, playbook de falha.
+O bloco 2 tem 4.248 caracteres de DDL, medidos com `wc -m` sobre as linhas 216 a 313 do ADR 003. A ordem da S1b fechou em 9.812 caracteres com 3.563 de SQL, ou seja, cerca de 6.250 de prosa: restrições, roteiro de verificação, playbook de falha.
 
-Repetir essa proporção com 4.290 de DDL passa do teto de 10.000, e o bloco 2 traz dois triggers de imutabilidade, que exigem roteiro de verificação maior que o de uma tabela comum.
+Repetir essa proporção com 4.248 de DDL passa do teto de 10.000, e o bloco 2 traz dois triggers de imutabilidade, que exigem roteiro de verificação maior que o de uma tabela comum.
 
 **A S1c precisa ser partida em duas antes de virar ordem.** O corte pertence a quem escreve a ordem, com o critério que o recorte já usa: cada parte deixa o schema em estado consistente.
 
@@ -63,3 +63,9 @@ O risco é o dono do produto olhar e sentir falta do que foi adiado. Está escri
 ## Gatilho de revisão
 
 Se a S1c, depois de partida, não couber em duas ordens, o recorte inteiro de S1 volta à mesa. Três partes para um bloco significa que o critério de corte por bloco do ADR não serve para este bloco.
+
+## Correção de 2026-09-20
+
+Esta decisão trouxe 4.290 como o tamanho do bloco 2. O número era uma aproximação com til, herdada da linha antiga da S1c no recorte, e apareceu aqui sem o til, como se fosse medida. O valor medido é 4.248, que a tabela do recorte já trazia. A ordem da S1c1 copiou o 4.290 desta decisão, de boa-fé, e a revisão da `DDP-122` apanhou a divergência entre os dois documentos.
+
+A diferença de 42 caracteres não muda nenhuma conclusão sobre o teto. O defeito é de método: número aproximado publicado sem a marca de aproximação vira número medido no documento seguinte.
