@@ -6,9 +6,9 @@ Você está escrevendo um ADR da engine de documentação do DokDraw. Responda e
 DokDraw é uma plataforma de documentação técnica. A Wiki (estilo Confluence, escrita no dialeto do Starlight: frontmatter + :::note/:::tip/:::caution) é o produto principal. O Diagram Studio (C4, AWS, UML) existe para compor as páginas. A documentação precisa ser: um "segundo cérebro" (wikilinks, aliases, backlinks, compatível com Obsidian); exportável como .md, vault Obsidian, projeto Starlight e .docx; espelhável em nuvem por sincronização periódica de mão única (Google Drive primeiro; o Drive nunca é fonte de verdade); e, no futuro, ter pipeline de aprovação de edições (rascunho → revisão → aprovação → publicação). Na escolha de bibliotecas, o editor de páginas completo (inserção de elementos md/mdx, formatação, links) é o fator de maior peso.
 
 ## Arquitetura base (inegociável; candidata que conflita é eliminada)
-- App: TanStack Start (SSR, server functions) + React 19 + Vite + TypeScript strict. Alias @ → src. Formatação oxfmt.
+- App: TanStack Start (SSR, server functions) + React 19 + Vite + TypeScript strict. Alias @ → src. Formatação prettier, integrado ao ESLint (`eslint-config-prettier`, `eslint-plugin-prettier`). O `tsconfig.json` do app traz seis flags além de `strict`, entre elas `noUncheckedIndexedAccess` e `exactOptionalPropertyTypes`.
 - UI: shadcn/Radix. Tailwind CSS v4 via @tailwindcss/vite, sem tailwind.config e sem PostCSS.
-- Cores só por token CSS (custom properties), temas .theme-dark / .theme-light. Único hardcode permitido: linear-gradient(135deg,#8b5cf6,#4f8ff7). Nada de CSS reset universal não-layered.
+- Cores só por token CSS (custom properties). Tema claro e escuro pela classe `.dark` no elemento raiz, com `@custom-variant dark (&:is(.dark *))` em `src/styles.css`, padrão do Tailwind v4 com shadcn. Variação de paleta por `data-palette`. Único hardcode permitido: linear-gradient(135deg,#8b5cf6,#4f8ff7), no token `--brand-gradient`. Nada de CSS reset universal não-layered.
 - Animações respeitam prefers-reduced-motion. Tudo funciona em dark e light.
 - Backend: Supabase (Postgres, Auth, RLS, Storage). Multi-inquilino.
 - Motor de diagrama: @xyflow/react (React Flow), decidido no ADR 001; o modelo do diagrama vive no Supabase.

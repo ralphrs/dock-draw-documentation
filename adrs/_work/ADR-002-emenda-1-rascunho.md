@@ -26,7 +26,7 @@ Nenhuma das três, sozinha, é suficiente. O build de plataforma browser é o ga
 
 ## 2. Orçamento de desempenho
 
-Medição em `adrs/_work/spike-s1/content-format/dokmd.ts` (porte TS strict, 30/30 nas fixtures do ADR 002), Node 26.8.2, sem bundler, 30 amostras por operação depois de 3 de aquecimento. Página sintética de 5.003 linhas (72,3 KB de texto canônico), montada concatenando os corpos reais das fixtures 04 a 08, 16, 20, 22 e 23 (headings, listas, código, tabela, callout, tabs, steps, diagrama) em repetição, com um único frontmatter válido no topo.
+Medição em `adrs/_work/spike-s1/content-format/dokmd.ts` (porte TS strict, 30/30 nas fixtures do ADR 002), Node 26.8.2, sem bundler, 30 amostras por operação depois de 3 de aquecimento. Página sintética de 5.003 linhas (72,3 KB de texto canônico), montada concatenando os corpos reais das fixtures 04 a 08, 16, 20, 22 e 23 (headings, listas, código, tabela, callout, tabs, steps, diagrama) em repetição, com um único frontmatter válido no topo. Harness reprodutível em `adrs/_work/spike-s1/content-format/perf.ts` (`node content-format/perf.ts` a partir de `adrs/_work/spike-s1/`), metodologia e rodadas de conferência em `PERF.md` no mesmo diretório.
 
 | Operação | p50 | p95 |
 | :--- | ---: | ---: |
@@ -45,7 +45,7 @@ A medição roda em Node, não no isolado V8 do Cloudflare Workers nem num naveg
 
 ## 3. Tamanho máximo de página
 
-Medição da mesma forma da seção 2, variando o tamanho da página sintética:
+Medição da mesma forma da seção 2, variando o tamanho da página sintética. Mesmo harness (`adrs/_work/spike-s1/content-format/perf.ts`), rodadas de conferência e o que se reproduziu em `PERF.md` no mesmo diretório.
 
 | Linhas | Bytes (texto canônico) | `normalizeDok` + `validateDok`, p50 | p95 | max |
 | ---: | ---: | ---: | ---: | ---: |
@@ -65,6 +65,9 @@ DOK-E011: página excede o tamanho máximo (300.000 bytes de texto canônico)
 `validateDok` calcula o tamanho em bytes UTF-8 do texto que `normalizeDok` devolveu (não do texto bruto de entrada, que pode ser maior ou menor depois da normalização) e emite `DOK-E011` antes de qualquer outra checagem, porque o diagnóstico não depende de percorrer a árvore. O autor recebe o diagnóstico com o tamanho atual e o limite, e precisa dividir o conteúdo em mais de uma página. Esta emenda não desenha um mecanismo de divisão automática: fica fora de escopo, sem dono definido.
 
 Alternativa descartada: limitar por número de linhas em vez de bytes. O número de linhas depende da mistura de conteúdo (uma tabela GFM de 50 colunas cabe numa linha e pesa mais que 50 linhas de prosa), então bytes do texto canônico é a medida estável para uma coluna `text` do Postgres, que é o que `content.page_revisions.content_dokmd` de fato guarda (ADR 003). O custo aceito é que o autor não vê "linhas restantes" na UI, só bytes, menos intuitivo de acompanhar durante a digitação.
+
+> [!WARNING]
+> Lacuna: o argumento acima ("a cauda continua contida até 20 mil linhas, abre em 40 mil") não se reproduziu em todas as rodadas de conferência do harness. Duas de quatro rodadas mostram a razão `max/p50` crescendo entre 20 mil e 40 mil linhas, duas não. O p50 de cada tamanho, por outro lado, se reproduziu nas quatro rodadas com variação menor que 3%. Detalhe completo em `adrs/_work/spike-s1/content-format/PERF.md`. O número desta seção (300.000 bytes, 20.000 linhas) não muda enquanto a dúvida está aberta. Dono: `tasks/questions/Q-0003-T-0007.md` (ou `tasks/done/`, se já respondida).
 
 ## 4. Estratégia de testes
 

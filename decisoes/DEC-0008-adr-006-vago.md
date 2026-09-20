@@ -29,17 +29,21 @@ A tabela "Numeração oficial" do ledger passa a ter uma linha sem camada, e que
 
 Se o humano lembrar qual era a camada, o espaço continua lá, e ocupá-lo não custa nada.
 
-## A dívida que o 006 carregava
+## A dívida que o 006 carregava já não existe
 
-O `prompts/PROMPT-ADR-006.md` é uma cópia antiga do prompt de Renderização, fato já registrado no conflito C-6 do ledger, que manda descartá-lo. Enquanto o arquivo existir, uma sessão pode abri-lo achando que é o prompt de uma camada real e escrever o ADR errado.
+O conflito C-6 do ledger manda descartar `prompts/PROMPT-ADR-006.md`, descrito ali como cópia antiga do prompt de Renderização.
 
-`prompts/` é bloqueado para escrita pelas sessões, então o descarte é ação do humano. Com ele feito, a parte "cópia antiga do prompt de Renderização" do C-6 fica resolvida, e sobra do conflito apenas a correção das referências cruzadas nos ADRs 002 e 004.
+**Esse arquivo não existe neste repositório, e nunca existiu.** A pasta `prompts/` tem onze arquivos, de 002 a 012, sem o 006, e `git log --all -- prompts/PROMPT-ADR-006.md` não devolve nenhum commit. O C-6 descreve um arquivo de um contexto anterior ao repositório.
+
+O efeito prático é o oposto do esperado: em vez de uma ação pendente, há uma linha de conflito no ledger que aponta para um arquivo inexistente. Quem ler o C-6 vai procurar o arquivo, não achar, e ficar sem saber se ele foi apagado ou se o conflito está errado.
+
+Correção que vai ao ledger: o C-6 perde a frase sobre o `PROMPT-ADR-006.md`, com nota de que o arquivo não existe no repositório. Sobra do conflito apenas a correção das referências cruzadas nos ADRs 002 e 004.
 
 ## O que entra no ledger quando a Emenda 1 for aplicada
 
 - Linha 006 da tabela "Numeração oficial": camada `*Vago*`, com a nota de que o número está reservado e não corresponde a camada alguma.
 - Linha "Tenancy e acesso": passa de **Sem número** para 013.
 - Linha nova: 014, Developer Portal.
-- C-6: remover a parte do `PROMPT-ADR-006.md`, mantendo as referências cruzadas de 002 e 004.
+- C-6: remover a frase sobre o `PROMPT-ADR-006.md`, que aponta para um arquivo inexistente, mantendo as referências cruzadas de 002 e 004.
 
 Agrupado com a Emenda 1 de propósito, para gastar uma aprovação `ledger` do humano em vez de duas.

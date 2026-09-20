@@ -26,8 +26,6 @@
       "Bash(git -C /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app branch:*)"
     ],
     "deny": [
-      "Edit(insumos/**)",
-      "Edit(prompts/**)",
       "Edit(~/workspace/000-Pessoal/codebase/dok-draw-app/**)",
       "Read(~/workspace/000-Pessoal/codebase/dok-draw-app/.env*)"
     ]
