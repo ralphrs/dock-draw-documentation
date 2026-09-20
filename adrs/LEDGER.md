@@ -510,6 +510,7 @@ Vazia em 2026-09-19. Os ADRs 002, 003 e 004 passaram para "Aceitos" quando o S-1
 | 012 | Consolidação da stack | Não escrito |
 | 013 | Tenancy e acesso (membros de workspace, convites) | Não escrito. Resolve C-3 e C-7 (`DEC-0005`) |
 | 014 | Developer Portal (documentação arc42 como feature viva) | Não escrito (`DEC-0006`) |
+| 015 | Notações do Diagram Studio | Não escrito |
 
 ---
 
