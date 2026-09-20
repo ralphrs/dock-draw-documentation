@@ -69,8 +69,34 @@ O conector do Atlassian é autorizado na conta Claude, não por sessão, então 
 | `adr-002`, `adr-005`, ... | ADR de origem. O projeto é business e não tem Epic, então o rótulo é o agrupador |
 | `sprint-1`, ... | Sprint da trilha de desenvolvimento |
 | `lovable` | A issue é uma ordem de implementação. A descrição é o texto que o agente do Lovable executa |
+| `arquitetura`, `analise`, `ux-ui`, `desenvolvimento` | **Disciplina do trabalho.** Escrever ADR e decidir contrato é `arquitetura`. Medir, estimar, escrever ordem e revisar ordem é `analise`. Fatia com interface leva `ux-ui` junto de `desenvolvimento`. Uma issue pode ter mais de uma |
+| `backlog` | Estoque, sem responsável. Não está na fila de ninguém e não vira trabalho até A priorizar |
+| `fatia` | A issue representa uma fatia de implementação inteira, que A desdobra em ordem, revisão, execução e revisão quando chega a vez |
+| `draft`, `liberada` | Canal de entrada do humano. Ver "Pedidos do humano" |
 | `revisar-ordem`, `revisar-resultado`, `encerrar` | Tipo de tarefa, quando não é implementação comum |
 | `aprovacao-humana` mais a categoria (`ledger`, `app-release`, ...) | O que a issue espera do humano |
+
+## Pedidos do humano
+
+O humano cria issue direto no quadro, com as próprias palavras e sem seguir formato nenhum. Dois rótulos dizem em que ponto o pedido está.
+
+| Rótulo | Significa | O que a sessão A faz |
+| --- | --- | --- |
+| `draft` | Ele ainda está escrevendo | Nada. A issue não entra na fila de A, e ler um pedido pela metade só produz refino errado |
+| `liberada` | O pedido está pronto para análise | Entra na fila de A na próxima volta da escuta |
+
+**O que A faz com um pedido `liberada`**, nesta ordem:
+
+1. **Preserva o texto original.** Antes de tocar na descrição, copia o pedido inteiro para um comentário que começa com `Pedido original do humano`. A descrição vai ser reescrita, e o que ele pediu com as palavras dele não pode sumir no processo.
+2. **Analisa contra o que já existe.** O pedido colide com contrato do `LEDGER.md`? Repete algo que já está no backlog? Depende de ADR que não existe? Cabe numa fatia já prevista?
+3. **Reescreve no padrão**, na própria descrição: objetivo, contexto, entregável com caminho, critério de pronto verificável, restrições. Mesmo formato de qualquer issue do quadro.
+4. **Classifica**: disciplina (`arquitetura`, `analise`, `ux-ui`, `desenvolvimento`), trilha, ADR de origem quando houver, e `backlog` se não for para agora.
+5. **Troca o rótulo** `liberada` por `refinada`, para o pedido não ser reprocessado a cada volta.
+6. **Comenta o que mudou** entre o pedido e a issue: o que foi interpretado, o que foi acrescentado e o que ficou de fora, com o motivo.
+
+**Quando A não reescreve.** Se o pedido for ambíguo a ponto de duas leituras levarem a trabalhos diferentes, ou se ele contrariar um contrato aceito, a issue vai para `BLOQUEADA` com a dúvida, e o rótulo `liberada` fica. Contrariar contrato aceito é categoria `reabertura`, e a saída é uma proposta com custo, nunca um refino silencioso que acomode o pedido.
+
+Refinar não é obedecer ao pé da letra nem reinterpretar por conta própria. É transformar um pedido em algo executável sem perder o que foi pedido.
 
 ## O que vive no Jira e o que vive em git
 
@@ -295,6 +321,14 @@ loop:
 - B e C incluem `EM ANDAMENTO` na consulta porque é o status para onde A devolve uma issue respondida. Ao ver uma issue própria em `EM ANDAMENTO` com comentário novo, leia o comentário antes de retomar.
 - Nada novo na fila: espere de novo, sem comentar.
 - O custo real de escutar não é a chamada, é o contexto da sessão, que viaja inteiro a cada volta. Por isso a volta vazia não deve produzir texto nenhum: nem resumo, nem "nada novo até agora", nem atualização de painel.
+
+## Backlog e realimentação do quadro
+
+Toda fatia de implementação de ADR aceito e todo ADR não escrito têm issue no quadro, com o rótulo `backlog` e **sem responsável**. Sem responsável significa fora da fila de B e de C, que filtram por `assignee`: o backlog é estoque visível, não trabalho despachado.
+
+Quando o quadro fica sem trabalho ativo, A puxa do backlog, na ordem que o `PLANO.md` fixa: as fatias da sprint corrente primeiro, o roteiro de ADR depois. Priorizar uma fatia significa desdobrá-la em ordem, revisão de ordem, execução e revisão de resultado, e atribuir a primeira dessas a quem for dona.
+
+A ordem de prioridade não é negociada por sessão. Quem muda o `PLANO.md` é A, e mudança de meta vem do humano.
 
 ## Ociosidade
 
