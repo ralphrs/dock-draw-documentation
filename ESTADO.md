@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 02:35
+**Atualizado em:** 2026-09-20, 02:40
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo. A sessão A atualiza a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -41,7 +41,7 @@ Do `insumos/BASE.md`. Nada aqui é entrega, é o alvo.
 | :--- | :--- | :--- | :--- |
 | 001 | Motor de diagrama | **Aceito** | `@xyflow/react`, modelo em tabelas mutáveis sem histórico |
 | 002 | Formato de conteúdo | **Aceito** | DokMD v1: CommonMark + GFM + frontmatter + directives só de bloco |
-| 002-E1 | Emenda 1: execução, desempenho, testes | **Rascunho**, aceito com ressalva | Sem DOM nem builtin de Node, orçamento de 300 ms p95, teto de 300.000 bytes |
+| 002-E1 | Emenda 1: execução, desempenho, testes | **Aceita** em 2026-09-20 | Sem DOM nem builtin de Node, orçamento de 300 ms p95, teto de 300.000 bytes, `runFixtureSuite` compartilhada |
 | 003 | Armazenamento e versionamento | **Aceito** | Postgres puro, revisão imutável append-only, status como log de eventos |
 | 004 | Fluxo editorial | **Aceito** | Máquina de estados em Postgres, `REVISION_TRANSITIONS` declarativa em TS |
 | 005 | Edição | **Aceito** | MDXEditor 4.2.5, adaptador via DokAST, modo fonte CodeMirror 6 |
@@ -55,9 +55,9 @@ Do `insumos/BASE.md`. Nada aqui é entrega, é o alvo.
 | 013 | Tenancy e acesso | Não escrito | Resolve C-3 e C-7 |
 | 014 | Developer Portal | Não escrito | Depende do 007 |
 
-**Agora:** a Emenda 1 está com o humano, em `DDP-8`, esperando sim ou não. Tudo o que travava foi fechado: a seção 3 reescrita, o alvo do Nitro verificado (`DDP-1`), o custo das flags estritas medido (`DDP-2`) e a quinta rodada de conferência incorporada (`DDP-7`), que corrigiu três faixas numéricas fora do que o texto declarava.
+**Agora:** a Emenda 1 foi aceita em 2026-09-20 (`DDP-8`), e o contrato dela está no `LEDGER.md`. Seis ADRs valem para implementação. O próximo passo da trilha de ADR é o 013, Tenancy e acesso, que fecha os conflitos C-3 e C-7.
 
-**Depois:** 013 Tenancy → 007 → 008 e 009 → 010 e 011 → 014 → 012.
+**Depois:** 013 Tenancy → 007 → 008 e 009 → 010 e 011 → 014 → 012. Sete ADRs até o 012 fechar a trilha.
 
 ### Conflitos em aberto
 
@@ -126,7 +126,7 @@ A fatia F0 é maior do que a seção 11 do ADR 002 previa, porque o critério de
 
 | Sessão | Papel | Agora |
 | :--- | :--- | :--- |
-| **A** | Arquiteto principal, gerente de projeto, scrum master | Fechou `DDP-1`, `DDP-2`, `DDP-5`, `DDP-6` e `DDP-7`. Esperando o humano em `DDP-8` |
+| **A** | Arquiteto principal, gerente de projeto, scrum master | Aplicou a Emenda 1 ao ledger. Próximo: abrir o ADR 013 para a B e a ordem da fatia F1 |
 | **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Entregou `DDP-1`, `DDP-2` e `DDP-7`, as três aceitas. Sem issue aberta |
 | **C** | Especialista em arquitetura, UX e UI, revisora | Revisou o resultado da F0 (`DDP-5`, aceita). Sem issue aberta |
 | **Lovable** | Implementador. Executa ordem, não decide | Lê o quadro `DDP` direto, desde 2026-09-20. Canal verificado em `DDP-6` |
@@ -139,9 +139,9 @@ Protocolo em `guia-sessoes/PROTOCOLO.md`. Decisões em `decisoes/REGISTRO.md`. A
 
 | O que | Categoria | Desde |
 | :--- | :--- | :--- |
-| `DDP-8`: aplicar a Emenda 1 | `ledger`, `aceite-adr`, `fora-de-work` | 2026-09-20 |
+| Colar uma linha em `insumos/ORDEM.md` | proposta ao humano (`insumos/` é bloqueado) | 2026-09-20. Texto pronto no comentário de `DDP-8` |
 | Ordem das colunas do quadro e campos da tela de criação | configuração do Jira | Só pela interface, o MCP não expõe administração. Não bloqueia nada |
-| Aplicar a Emenda 1 ao ADR 002 e ao ledger | `ledger`, `aceite-adr` e `fora-de-work` | **`DDP-8`, pedido em 2026-09-20.** Recomendação: aplicar. As quatro ações que o sim cobre estão listadas na issue |
+| ~~Aplicar a Emenda 1 ao ADR 002 e ao ledger~~ | `ledger`, `aceite-adr`, `fora-de-work` | **Aprovada e aplicada em 2026-09-20** (`DDP-8`) |
 
 ---
 

@@ -188,6 +188,43 @@ gatilhos_de_reabertura:
   - "Mais de 10% das páginas importadas com DOK-W104"
 ```
 
+### Emenda 1 — Execução, desempenho e testes do `src/content-format`
+
+Arquivo: `ADR-002-emenda-1.md` · Status: Aceita em 2026-09-20 (`DDP-8`).
+
+```yaml
+adr: "002"
+emenda: 1
+titulo: "Execução, desempenho e testes do src/content-format"
+data: "2026-09-19"
+decisao: "src/content-format roda sem DOM e sem builtin de Node nos três ambientes (navegador, server function em Cloudflare Workers, job agendado), verificado por build de plataforma browser sem externos. O pipeline completo do save conclui em até 300 ms p95 para uma página de 5 mil linhas. Página acima de 300.000 bytes de texto canônico é recusada com DOK-E011. A suíte de 30 fixtures roda como runFixtureSuite compartilhado, sem número fixo."
+interfaces_publicadas:
+  - nome: "runFixtureSuite"
+    tipo: "função"
+    descricao: "src/content-format/testing/runFixtureSuite.ts. (fixturesRoot, manifestPath) => SuiteResult. Lê manifest.json e itera o array, sem contar com um número fixo de fixtures. Consumida por content-format (este ADR), pelo adaptador do editor (ADR 005) e pelo renderer (ADR 007, ainda não escrito)"
+  - nome: "classifyUrl"
+    tipo: "função"
+    descricao: "Classifica uma URL em dok:page/<uuid>[#slug], dok:page/new?title=, dok:asset/<uuid>, dok:diagram/<uuid>[?view=<uuid>], https externo, âncora local ou inválida. Já existe em dokmd.ts, uso interno de validateDok. Esta emenda publica a assinatura para o ADR 007 consumir na resolução de links"
+restricoes_impostas:
+  - "src/content-format não importa nenhum builtin do Node (node:* ou sem prefixo: fs, path, os, child_process) nem referencia window, document, navigator, localStorage ou sessionStorage. Verificado por build de plataforma browser (rollupOptions.external: []) no mesmo gate da fatia F0"
+  - "Toda gravação em content_dokmd passa por validateDok, que recusa com DOK-E011 texto canônico acima de 300.000 bytes UTF-8, antes de qualquer outra checagem"
+premissas_sobre_camadas_futuras:
+  - camada: "Renderização (ADR 007)"
+    premissa: "Resolve dok:page/…, dok:asset/… e dok:diagram/… usando classifyUrl publicado por esta emenda, sem reimplementar a classificação"
+  - camada: "Exportação (ADR 010)"
+    premissa: "Implementa toProfile(tree, destino) sobre DokAST, usando a Matriz de tradução do Apêndice B do ADR 002 como especificação. Decide o runtime do job agendado de sincronização, respeitando a restrição de execução sem DOM/Node builtin"
+riscos_abertos:
+  - "O orçamento de 300 ms p95 (seção 2) foi medido em Node num laptop, não no isolado V8 do Cloudflare Workers nem num navegador real. Mesma família de motor (V8), número exato em produção não confirmado. Dono: quem implementar a fatia F1, antes de travar o orçamento como gate de CI"
+  - "O plano do Cloudflare Workers em produção (gratuito, com teto de 10 ms de CPU por requisição, ou pago, com 30 s por padrão) não está registrado em nenhum ADR. Um pipeline de save de página grande no plano gratuito estouraria o teto de CPU. Dono: quem decidir o plano de hospedagem"
+  - "O limite de 300.000 bytes assume uma correlação bytes/linha medida em conteúdo misto (headings, listas, código, tabela, callout, tabs, steps, diagrama). Uma página real muito mais densa em um único tipo de bloco (por exemplo, só tabelas largas) pode atingir o teto de bytes bem antes das 20 mil linhas usadas como referência de UX na seção 3"
+  - "O limite de 300.000 bytes não marca uma descontinuidade medida. A curva do p50 cresce de forma suave e superlinear entre 5 mil e 40 mil linhas, sem joelho. O corte é escolha de produto ancorada no limiar de um segundo, e uma revisão que decida por 150.000 ou por 600.000 bytes não contraria nenhuma medição desta emenda. Dono: quem implementar a fatia F4 do ADR 002, ao observar tamanhos reais de página"
+  - "cloudflare.nodeCompat: true no preset do Lovable faz a server function de hoje resolver builtin do Node se src/content-format importar um. A restrição desta seção não depende mais do alvo de build, só do navegador, que não tem essa exceção. Quem revisar código novo do módulo não pode assumir que o ambiente de servidor bloqueia builtin do Node por conta própria. Dono: as três verificações da seção 1, não a configuração do Nitro"
+gatilhos_de_reabertura:
+  - "A medição em ambiente real (Cloudflare Workers de preview) diverge da ordem de grandeza medida em Node por mais de 2x"
+  - "O ADR 010 decide um runtime para o job agendado que não é um isolado V8 (por exemplo, uma função Node tradicional), e passa a poder usar builtins do Node sem quebrar a restrição desta emenda, o que reabre a seção 1 só para esse consumidor"
+  - "A fatia F5 do ADR 002 (migração do legado) encontra páginas reais acima de 300.000 bytes, e a migração precisa de uma política de divisão que esta emenda não desenha"
+```
+
 ## ADR 003 — Armazenamento e versionamento
 
 Arquivo: `ADR-003-armazenamento-e-versionamento.md` · Status: Aceito.
