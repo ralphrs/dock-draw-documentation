@@ -71,6 +71,7 @@ O conector do Atlassian é autorizado na conta Claude, não por sessão, então 
 | `lovable` | A issue é uma ordem de implementação. A descrição é o texto que o agente do Lovable executa |
 | `arquitetura`, `analise`, `ux-ui`, `desenvolvimento` | **Disciplina do trabalho.** Escrever ADR e decidir contrato é `arquitetura`. Medir, estimar, escrever ordem e revisar ordem é `analise`. Fatia com interface leva `ux-ui` junto de `desenvolvimento`. Uma issue pode ter mais de uma |
 | `backlog` | Estoque, sem responsável. Não está na fila de ninguém e não vira trabalho até A priorizar |
+| `processo` | Melhoria do próprio processo, sob o agrupador `Governança e processo`. Nasce sem responsável, em `A FAZER`, e só a sessão A puxa. Ver `decisoes/DEC-0016` |
 | `fatia` | A issue representa uma fatia de implementação inteira, que A desdobra em ordem, revisão, execução e revisão quando chega a vez |
 | `draft`, `liberada` | Canal de entrada do humano. Ver "Pedidos do humano" |
 | `revisao-humana` | Entrega do Lovable esperando o olhar do dono do produto no preview |
@@ -455,6 +456,10 @@ A ordem de prioridade não é negociada por sessão. Quem muda o `PLANO.md` é A
 ## Ociosidade
 
 Depois de seis voltas seguidas sem novidade, a sessão para de escutar e escreve ao humano uma linha: o que está pendente e de quem. Com o intervalo dobrando, seis voltas vazias somam cerca de duas horas.
+
+**A sessão A, antes de parar, puxa um item de processo.** A ordem de prioridade é fila vigiada, depois desbloqueio de quem espera resposta de A, depois estoque `processo`, depois parar. Nada disso depende de lembrança: o `aguarda-fila.sh` sai por fila vazia imprimindo o próximo item `processo`, e não imprime nada enquanto houver issue vigiada.
+
+Item de processo para num estado consistente do repositório, porque a janela ociosa acaba quando a fila voltar a encher, sem aviso. Trabalho de processo nunca interrompe entrega. Decisão inteira em `decisoes/DEC-0016-trilha-de-processo-e-trabalho-ocioso.md`.
 
 ## Paralelismo
 

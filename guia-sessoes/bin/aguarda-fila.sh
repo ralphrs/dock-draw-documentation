@@ -85,6 +85,41 @@ if [ "$sessao" = "A" ] || [ "$sessao" = "a" ]; then
   fi
 fi
 
+# Estoque de melhoria de processo, lido só quando a fila esvazia (DEC-0016).
+#
+# A regra de prioridade em tempo ocioso é: fila vigiada, depois desbloqueio de
+# quem espera resposta de A, depois estoque processo, depois parar. Escrevê-la
+# só no PROTOCOLO.md cometeria o defeito que a própria DEC-0016 nomeia: regra
+# em prosa depende de alguém lembrar de ler. O script já conhece o estado da
+# fila, então a prioridade sai daqui executável.
+#
+# Estoque não é fila. Estas issues nascem sem responsável e em A FAZER, que a
+# JQL da sessão A não vigia, justamente para que a fila possa esvaziar de
+# verdade. Fila que nunca esvazia apagaria o gatilho que faz isto rodar.
+#
+# Falha de rede aqui não é erro: o limite já foi atingido e a sessão vai
+# acordar de todo jeito. Silêncio é melhor que travar a saída.
+estoque_processo() {
+  jqlp='project = DDP AND labels = "processo" AND assignee IS EMPTY AND status = "A FAZER" ORDER BY key ASC'
+  curl -sS --max-time 20 -u "$JIRA_EMAIL:$JIRA_TOKEN" -G \
+    --data-urlencode "jql=$jqlp" \
+    --data-urlencode 'fields=summary' \
+    --data-urlencode 'maxResults=3' \
+    "$site/rest/api/2/search/jql" 2>/dev/null |
+    python3 -c 'import json,sys
+try:
+    d = json.load(sys.stdin)
+    itens = d.get("issues", [])
+except Exception:
+    itens = []
+if itens:
+    print("ESTOQUE processo: os próximos da fila de melhoria. Prioridade em tempo ocioso, DEC-0016.")
+    for i in itens:
+        print("  %s  %s" % (i["key"], i["fields"]["summary"]))
+    if not d.get("isLast", True):
+        print("  (há mais, veja o rótulo processo em DDP-55)")' || true
+}
+
 conta() {
   resposta=$(curl -sS --max-time 30 -u "$JIRA_EMAIL:$JIRA_TOKEN" \
     -H 'Content-Type: application/json' \
@@ -125,6 +160,11 @@ while :; do
 
   if [ "$(date +%s)" -ge "$fim" ]; then
     printf 'LIMITE %s: %ss sem novidade na fila, %s\n' "$sessao" "$limite" "$(date +%Y-%m-%dT%H:%M:%S)"
+    # Só a sessão A puxa estoque de processo, e só aqui: a fila está vazia por
+    # definição, porque a saída com trabalho acontece antes, no bloco acima.
+    if [ "$sessao" = "A" ] || [ "$sessao" = "a" ]; then
+      estoque_processo
+    fi
     exit 0
   fi
   sleep "$intervalo"
