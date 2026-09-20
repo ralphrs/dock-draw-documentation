@@ -18,6 +18,7 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 
 | Id | Data | Decisão | Quem decidiu |
 | --- | --- | --- | --- |
+| [ACHADO: bateria de escopo aberto](ACHADO-2026-09-20-bateria-de-verificacao-de-escopo-aberto.md) | 2026-09-20 | Comando de projeto inteiro numa ordem de escopo recortado ou viola a restrição, ou trava o aceite. Toda bateria passa a rodar no escopo da ordem | Arquiteto, por delegação |
 | [DEC-0010](DEC-0010-mandato-da-sessao-a.md) | 2026-09-20 | A sessão A abre ADR por iniciativa própria, pesquisa na web e refina pedido do humano. Ao humano sobem só as sete categorias | Humano |
 | [ACHADO: shell da Wiki sem dono](ACHADO-2026-09-20-shell-da-wiki-sem-dono.md) | 2026-09-20 | A meta de `DEC-0004` pede seis ações de interface, e nenhuma das 16 fatias entrega tela. O ADR 006 recebe a camada (`DDP-47`) | Arquiteto, aprovado pelo humano |
 | [ACHADO: contradição na Emenda 1](ACHADO-2026-09-20-contradicao-na-emenda-1.md) | 2026-09-20 | A emenda proibia builtin do Node em `src/content-format` e publicava uma interface que precisa ler o disco. Exceção de `testing/` aprovada em `DDP-56` | Arquiteto, aprovado pelo humano |

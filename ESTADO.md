@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 03:10
+**Atualizado em:** 2026-09-20, 03:45
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -105,7 +105,7 @@ Fora da meta: busca, export, sync, publicação pública, navegação. E a rende
 | 002 | F0 fundação, F1 núcleo, F2 validação, F3 URIs, F4 save, F5 migração, F6 importadores | 10 | F0 a F4 |
 | 003 | S1 schema, S2 RLS, S3 server functions, S4 `page_refs`, S5 assets, S6 lixeira, S7 `sync_state` | 9 | S1 a S4 |
 | 004 | E1 tabelas e RLS, E2 FSM, E3 server functions, E4 comentários, E5 notificações, E6 `rev` | 7 | E1 a E3 |
-| 005 | F1 adaptador, F2 registry, F3 colar `html`, F4 lista frouxa, F5 a F8 | a estimar | F1 a F4 |
+| 005 | F1 adaptador, F2 registry, F3 colar `html`, F4 lista frouxa, F5 a F8 | 14 | F1 a F4 (6 dias) |
 
 ### Sprint 1 — Fundação do `content-format`
 
@@ -113,8 +113,8 @@ Fora da meta: busca, export, sync, publicação pública, navegação. E a rende
 
 | # | Fatia | Estado |
 | :--- | :--- | :--- |
-| 1 | ADR 002 F0: dependências, runner de teste, fixtures no app | **Aceita** (`ccc3ce2`, `DDP-5`). Typecheck, build, teste 2/2 e verificação de ambiente verdes. Sobram 27 problemas de formatação nos quatro arquivos novos, que a ordem da F1 resolve |
-| 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | **Ordem escrita e aceita** (`DDP-9`). Em revisão com a sessão C (`DDP-57`). O despacho espera também `DDP-56` |
+| 1 | ADR 002 F0: dependências, runner de teste, fixtures no app | **Aceita** (`ccc3ce2`, `DDP-5`). Typecheck, build, teste 2/2 e verificação de ambiente verdes. A dívida de formatação dos quatro arquivos novos ficou: 17 problemas só em `environment.test.ts`, que a F1 não pode tocar. Vai para `DDP-61` |
+| 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | **Ordem reprovada na revisão** (`DDP-57`). Quatro defeitos: `validateDok` sem `DOK-E011`, e três de bateria de escopo aberto. Volta para a sessão B em `DDP-59`, depois para nova revisão, e só então despacha |
 | 3 | ADR 002 F2: validação | Não começou |
 | 4 | ADR 002 F3: URIs e referências | Não começou |
 
@@ -126,9 +126,9 @@ A fatia F0 é maior do que a seção 11 do ADR 002 previa, porque o critério de
 
 | Sessão | Papel | Agora |
 | :--- | :--- | :--- |
-| **A** | Arquiteto principal, gerente de projeto, scrum master | Aplicou três aprovações de ledger. Abriu o escopo do ADR 006 |
-| **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Entregou `DDP-1`, `DDP-2` e `DDP-7`, as três aceitas. Tem `DDP-9` (ordem da F1) e `DDP-10` (estimar as fatias do ADR 005) |
-| **C** | Especialista em arquitetura, UX e UI, revisora | Revisando a ordem da fatia F1 (`DDP-57`) |
+| **A** | Arquiteto principal, gerente de projeto, scrum master | Conferiu a revisão da ordem da F1 e achou mais dois defeitos. Abriu `DDP-59`, `DDP-60` e `DDP-61` |
+| **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Cinco tarefas entregues e aceitas, as últimas `DDP-9` e `DDP-10`. Tem `DDP-58` (escrever o ADR 006) e `DDP-59` (corrigir a ordem da F1) |
+| **C** | Especialista em arquitetura, UX e UI, revisora | Entregou a revisão da ordem da F1 (`DDP-57`), com dois achados bloqueantes confirmados. Sem tarefa aberta até a ordem voltar corrigida |
 | **Lovable** | Implementador. Executa ordem, não decide | Lê o quadro `DDP` direto, desde 2026-09-20. Canal verificado em `DDP-6` |
 
 O quadro `DDP` guarda o backlog inteiro desde 2026-09-20: 34 issues de estoque com o rótulo `backlog` e sem responsável, 2 ativas, 8 concluídas. O humano cria issue direto lá, com `draft` enquanto escreve e `liberada` quando quer que a sessão A refine no padrão.
@@ -141,7 +141,8 @@ Protocolo em `guia-sessoes/PROTOCOLO.md`. Decisões em `decisoes/REGISTRO.md`. A
 
 | O que | Categoria | Desde |
 | :--- | :--- | :--- |
-| Colar as linhas de `insumos/ORDEM.md` | proposta ao humano (`insumos/` é bloqueado) | 2026-09-20. Texto pronto no comentário de `DDP-8` |
+| Aprovar a coluna de estimativa acrescentada ao ADR 005 | `fora-de-work` (edita ADR aceito) | 2026-09-20, `DDP-60`. **`adrs/ADR-005-edicao.md` está editado e sem commit** até a resposta |
+| Colar as linhas de `insumos/ORDEM.md` | proposta ao humano (`insumos/` é bloqueado) | 2026-09-20. Texto pronto nos comentários de `DDP-8` e `DDP-47` |
 | Ordem das colunas do quadro e campos da tela de criação | configuração do Jira | Só pela interface, o MCP não expõe administração. Não bloqueia nada |
 | ~~Aplicar a Emenda 1 ao ADR 002 e ao ledger~~ | `ledger`, `aceite-adr`, `fora-de-work` | **Aprovada e aplicada em 2026-09-20** (`DDP-8`) |
 
@@ -154,6 +155,8 @@ Protocolo em `guia-sessoes/PROTOCOLO.md`. Decisões em `decisoes/REGISTRO.md`. A
 **O original, de 2026-09-19.** Em 2026-09-19 foram criados o kit de sessões, o mapa de skills, o registro de decisões, os papéis novos e o knowledge do Lovable. O `src/` do app não ganhou uma linha. A sprint 1 é a correção disso, e nenhuma peça de processo nova entra até ela entregar. Em 2026-09-20 o protocolo mudou duas vezes mesmo assim, e as duas precisam de justificativa para não virarem exceção de conveniência: a regra de escopo de commit conserta um defeito que corrompeu evidência de spike, e o canal do Lovable mudou porque o humano ligou o conector do Jira lá. Nenhuma das duas é processo inventado por antecipação.
 
 **O argumento de um número de contrato já caiu uma vez.** A medição de desempenho da Emenda 1 não se reproduziu quando o instrumento foi reentregue. Isso foi apanhado porque a revisão exigiu o harness de volta. Todo número que vira contrato precisa do instrumento junto.
+
+**O corpus de 30 fixtures estava ao alcance de um comando de rotina.** `bun run format` é `prettier --write .`, o Prettier formata Markdown, e 16 fixtures estão fora do formato dele. Rodá-lo acrescenta ponto e vírgula ao JavaScript dentro do bloco de código da fixture 07, indenta o `:::` que fecha o callout da 16 e insere linha em branco nas tabs da 20, com `input` e `expected` reescritos na mesma passada, sem a suíte acusar nada. A fatia F1 passa a pôr a pasta no `.prettierignore`. Até esse commit existir, o risco continua de pé, e vale para qualquer pessoa que rode o script, dentro ou fora do processo.
 
 **Ninguém testa o app hoje.** Não há runner de teste, e o Lovable não devolve evidência de build nem de teste. A partir da sprint 1 isso passa a ser critério de pronto das tarefas da sessão C.
 

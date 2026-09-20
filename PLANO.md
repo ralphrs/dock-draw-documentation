@@ -1,6 +1,6 @@
 # Plano e previsão de fim
 
-**Escrito em:** 2026-09-20 · **Revisado em:** 2026-09-20, 03:10
+**Escrito em:** 2026-09-20 · **Revisado em:** 2026-09-20, 03:45
 **Mantido por:** sessão A
 
 O `ESTADO.md` diz onde o projeto está. Este arquivo diz quanto falta e quando acaba, com o número que sustenta cada afirmação e com as lacunas declaradas em vez de preenchidas por estimativa confortável.
@@ -33,11 +33,11 @@ Dentro da meta de `DEC-0004`, editar e publicar uma página da Wiki ponta a pont
 
 | ADR | Fatias | Dias estimados | Situação |
 | :--- | ---: | ---: | :--- |
-| 002 Formato | 5 | 5 | F0 entregue. F1 com ordem sendo escrita (`DDP-9`) |
+| 002 Formato | 5 | 5 | F0 entregue. F1 com ordem reprovada na revisão, em correção (`DDP-59`) |
 | 003 Armazenamento | 4 | 6,5 | Não começou |
 | 004 Fluxo editorial | 3 | 4,5 | Não começou |
-| 005 Edição | 4 | **sem estimativa** | Não começou |
-| **Total na meta** | **16** | **16 mais 4 fatias não estimadas** | 1 entregue |
+| 005 Edição | 4 | 6 | Não começou |
+| **Total na meta** | **16** | **22** | 1 entregue |
 
 Fora da meta, mas dentro dos ADRs já aceitos:
 
@@ -46,10 +46,12 @@ Fora da meta, mas dentro dos ADRs já aceitos:
 | 002 | 2 (F5 migração, F6 importadores) | 5 |
 | 003 | 3 (S5 assets, S6 lixeira, S7 `sync_state`) | 2,5 |
 | 004 | 3 (E4 comentários, E5 notificações, E6 `rev`) | 2,5 |
-| 005 | 4 (F5 a F8) | **sem estimativa** |
-| **Total fora** | **12** | **10 mais 4 fatias não estimadas** |
+| 005 | 4 (F5 a F8) | 8 |
+| **Total fora** | **12** | **18** |
 
-**Somando o que está estimado: 26 dias.** Oito fatias, todas do ADR 005, nunca foram estimadas por ninguém: a seção de fatias daquele ADR tem coluna de critério de pronto e de bloqueio, e não tem coluna de dias.
+**Somando tudo: 40 dias.** As oito fatias do ADR 005, únicas que nunca tinham recebido esforço, foram estimadas em 2026-09-20 (`DDP-10`): 14 dias no total, 6 deles dentro da meta. Seis dos oito números vieram de texto que já estava no ADR aceito ou no `RESULTADO.md` do spike. Dois, F5 e F8, são estimativa informada sem medição por trás, e estão marcados como tal no próprio ADR.
+
+A coluna nova espera aprovação do humano em `DDP-60`, porque edita um ADR aceito.
 
 ---
 
@@ -99,11 +101,21 @@ O `ESTADO.md` já trazia essa regra na seção de riscos desde 2026-09-19, e ela
 
 ---
 
+## 4.1. O gargalo, agora medido
+
+A primeira fatia que rodou o ciclo completo com o processo pronto foi a F1, e ela não chegou ao Lovable. A ordem foi escrita, revisada e reprovada, com quatro defeitos, e volta para reescrita antes de uma segunda revisão.
+
+Isso confirma a hipótese da seção 2 pelo lado ruim: o tempo do projeto não está na execução, está no ciclo em volta dela. A execução da F0 levou minutos. A ordem da F1 já consumiu escrita, revisão, conferência e correção, e ainda vai consumir uma segunda revisão antes do despacho.
+
+Três dos quatro defeitos têm a mesma causa, registrada em `decisoes/ACHADO-2026-09-20-bateria-de-verificacao-de-escopo-aberto.md`: a bateria de verificação rodava comando de projeto inteiro dentro de uma ordem de escopo recortado. A regra que saiu dali vale para toda ordem daqui em diante, o que torna este ciclo um custo pago uma vez, não um custo por fatia.
+
+O quarto defeito é de outra natureza, e é o que merece atenção: uma restrição aceita do ledger (`DOK-E011`) simplesmente não apareceu no código da ordem, e nenhuma das 30 fixtures exercita esse caminho. A bateria passaria 30/30 entregando a violação. Cobertura de teste verde não é prova de contrato cumprido, e a revisão de ordem é hoje o único lugar onde isso é apanhado.
+
 ## 5. O que estreita a previsão
 
 Três coisas, em ordem de valor:
 
-1. **Estimar as oito fatias do ADR 005.** É o único ADR aceito sem número de esforço, e quatro dessas fatias estão dentro da meta. Tarefa para a sessão B.
+1. ~~**Estimar as oito fatias do ADR 005.**~~ Feito em 2026-09-20 (`DDP-10`). 14 dias no total, 6 na meta.
 2. **Medir as três próximas fatias do ADR 002.** F1, F2 e F3 dão a primeira base real de duração de ciclo, com o processo já pronto.
 3. **Escrever o ADR 013.** Ele fecha os conflitos C-3 e C-7 e publica as fatias de Tenancy, que hoje são um buraco no backlog. Segurado de propósito até a sprint 1 entregar.
 
