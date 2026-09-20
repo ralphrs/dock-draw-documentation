@@ -383,7 +383,7 @@ loop:
 
 Toda regra deste arquivo nasceu de um defeito medido, e por muito tempo todas viviam só como prosa aqui. Prosa depende de alguém lembrar de ler, o que é exatamente o defeito que a auditoria de 2026-09-20 nomeou nas restrições do ledger: afirmação sem mecanismo que a reprove. As regras de processo tinham a mesma falha, e a prova é que a sessão A violou a regra de formato de canal quinze minutos depois de escrevê-la.
 
-`guia-sessoes/bin/confere-quadro.sh` reprova, por máquina, cinco defeitos que já aconteceram:
+`guia-sessoes/bin/confere-quadro.sh` reprova, por máquina, sete defeitos que já aconteceram:
 
 | # | O que reprova | De onde veio |
 | :-- | :--- | :--- |
@@ -392,6 +392,8 @@ Toda regra deste arquivo nasceu de um defeito medido, e por muito tempo todas vi
 | 3 | Texto publicado no formato errado para o caminho de escrita | A ordem da fatia F1 e quatro cartões de 2026-09-20 |
 | 4 | Aprovação com mais de uma opção sem nomear a recomendada | `DDP-110`, que voltou movida e sem resposta |
 | 5 | Emenda da sessão A com código só em comentário, fora da descrição | `DDP-113`, entregue sem a coluna que a emenda pedia |
+| 6 | Ordem versionada acima de 10.000 bytes | O teto da S1c foi descoberto na mão, com a ordem já escrita, e a da S1c1 estourou de novo na volta da revisão (`DDP-124`) |
+| 7 | `information_schema` dentro de bloco SQL executável | `DDP-121`. A view filtra por privilégio e devolve zero linha sem provar nada (`DDP-125`) |
 
 **Ela roda dentro do `aguarda-fila.sh`, na partida da escuta da sessão A**, e não como comando à parte. Religar a escuta é o único ponto por onde a sessão passa em todo ciclo, então é onde a conferência não pode ser esquecida: esquecê-la significa parar de escutar, que é parar de trabalhar. A saída aparece no mesmo lugar onde a sessão lê o motivo de ter acordado.
 
@@ -401,6 +403,10 @@ Duas propriedades que a conferência precisa manter, e que custaram conserto no 
 
 - **Ela precisa conseguir ficar verde.** Issue fechada fica fora das checagens de texto, porque ninguém vai agir nela e achado impossível de consertar deixa o script vermelho para sempre. Checagem que nunca alcança o verde ensina a ignorar a checagem.
 - **Ela não pode reprovar o sistema correto.** A checagem 5 reprovava emenda repetida na descrição e no comentário, que é o caminho certo. Passou a comparar o conteúdo dos dois antes de acusar.
+
+As checagens 6 e 7 leem arquivo, e não o quadro. Elas pulam as ordens já executadas, por uma lista fechada dentro do script, com a razão de cada entrada. Três ordens do content-format passam do teto e a ordem da S1b usa `information_schema`: as quatro já foram aplicadas, ninguém as vai reescrever, e reprová-las manteria o script vermelho para sempre. Ordem nova nunca entra nessa lista.
+
+A checagem 7 lê apenas o interior dos blocos cercados por crase tripla. A ordem da S1c1 escreve "SQL puro, sem `information_schema`" em prosa, que é a instrução certa, e um grep sobre o arquivo inteiro reprovaria o sistema correto.
 
 ## Revisão do humano, depois de toda entrega do Lovable
 

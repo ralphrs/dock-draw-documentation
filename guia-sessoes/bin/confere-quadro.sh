@@ -20,7 +20,9 @@ cred=${DOKDRAW_JIRA_ENV:-$HOME/.config/dokdraw/jira.env}
 site=${JIRA_SITE:-https://dokdrawapp.atlassian.net}
 recentes=${1:-12}
 
-export JIRA_EMAIL JIRA_TOKEN site recentes
+raiz="$(cd "$(dirname "$0")/../.." && pwd)"
+
+export JIRA_EMAIL JIRA_TOKEN site recentes raiz
 
 python3 <<'PYEOF'
 import os, re, json, urllib.request, base64, sys
@@ -160,6 +162,62 @@ for i in busca(ABERTA, "key,summary,description,comment"):
             'tem emenda da sessão A só em comentário, fora da descrição: '
             + '; '.join(orfaos)
             + '. Quem executa lê a descrição, não o comentário.'))
+
+# --------------------------------------------------------------------------
+# 6. Ordem versionada acima do teto de 10.000 bytes.
+#    Defeito medido em 2026-09-20: o teto da S1c foi descoberto na mão, depois
+#    de a ordem já estar escrita, e a sub-fatia teve de ser partida em duas
+#    (DEC-0015). Na volta da revisão a ordem da S1c1 estourou de novo ao
+#    absorver as correções. Nada media isso.
+#
+# 7. information_schema dentro de bloco SQL executável.
+#    DDP-121: as views filtram por privilégio do papel corrente, então uma
+#    tabela que existe some da resposta quando o papel não tem direito sobre
+#    ela. O roteiro fica verde sem provar nada. Os catálogos do sistema
+#    (pg_class, pg_constraint, pg_index, pg_trigger) carregam GRANT SELECT
+#    para PUBLIC e não têm esse problema.
+#
+#    Menção em prosa que PROÍBE o uso não conta, e por isso a checagem lê só
+#    o interior dos blocos cercados por crase tripla. A ordem da S1c1 escreve
+#    "SQL puro, sem information_schema" fora de bloco: um grep ingênuo
+#    reprovaria o sistema correto.
+#
+# As duas checagens pulam as ordens já executadas. Achado que ninguém pode
+# consertar deixa o script vermelho para sempre, e checagem que nunca alcança
+# o verde ensina a ignorar a checagem. A lista abaixo está fechada: ordem
+# nova nunca entra nela. Cada entrada diz por que está fora.
+# --------------------------------------------------------------------------
+HISTORICAS = {
+    # Anteriores ao teto, que nasceu com a DEC-0015 em 2026-09-20.
+    "ORDEM-F0-fundacao-content-format.md": "17.329 bytes, executada antes do teto existir",
+    "ORDEM-F1-nucleo-content-format.md":   "40.392 bytes, executada antes do teto existir",
+    "ORDEM-F3-uris-e-referencias.md":      "10.813 bytes, executada antes do teto existir",
+    # Anterior à DDP-121, que descobriu o falso-negativo do information_schema.
+    "ORDEM-S1b-spaces-e-pages.md":         "usa information_schema, aplicada antes da DDP-121",
+}
+
+TETO = 10000
+
+import pathlib
+dir_ordens = pathlib.Path(os.environ["raiz"]) / "adrs" / "_work" / "ordens"
+for arq in sorted(dir_ordens.glob("*.md")):
+    if arq.name in HISTORICAS:
+        continue
+    bruto = arq.read_bytes()
+    if len(bruto) > TETO:
+        achados.append((arq.name,
+            "tem %d bytes e o teto da ordem é %d. Parta a sub-fatia, ou corte prosa. "
+            "Cada metade precisa deixar o schema consistente (DEC-0015)."
+            % (len(bruto), TETO)))
+    texto = bruto.decode("utf-8", "replace")
+    # Só o interior dos blocos cercados. Fora deles a palavra pode estar
+    # proibindo o uso, que é o certo.
+    dentro = re.findall(r"^```.*?$(.*?)^```\s*$", texto, re.S | re.M)
+    if any("information_schema" in b for b in dentro):
+        achados.append((arq.name,
+            "usa information_schema dentro de bloco SQL. Ele filtra por privilégio "
+            "e devolve zero linha sem provar nada (DDP-121). Use pg_class, "
+            "pg_constraint, pg_index ou pg_trigger."))
 
 if achados:
     print("ATENÇÃO: a conferência do quadro achou %d problema(s).\n" % len(achados))
