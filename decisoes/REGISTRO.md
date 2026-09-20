@@ -18,6 +18,7 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 
 | Id | Data | Decisão | Quem decidiu |
 | --- | --- | --- | --- |
+| [DEC-0014](DEC-0014-hierarquia-de-quatro-niveis-e-prontidao-de-tenant.md) | 2026-09-20 | Hierarquia de quatro níveis: `pages` ganha `project_id` nulo sem FK, unicidade `nulls not distinct` escopada ao projeto, e `workspace_id` em toda tabela de tenant. Controle de tenant não entra agora | Humano |
 | [DEC-0013](DEC-0013-dois-historicos-de-migracao.md) | 2026-09-20 | Os dois históricos de migração ficam, com a fronteira em 2026-09-20. `drizzle-kit` e `drizzle-orm` aceitos retroativamente, sem uso de ORM | Humano |
 | [ACHADO: dois históricos de migração](ACHADO-2026-09-20-dois-historicos-de-migracao.md) | 2026-09-20 | A plataforma bloqueia escrita em `supabase/migrations/` e usa journal próprio. Nenhum dos dois históricos reconstrói o banco sozinho. Decisão em `DDP-102` | Arquiteto |
 | [DEC-0012](DEC-0012-recorte-da-fatia-f4.md) | 2026-09-20 | A fatia F4 entrega o pipeline de save e não a gravação, porque a tabela de destino é do ADR 003 e não existe. Descrição e critério da fatia discordavam entre si | Arquiteto, por delegação |
