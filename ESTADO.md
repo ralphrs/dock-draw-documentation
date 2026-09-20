@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 04:55
+**Atualizado em:** 2026-09-20, 05:05
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -75,19 +75,21 @@ Do `insumos/BASE.md`. Nada aqui é entrega, é o alvo.
 
 ### O que existe hoje
 
+`src/content-format` real, desde 2026-09-20 (`3185728`): `parseDok`, `serializeDok`, `normalizeDok`, `validateDok` com os 16 códigos de diagnóstico, `classifyUrl`, o registro de diretivas e o schema do frontmatter, com as 30 fixtures rodando no Vitest mais o teste do `DOK-E011`. Primeira linha de Wiki no app.
+
 Diagram Studio completo: rotas de projeto e editor, sete componentes React Flow, ~50 componentes shadcn, arquitetura hexagonal, schema `public` com nove tabelas e RLS, login Google por convite.
 
 ### O que os ADRs preveem e não existe
 
 | Previsto | ADR | Situação |
 | :--- | :--- | :--- |
-| `src/content-format` | 002 | Não existe |
+| ~~`src/content-format`~~ | 002 | **Existe**, fatias F0 e F1 entregues |
 | `src/content-store` | 003 | Não existe |
 | `src/editorial-flow` | 004 | Não existe |
 | `src/editors` e `src/content-components` | 005 | Não existe |
 | Schema `content.*`, 15 tabelas | 003 e 004 | Nenhuma existe |
-| Runner de teste (qualquer um) | — | **Não existe.** Sem Vitest, sem Playwright, sem script `test` |
-| As 16 dependências do contrato do ADR 002 | 002 | Nenhuma instalada |
+| ~~Runner de teste~~ | — | **Vitest 5.0.1**, script `test`, 4 testes verdes |
+| ~~As 16 dependências do contrato do ADR 002~~ | 002 | **Todas instaladas** na F0 |
 | As 11 dependências do contrato do ADR 005 | 005 | Nenhuma instalada |
 
 Levantamento completo em `decisoes/ACHADOS-2026-09-19-adrs-x-app.md`.
@@ -114,7 +116,7 @@ Fora da meta: busca, export, sync, publicação pública, navegação. E a rende
 | # | Fatia | Estado |
 | :--- | :--- | :--- |
 | 1 | ADR 002 F0: dependências, runner de teste, fixtures no app | **Aceita** (`ccc3ce2`, `DDP-5`). Typecheck, build, teste 2/2 e verificação de ambiente verdes. A dívida de formatação dos quatro arquivos novos ficou: 17 problemas só em `environment.test.ts`, que a F1 não pode tocar. Vai para `DDP-61` |
-| 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | **O Lovable está executando** (`DDP-67`). Ordem aprovada na terceira revisão, 31.449 caracteres conferidos byte a byte no Jira. Entrega junto a fatia F2 |
+| 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | **Entregue** no commit `3185728`. Os três arquivos conferidos caractere a caractere contra a ordem: idênticos. Typecheck 0, 4 testes verdes, corpus intacto. Em revisão de resultado (`DDP-73`) |
 | 3 | ADR 002 F2: validação | **Absorvida pela ordem da F1**, que portou o arquivo inteiro do spike. Vira verificação em vez de código novo quando a F1 fechar (`DDP-12`) |
 | 4 | ADR 002 F3: URIs e referências | Não começou |
 
