@@ -213,6 +213,8 @@ Ciclo de uma fatia:
 
 **Alcance de uma aprovação.** Uma resposta com `aprovado_por: humano` vale para as ações que ela lista na "Instrução", e só para elas.
 
+**Escopo de um commit.** A categoria `commit` vale para B e para C. A sessão A commita pelo mandato permanente do humano, e em troca nomeia os caminhos um a um: `git add <caminho>`, nunca `git add -A` nem `git commit -a`. As três sessões editam a mesma cópia de trabalho ao mesmo tempo, então um commit de escopo largo publica o rascunho de outra sessão no meio da execução dela. Em 2026-09-20 o commit `f742395` fez isso: levou ao `HEAD` um tsconfig temporário e parte de um fix experimental dentro de `adrs/_work/spike-s1/`, que é o artefato citado pelo ADR 005 como evidência do spike S-1 (`DDP-2`).
+
 Paradas do `/adr` são sempre dúvidas. A parada 3 leva `dependencias`. A parada 5 leva `ledger` e `aceite-adr`.
 
 O humano responde comentando na issue, ou direto na conversa com A. Nos dois casos A registra o sim no comentário de resposta, porque B e C leem a issue, não a conversa.
