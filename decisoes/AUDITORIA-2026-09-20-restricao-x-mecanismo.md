@@ -102,6 +102,28 @@ O que as protege é a regra nova do `PROTOCOLO.md`: a ordem de cada fatia entreg
 
 **Fica declarado como risco:** nenhuma dessas 28 tem verificação hoje, e a única garantia é que a ordem de cada fatia traga o mecanismo junto. Se essa regra for afrouxada, o projeto volta ao estado em que cinco defeitos passaram num dia.
 
+## Achado extra: o ledger e o arquivo do ADR divergem de propósito, e isso não está escrito em lugar nenhum
+
+A auditoria comparou o bloco de contrato de cada ADR com o bloco correspondente no `LEDGER.md`. Três divergem, e **as três divergências estão certas**:
+
+| ADR | O que o ledger tem a mais | Origem |
+| :--- | :--- | :--- |
+| 002 | A linha do `zod` refinada para `^4.6.5, ou ^3.25.76 do app importando de zod/v4`, com a confirmação de 2026-09-19. Mais dois `riscos_abertos`: o falso `DOK-W103` do validador do harness, e o corpus não exercitar `list.spread = true` | Descobertos depois do aceite, pelo spike S-1 do ADR 005 |
+| 003 | `getSpaceList` na lista de funções de `src/content-store/server.ts` | Extensão aditiva pedida pelo ADR 006 |
+| 004 | `listPendingRevisions` na lista de funções de `src/editorial-flow/server.ts` | Extensão aditiva pedida pelo ADR 006 |
+
+O princípio por trás disso nunca foi escrito:
+
+> **O `LEDGER.md` é contrato vivo e acumula. O arquivo do ADR é registro datado e não se reescreve.**
+
+Um ADR aceito em 2026-09-18 não decidiu o que foi descoberto em 2026-09-20. Reescrevê-lo para "sincronizar" apaga a história de quando cada coisa foi sabida, que é o que dá valor ao registro. Manter os dois idênticos à força exigiria ou mentir sobre a data de uma decisão, ou perder a extensão.
+
+**O risco de não escrever isso é concreto.** Uma conferência futura de consistência, feita por qualquer sessão, encontra "divergência" e conserta: ou reescrevendo o ADR, que destrói o registro, ou revertendo o ledger, que perde a extensão. As duas são piores que a divergência.
+
+Os ADRs 005, 006 e a Emenda 1 conferem byte a byte hoje, porque nada foi estendido neles ainda.
+
+**Conserto:** o `LEDGER.md` ganha uma seção declarando o princípio e listando as divergências conhecidas, para que uma conferência futura confirme em vez de consertar. Editar o ledger exige aprovação, e está em `DDP-81`.
+
 ## O que esta auditoria não promete
 
 Ela fecha uma classe de defeito, não todas. Nada aqui cobre erro de lógica dentro de uma função que passa em todos os testes, decisão de produto errada, ou restrição que ninguém escreveu no contrato porque ninguém pensou nela. A auditoria mede a distância entre o que o contrato afirma e o que a máquina confere, e só isso.
