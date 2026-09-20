@@ -408,6 +408,21 @@ As checagens 6 e 7 leem arquivo, e não o quadro. Elas pulam as ordens já execu
 
 A checagem 7 lê apenas o interior dos blocos cercados por crase tripla. A ordem da S1c1 escreve "SQL puro, sem `information_schema`" em prosa, que é a instrução certa, e um grep sobre o arquivo inteiro reprovaria o sistema correto.
 
+## Conferir a execução contra a ordem
+
+Depois de o Lovable aplicar uma migração, a sessão A compara o schema aplicado com o DDL da ordem versionada. `guia-sessoes/bin/confere-execucao.sh` faz isso em duas fases, porque nenhuma sessão alcança o banco por shell e quem consulta é o MCP do Lovable.
+
+```
+confere-execucao.sh --sql ORDEM.md              # imprime o SQL de conferência
+confere-execucao.sh --compara ORDEM.md saida.txt # compara com o que o banco devolveu
+```
+
+Ele confere coluna, chave primária, chave estrangeira, unicidade, `CHECK`, índice e trigger. A unicidade distingue `NULLS NOT DISTINCT` de unicidade comum, que é a decisão da `DEC-0014` sobre `content.pages`. Restrição escrita dentro do `CREATE TABLE` é comparada por tipo mais lista ordenada de colunas, porque o Postgres batiza essas e o DDL da ordem não conhece o nome.
+
+**Ele não confere** o corpo de um `CHECK` nem a tabela de destino de uma chave estrangeira. Uma FK na coluna certa, apontando para a tabela errada, passa. A lacuna está declarada no cabeçalho do script.
+
+A conferência da S1b, feita na mão em 2026-09-20, custou trinta e cinco linhas de cada lado, duas vezes. Este script substitui esse trabalho e deixa registro repetível.
+
 ## Revisão do humano, depois de toda entrega do Lovable
 
 Toda vez que o agente do Lovable entrega, a sessão A abre uma issue de rótulo `revisao-humana` para o dono do produto olhar o resultado com os próprios olhos. Ela vem depois da revisão da sessão C, para ele não gastar tempo com o que já foi reprovado por build, typecheck ou contrato.
