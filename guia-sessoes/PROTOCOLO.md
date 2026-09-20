@@ -73,6 +73,7 @@ O conector do Atlassian é autorizado na conta Claude, não por sessão, então 
 | `backlog` | Estoque, sem responsável. Não está na fila de ninguém e não vira trabalho até A priorizar |
 | `fatia` | A issue representa uma fatia de implementação inteira, que A desdobra em ordem, revisão, execução e revisão quando chega a vez |
 | `draft`, `liberada` | Canal de entrada do humano. Ver "Pedidos do humano" |
+| `revisao-humana` | Entrega do Lovable esperando o olhar do dono do produto no preview |
 | `revisar-ordem`, `revisar-resultado`, `encerrar` | Tipo de tarefa, quando não é implementação comum |
 | `aprovacao-humana` mais a categoria (`ledger`, `app-release`, ...) | O que a issue espera do humano |
 
@@ -224,7 +225,8 @@ Ciclo de uma fatia:
 4. A pede o sim humano   ->  send_message consome crédito do workspace
 5. A acorda o Lovable    ->  mensagem curta com a chave. Ele executa, comenta e move para EM REVISÃO
 6. A abre issue para C   ->  rótulo revisar-resultado. Diff, build, typecheck, preview
-7. A pede app-release    ->  deploy_project só com o sim do humano
+7. A abre issue para o humano -> rótulo revisao-humana. O que olhar no preview, com a URL
+8. A pede app-release    ->  deploy_project só com o sim do humano
 ```
 
 ## Quem decide
@@ -308,7 +310,7 @@ loop:
 
 | Sessão | JQL da fila |
 | --- | --- |
-| A | `project = DDP AND (status in ("BLOQUEADA", "EM REVISÃO") OR (status = "EM ANDAMENTO" AND labels = "aprovacao-humana"))` |
+| A | `project = DDP AND (status in ("BLOQUEADA", "EM REVISÃO") OR (status = "EM ANDAMENTO" AND labels in ("aprovacao-humana", "revisao-humana")) OR (labels = "liberada" AND labels != "draft" AND status != "CONCLUÍDA"))` |
 | B | `project = DDP AND assignee = "712020:ec30868f-8e34-4c25-97e2-cd920e5da679" AND status in ("A FAZER", "EM ANDAMENTO")` |
 | C | `project = DDP AND assignee = "712020:6ac2f667-9728-4b07-bffb-eaa19704a4c9" AND status in ("A FAZER", "EM ANDAMENTO")` |
 
@@ -321,6 +323,22 @@ loop:
 - B e C incluem `EM ANDAMENTO` na consulta porque é o status para onde A devolve uma issue respondida. Ao ver uma issue própria em `EM ANDAMENTO` com comentário novo, leia o comentário antes de retomar.
 - Nada novo na fila: espere de novo, sem comentar.
 - O custo real de escutar não é a chamada, é o contexto da sessão, que viaja inteiro a cada volta. Por isso a volta vazia não deve produzir texto nenhum: nem resumo, nem "nada novo até agora", nem atualização de painel.
+
+## Revisão do humano, depois de toda entrega do Lovable
+
+Toda vez que o agente do Lovable entrega, a sessão A abre uma issue de rótulo `revisao-humana` para o dono do produto olhar o resultado com os próprios olhos. Ela vem depois da revisão da sessão C, para ele não gastar tempo com o que já foi reprovado por build, typecheck ou contrato.
+
+A issue não pede um parecer genérico. Ela diz o que olhar:
+
+1. **A URL do preview**, e a rota exata que mudou.
+2. **O que mudou**, uma frase por item, tirada do diff e não da ordem. O que a ordem pediu e o que de fato entrou podem divergir, e é isso que a revisão procura.
+3. **O que observar**, específico da fatia: qual fluxo percorrer, o que deveria acontecer em cada passo, e o que seria sinal de problema.
+4. **O que a sessão C já verificou**, para ele não repetir: build, typecheck, lint, contrato, e o que ela olhou no preview.
+5. **O que esta fatia não faz**, para ele não procurar o que ainda não existe e cobrar uma falta que pertence a outra fatia.
+
+**Fatia sem interface também gera issue**, e o que ela pede é o contrário: confirmar que **nada mudou**. O Diagram Studio é a única parte do app que funciona hoje, e uma fatia de módulo interno pode quebrá-lo sem que teste nenhum apanhe, porque o app não tem teste de interface. A issue nomeia as telas que precisam continuar iguais.
+
+**Como ele responde**, pelo mesmo gesto das aprovações: arrastar para `EM ANDAMENTO` quando estiver bom, ou para `BLOQUEADA` quando achar problema, com o problema em comentário. Problema achado aqui vira ordem nova para o Lovable, nunca ajuste direto no código.
 
 ## Agrupadores: a sprint que o Jira não tem
 
