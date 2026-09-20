@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 05:20
+**Atualizado em:** 2026-09-20, 05:30
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -117,8 +117,8 @@ Fora da meta: busca, export, sync, publicação pública, navegação. E a rende
 | # | Fatia | Estado |
 | :--- | :--- | :--- |
 | 1 | ADR 002 F0: dependências, runner de teste, fixtures no app | **Aceita** (`ccc3ce2`, `DDP-5`). Typecheck, build, teste 2/2 e verificação de ambiente verdes. A dívida de formatação dos quatro arquivos novos ficou: 17 problemas só em `environment.test.ts`, que a F1 não pode tocar. Vai para `DDP-61` |
-| 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | **Entregue** no commit `3185728`. Os três arquivos conferidos caractere a caractere contra a ordem: idênticos. Typecheck 0, 4 testes verdes, corpus intacto. Em revisão de resultado (`DDP-73`) |
-| 3 | ADR 002 F2: validação | **Absorvida pela ordem da F1**, que portou o arquivo inteiro do spike. Vira verificação em vez de código novo quando a F1 fechar (`DDP-12`) |
+| 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | **Aceita** (`3185728`, `DDP-73`). Bateria verde rodada duas vezes, `DOK-E011` e `DOK-E010` exercitados importando o módulo real, `p50` de 219,38 ms contra orçamento de 300. Falta a revisão do dono do produto (`DDP-76`) |
+| 3 | ADR 002 F2: validação | **Entregue junto com a F1.** O critério de pronto foi conferido item a item contra a `main` e está cumprido. Sobra só a checagem automática de `DDP-68` (`DDP-12`) |
 | 4 | ADR 002 F3: URIs e referências | Não começou |
 
 A fatia F0 é maior do que a seção 11 do ADR 002 previa, porque o critério de pronto da F1 são as 30 fixtures rodando, e não há onde rodá-las.

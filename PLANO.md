@@ -1,6 +1,6 @@
 # Plano e previsão de fim
 
-**Escrito em:** 2026-09-20 · **Revisado em:** 2026-09-20, 04:55
+**Escrito em:** 2026-09-20 · **Revisado em:** 2026-09-20, 05:30
 **Mantido por:** sessão A
 
 O `ESTADO.md` diz onde o projeto está. Este arquivo diz quanto falta e quando acaba, com o número que sustenta cada afirmação e com as lacunas declaradas em vez de preenchidas por estimativa confortável.
@@ -32,7 +32,7 @@ Dentro da meta de `DEC-0004`, editar e publicar uma página da Wiki ponta a pont
 
 | ADR | Fatias | Dias estimados | Situação |
 | :--- | ---: | ---: | :--- |
-| 002 Formato | 5 | 5 | F0 entregue. F1 com ordem reprovada na revisão, em correção (`DDP-59`) |
+| 002 Formato | 5 | 5 | **F0, F1 e F2 entregues.** Restam F3 e F4 |
 | 003 Armazenamento | 4 | 6,5 | Não começou |
 | 004 Fluxo editorial | 3 | 4,5 | Não começou |
 | 005 Edição | 4 | 6 | Não começou |
@@ -73,7 +73,7 @@ Em ciclos de fatia, não em dias. Um ciclo é ordem escrita, ordem revisada, exe
 
 | Alvo | Fatias restantes | Previsão |
 | :--- | ---: | :--- |
-| **Meta `DEC-0004`** (editar e publicar uma página) | 17 | 17 ciclos, e agora sem incógnita |
+| **Meta `DEC-0004`** (editar e publicar uma página) | 16 | 16 ciclos, e agora sem incógnita |
 | Tudo dos ADRs já aceitos | 27 | 27 ciclos |
 | Projeto inteiro | 27 mais as fatias de 7 ADRs não escritos | não estimável hoje |
 
