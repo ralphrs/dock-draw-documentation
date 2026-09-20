@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 10:10
+**Atualizado em:** 2026-09-20, 10:35
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -110,7 +110,7 @@ Fora da meta: busca, export, sync, publicação pública, navegação. E a rende
 | 004 | E1 tabelas e RLS, E2 FSM, E3 server functions, E4 comentários, E5 notificações, E6 `rev` | 7 | E1 a E3 |
 | 005 | F1 adaptador, F2 registry, F3 colar `html`, F4 lista frouxa, F5 a F8 | 14 | F1 a F4 (6 dias) |
 
-### Sprint 1 — Fundação do `content-format`
+### Sprint 1 — Fundação do `content-format` (FECHADA em 2026-09-20)
 
 **Objetivo:** `src/content-format` no app, com parse, serialize e normalize passando nas 30 fixtures por um comando.
 
@@ -120,9 +120,13 @@ Fora da meta: busca, export, sync, publicação pública, navegação. E a rende
 | 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | **Fechada por inteiro** (`3185728`). Ciclo de oito passos rodado do começo ao fim, com revisão do dono do produto (`DDP-76`) |
 | 3 | ADR 002 F2: validação | **Entregue junto com a F1.** O critério de pronto foi conferido item a item contra a `main` e está cumprido. Sobra só a checagem automática de `DDP-68` (`DDP-12`) |
 | 4 | ADR 002 F3: URIs e referências | **Aceita** (`769a0be`, `DDP-87`). Primeira ordem a passar pelo canal consertado, sem reconstrução. Falta a revisão do dono do produto (`DDP-88`) |
-| 5 | ADR 002 F4: pipeline de save | **Entregue** (`c69b151`). Os dois arquivos conferidos idênticos à ordem. Em revisão de resultado (`DDP-101`), que fecha a sprint 1 |
+| 5 | ADR 002 F4: pipeline de save | **Aceita** (`c69b151`, `DDP-101`). Ordem que passou de primeira na revisão. Falta a revisão do dono do produto (`DDP-106`) |
 
 A fatia F0 é maior do que a seção 11 do ADR 002 previa, porque o critério de pronto da F1 são as 30 fixtures rodando, e não há onde rodá-las.
+
+**A sprint fechou com cinco fatias em vez de quatro**, porque a ordem da F1 entregou a F2 junto. Entregue: o motor do formato DokMD, a extração de referências e o pipeline de save, com 16 testes verdes e desempenho dentro do orçamento.
+
+**O que a sprint não fechou, e não é esquecimento:** gravar página de verdade (migrado para o ADR 003 por `DEC-0012`), o orçamento de 300 ms medido fora do Node local (`DDP-105`), e o mecanismo automático de duas restrições do contrato (`DDP-80`). As fatias F5 e F6 do ADR 002 continuam sem sub-fatia e sem sprint, o que é o estado certo: a meta de `DEC-0004` não passa por nenhuma das duas.
 
 ### Sprint 2 — Armazenamento, adiantada durante a espera
 
