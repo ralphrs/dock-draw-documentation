@@ -34,7 +34,9 @@ Os blocos 3 e 4 dependem de `pages` e `page_revisions` (blocos 1 e 2). Os blocos
 | **S1e** | 5, 6 | 1.490 | `public.workspaces` (pré-existente) | Tabelas auxiliares por workspace, sem relação com páginas ou revisões |
 | **S1f** | 7, 8 | 899 | S1b, S1a (`effective_role` lê `spaces`/`space_members`/`workspace_members`) | Só funções, sem tabela nova, sem trigger |
 
-Ordem de aplicação: S1a, S1b, S1c1, S1c2, S1d, S1e, S1f. S1e e S1f não têm dependência entre si nem com S1d, e poderiam trocar de posição sem quebrar nada, mas a ordem do ADR é mantida para não introduzir uma decisão sem necessidade.
+Ordem de aplicação, reordenada pela `DEC-0015` para tirar três blocos do caminho crítico até a primeira tela: S1a, S1b, S1c1, S1c2, depois **S1f'** (só `effective_role`, bloco 7), depois **S1d'** (só `page_drafts`, bloco 3), depois a RLS recortada às tabelas que existirem. O resto da S1d, a S1e e o resto da S1f voltam depois, sem corte de escopo.
+
+A frase anterior desta linha dizia S1a, S1b, S1c1, S1c2, S1d, S1e, S1f, ordem que a `DEC-0015` substituiu sem atualizar este arquivo. Quem lesse o recorte sem ler a decisão aplicava a ordem errada (`DDP-135`).
 
 ## S1c partida em duas (`DDP-122`, `DEC-0015`)
 
