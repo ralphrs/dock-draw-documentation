@@ -12,7 +12,7 @@
 
 ## 1. Decisão
 
-**A Wiki entra sob a mesma fronteira `_authenticated` que já resolve autenticação e layout para o Diagram Studio, com três rotas de arquivo novas (`wiki.$spaceId.index`, `wiki.$spaceId.paginas.$pageId.editar`, `wiki.$spaceId.revisao`) mais uma rota de nível superior (`wiki.index`) para a escolha de espaço, todas herdando `ssr: false` do layout pai. O estado do rascunho vive no cliente entre edições, sincronizado com `page_drafts` por `saveDraft` a cada 2 segundos de inatividade de digitação, com um envio forçado a cada 30 segundos se o rascunho continuar sujo, o mesmo padrão de debounce que o Diagram Studio já usa para posição de nó. `DraftVersionConflictError` reabre o rascunho gravado no servidor com um aviso não bloqueante. `RevisionConflictError` bloqueia a tela de edição com um diálogo modal, porque a publicação mudou sob o rascunho. A tela de edição importa só a fatia `edit` do registro de diretivas e o adaptador do ADR 005, nunca a fatia `read` nem o renderer do ADR 007, reforçado por uma regra de ESLint escopada ao diretório da rota.**
+**A Wiki entra sob a mesma fronteira `_authenticated` que já resolve autenticação e layout para o Diagram Studio, com três rotas de arquivo novas (`wiki.$spaceId.index`, `wiki.$spaceId.paginas.$pageId.editar`, `wiki.$spaceId.revisao`) mais uma rota de nível superior (`wiki.index`) para a escolha de espaço, todas herdando `ssr: false` do layout pai. O estado do rascunho vive no cliente entre edições, sincronizado com `page_drafts` por `saveDraft` a cada 2 segundos de inatividade de digitação, com um envio forçado a cada 30 segundos se o rascunho continuar sujo, o mesmo padrão de debounce que o Diagram Studio já usa para posição de nó. `DraftVersionConflictError` reabre o rascunho gravado no servidor com um aviso não bloqueante. `RevisionConflictError` bloqueia a tela de edição com um diálogo modal, porque a publicação mudou sob o rascunho. A tela de edição importa só a fatia `edit` do registro de diretivas e o adaptador do ADR 005, nunca a fatia `read` nem o renderer do ADR 007, reforçado por uma regra de ESLint escopada ao arquivo da rota.**
 
 Por quê, em uma linha cada:
 
@@ -20,7 +20,7 @@ Por quê, em uma linha cada:
 - **`ssr: false` herdado, sem decisão nova de renderização.** O chunk da rota de edição do ADR 005 pesa 132,88 kB gzip mais 9,09 kB de CSS, e o teste E-07 daquele ADR exige que ele só carregue na própria rota. O `@tanstack/router-plugin` já faz *code splitting* por arquivo de rota, o mesmo mecanismo que isola hoje o chunk de `_authenticated/projetos.$projectId.tsx` do resto do app. Nada precisa ser configurado além de manter o componente do editor dentro do arquivo da rota de edição.
 - **Debounce de 2 s com envio forçado de 30 s, sem biblioteca nova.** `_authenticated/projetos.$projectId.tsx` já debounça `commitNodes` em 400 ms para posição de nó, um payload pequeno e frequente. `saveDraft` grava o texto inteiro da página e roda no servidor sobre ele, então o intervalo é maior para não gerar uma escrita por tecla. O envio forçado de 30 s existe porque um debounce puro nunca dispara enquanto a pessoa digita sem pausa, e um rascunho de 30 s sem chegar ao servidor é perda de trabalho maior do que o produto aceita.
 - **`DraftVersionConflictError` não bloqueia, `RevisionConflictError` bloqueia.** Os dois erros do ADR 003 têm gravidade diferente. Perder a versão local de um rascunho é recuperável recarregando o que está salvo no servidor, porque o rascunho de ninguém além do autor é visível. Publicar uma revisão sobre uma base que já não é a publicada corrompe o histórico se o autor não perceber, então a tela para e obriga uma decisão explícita.
-- **Import restrito à fatia `edit`, com regra de lint.** `src/content-components/edit` é o único registro que a tela de edição precisa, publicado pelo ADR 005. `RevisionView`/`RevisionDiff`, que usam a fatia `read` do ADR 007, entram só na tela de revisão (seção 6.4), nunca na de edição. O mesmo mecanismo que a fatia F0 do ADR 002 já usa (`no-restricted-imports` escopado a um diretório) impede o import por engano, em vez de depender de revisão manual.
+- **Import restrito à fatia `edit`, com regra de lint.** `src/content-components/edit` é o único registro que a tela de edição precisa, publicado pelo ADR 005. `RevisionView`/`RevisionDiff`, que usam a fatia `read` do ADR 007, entram só na tela de revisão (seção 6.4), nunca na de edição. O mesmo mecanismo que a fatia F0 do ADR 002 já usa (`no-restricted-imports` com `patterns`/`group`) impede o import por engano, em vez de depender de revisão manual.
 
 > [!WARNING]
 > Lacuna: nenhum ADR decide como um `content.spaces` é criado. O ADR 003 semeia só `content.workspace_members` (dono do workspace, por trigger) e não publica `createSpace` entre as funções da seção 6.5. A tela de listagem desta camada (seção 6.2) assume que ao menos um espaço já existe no workspace. Dono: ADR 013 (Tenancy) ou uma decisão de produto de auto-criar um espaço padrão por workspace, nenhuma das duas tomada até aqui.
@@ -52,7 +52,7 @@ Do achado que origina este ADR (`decisoes/ACHADO-2026-09-20-shell-da-wiki-sem-do
 | :--- | :--- | :--- | :--- |
 | W-01 | Nenhuma fronteira de autenticação nova, só reuso de `_authenticated` | Duas fronteiras de guarda de sessão é superfície onde uma rota esquecida vaza conteúdo | Toda rota nova desta camada vive em `src/routes/_authenticated/` |
 | W-02 | Nenhuma dependência nova sem que o contrato a nomeie (regra de compatibilidade 4, `insumos/BASE.md`) | Ambiente Lovable, instalação só por registro npm, sem justificar peso extra de bundle | `package.json` sem entrada nova em `dependencies` |
-| W-03 | A tela de edição nunca importa a fatia `read` do registro nem o renderer do ADR 007 (ponto 8 do escopo) | A fatia `read` ainda não existe (ADR 007 não escrito), e misturá-la na edição acopla duas camadas que o ADR 005 já separou | Regra de ESLint escopada ao diretório da rota de edição acusa o import |
+| W-03 | A tela de edição nunca importa a fatia `read` do registro nem o renderer do ADR 007 (ponto 8 do escopo) | A fatia `read` ainda não existe (ADR 007 não escrito), e misturá-la na edição acopla duas camadas que o ADR 005 já separou | Regra de ESLint escopada ao arquivo da rota de edição, com `patterns`/`group`, acusa o import em qualquer forma (direta, relativa ou por alias) |
 | W-04 | Cor só por token CSS, tema claro e escuro pela classe `.dark` (arquitetura base) | Restrição herdada de todos os ADRs anteriores, sem exceção nova aqui | Nenhuma cor hexadecimal nem classe Tailwind de cor literal nos arquivos desta camada |
 
 ### Importantes (peso, 0 a 3 por candidata sobrevivente)
@@ -111,7 +111,16 @@ src/routes/_authenticated/
 
 Todas herdam `ssr: false` e o `beforeLoad` de `_authenticated/route.tsx`, sem `beforeLoad` próprio. `src/components/app-shell.tsx` ganha um `NavItem` para `/wiki`, ao lado de `/projetos`.
 
-`wiki.index.tsx` lista os espaços do workspace (`getSpaceList`, função nova, mesma forma de `getPageTree` mas para `content.spaces`). Com um único espaço, a rota redireciona direto para `/wiki/:spaceId` sem exibir a lista, porque não há escolha real a fazer. Com mais de um, mostra o nome de cada espaço como link, sem ação de criar espaço (ver aviso da seção 1).
+`wiki.index.tsx` lista os espaços do workspace com:
+
+```ts
+// src/content-store/server.ts: extensão aditiva ao ADR 003
+export function getSpaceList(workspaceId: UUID): Promise<Space[]>
+```
+
+`getSpaceList` mora em `src/content-store/server.ts`, o mesmo arquivo de `getPageTree`, porque consulta `content.spaces`, tabela do ADR 003, com a mesma forma de leitura simples por chave estrangeira que `getPageTree` já usa para `content.pages`. Alternativa descartada: um módulo próprio desta camada para consultas de leitura sobre `content.*`. Descartada porque o app já teria dois lugares para "como ler `content.spaces`", um em `content-store` e outro na Wiki, sem ganho, e a fatia G1 (seção 11) já depende de `src/content-store/server.ts` existir no app. Custo aceito: o ADR 003 recebe uma função nova sem ter sido reaberto por completo, registrada na "Verificação de compatibilidade" (seção 7) e no contrato de saída (seção 13) para o `LEDGER.md` acolher em nome dele.
+
+Com um único espaço, a rota redireciona direto para `/wiki/:spaceId` sem exibir a lista, porque não há escolha real a fazer. Com mais de um, mostra o nome de cada espaço como link, sem ação de criar espaço (ver aviso da seção 1).
 
 ### 6.2 Tela de listagem e criação de página (`wiki.$spaceId.index.tsx`)
 
@@ -129,11 +138,21 @@ Estrutura de tela igual ao padrão de `AppShell fullBleed editorMode` que `_auth
 4. **`DraftVersionConflictError`**: o `catch` chama `getDraft` de novo, substitui o estado local pelo texto do servidor e mostra um aviso não bloqueante ("O rascunho foi atualizado a partir de outra aba ou dispositivo"), sem interromper a digitação seguinte.
 5. **`DOK-E` no save**: `validateDok` roda no servidor dentro de `saveDraft` (herdado do ADR 002). Um `DOK-E` bloqueia o save e força o modo fonte, com a lista de diagnósticos visível, o mesmo comportamento que o ADR 005 já decidiu (D-1) para conteúdo inválido.
 6. **Submeter**: um botão "Enviar para revisão" chama `submitRevision({ pageId, authorId })`. Sucesso navega para a fila de revisão do espaço. `RevisionConflictError` abre um diálogo modal bloqueante: "Esta página foi publicada por outra pessoa desde que este rascunho começou", com duas ações, "Recarregar a partir da publicação atual" (descarta o rascunho local e chama `initializeDraftFrom` de novo) ou "Cancelar" (fecha o diálogo, mantém o rascunho, sem submeter).
-7. **Importação restrita**: o arquivo da rota e todo módulo que ele importa direto ficam sob a regra de ESLint da seção 6.7. Nenhum deles referencia `src/content-components/read` nem qualquer export do ADR 007.
+7. **Importação restrita**: o arquivo da rota fica sob a regra de ESLint da seção 6.7, que acusa qualquer forma de import de `src/content-components/read`, direta, relativa ou por alias.
 
 ### 6.4 Tela da fila de revisão (`wiki.$spaceId.revisao.tsx`)
 
-Lista revisões do espaço com `currentStatus` em `submitted`, `in_review`, `changes_requested` ou `approved`, via uma função nova (`listPendingRevisions(spaceId)`, ADR 003/004) que junta `page_revisions` com `revision_current_status` filtrando por `space_id`. A tela usa `getSpaceEditorialPolicy(spaceId)` para saber `publish_role` e `allow_self_approval`, e o papel do usuário atual em `content.effective_role(spaceId, userId)` para habilitar ou não os botões de ação.
+Lista revisões do espaço com:
+
+```ts
+// src/editorial-flow/server.ts: extensão aditiva ao ADR 004
+export function listPendingRevisions(spaceId: UUID): Promise<PageRevision[]>
+// filtra currentStatus em submitted | in_review | changes_requested | approved
+```
+
+`listPendingRevisions` mora em `src/editorial-flow/server.ts`, o mesmo arquivo de `castReviewVote` e `publishRevision`, porque filtra por `PageRevision.currentStatus`, a projeção que o ADR 004 já mantém em `revision_current_status`. Alternativa descartada: as telas se virarem com o que o ADR 003 já publica (`listRevisions(pageId)`, por página) e agregarem por espaço no cliente. Descartada porque `listRevisions` não tem `spaceId` nem filtro de status, e a fila precisaria buscar toda página do espaço primeiro só para depois filtrar status no cliente, uma consulta a mais e uma regra de negócio (quais status entram na fila) reimplementada fora de `editorial-flow`. Custo aceito, o mesmo da função anterior: o ADR 004 recebe uma função nova sem reabertura completa, registrada nas seções 7 e 13 para o `LEDGER.md` acolher em nome dele.
+
+A tela usa `getSpaceEditorialPolicy(spaceId)` para saber `publish_role` e `allow_self_approval`, e o papel do usuário atual em `content.effective_role(spaceId, userId)` para habilitar ou não os botões de ação.
 
 Cada linha mostra `PageRevision.frontmatter.title`, o autor, o status atual e as ações que `isTransitionAllowed(currentStatus, alvo, papelDoUsuário)` libera: "Iniciar revisão" (`submitted` → `in_review`), "Aprovar" (`in_review` → `approved`), "Pedir mudanças" (`in_review` ou `approved` → `changes_requested`), "Rejeitar" (`in_review` → `rejected`), "Publicar" (`approved` → `published`, ou `submitted` → `published` no bypass de `requires_approval = false`, restrito a quem tem `publish_role`). Autoaprovação (revisor = autor) fica desabilitada no botão, não só recusada no servidor, a menos que `allow_self_approval = true`.
 
@@ -158,7 +177,7 @@ Toda a camada roda sob `ssr: false`, herdado. Nenhuma rota desta camada precisa 
 
 ### 6.7 Consumo da fatia `edit` sem arrastar a fatia `read`
 
-`eslint.config.js` ganha um bloco novo, no mesmo padrão que a fatia F0 do ADR 002 já aplica a `src/content-format`:
+`eslint.config.js` ganha um bloco novo, no mesmo padrão que a fatia F0 do ADR 002 já aplica a `src/content-format`, com `patterns`/`group` para pegar import relativo e com alias, não só o nome exato:
 
 ```js
 {
@@ -167,9 +186,9 @@ Toda a camada roda sob `ssr: false`, herdado. Nenhuma rota desta camada precisa 
     "no-restricted-imports": [
       "error",
       {
-        paths: [
+        patterns: [
           {
-            name: "@/content-components/read",
+            group: ["**/content-components/read", "**/content-components/read/**"],
             message: "A tela de edição usa só a fatia edit. A fatia read é do ADR 007, consumida pela tela de revisão.",
           },
         ],
@@ -178,6 +197,10 @@ Toda a camada roda sob `ssr: false`, herdado. Nenhuma rota desta camada precisa 
   },
 }
 ```
+
+`paths` com o nome literal (`"@/content-components/read"`) só barra quem escreve exatamente essa string. `no-restricted-imports` compara o texto do import como está escrito, então `"../../content-components/read"` ou `"@/content-components/read/index"` passariam por `paths` sem acusar nada, e o eliminatório W-03 (seção 3) ficaria sem verificação real. `group` com curinga (`**`) casa qualquer forma de chegar ao mesmo módulo, o mesmo mecanismo que a fatia F0 do ADR 002 já usa para barrar builtin do Node em `src/content-format` (`group: ["node:**"]`).
+
+O `files` deste bloco casa só com o arquivo da rota de edição, e o texto desta ordem restringe a garantia ao mesmo alcance: nesta fatia, a tela de edição vive inteira em `wiki.$spaceId.paginas.$pageId.editar.tsx`, sem módulo próprio adicional, o mesmo padrão que `_authenticated/projetos.$projectId.tsx` já usa para o editor do Diagram Studio (um arquivo de rota grande, sem extrair helper de tela para fora dele). Alternativa descartada: abrir um diretório próprio para os módulos da tela de edição, com a regra escopada a ele em vez de a um arquivo. Descartada porque não há hoje nenhum módulo desta tela além do arquivo da rota para colocar num diretório, e inventar a estrutura antes de precisar dela contraria o restante do desenho desta camada. Custo aceito: se um dia a tela de edição ganhar um módulo auxiliar próprio (por exemplo, um hook de autosave extraído para reuso), esse arquivo não entra sob a regra de ESLint desta seção até o `files` ser estendido para cobri-lo, e a revisão de código é quem barra o import de `read` nesse intervalo.
 
 ## 7. Verificação de compatibilidade
 
@@ -194,6 +217,8 @@ Toda a camada roda sob `ssr: false`, herdado. Nenhuma rota desta camada precisa 
 | ADR 005, `RevisionDiff`/`RevisionView` usam a fatia `read` do ADR 007 | Cumprida | Seção 6.4: só a tela de revisão importa esses componentes |
 | Arquitetura base, cor só por token CSS | Cumprida | Seção 6.5 |
 | Arquitetura base, nenhuma dependência nova sem contrato | Cumprida | Seção 5.1 (B2 eliminada por essa razão) |
+| ADR 003, lista fechada de funções em `src/content-store/server.ts` | Estendida, aditivamente | Seção 6.1: `getSpaceList(workspaceId): Promise<Space[]>` entra no mesmo arquivo, mesma forma de leitura de `getPageTree`. Contrato de saída (seção 13) registra a extensão para o `LEDGER.md` acolher em nome do ADR 003 |
+| ADR 004, lista fechada de funções em `src/editorial-flow/server.ts` | Estendida, aditivamente | Seção 6.4: `listPendingRevisions(spaceId): Promise<PageRevision[]>` entra no mesmo arquivo, filtrando pela projeção que o ADR 004 já mantém. Contrato de saída (seção 13) registra a extensão para o `LEDGER.md` acolher em nome do ADR 004 |
 
 ### Para frente
 
@@ -279,12 +304,15 @@ interfaces_publicadas:
   - nome: "Rotas /wiki, /wiki/:spaceId, /wiki/:spaceId/paginas/:pageId/editar, /wiki/:spaceId/revisao"
     tipo: "rota"
     descricao: "src/routes/_authenticated/wiki.*.tsx, seção 6.1. Todas herdam ssr:false e beforeLoad de _authenticated/route.tsx"
-  - nome: "getSpaceList / listPendingRevisions"
+  - nome: "getSpaceList(workspaceId): Promise<Space[]>"
     tipo: "função"
-    descricao: "Funções novas desta camada, seção 6.1 e 6.4. getSpaceList lista content.spaces do workspace, listPendingRevisions junta page_revisions com revision_current_status por space_id"
+    descricao: "Extensão aditiva ao ADR 003, não interface nova desta camada. Entra em src/content-store/server.ts, seção 6.1. LEDGER.md acolhe esta função na entrada do ADR 003, não numa entrada nova para o 006"
+  - nome: "listPendingRevisions(spaceId): Promise<PageRevision[]>"
+    tipo: "função"
+    descricao: "Extensão aditiva ao ADR 004, não interface nova desta camada. Entra em src/editorial-flow/server.ts, filtra currentStatus em submitted | in_review | changes_requested | approved, seção 6.4. LEDGER.md acolhe esta função na entrada do ADR 004, não numa entrada nova para o 006"
 restricoes_impostas:
   - "Toda rota da Wiki entra sob src/routes/_authenticated/, nunca cria uma segunda fronteira de autenticação"
-  - "A tela de edição e os módulos que ela importa direto nunca referenciam src/content-components/read nem o renderer do ADR 007, verificado por regra de ESLint escopada ao diretório (seção 6.7)"
+  - "O arquivo de rota da tela de edição nunca referencia src/content-components/read nem o renderer do ADR 007, em nenhuma forma de import (direta, relativa ou por alias), verificado por regra de ESLint com patterns/group (seção 6.7). Um módulo auxiliar futuro, fora do arquivo de rota, não está coberto por esta regra até o files do bloco ser estendido para incluí-lo"
   - "Toda escrita de rascunho passa por saveDraft com expectedVersion. DraftVersionConflictError sempre recarrega o rascunho do servidor antes de aceitar nova digitação, nunca é ignorado em silêncio"
   - "Toda submissão passa por submitRevision. RevisionConflictError bloqueia a tela até o autor escolher recarregar a partir da publicação atual ou cancelar, nunca prossegue sem essa escolha"
   - "Cor só por token CSS nas telas desta camada, mesma restrição da arquitetura base"
