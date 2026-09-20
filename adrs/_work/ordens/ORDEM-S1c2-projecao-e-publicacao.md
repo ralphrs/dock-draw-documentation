@@ -69,7 +69,94 @@ Nenhum `GRANT` nesta migração, mesmo motivo das sub-fatias anteriores.
 
 ## Verificação
 
-A seção de verificação é escrita pela sessão A (`DDP-123`).
+Duas metades. O catálogo prova que os objetos nasceram como a ordem escreveu. O teste de comportamento prova o que o catálogo não alcança: que o trigger projeta, que não duplica linha, e que publicar move o ponteiro de `content.pages`.
+
+### 1. Catálogo
+
+Antes de aplicar, confira que a projeção ainda não existe e que não há evento anterior:
+
+```sql
+SELECT to_regclass('content.revision_current_status') AS projecao,
+       (SELECT count(*) FROM content.revision_status_events) AS eventos;
+```
+
+O esperado é `projecao` nula e `eventos` zero. Projeção existente significa migração repetida. Evento existente significa projeção incompleta. Nos dois casos, pare e avise a sessão A.
+
+Depois de aplicar, rode a consulta que `guia-sessoes/bin/confere-execucao.sh --sql` gera a partir deste arquivo, salve a saída e compare:
+
+```
+confere-execucao.sh --compara ORDEM-S1c2-projecao-e-publicacao.md saida.txt
+```
+
+A comparação é de conjunto exato. Divergência em qualquer linha reprova.
+
+### 2. Comportamento
+
+O bloco abaixo monta os dados, afirma, e termina levantando exceção de propósito. A exceção carrega o veredito e desfaz tudo que o bloco escreveu. Nada fica no banco.
+
+```sql
+DO $$
+DECLARE
+  ws uuid; usr uuid; sp uuid; pg uuid; rev uuid;
+  projetado text; conta int; ponteiro uuid; titulo text; veredito text := '';
+BEGIN
+  SELECT id INTO ws FROM public.workspaces LIMIT 1;
+  SELECT id INTO usr FROM auth.users LIMIT 1;
+
+  INSERT INTO content.spaces (workspace_id, name, slug, created_by)
+       VALUES (ws, 'Espaco de teste', 'teste-s1c2', usr) RETURNING id INTO sp;
+  INSERT INTO content.pages (workspace_id, space_id, slug, title, position, created_by)
+       VALUES (ws, sp, 'pagina-teste', 'Titulo antigo', 1, usr) RETURNING id INTO pg;
+  INSERT INTO content.page_revisions
+         (workspace_id, page_id, dok_version, content_dokmd, content_hash, frontmatter, author_id)
+       VALUES (ws, pg, 1, '# oi', 'hash-teste', '{"title":"Titulo novo"}'::jsonb, usr)
+    RETURNING id INTO rev;
+
+  -- a) evento projeta
+  INSERT INTO content.revision_status_events (workspace_id, revision_id, to_status, actor_id)
+       VALUES (ws, rev, 'in_review', usr);
+  SELECT status_code INTO projetado FROM content.revision_current_status WHERE revision_id = rev;
+  IF projetado IS DISTINCT FROM 'in_review' THEN
+    veredito := veredito || 'FALHA a) projecao ausente ou errada: ' || coalesce(projetado,'nula') || '. ';
+  END IF;
+
+  -- b) segundo evento atualiza, nao duplica
+  INSERT INTO content.revision_status_events (workspace_id, revision_id, from_status, to_status, actor_id)
+       VALUES (ws, rev, 'in_review', 'published', usr);
+  SELECT count(*) INTO conta FROM content.revision_current_status WHERE revision_id = rev;
+  SELECT status_code INTO projetado FROM content.revision_current_status WHERE revision_id = rev;
+  IF conta <> 1 OR projetado IS DISTINCT FROM 'published' THEN
+    veredito := veredito || 'FALHA b) linhas=' || conta || ' status=' || coalesce(projetado,'nula') || '. ';
+  END IF;
+
+  -- c) publicar move o ponteiro e o titulo da pagina
+  SELECT published_revision_id, title INTO ponteiro, titulo FROM content.pages WHERE id = pg;
+  IF ponteiro IS DISTINCT FROM rev OR titulo IS DISTINCT FROM 'Titulo novo' THEN
+    veredito := veredito || 'FALHA c) ponteiro=' || coalesce(ponteiro::text,'nulo')
+                || ' titulo=' || coalesce(titulo,'nulo') || '. ';
+  END IF;
+
+  -- d) controle negativo: revisao sem evento nao pode ter projecao
+  INSERT INTO content.page_revisions
+         (workspace_id, page_id, dok_version, content_dokmd, content_hash, frontmatter, author_id)
+       VALUES (ws, pg, 1, '# sem evento', 'hash-controle', '{}'::jsonb, usr)
+    RETURNING id INTO rev;
+  IF EXISTS (SELECT 1 FROM content.revision_current_status WHERE revision_id = rev) THEN
+    veredito := veredito || 'FALHA d) projecao existe sem evento. ';
+  END IF;
+
+  IF veredito = '' THEN veredito := 'PASSOU a, b, c e d'; END IF;
+  RAISE EXCEPTION 'VEREDITO: %', veredito;
+END $$;
+```
+
+A saída esperada é o erro `VEREDITO: PASSOU a, b, c e d`. Qualquer outro texto depois de `VEREDITO:` reprova e diz qual afirmação caiu. Erro que não comece por `VEREDITO:` é falha de montagem do teste, não resultado, e precisa ser resolvido antes de concluir.
+
+A afirmação `d` é o controle negativo: sem ela, `a` a `c` não provariam que foi o trigger que projetou.
+
+### Lacuna declarada
+
+Este roteiro não distingue "o trigger roda na mesma transação do `INSERT`" de "o tratador de exceção desfez o bloco". As duas explicações produzem a mesma saída em SQL. A garantia de que evento e projeção nascem juntos fica apoiada no comportamento documentado do Postgres para trigger `AFTER INSERT` sem `EXCEPTION`, como a seção acima descreve, e não em medição desta ordem.
 
 ## Restrições
 
