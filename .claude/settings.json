@@ -14,6 +14,7 @@
       "Read(~/workspace/000-Pessoal/codebase/dok-draw-app/**)",
       "Edit(adrs/_work/**)",
       "Edit(tasks/**)",
+      "Edit(decisoes/**)",
       "Bash(guia-sessoes/bin/wait-for.sh:*)",
       "Bash(guia-sessoes/bin/move.sh:*)",
       "Bash(guia-sessoes/bin/next-id.sh:*)",
@@ -27,7 +28,6 @@
     "deny": [
       "Edit(insumos/**)",
       "Edit(prompts/**)",
-      "Edit(guia-sessoes/**)",
       "Edit(~/workspace/000-Pessoal/codebase/dok-draw-app/**)",
       "Read(~/workspace/000-Pessoal/codebase/dok-draw-app/.env*)"
     ]

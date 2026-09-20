@@ -36,6 +36,17 @@ tasks/
 └── LOG.md         uma linha por evento, escrita pelos scripts
 ```
 
+A pasta `tasks/` guarda a conversa, não o registro permanente. Decisão que precisa sobreviver à tarefa vai para `decisoes/`, escrita por A (`decisoes/DEC-0002-registro-de-decisoes.md`):
+
+```
+decisoes/
+├── REGISTRO.md              índice cronológico, uma linha por decisão
+├── DEC-NNNN-slug.md         decisão que não é contrato de camada: numeração, sequenciamento, meta, processo, kit
+└── sprints/SPRINT-NN.md     objetivo, tarefas, resultado e pedido de merge de cada sprint
+```
+
+Contrato de arquitetura continua em `adrs/LEDGER.md`, e `decisoes/` não o duplica. B e C registram as decisões dela no "Resultado" da própria tarefa, em uma seção "Decisões tomadas", e A promove o que precisa durar.
+
 ## Nomes de arquivo
 
 | Tipo | Nome | Quem cria | Modelo |
@@ -155,10 +166,11 @@ Cada sessão chama o watcher em ciclo.
 
 | Sessão | Comando de escuta |
 | --- | --- |
-| A | `guia-sessoes/bin/wait-for.sh A 570 tasks/questions:Q-*.md tasks/questions:QD-*.md tasks/done:T-*.md tasks/done:D-*.md` |
-| B | `guia-sessoes/bin/wait-for.sh B 570 tasks/todo:T-*.md tasks/in-progress:A-Q-*.md` |
-| C | `/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/guia-sessoes/bin/wait-for.sh C 570 tasks/todo:D-*.md tasks/in-progress:A-QD-*.md` |
+| A | `guia-sessoes/bin/wait-for.sh A 570 'tasks/questions:Q-*.md' 'tasks/questions:QD-*.md' 'tasks/done:T-*.md' 'tasks/done:D-*.md'` |
+| B | `guia-sessoes/bin/wait-for.sh B 570 'tasks/todo:T-*.md' 'tasks/in-progress:A-Q-*.md'` |
+| C | `/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/guia-sessoes/bin/wait-for.sh C 570 'tasks/todo:D-*.md' 'tasks/in-progress:A-QD-*.md'` |
 
+- **Os padrões vão entre aspas simples.** O shell é zsh, e sem elas ele tenta expandir `T-*.md` antes de chamar o script, não encontra arquivo com a fila vazia e aborta o comando com erro em vez de devolver `TIMEOUT`. Fila vazia é o estado normal de quem espera trabalho (`decisoes/DEC-0003-aspas-no-watcher.md`).
 - Chamar o Bash com timeout de 600000 ms. Se a instalação limitar a 120000 ms, usar 110 no lugar de 570.
 - Saída `NEW <arquivo>`: tratar o arquivo e voltar a escutar. O caminho é relativo à raiz da documentação.
 - Saída `TIMEOUT`: voltar a escutar, sem comentar.

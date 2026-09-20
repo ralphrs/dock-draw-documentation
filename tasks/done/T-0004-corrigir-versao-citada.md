@@ -45,3 +45,9 @@ O arquivo e as linhas citados (`lib/join.js:25-38`, `container-flow.js:74-76`) e
 1. **Versão correta.** ✔ `node -p "require('./adrs/_work/spike-s1/node_modules/mdast-util-to-markdown/package.json').version"` devolve `2.1.2`. Citação corrigida de `mdast-util-to-markdown@9.0.0` para `mdast-util-to-markdown@2.1.2`.
 2. **Varredura completa.** ✔ `grep -rnoE "[a-zA-Z@/_.-]+@[0-9]+\.[0-9]+\.[0-9]+" --include="*.md" .` em `adrs/_work/spike-s1/` (recursivo, exclui `node_modules`) encontrou três citações no total: `zod@3.25.76` em `AMBIENTE.md` (versão do app, já marcada como tal no texto: "zod-app (alias de `zod@3.25.76`)"), `mdast-util-to-markdown@9.0.0` (corrigida) e `mdast-util-from-markdown@2.0.3` em `mdxeditor/RESULTADO.md`. A última conferida contra `node -p "require('./node_modules/mdast-util-from-markdown/package.json').version"`: `2.0.3`, já correta, sem alteração.
 3. **Nenhuma outra alteração.** ✔ `git diff -- adrs/_work/spike-s1/mdxeditor/RESULTADO.md` mostra uma linha removida e uma adicionada, só o número da versão muda.
+
+## Revisão do arquiteto
+
+- **Veredito:** aceita
+- **Motivo:** a correção é a pedida e nada além dela. A evidência é de primeira mão, não de leitura: `node -p "require('.../mdast-util-to-markdown/package.json').version"` devolvendo `2.1.2`, e a varredura por expressão regular encontrando as três citações de versão do `spike-s1/`, cada uma conferida contra o pacote instalado. O `zod@3.25.76` de `AMBIENTE.md` está corretamente mantido, porque cita a versão do app e o texto já diz isso. O critério 3 foi verificado por `git diff`, uma linha trocada.
+- **Tarefas derivadas:** nenhuma

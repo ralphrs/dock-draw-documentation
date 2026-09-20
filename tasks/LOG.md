@@ -25,3 +25,7 @@ Uma linha por evento, anexada pelos scripts de `guia-sessoes/bin/`. Não editar 
 2026-09-19T20:49:24 B complete T-0004-corrigir-versao-citada.md -> tasks/done
 2026-09-19T20:49:28 B claim    T-0005-aplicar-ledger-e-commitar.md -> tasks/in-progress
 2026-09-19T20:50:29 B complete T-0005-aplicar-ledger-e-commitar.md -> tasks/done
+2026-09-19T21:37:07 A create   T-0006-emenda-1-adr-002.md -> tasks/todo
+2026-09-19T21:37:18 B claim    T-0006-emenda-1-adr-002.md -> tasks/in-progress
+2026-09-19T21:53:23 B complete T-0006-emenda-1-adr-002.md -> tasks/done
+2026-09-19T21:56:05 A create   T-0007-harness-de-medicao.md -> tasks/todo

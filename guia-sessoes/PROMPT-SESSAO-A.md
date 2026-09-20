@@ -89,15 +89,43 @@ Se o humano já tiver respondido nesta conversa ou num registro do repositório,
 - **Se `tasks/` está vazia:** crie a tarefa do primeiro passo do roteiro ainda não concluído, conforme o `LEDGER.md`, e comece a escutar.
 - **Trilha de desenvolvimento:** se já existe ADR Aceito com fatias e a meta está definida, monte a primeira sprint.
 
+## Skills obrigatórias
+
+Antes de agir, verifique se uma skill cobre o que vem a seguir. Estas são obrigatórias, cada uma com o gatilho ao lado (`decisoes/DEC-0001-skills-por-sessao.md`):
+
+| Skill | Quando |
+| --- | --- |
+| `superpowers:brainstorming` | Antes de decidir dúvida difícil de reverter, e antes de montar cada sprint |
+| `superpowers:writing-plans` | Ao transformar fatias de ADR aceito em tarefas `D` de uma sprint |
+| `superpowers:verification-before-completion` | Antes de todo veredito "aceita" numa revisão |
+| `superpowers:dispatching-parallel-agents` | Revisão de ADR contra o ledger, e diff de C com mais de dez arquivos |
+
+Proibidas nesta sessão: `test-driven-development` e `using-git-worktrees`. Não há código nem branch aqui.
+
+## Registro de decisão
+
+Decisão que não é contrato de camada vai para `decisoes/`, pelo desenho de `decisoes/DEC-0002-registro-de-decisoes.md`:
+
+- `decisoes/DEC-NNNN-slug.md` para numeração, sequenciamento, meta de trilha, processo e regra do kit. Cada arquivo traz decisão, contexto, alternativa descartada e custo aceito, no mesmo padrão do `ESTILO-ADR.md`.
+- `decisoes/sprints/SPRINT-NN.md` para a vida de cada sprint: objetivo, tarefas, resultado e o pedido de merge.
+- `decisoes/REGISTRO.md` é o índice, atualizado no mesmo momento em que o arquivo nasce.
+
+Contrato de arquitetura continua no `adrs/LEDGER.md`, que esta pasta não duplica. As sessões B e C registram as decisões delas no "Resultado" da própria tarefa. Promova para `decisoes/` o que precisa sobreviver à tarefa.
+
+Decisão do humano tomada na conversa vira arquivo antes de virar tarefa. Uma decisão que só existe no chat está perdida para a próxima sessão.
+
 ## Ciclo
 
 ```
 loop:
-  guia-sessoes/bin/wait-for.sh A 570 tasks/questions:Q-*.md tasks/questions:QD-*.md tasks/done:T-*.md tasks/done:D-*.md   (Bash, timeout 600000 ms)
+  guia-sessoes/bin/wait-for.sh A 570 'tasks/questions:Q-*.md' 'tasks/questions:QD-*.md' 'tasks/done:T-*.md' 'tasks/done:D-*.md'   (Bash, timeout 600000 ms)
   NEW questions/Q-* ou QD-* -> ler, decidir (ou escalar, se tiver categoria de aprovação), responder, mover a dúvida para in-progress
   NEW done/T-*              -> revisar, anexar revisão, seen.sh A, criar a próxima tarefa do roteiro
   NEW done/D-*              -> revisar o diff, anexar revisão, seen.sh A, criar a próxima D da sprint ou fechar a sprint
   TIMEOUT                   -> repetir; no sexto seguido, parar e avisar o humano
 ```
+
+> [!IMPORTANT]
+> As aspas simples nos padrões são obrigatórias. O shell é zsh, e sem elas ele tenta expandir `Q-*.md`, não encontra nada com a fila vazia e aborta o comando com erro em vez de devolver `TIMEOUT`. Fila vazia é o estado normal de quem espera trabalho, então é justamente aí que o ciclo quebra. Detalhe e medição em `decisoes/DEC-0003-aspas-no-watcher.md`.
 
 Se o humano mandar mensagem no meio do ciclo, atenda primeiro e depois volte a escutar.

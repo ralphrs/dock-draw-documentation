@@ -11,6 +11,7 @@ Seja direto: proposta primeiro, justificativa depois. Discorde quando eu estiver
 | `prompts/` | `PROMPT-ADR-NNN.md`: a pergunta de cada ADR | Só eu. Não edite |
 | `adrs/` | ADRs gerados (`ADR-NNN-slug.md`) e `LEDGER.md` | Você, com minha aprovação |
 | `adrs/_work/` | Escopo aprovado, fichas de pesquisa por candidata, rascunhos | Você, livremente |
+| `decisoes/` | Decisão que não é contrato de camada: numeração, sequenciamento, meta de trilha, processo, regra do kit. Mais `sprints/` e o índice `REGISTRO.md` | A sessão A. B registra no "Resultado" da tarefa e A promove |
 | `guia-sessoes/` | Protocolo entre a sessão A (arquiteto) e a sessão B (executor), modelos e scripts | Só eu. Não edite |
 | `tasks/` | Tarefas, dúvidas e respostas trocadas entre as sessões A, B e C | As sessões, pelos scripts de `guia-sessoes/bin/` |
 | `/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app` | Projeto do app Lovable (`dok-draw-app`), fonte de verdade da arquitetura base | A e B: só leitura. C: desenvolvimento em branch `dev/D-*` |
@@ -37,6 +38,15 @@ O app Lovable fica em `/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/
 
 ## Superpowers
 
-ADRs são documentos, não código: use as skills de brainstorming, despacho de agentes em paralelo e verificação antes de concluir. Não use TDD nem worktrees aqui. Specs e planos das skills vão para `adrs/_work/`. Não faça commit sozinho.
+ADRs são documentos, não código. O mapa de skills obrigatórias por sessão, com o gatilho de cada uma, está em `decisoes/DEC-0001-skills-por-sessao.md`. Para a sessão B, resumindo:
+
+| Skill | Quando |
+| --- | --- |
+| `superpowers:brainstorming` | Etapa de escopo de cada ADR, antes de propor candidata |
+| `superpowers:systematic-debugging` | Spike que falha. A causa vai para o ADR medida, nunca estimada |
+| `superpowers:dispatching-parallel-agents` | Fichas de pesquisa por candidata, avaliação de mais de duas bibliotecas |
+| `superpowers:verification-before-completion` | Antes de anexar "Resultado" |
+
+Não use TDD, worktrees nem `finishing-a-development-branch` aqui. Specs e planos das skills vão para `adrs/_work/`. Não faça commit sozinho.
 
 @insumos/ORDEM.md

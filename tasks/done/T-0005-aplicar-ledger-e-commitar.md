@@ -101,3 +101,15 @@ $ git push origin main
 ### Achado fora do escopo original, corrigido antes desta tarefa
 
 `T-0004` (em `tasks/done/`) corrigiu uma versão citada errada em `mdxeditor/RESULTADO.md` (`mdast-util-to-markdown@9.0.0` para `@2.1.2`), achada na revisão de `T-0002`. Não muda nada nesta tarefa além de já deixar o artefato correto antes do commit.
+
+## Revisão do arquiteto
+
+- **Veredito:** aceita
+- **Motivo:** os seis critérios foram conferidos de novo pelo arquiteto, por medição e não por leitura do relato.
+  - Ajuste 1: `status: "Aceito"` nos cinco blocos YAML de `adrs/LEDGER.md` (001 a 005), e o cabeçalho do ADR 005 acompanha.
+  - Ajuste 2: `riscos_abertos` do ADR 002 traz os dois itens novos, o W103 falso e o corpus sem `list.spread = true`, este com a fatia F5 do ADR 002 nomeada como dona.
+  - Ajuste 3: comparação byte a byte independente entre o bloco `adr: "005"` do arquivo do ADR e o do ledger, por extração de `` ```yaml `` nos dois arquivos: idênticos.
+  - As 11 mudanças: "Propostos vinculantes" sem bloco de ADR, "Numeração oficial" coerente com `insumos/ORDEM.md`, C-4 e C-5 fora da tabela de conflitos, C-6 com a parte do diff visual resolvida e o resto preservado, C-1, C-2, C-3 e C-7 intactos.
+  - Commits: `01b3e53`, `3f4e52e` e `61c45b4` na `main`, árvore limpa, sem linha de atribuição a ferramenta em nenhum deles.
+- **Escopo da aprovação:** `A-Q-0002` (`aprovado_por: humano`) cobre o ledger, o aceite dos ADRs 002 a 005 e os commits da etapa. Nada foi executado fora dela. O terceiro commit (`61c45b4`), que registra a evidência dentro da própria tarefa, é parte do commit da etapa autorizado, não uma ação nova.
+- **Tarefas derivadas:** nenhuma. A trilha de ADR segue para a Emenda 1 ao ADR 002, segundo passo do roteiro de `guia-sessoes/PROMPT-SESSAO-A.md`.

@@ -4,7 +4,7 @@
 
 | Sessão | Abre em | Escreve em |
 | --- | --- | --- |
-| A (arquiteto e scrum master) | `/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation` | `tasks/` |
+| A (arquiteto e scrum master) | `/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation` | `tasks/`, `decisoes/` |
 | B (executor de ADR) | `/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation` | `adrs/_work/`, `tasks/` |
 | C (desenvolvedora) | `/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app` | código do app em branch `dev/D-*`, e `/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/tasks/` |
 
@@ -12,7 +12,9 @@ A pasta `tasks/` é única e fica na documentação. É por ela que as três ses
 
 ## 2. Permissões
 
-**Documentação** (`.claude/settings.json`, usado por A e B): só regras `Edit(...)` (as `Write(...)` foram descontinuadas pelo Claude Code). Liberado: `Edit(adrs/_work/**)`, `Edit(tasks/**)`, os scripts de `guia-sessoes/bin/` e leitura do app, incluindo `git diff`, `log`, `show` e `status` no app para A revisar as branches de C. Bloqueado: `insumos/`, `prompts/`, `guia-sessoes/` e `.env*` do app.
+**Documentação** (`.claude/settings.json`, usado por A e B): só regras `Edit(...)` (as `Write(...)` foram descontinuadas pelo Claude Code). Liberado: `Edit(adrs/_work/**)`, `Edit(tasks/**)`, `Edit(decisoes/**)`, os scripts de `guia-sessoes/bin/` e leitura do app, incluindo `git diff`, `log`, `show` e `status` no app para A revisar as branches de C. Bloqueado: `insumos/`, `prompts/` e `.env*` do app.
+
+`guia-sessoes/` não está nem liberado nem bloqueado: toda edição no kit pede confirmação no momento. A e B compartilham este arquivo, então não há como separá-las por permissão. A confirmação existe para que uma edição de B no kit apareça na tela em vez de passar em silêncio. A mesma limitação vale para `decisoes/`, que é de A por regra escrita no `PROMPT-SESSAO-B.md`, não por permissão.
 
 **App** (`.claude/settings.local.json` dentro de `dok-draw-app`, usado por C):
 - inclui a documentação em `additionalDirectories`, com leitura liberada e escrita só em `tasks/`;

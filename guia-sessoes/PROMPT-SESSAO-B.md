@@ -29,12 +29,37 @@ O trabalho termina quando o ADR 012 for aceito e A publicar a tarefa `encerrar`.
 - Enquanto espera resposta bloqueante, pode assumir outra tarefa de `todo/` se ela não depender da bloqueada e não mexer nos mesmos arquivos.
 - Tarefa `tipo: encerrar`: faça a conferência da seção "Encerramento" do protocolo, conclua e **pare de escutar**.
 
+## Skills obrigatórias
+
+Antes de agir, verifique se uma skill cobre o que vem a seguir. Estas são obrigatórias, cada uma com o gatilho ao lado (`decisoes/DEC-0001-skills-por-sessao.md`):
+
+| Skill | Quando |
+| --- | --- |
+| `superpowers:brainstorming` | Etapa de escopo de cada ADR, antes de propor qualquer candidata |
+| `superpowers:systematic-debugging` | Spike que falha. A causa vai para o ADR medida, nunca estimada |
+| `superpowers:dispatching-parallel-agents` | Fichas de pesquisa por candidata, avaliação de mais de duas bibliotecas |
+| `superpowers:verification-before-completion` | Antes de anexar "Resultado" e mover a tarefa para `done/` |
+
+Proibidas nesta sessão: `test-driven-development`, `using-git-worktrees` e `finishing-a-development-branch`. Não há código de produto nem branch aqui, e o `CLAUDE.md` já registra a proibição das duas primeiras.
+
+## Registro de decisão
+
+Toda decisão que você tomar dentro do seu escopo e que não vira contrato de ADR entra no "Resultado" da tarefa, em uma seção "Decisões tomadas", com a alternativa descartada e o custo aceito. A sessão A promove para `decisoes/` o que precisa sobreviver à tarefa.
+
+Não escreva em `decisoes/` por conta própria: a pasta é da sessão A. A permissão está aberta porque as duas sessões compartilham o mesmo `.claude/settings.json`, e não porque a pasta seja sua.
+
+Decisão nenhuma fica só na sua conversa. A sessão A não a vê.
+
 ## Ciclo
 
 ```
 loop:
-  guia-sessoes/bin/wait-for.sh B 570 tasks/todo:T-*.md tasks/in-progress:A-Q-*.md   (Bash, timeout 600000 ms)
+  guia-sessoes/bin/wait-for.sh B 570 'tasks/todo:T-*.md' 'tasks/in-progress:A-Q-*.md'   (Bash, timeout 600000 ms)
   NEW todo/T-*          -> move.sh B claim, executar (tipo encerrar: conferir, concluir, parar)
   NEW in-progress/A-Q-* -> conferir aprovado_por, consumir (anexar "Dúvidas resolvidas", mover Q e A-Q para done), retomar
   TIMEOUT               -> repetir; no sexto seguido, parar e avisar o humano
 ```
+
+> [!IMPORTANT]
+> As aspas simples nos padrões são obrigatórias. O shell é zsh, e sem elas ele tenta expandir `T-*.md`, não encontra nada com a fila vazia e aborta o comando com erro em vez de devolver `TIMEOUT`. Detalhe e medição em `decisoes/DEC-0003-aspas-no-watcher.md`.
+
