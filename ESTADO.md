@@ -1,9 +1,9 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 02:42
+**Atualizado em:** 2026-09-20, 02:50
 **Mantido por:** sessão A (arquiteto e scrum master)
 
-Painel vivo. A sessão A atualiza a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
+Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
 
 ---
 
@@ -127,7 +127,7 @@ A fatia F0 é maior do que a seção 11 do ADR 002 previa, porque o critério de
 | Sessão | Papel | Agora |
 | :--- | :--- | :--- |
 | **A** | Arquiteto principal, gerente de projeto, scrum master | Aplicou a Emenda 1 ao ledger e abriu `DDP-9`. O ADR 013 espera a F1 sair, para a trilha de desenvolvimento não ficar atrás de novo |
-| **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Entregou `DDP-1`, `DDP-2` e `DDP-7`, as três aceitas. Tem `DDP-9`, a ordem da fatia F1 |
+| **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Entregou `DDP-1`, `DDP-2` e `DDP-7`, as três aceitas. Tem `DDP-9` (ordem da F1) e `DDP-10` (estimar as fatias do ADR 005) |
 | **C** | Especialista em arquitetura, UX e UI, revisora | Revisou o resultado da F0 (`DDP-5`, aceita). Sem issue aberta |
 | **Lovable** | Implementador. Executa ordem, não decide | Lê o quadro `DDP` direto, desde 2026-09-20. Canal verificado em `DDP-6` |
 
@@ -147,7 +147,9 @@ Protocolo em `guia-sessoes/PROTOCOLO.md`. Decisões em `decisoes/REGISTRO.md`. A
 
 ## 6. Riscos que eu estou observando
 
-**O processo cresceu mais rápido que o produto.** Em 2026-09-19 foram criados o kit de sessões, o mapa de skills, o registro de decisões, os papéis novos e o knowledge do Lovable. O `src/` do app não ganhou uma linha. A sprint 1 é a correção disso, e nenhuma peça de processo nova entra até ela entregar. Em 2026-09-20 o protocolo mudou duas vezes mesmo assim, e as duas precisam de justificativa para não virarem exceção de conveniência: a regra de escopo de commit conserta um defeito que corrompeu evidência de spike, e o canal do Lovable mudou porque o humano ligou o conector do Jira lá. Nenhuma das duas é processo inventado por antecipação.
+**O processo cresceu mais rápido que o produto, e a regra que impedia isso foi quebrada quatro vezes.** A contagem e o teste que passa a valer estão na seção 4 do `PLANO.md`: mudança de processo só entra se alguém estiver parado esperando por ela.
+
+**O original, de 2026-09-19.** Em 2026-09-19 foram criados o kit de sessões, o mapa de skills, o registro de decisões, os papéis novos e o knowledge do Lovable. O `src/` do app não ganhou uma linha. A sprint 1 é a correção disso, e nenhuma peça de processo nova entra até ela entregar. Em 2026-09-20 o protocolo mudou duas vezes mesmo assim, e as duas precisam de justificativa para não virarem exceção de conveniência: a regra de escopo de commit conserta um defeito que corrompeu evidência de spike, e o canal do Lovable mudou porque o humano ligou o conector do Jira lá. Nenhuma das duas é processo inventado por antecipação.
 
 **O argumento de um número de contrato já caiu uma vez.** A medição de desempenho da Emenda 1 não se reproduziu quando o instrumento foi reentregue. Isso foi apanhado porque a revisão exigiu o harness de volta. Todo número que vira contrato precisa do instrumento junto.
 
