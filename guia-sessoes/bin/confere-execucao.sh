@@ -110,7 +110,15 @@ def restricao(tipo_, tabela, colunas):
     esperado.append("%s|%s|%s" % (tipo_, tabela.lower(),
                                   ",".join(c.strip().lower() for c in colunas)))
 
+criadas = []
+
 for tabela, corpo in re.findall(r"CREATE\s+TABLE\s+([\w.]+)\s*\((.*?)\n\s*\)\s*;", ddl, re.S | re.I):
+    criadas.append(tabela.lower())
+    # O comentário sai ANTES de separar por vírgula. Medido em 2026-09-20 na
+    # conferência da S1c1: o comentário "-- cache de leitura, sempre derivável"
+    # tem vírgula de topo, o separador partia a linha dentro dele, e o resto do
+    # comentário virava uma coluna inventada chamada "pode".
+    corpo = re.sub(r"--.*$", "", corpo, flags=re.M)
     # Quebra por vírgula de topo: vírgula dentro de parêntese pertence a um
     # CHECK ou a uma lista de colunas, não separa definição.
     partes, nivel, atual = [], 0, ""
@@ -126,7 +134,7 @@ for tabela, corpo in re.findall(r"CREATE\s+TABLE\s+([\w.]+)\s*\((.*?)\n\s*\)\s*;
     partes.append(atual)
 
     for parte in partes:
-        linha = re.sub(r"--.*$", "", parte, flags=re.M).strip()
+        linha = parte.strip()
         if not linha:
             continue
         if RESTRICAO.match(linha):
@@ -267,8 +275,14 @@ EXATOS = {"coluna", "pk", "fk", "check", "unique", "unique_nnd", "indice", "trig
 esperado_exato = {l for l in esperado if l.split("|")[0] in EXATOS}
 esperado_nomes = {l for l in esperado if l.split("|")[0] == "constraint"}
 
+# Tabela que a ordem só altera entra na comparação apenas pelo que a ordem
+# diz dela. A S1c1 faz ALTER TABLE content.pages para fechar uma constraint, e
+# não descreve as colunas dessa tabela: cobrá-las acusaria o sistema correto,
+# que é a falha que este projeto persegue desde a primeira conferência.
 real_exato = {l for l in real
-              if l.split("|")[0] in EXATOS and l.split("|")[1] in tabelas}
+              if l.split("|")[0] in EXATOS
+              and (l.split("|")[1] in criadas
+                   or l in esperado_exato)}
 real_nomes = {l for l in real if l.split("|")[0] == "constraint"}
 
 faltam = sorted((esperado_exato - real_exato) | (esperado_nomes - real_nomes))
