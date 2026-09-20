@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 08:10
+**Atualizado em:** 2026-09-20, 09:05
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -123,6 +123,14 @@ Fora da meta: busca, export, sync, publicação pública, navegação. E a rende
 | 5 | ADR 002 F4: pipeline de save | **Ordem aprovada na primeira passada** (`DDP-90`), a primeira do projeto que não voltou. Publicada em `DDP-92`, blocos de código conferidos íntegros. Espera o sim de crédito (`DDP-93`) |
 
 A fatia F0 é maior do que a seção 11 do ADR 002 previa, porque o critério de pronto da F1 são as 30 fixtures rodando, e não há onde rodá-las.
+
+### Sprint 2 — Armazenamento, adiantada durante a espera
+
+A sprint 1 está parada esperando duas respostas do dono do produto, e as sessões B e C ficariam ociosas. O recorte da primeira fatia do ADR 003 começou (`DDP-94`), porque não depende de nada da sprint 1 e a execução é gated de qualquer forma.
+
+**A fatia S1 não cabe numa ordem.** Os blocos SQL do ADR 003 somam 15.313 caracteres, só de DDL, contra um teto de 10.000 para a ordem inteira. Ela precisa ser recortada em sub-fatias antes de virar ordem, cada uma aplicável sozinha e deixando o schema consistente.
+
+**É a primeira fatia do projeto que toca banco.** Três coisas mudam: migração é categoria `app-release` e exige aprovação separada da de crédito; desfazer não é `git revert`, porque reverter o arquivo não desfaz o que foi aplicado; e o mecanismo tem formato próprio, `supabase/migrations/` com carimbo de tempo.
 
 ---
 
