@@ -2,6 +2,8 @@
 
 Segunda sub-fatia de S1 do ADR 003 (seção 6.2), recortada em `adrs/_work/RECORTE-S1-ADR-003.md`. Cria `content.spaces`, `content.space_members` e `content.pages`, o bloco 1 do DDL. Depende da S1a (`content.workspace_members`, já aplicada e aceita em `DDP-103`) e de `public.workspaces`, pré-existente.
 
+**Emendada em `DDP-113`**, a partir da resposta do dono do produto em `DDP-110`: `content.pages` ganha `project_id` (hierarquia de quatro níveis: tenant, espaço, projeto, wiki e diagramas por projeto) e a constraint de unicidade passa a `NULLS NOT DISTINCT`. `content.spaces` e `content.space_members` não mudam.
+
 ## Como aplicar esta migração
 
 A plataforma grava a migração pela ferramenta própria dela, com journal em `drizzle/migrations/` (`DEC-0013`). Não crie arquivo em `supabase/migrations/`: a S1a tentou esse caminho e a plataforma recusou. Gere a migração pela ferramenta da plataforma e deixe que ela escolha onde grava.
@@ -15,12 +17,21 @@ A plataforma grava a migração pela ferramenta própria dela, com journal em `d
 | Restrição (`LEDGER.md`, ADR 003) | Como se confere |
 | :--- | :--- |
 | "A identidade de página é id (uuid); slug é só cosmético e nunca aparece em `dok:page/<uuid>`" | Primeira metade, coberta: `content.pages.id` é `uuid primary key default gen_random_uuid()`, `slug` é coluna separada, fora da chave primária. Consulta a `information_schema` no passo 2 confirma. Segunda metade, sem mecanismo nesta fatia: "nunca aparece em `dok:page/<uuid>`" é sobre o formato de referência do DokMD, camada de `src/content-format`, que este DDL de schema não constrói nem viola. Lacuna declarada, não coberta por este passo |
+| "Tudo tem que ser único, como no Confluence" (decisão do dono do produto, `DDP-110`) | `UNIQUE NULLS NOT DISTINCT (space_id, project_id, parent_page_id, slug)` em `content.pages`: nulo passa a contar como valor comparável na constraint, então duas páginas de raiz do mesmo espaço (mesmos `project_id` e `parent_page_id` nulos) não podem repetir slug. Passo 2 insere duas e mostra a segunda recusada |
 
 Esta sub-fatia não faz RLS (S2), não faz server function (S3). As restrições de `page_revisions` (imutabilidade, status como evento) e a de seed automático de `workspace_members` já estão cobertas: a primeira entra na ordem de S1c, a segunda foi construída e verificada pela S1a.
 
 ### `published_revision_id` sem chave estrangeira, de propósito
 
 `content.pages.published_revision_id` nasce como `uuid` solto, sem `references`. A dependência é circular: a FK só pode existir depois de `content.page_revisions`, que é a S1c. O próprio ADR 003 resolve assim (seção 6.2, comentário no bloco 1: "FK adicionada após criar page_revisions"). Não é lacuna desta ordem, é uma constraint adiada de propósito. A S1c adiciona `alter table content.pages add constraint pages_published_revision_fk foreign key (published_revision_id) references content.page_revisions(id)` como primeiro passo dela.
+
+### `project_id` sem chave estrangeira, pela mesma doutrina que `page_refs.target_id` já segue
+
+`content.pages.project_id` nasce como `uuid` solto, sem `references`. `public.projects` pertence ao ADR 001, e o próprio ADR 003 já decidiu, na seção 6.6, que `page_refs.target_id` não ganha FK para `public.projects` pelo mesmo motivo: FK direta acoplaria este ADR ao schema de outro. `project_id` segue a doutrina já registrada, não uma exceção nova: a garantia de integridade é por disciplina de aplicação, não por constraint de banco.
+
+### `project_id` nulo quando a página é do espaço, não de um projeto
+
+Um espaço pode ter página própria, fora de qualquer projeto, do jeito que um espaço do Confluence tem. Coluna obrigatória proibiria isso e forçaria inventar um projeto só para a página existir. `project_id` fica nulo nesse caso, e é por isso que o `UNIQUE NULLS NOT DISTINCT` cobre esse nulo junto ao de `parent_page_id`: sem a cláusula, duas páginas de raiz de projeto (ambas as colunas nulas) driblariam a unicidade, e esse é o caso mais comum de todos.
 
 ## 1. Criar a migração
 
@@ -49,6 +60,7 @@ CREATE TABLE content.pages (
   id                     uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   workspace_id           uuid NOT NULL REFERENCES public.workspaces(id) ON DELETE CASCADE,
   space_id               uuid NOT NULL REFERENCES content.spaces(id) ON DELETE CASCADE,
+  project_id             uuid, -- sem FK: public.projects pertence ao ADR 001
   parent_page_id         uuid REFERENCES content.pages(id) ON DELETE CASCADE,
   slug                   text NOT NULL,
   title                  text NOT NULL DEFAULT 'Sem título', -- cache; fonte de verdade é frontmatter.title da revisão publicada
@@ -58,7 +70,7 @@ CREATE TABLE content.pages (
   created_at             timestamptz NOT NULL DEFAULT now(),
   updated_at             timestamptz NOT NULL DEFAULT now(),
   deleted_at             timestamptz,
-  UNIQUE (space_id, parent_page_id, slug)
+  UNIQUE NULLS NOT DISTINCT (space_id, project_id, parent_page_id, slug)
 );
 ```
 
@@ -101,6 +113,18 @@ SELECT p.id, p.slug, p.published_revision_id
  WHERE w.name = 'teste-s1b';
 -- esperado: uma linha; id é um uuid gerado; published_revision_id é null
 
+-- 3. duas páginas de raiz do mesmo espaço não podem repetir slug
+SAVEPOINT slug_duplicado;
+
+INSERT INTO content.pages (workspace_id, space_id, slug, created_by)
+  SELECT w.id, s.id, 'pagina-teste', '<mesmo user_id>'
+    FROM public.workspaces w
+    JOIN content.spaces s ON s.workspace_id = w.id
+   WHERE w.name = 'teste-s1b';
+-- esperado: erro, unique_violation
+
+ROLLBACK TO SAVEPOINT slug_duplicado;
+
 ROLLBACK;
 ```
 
@@ -108,6 +132,7 @@ ROLLBACK;
 
 - A migração falha no meio: nada foi commitado (transação única). Ler o erro, corrigir o arquivo, rodar de novo o mesmo arquivo.
 - `INSERT INTO content.spaces` ou `content.pages` falha por FK: confira se `public.workspaces` de teste foi criado antes, e se o `user_id` usado existe de fato em `auth.users`.
+- O `INSERT` do passo 3 **não** falha: a constraint não está com `NULLS NOT DISTINCT`, ou não inclui as quatro colunas. Pare e devolva a saída, não force outro jeito de provar unicidade.
 - Qualquer erro de permissão (`GRANT`): pare e abra dúvida, essa é uma decisão que não cabe a quem executa.
 
 ## Restrições
@@ -115,7 +140,8 @@ ROLLBACK;
 - Só este SQL. Não crie `page_revisions`, `revision_statuses`, `revision_status_events`, `revision_current_status`, `page_drafts`, `page_refs`, `assets` nem `sync_state`: são de S1c em diante.
 - Não recrie `content.workspace_members` nem o schema `content`: já existem (S1a).
 - Não aplique a migração sem aprovação humana explícita (`app-release`).
-- Não adicione a FK de `published_revision_id` nesta sub-fatia.
+- Não adicione a FK de `published_revision_id` nem de `project_id` nesta sub-fatia.
+- Não crie nem edite nada em `public.projects` (ADR 001): fica fora desta ordem.
 - Não escreva RLS, nem policy, nem server function.
 - Nenhum contrato do ledger muda.
 - Não toque `.env*`.
