@@ -4,9 +4,10 @@ Três sessões do Claude Code trabalham juntas e se comunicam só por arquivos e
 
 | Sessão | Papel | Roda em | Referência |
 | --- | --- | --- | --- |
-| **A** | Arquiteto e scrum master. Conduz o roteiro dos ADRs, transforma fatias de ADRs aceitos em tarefas de desenvolvimento, decide dúvidas técnicas, revisa entregas, escala ao humano só as categorias de aprovação | `dok-draw-documentation/` | `insumos/HANDOFF-ARQUITETURA.md`, `guia-sessoes/PROMPT-SESSAO-A.md` |
-| **B** | Executor de ADR. Roda o `/adr`, spikes e pesquisa | `dok-draw-documentation/` | `CLAUDE.md`, `.claude/commands/adr.md`, `guia-sessoes/PROMPT-SESSAO-B.md` |
-| **C** | Desenvolvedor. Implementa no app as tarefas de desenvolvimento, em branch, seguindo os ADRs | `dok-draw-app/` | `guia-sessoes/PROMPT-SESSAO-C.md` |
+| **A** | Arquiteto principal, gerente de projeto e scrum master. Conduz o roteiro dos ADRs, transforma fatias em tarefas, opera o Lovable, decide dúvidas técnicas, escala ao humano só as categorias de aprovação | `dok-draw-documentation/` | `insumos/HANDOFF-ARQUITETURA.md`, `guia-sessoes/PROMPT-SESSAO-A.md` |
+| **B** | Arquiteto especialista que escreve. Produz os ADRs pelo `/adr`, os spikes, a pesquisa e as ordens de implementação | `dok-draw-documentation/` | `CLAUDE.md`, `.claude/commands/adr.md`, `guia-sessoes/PROMPT-SESSAO-B.md` |
+| **C** | Especialista em arquitetura, revisora. Aprova a ordem antes de rodar e o resultado depois, contra os contratos. Não escreve código de produto | `dok-draw-app/` | `guia-sessoes/PROMPT-SESSAO-C.md` |
+| **Lovable** | Implementador. Executa a ordem que A envia pelo MCP. Não decide nada | nuvem, commita na `main` | `decisoes/DEC-0007-lovable-como-implementador.md` |
 
 Caminhos:
 
@@ -129,14 +130,27 @@ Uma resposta errada não se edita: A escreve uma tarefa nova ou quem perguntou f
 
 "Refazer" nunca reabre o arquivo. Vira tarefa nova que cita a anterior.
 
-## Desenvolvimento no app (sessão C)
+## Desenvolvimento no app (Lovable executa, C revisa)
 
-- **Só se implementa o que está decidido.** A cria tarefa `D` apenas para fatias de ADR com status **Aceito** no `LEDGER.md`, ou para trabalho de infraestrutura que não depende de ADR. Fatia de ADR Proposto espera.
-- **Uma tarefa, uma branch.** C cria `dev/D-NNNN-slug` a partir da `main` atualizada, faz commits nela e nunca commita na `main`.
-- **Pronto é verificável.** Toda tarefa `D` termina com build, typecheck e testes rodando, com a saída real anexada ao "Resultado", e com o nome da branch e a lista de commits.
-- **Revisão por A.** A lê o diff (`git -C <app> diff main...dev/D-NNNN-slug`) e confere contra os contratos do ledger e as regras do `CLAUDE.md` da documentação.
-- **Merge só com aprovação.** Branch aceita na revisão entra na `main` só com `app-release`. A junta as branches aceitas de uma sprint numa única pergunta ao humano.
-- **Sprint.** A agrupa as tarefas `D` em sprints curtas (de 3 a 6 tarefas). No fim de cada sprint, manda ao humano um resumo: o que foi aceito, o que pede merge, o que vem a seguir.
+- **Só se implementa o que está decidido.** A cria tarefa apenas para fatias de ADR com status **Aceito** no `LEDGER.md`, ou para trabalho de infraestrutura que não depende de ADR. Fatia de ADR Proposto espera.
+- **Quem escreve código é o Lovable.** A sessão C não implementa. O agente do Lovable recebe uma ordem por `send_message`, escrita por B a partir do contrato da fatia e revisada por C antes de rodar.
+- **O Lovable commita na `main`.** Não há branch. O commit atualiza o preview do projeto e **não** altera a produção: publicar é a ação separada `deploy_project`, categoria `app-release`, que só acontece com o sim do humano.
+- **A revisão acontece duas vezes, e a primeira é a que paga.** `tipo: revisar-ordem` roda antes de qualquer código existir e pergunta se sobra decisão para quem executa. `tipo: revisar-resultado` roda depois, contra o diff, o build e o preview. Erro apanhado na primeira custa uma leitura, na segunda custa crédito, tempo e um revert na `main`.
+- **Pronto é verificável, e a evidência é de C.** O Lovable não entrega saída de build, de typecheck nem de teste. C roda no repositório local depois do `git pull` e anexa a saída real ao "Resultado".
+- **Desfazer é `git revert`.** Sem branch, não há o que descartar. Revert na `main` é ação de A, depois de falar com o humano, porque a `main` alimenta o Lovable.
+- **Crédito é do humano.** `send_message` consome crédito do workspace. A pede autorização a cada envio.
+- **Sprint.** A agrupa as fatias em sprints curtas (de 3 a 6). No fim de cada uma, manda ao humano o resumo: o que foi aceito, o que pede `deploy_project`, o que vem a seguir.
+
+Ciclo de uma fatia:
+
+```
+1. A abre T para B       ->  B escreve a ordem derivada do contrato da fatia
+2. A abre D para C       ->  tipo: revisar-ordem. Ambiguidade vira correção antes de custar crédito
+3. A pede o sim humano   ->  send_message consome crédito do workspace
+4. A envia ao Lovable    ->  commit na main, preview atualiza, produção intacta
+5. A abre D para C       ->  tipo: revisar-resultado. Diff, build, typecheck, preview
+6. A pede app-release    ->  deploy_project só com o sim do humano
+```
 
 ## Quem decide
 
