@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 11:20
+**Atualizado em:** 2026-09-20, 11:30
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -144,9 +144,9 @@ A sprint 1 está parada esperando duas respostas do dono do produto, e as sessõ
 
 | Sessão | Papel | Agora |
 | :--- | :--- | :--- |
-| **A** | Arquiteto principal, gerente de projeto, scrum master | Revisou o ADR 006 e a ordem da F1. Decidiu não emendar o ledger para acomodar a sequência de diagnósticos, e inverter o código em vez disso |
-| **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Sete entregas aceitas, as últimas `DDP-59` e `DDP-58`. Tem `DDP-63` (parse único na ordem da F1) e `DDP-64` (correções do ADR 006) |
-| **C** | Especialista em arquitetura, UX e UI, revisora | Duas revisões de ordem entregues, as quatro conclusões confirmadas. A segunda mediu o parse triplo no harness do spike e derrubou um argumento da sessão A. Sem tarefa aberta até a ordem voltar |
+| **A** | Arquiteto principal, gerente de projeto, scrum master | Fechou a sprint 1 e a primeira migração. Aplicou `DEC-0012` e `DEC-0013` |
+| **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Escrevendo a ordem da sub-fatia S1b (`DDP-109`), a segunda das seis do schema |
+| **C** | Especialista em arquitetura, UX e UI, revisora | Sem tarefa aberta. Fechou a sprint 1 e a primeira migração, esta última devolvendo a falta de evidência em vez de um veredito |
 | **Lovable** | Implementador. Executa ordem, não decide | Lê o quadro `DDP` direto, desde 2026-09-20. Canal verificado em `DDP-6` |
 
 O quadro `DDP` guarda o backlog inteiro desde 2026-09-20: 34 issues de estoque com o rótulo `backlog` e sem responsável, 2 ativas, 8 concluídas. O humano cria issue direto lá, com `draft` enquanto escreve e `liberada` quando quer que a sessão A refine no padrão.
