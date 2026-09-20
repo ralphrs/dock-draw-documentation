@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 03:05
+**Atualizado em:** 2026-09-20, 03:10
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -45,7 +45,7 @@ Do `insumos/BASE.md`. Nada aqui é entrega, é o alvo.
 | 003 | Armazenamento e versionamento | **Aceito** | Postgres puro, revisão imutável append-only, status como log de eventos |
 | 004 | Fluxo editorial | **Aceito** | Máquina de estados em Postgres, `REVISION_TRANSITIONS` declarativa em TS |
 | 005 | Edição | **Aceito** | MDXEditor 4.2.5, adaptador via DokAST, modo fonte CodeMirror 6 |
-| 006 | *Vago* | Número reservado, sem camada (`DEC-0008`) | — |
+| 006 | **Shell da Wiki (caminho de escrita)** | Não escrito. Escopo em `adrs/_work/ADR-006-escopo.md` | Rotas, listagem, edição, fila de revisão. Deixou de ser vago em 2026-09-20 (`DDP-47`) |
 | 007 | Renderização | Não escrito | Próximo depois de Tenancy |
 | 008 | Navegação e descoberta | Não escrito | |
 | 009 | Busca | Não escrito | Depende do 013 |
@@ -126,7 +126,7 @@ A fatia F0 é maior do que a seção 11 do ADR 002 previa, porque o critério de
 
 | Sessão | Papel | Agora |
 | :--- | :--- | :--- |
-| **A** | Arquiteto principal, gerente de projeto, scrum master | Aplicou a Emenda 1 ao ledger e abriu `DDP-9`. O ADR 013 espera a F1 sair, para a trilha de desenvolvimento não ficar atrás de novo |
+| **A** | Arquiteto principal, gerente de projeto, scrum master | Aplicou três aprovações de ledger. Abriu o escopo do ADR 006 |
 | **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Entregou `DDP-1`, `DDP-2` e `DDP-7`, as três aceitas. Tem `DDP-9` (ordem da F1) e `DDP-10` (estimar as fatias do ADR 005) |
 | **C** | Especialista em arquitetura, UX e UI, revisora | Revisando a ordem da fatia F1 (`DDP-57`) |
 | **Lovable** | Implementador. Executa ordem, não decide | Lê o quadro `DDP` direto, desde 2026-09-20. Canal verificado em `DDP-6` |
@@ -141,10 +141,7 @@ Protocolo em `guia-sessoes/PROTOCOLO.md`. Decisões em `decisoes/REGISTRO.md`. A
 
 | O que | Categoria | Desde |
 | :--- | :--- | :--- |
-| `DDP-56`: exceção de `testing/` na restrição de builtin do Node | `ledger` | 2026-09-20. **Bloqueia o despacho da fatia F1** |
-| `DDP-47`: dar camada ao ADR 006, o shell da Wiki | `ledger` | 2026-09-20. A meta não é alcançável sem essa camada |
-| `DDP-46`: quatro linhas da `DEC-0008` que ficaram fora do ledger | `ledger` | 2026-09-20. Correção de erro de escopo da sessão A |
-| Colar uma linha em `insumos/ORDEM.md` | proposta ao humano (`insumos/` é bloqueado) | 2026-09-20. Texto pronto no comentário de `DDP-8` |
+| Colar as linhas de `insumos/ORDEM.md` | proposta ao humano (`insumos/` é bloqueado) | 2026-09-20. Texto pronto no comentário de `DDP-8` |
 | Ordem das colunas do quadro e campos da tela de criação | configuração do Jira | Só pela interface, o MCP não expõe administração. Não bloqueia nada |
 | ~~Aplicar a Emenda 1 ao ADR 002 e ao ledger~~ | `ledger`, `aceite-adr`, `fora-de-work` | **Aprovada e aplicada em 2026-09-20** (`DDP-8`) |
 

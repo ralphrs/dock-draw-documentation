@@ -18,6 +18,9 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 
 | Id | Data | Decisão | Quem decidiu |
 | --- | --- | --- | --- |
+| [DEC-0010](DEC-0010-mandato-da-sessao-a.md) | 2026-09-20 | A sessão A abre ADR por iniciativa própria, pesquisa na web e refina pedido do humano. Ao humano sobem só as sete categorias | Humano |
+| [ACHADO: shell da Wiki sem dono](ACHADO-2026-09-20-shell-da-wiki-sem-dono.md) | 2026-09-20 | A meta de `DEC-0004` pede seis ações de interface, e nenhuma das 16 fatias entrega tela. O ADR 006 recebe a camada (`DDP-47`) | Arquiteto, aprovado pelo humano |
+| [ACHADO: contradição na Emenda 1](ACHADO-2026-09-20-contradicao-na-emenda-1.md) | 2026-09-20 | A emenda proibia builtin do Node em `src/content-format` e publicava uma interface que precisa ler o disco. Exceção de `testing/` aprovada em `DDP-56` | Arquiteto, aprovado pelo humano |
 | [DEC-0009](DEC-0009-comunicacao-por-jira.md) | 2026-09-20 | As sessões se comunicam por issue do Jira, com uma conta só e identidade pelo responsável. `tasks/` deixa de ser o canal | Humano |
 | [DEC-0008](DEC-0008-adr-006-vago.md) | 2026-09-19 | O ADR 006 fica vago em vez de receber camada inventada, e o prompt antigo dele é descartado | Arquiteto, por delegação |
 | [DEC-0007](DEC-0007-lovable-como-implementador.md) | 2026-09-19 | O Lovable implementa e não decide, a sessão C vira revisora de arquitetura, e o gate de publicação passa do merge para o `deploy_project` | Humano |

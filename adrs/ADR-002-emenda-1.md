@@ -135,7 +135,7 @@ interfaces_publicadas:
     tipo: "função"
     descricao: "Classifica uma URL em dok:page/<uuid>[#slug], dok:page/new?title=, dok:asset/<uuid>, dok:diagram/<uuid>[?view=<uuid>], https externo, âncora local ou inválida. Já existe em dokmd.ts, uso interno de validateDok. Esta emenda publica a assinatura para o ADR 007 consumir na resolução de links"
 restricoes_impostas:
-  - "src/content-format não importa nenhum builtin do Node (node:* ou sem prefixo: fs, path, os, child_process) nem referencia window, document, navigator, localStorage ou sessionStorage. Verificado por build de plataforma browser (rollupOptions.external: []) no mesmo gate da fatia F0"
+  - "src/content-format, exceto src/content-format/testing, não importa nenhum builtin do Node (node:* ou sem prefixo: fs, path, os, child_process) nem referencia window, document, navigator, localStorage ou sessionStorage. Verificado por build de plataforma browser (rollupOptions.external: []) no mesmo gate da fatia F0. A exceção de testing existe porque runFixtureSuite recebe caminho de diretório e de manifesto e lê fixtures do disco, e porque nada de testing entra no bundle do produto: o build de verificação aponta para src/content-format/index.ts, e o bloco de ESLint da fatia F0 traz ignores de src/content-format/testing"
   - "Toda gravação em content_dokmd passa por validateDok, que recusa com DOK-E011 texto canônico acima de 300.000 bytes UTF-8, antes de qualquer outra checagem"
 premissas_sobre_camadas_futuras:
   - camada: "Renderização (ADR 007)"

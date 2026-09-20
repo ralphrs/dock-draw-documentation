@@ -1,6 +1,6 @@
 # Plano e previsão de fim
 
-**Escrito em:** 2026-09-20
+**Escrito em:** 2026-09-20 · **Revisado em:** 2026-09-20, 03:10
 **Mantido por:** sessão A
 
 O `ESTADO.md` diz onde o projeto está. Este arquivo diz quanto falta e quando acaba, com o número que sustenta cada afirmação e com as lacunas declaradas em vez de preenchidas por estimativa confortável.
@@ -11,10 +11,11 @@ O `ESTADO.md` diz onde o projeto está. Este arquivo diz quanto falta e quando a
 
 Duas trilhas, e a de desenvolvimento cresce a cada ADR aceito, porque cada ADR publica fatias novas.
 
-### Trilha de ADR: 8 ADRs restantes
+### Trilha de ADR: 9 ADRs restantes
 
 | ADR | Camada | Depende de | Fatias que vai gerar |
 | :--- | :--- | :--- | :--- |
+| **006** | **Shell da Wiki (caminho de escrita)** | 002, 003, 004, 005 | Desconhecido. **Aceito como camada em 2026-09-20** (`DDP-47`). Sem ele a meta de `DEC-0004` não fecha: as 16 fatias não entregam tela nenhuma |
 | 013 | Tenancy e acesso | 003 | Desconhecido. Fecha os conflitos C-3 e C-7 |
 | 007 | Renderização | 002, 005 | Desconhecido. Desbloqueia a fatia F5 do ADR 005 e o ADR 014 |
 | 008 | Navegação e descoberta | 003, 007 | Desconhecido |
@@ -70,7 +71,7 @@ Em ciclos de fatia, não em dias. Um ciclo é ordem escrita, ordem revisada, exe
 
 | Alvo | Fatias restantes | Previsão |
 | :--- | ---: | :--- |
-| **Meta `DEC-0004`** (editar e publicar uma página) | 15 | 15 ciclos |
+| **Meta `DEC-0004`** (editar e publicar uma página) | 15 mais as fatias do ADR 006 | 15 ciclos mais o shell |
 | Tudo dos ADRs já aceitos | 27 | 27 ciclos |
 | Projeto inteiro | 27 mais as fatias de 7 ADRs não escritos | não estimável hoje |
 
@@ -79,6 +80,8 @@ Quanto vale um ciclo em tempo de relógio depende de quanto tempo o humano dedic
 Com o processo já construído, uma sessão dessas deveria caber mais de um ciclo. **Isso é hipótese, não medição.** As próximas três fatias (F1, F2, F3 do ADR 002) são a base para trocar a hipótese por número, e cada uma vai ter o tempo registrado aqui.
 
 Antes disso, qualquer data é invenção.
+
+**A previsão de 15 ciclos está errada por baixo, e o erro tem nome.** O ADR 006 foi aceito como camada em 2026-09-20 porque a meta pede seis ações de interface que nenhuma das 16 fatias entrega. Quantas fatias o shell publica só se sabe quando o ADR for escrito. Até lá, 15 é piso, não estimativa.
 
 ---
 

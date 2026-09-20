@@ -47,3 +47,13 @@ Correção que vai ao ledger: o C-6 perde a frase sobre o `PROMPT-ADR-006.md`, c
 - C-6: remover a frase sobre o `PROMPT-ADR-006.md`, que aponta para um arquivo inexistente, mantendo as referências cruzadas de 002 e 004.
 
 Agrupado com a Emenda 1 de propósito, para gastar uma aprovação `ledger` do humano em vez de duas.
+
+## Adendo de 2026-09-20: o 006 deixou de ser vago
+
+O número recebeu a camada **Shell da Wiki (caminho de escrita)**, aprovado pelo humano em `DDP-47`. O texto acima não foi reescrito, porque o raciocínio dele continua correto e é ele que justifica a mudança.
+
+Esta decisão descartou "atribuir uma camada nova ao 006 escolhida pelo arquiteto para preencher o espaço", com o argumento de que ADR nasce de necessidade e não de número disponível. O que aconteceu confirma o argumento em vez de contrariá-lo: a necessidade apareceu primeiro, com evidência, e só então o número livre foi usado.
+
+A necessidade está em `ACHADO-2026-09-20-shell-da-wiki-sem-dono.md`. Em resumo: a meta de `DEC-0004` pede seis ações de interface, as 16 fatias que a meta lista não entregam tela nenhuma, e os quatro ADRs aceitos declaram cada um na própria seção "Não decide" que a interface não é deles. O ADR 005 usa a palavra "shell" seis vezes como algo que já existe, e nenhum ADR o constrói.
+
+A própria decisão acima previa isso ao escrever que "se o humano lembrar qual era a camada, o espaço continua lá, e ocupá-lo não custa nada". O que se lembrou não foi a camada que ele tinha em mente em 2026-09-19, e sim uma que faltava.

@@ -206,7 +206,7 @@ interfaces_publicadas:
     tipo: "função"
     descricao: "Classifica uma URL em dok:page/<uuid>[#slug], dok:page/new?title=, dok:asset/<uuid>, dok:diagram/<uuid>[?view=<uuid>], https externo, âncora local ou inválida. Já existe em dokmd.ts, uso interno de validateDok. Esta emenda publica a assinatura para o ADR 007 consumir na resolução de links"
 restricoes_impostas:
-  - "src/content-format não importa nenhum builtin do Node (node:* ou sem prefixo: fs, path, os, child_process) nem referencia window, document, navigator, localStorage ou sessionStorage. Verificado por build de plataforma browser (rollupOptions.external: []) no mesmo gate da fatia F0"
+  - "src/content-format, exceto src/content-format/testing, não importa nenhum builtin do Node (node:* ou sem prefixo: fs, path, os, child_process) nem referencia window, document, navigator, localStorage ou sessionStorage. Verificado por build de plataforma browser (rollupOptions.external: []) no mesmo gate da fatia F0. A exceção de testing existe porque runFixtureSuite recebe caminho de diretório e de manifesto e lê fixtures do disco, e porque nada de testing entra no bundle do produto: o build de verificação aponta para src/content-format/index.ts, e o bloco de ESLint da fatia F0 traz ignores de src/content-format/testing"
   - "Toda gravação em content_dokmd passa por validateDok, que recusa com DOK-E011 texto canônico acima de 300.000 bytes UTF-8, antes de qualquer outra checagem"
 premissas_sobre_camadas_futuras:
   - camada: "Renderização (ADR 007)"
@@ -454,14 +454,15 @@ Vazia em 2026-09-19. Os ADRs 002, 003 e 004 passaram para "Aceitos" quando o S-1
 | 003 | Armazenamento e versionamento | Aceito |
 | 004 | Fluxo editorial | Aceito |
 | 005 | Edição | Aceito |
-| 006 | *A definir* (camada em produção) | — |
+| 006 | Shell da Wiki (caminho de escrita) | Não escrito |
 | 007 | Renderização | Não escrito |
 | 008 | Navegação e descoberta | Não escrito |
 | 009 | Busca | Não escrito |
 | 010 | Exportação e sincronização | Não escrito |
 | 011 | Publicação | Não escrito |
 | 012 | Consolidação da stack | Não escrito |
-| — | Tenancy e acesso (membros de workspace, convites) | **Sem número** — pressuposto pelos ADRs 003 e 004 |
+| 013 | Tenancy e acesso (membros de workspace, convites) | Não escrito. Resolve C-3 e C-7 (`DEC-0005`) |
+| 014 | Developer Portal (documentação arc42 como feature viva) | Não escrito (`DEC-0006`) |
 
 ---
 
@@ -472,7 +473,7 @@ Vazia em 2026-09-19. Os ADRs 002, 003 e 004 passaram para "Aceitos" quando o S-1
 | C-1 | 002 × 001 | O embed `dok:diagram/<uuid>?view=` admite `rev`, mas o modelo real do ADR 001 é mutável e sem histórico. `page_refs.target_rev_id` fica sempre `null`; toda resolução de diagrama é dinâmica, inclusive em revisões publicadas. Uma revisão aprovada pode mudar de aparência se o diagrama for editado depois | Extensão do ADR 001 (versionamento de diagramas). Gatilho já registrado no ADR 004 |
 | C-2 | 002 × 001 / 007 / 010 | Todo destino de export precisa de SVG/PNG estático de uma view, fora do canvas interativo. Ninguém é dono da geração | ADR 007 (Renderização) decide; o ADR 010 consome. Se exigir mudança no motor, emenda ao ADR 001 |
 | C-3 | 003 / 004 × plano | Os ADRs 003 e 004 pressupõem um "ADR de tenancy/auth": `public.invites` não tem `workspace_id`, e só o owner entra em `content.workspace_members` automaticamente. Não há como um segundo usuário entrar num workspace | Novo ADR de Tenancy e acesso — precisa de número |
-| C-6 | Numeração | O ADR 002 manda "renderização **e navegação**" para o 007 (o plano tem Navegação no 008) e chama o ADR 003 de "ADR de persistência". O `PROMPT-ADR-006.md` é uma cópia antiga do prompt de Renderização. A parte "diff visual para ADR 005/006" está resolvida: o ADR 005 (D-4) decidiu que `<RevisionDiff>` usa a fatia `read` do ADR 007, sem editor próprio de diff | Corrigir as referências de renderização/navegação e de "ADR de persistência" na próxima revisão de 002 e 004, quando forem abertos por outro motivo. Descartar `PROMPT-ADR-006.md` |
+| C-6 | Numeração | O ADR 002 manda "renderização **e navegação**" para o 007 (o plano tem Navegação no 008) e chama o ADR 003 de "ADR de persistência". A parte "diff visual para ADR 005/006" está resolvida: o ADR 005 (D-4) decidiu que `<RevisionDiff>` usa a fatia `read` do ADR 007, sem editor próprio de diff. A frase sobre `PROMPT-ADR-006.md` saiu em 2026-09-20: o arquivo nunca existiu neste repositório, e `git log --all` não devolve commit para ele (`DEC-0008`) | Corrigir as referências de renderização/navegação e de "ADR de persistência" na próxima revisão de 002 e 004, quando forem abertos por outro motivo |
 | C-7 | 003 × base | `public.user_roles` (`admin`/`member`, global) convive com `content.space_members.role` (`admin`/`editor`/`reviewer`/`viewer`, por espaço). São escopos diferentes, mas nenhum ADR diz qual prevalece para ações fora da Wiki | ADR de Tenancy e acesso (C-3) |
 
 # Premissas pendentes por camada destinatária
