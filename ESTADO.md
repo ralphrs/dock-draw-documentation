@@ -155,13 +155,33 @@ Protocolo em `guia-sessoes/PROTOCOLO.md`. Decisões em `decisoes/REGISTRO.md`. A
 
 ---
 
-## 4.1. O que está travando agora
+## 4.1. Onde o trabalho está agora
 
-**A sessão B não está rodando.** A issue `DDP-109`, a ordem da sub-fatia S1b, está na fila dela em `A FAZER` desde 2026-09-20 10:47 e não foi tocada. A JQL de escuta da sessão B casa com essa issue, então o listener dela teria disparado se a sessão estivesse de pé.
+**As três sessões estão rodando, e a sub-fatia S1b fechou em 2026-09-20.** O schema `content` tem quatro tabelas: `workspace_members` (S1a), mais `spaces`, `space_members` e `pages` (S1b).
 
-Tudo o mais está parado por dependência disso, e não por falta de decisão: a fila do dono do produto está vazia, a sessão C não tem o que revisar até a ordem existir, e a sessão A não escreve ordem.
+O ciclo completo levou cerca de duas horas, da ordem ao aceite, com duas voltas para a sessão B e duas revisões da sessão C.
 
-Quem destrava é o humano, abrindo a sessão B.
+### O que a S1b construiu além do previsto
+
+A resposta do dono do produto em `DDP-110` chegou no meio do ciclo e mudou o desenho. O registro inteiro está em `DEC-0014`:
+
+| O que entrou | Onde |
+| --- | --- |
+| `project_id` nulo, sem FK | `content.pages`, para a hierarquia de quatro níveis |
+| `unique nulls not distinct` | `content.pages`, porque o `unique` original não alcançava página de raiz |
+| `workspace_id` denormalizado | `content.space_members`, para um tenant poder sair de instância por um predicado só |
+
+### O que vem pela frente, e por que a primeira tela demora
+
+Restam quatro sub-fatias de schema (S1c a S1f), depois a RLS (S2) e as server functions (S3). Só então as fatias de tela do ADR 006 (`DDP-70` a `DDP-72`) têm o que chamar.
+
+**Nenhuma dessas etapas mostra coisa alguma no preview.** O dono do produto pediu para ver a wiki funcionando cedo, e o caminho atual entrega tela só no fim. Existe um recorte alternativo, proposto e ainda não decidido: `content.spaces` e `content.pages` já existem, então a tela de listar espaço e criar página poderia vir depois de funções mínimas e da RLS dessas duas tabelas, sem esperar revisões, rascunhos, assets e sync.
+
+O custo do atalho é a página nascer sem histórico e sem fluxo de aprovação até a sprint fechar. A decisão é de sequenciamento e pertence ao dono do produto.
+
+### Conferência de processo
+
+`guia-sessoes/bin/confere-quadro.sh` passou a rodar na partida de toda escuta da sessão A, e reprova por máquina cinco defeitos de processo já cometidos. No primeiro uso achou cinco problemas reais criados nos quinze minutos anteriores, entre eles uma corrupção que trocava o `--` de comentário SQL por travessão na ordem que a sessão B estava lendo.
 
 ## 5. Esperando o humano
 
