@@ -1,6 +1,6 @@
 # Plano e previsão de fim
 
-**Escrito em:** 2026-09-20 · **Revisado em:** 2026-09-20, 05:55
+**Escrito em:** 2026-09-20 · **Revisado em:** 2026-09-20, 10:35
 **Mantido por:** sessão A
 
 O `ESTADO.md` diz onde o projeto está. Este arquivo diz quanto falta e quando acaba, com o número que sustenta cada afirmação e com as lacunas declaradas em vez de preenchidas por estimativa confortável.
@@ -33,7 +33,7 @@ Dentro da meta de `DEC-0004`, editar e publicar uma página da Wiki ponta a pont
 
 | ADR | Fatias | Dias estimados | Situação |
 | :--- | ---: | ---: | :--- |
-| 002 Formato | 5 | 5 | **F0, F1 e F2 entregues.** Restam F3 e F4 |
+| 002 Formato | 5 | 5 | **Todas as cinco entregues.** Sprint 1 fechada em 2026-09-20 |
 | 003 Armazenamento | 4 | 6,5 | Não começou |
 | 004 Fluxo editorial | 3 | 4,5 | Não começou |
 | 005 Edição | 4 | 6 | Não começou |
@@ -74,7 +74,7 @@ Em ciclos de fatia, não em dias. Um ciclo é ordem escrita, ordem revisada, exe
 
 | Alvo | Fatias restantes | Previsão |
 | :--- | ---: | :--- |
-| **Meta `DEC-0004`** (editar e publicar uma página) | 16 | 16 ciclos, e agora sem incógnita |
+| **Meta `DEC-0004`** (editar e publicar uma página) | 14 | 14 ciclos, e agora sem incógnita |
 | Tudo dos ADRs já aceitos | 27 | 27 ciclos |
 | Projeto inteiro | 27 mais as fatias de 7 ADRs não escritos | não estimável hoje |
 
@@ -83,6 +83,21 @@ Quanto vale um ciclo em tempo de relógio depende de quanto tempo o humano dedic
 Com o processo já construído, uma sessão dessas deveria caber mais de um ciclo. **Isso é hipótese, não medição.** As próximas três fatias (F1, F2, F3 do ADR 002) são a base para trocar a hipótese por número, e cada uma vai ter o tempo registrado aqui.
 
 Antes disso, qualquer data é invenção.
+
+## 3.1. A primeira medição real de ciclo
+
+A sprint 1 fechou em 2026-09-20, com cinco fatias entregues. O que cada ordem custou em passadas de revisão até o despacho:
+
+| Fatia | Caracteres da ordem | Passadas até despachar |
+| :--- | ---: | ---: |
+| F1 (com a F2 dentro) | 31.449 | 3 |
+| F3 | 9.981 | 2 |
+| F4 | 7.031 | **1** |
+| S1a (sprint 2) | 4.759 | 2 |
+
+**A curva é o resultado, não o número absoluto.** Seis regras saíram da F1, e a partir delas a ordem encolheu e a revisão parou de descobrir família nova de defeito a cada passada.
+
+O gargalo mudou de lugar: deixou de ser a qualidade da ordem e passou a ser a latência de aprovação do dono do produto, que é o único passo que nenhuma regra encurta.
 
 **O piso virou número.** Em 2026-09-20 a previsão era "15 ciclos mais o shell", com o shell sendo uma incógnita, porque o ADR 006 ainda não existia. Ele foi escrito e aceito no mesmo dia (`DDP-66`) e publicou três fatias, 7 dias. A meta passa a ser 17 fatias restantes, sem incógnita, e duas delas encolheram: a ordem da F1 absorveu a fatia F2 do ADR 002, que vira verificação em vez de código novo.
 
@@ -141,7 +156,7 @@ As nove fatias de `ux-ui` são o número que merece atenção: nenhuma tela do p
 
 | Sprint | Conteúdo | Alvo |
 | :--- | :--- | :--- |
-| **1** (aberta) | ADR 002: F1 núcleo, F2 validação, F3 URIs, F4 save | `src/content-format` completo, 30 fixtures verdes no app |
+| ~~**1**~~ **fechada** | ADR 002: F0 a F4 | `src/content-format` completo, 30 fixtures verdes no app. **Atingido** |
 | 2 | ADR 003: S1 schema, S2 RLS, S3 server functions, S4 `page_refs` | Página criada, rascunho salvo, revisão gravada |
 | 3 | ADR 004: E1 tabelas, E2 FSM, E3 server functions | Rascunho até publicado, pelo fluxo de aprovação |
 | 4 | ADR 005: F1 adaptador, F2 registry, F3 colar `html`, F4 lista frouxa | Editor real sobre o DokMD |
