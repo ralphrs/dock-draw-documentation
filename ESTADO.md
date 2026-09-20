@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 02:05
+**Atualizado em:** 2026-09-20, 02:00
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo. A sessão A atualiza a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -113,7 +113,7 @@ Fora da meta: busca, export, sync, publicação pública, navegação. E a rende
 
 | # | Fatia | Estado |
 | :--- | :--- | :--- |
-| 1 | ADR 002 F0: dependências, runner de teste, fixtures no app | **Executada pelo Lovable** (`ccc3ce2`). Cinco de seis comandos verdes, `lint` falhou. Em revisão pela sessão C (`DDP-5`) |
+| 1 | ADR 002 F0: dependências, runner de teste, fixtures no app | **Aceita** (`ccc3ce2`, `DDP-5`). Typecheck, build, teste 2/2 e verificação de ambiente verdes. Sobram 27 problemas de formatação nos quatro arquivos novos, que a ordem da F1 resolve |
 | 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | Não começou |
 | 3 | ADR 002 F2: validação | Não começou |
 | 4 | ADR 002 F3: URIs e referências | Não começou |
@@ -139,7 +139,7 @@ Protocolo em `guia-sessoes/PROTOCOLO.md`. Decisões em `decisoes/REGISTRO.md`. A
 
 | O que | Categoria | Desde |
 | :--- | :--- | :--- |
-| Instalar `bun` nesta máquina | ambiente | A sessão C não consegue produzir evidência própria de build, teste e lint sem ele. Bloqueia o veredito da F0 |
+| Nada aberto | | O `bun` 1.4.2 foi instalado, e o `app-release` da F0 já foi aprovado e executado |
 | Ordem das colunas do quadro e campos da tela de criação | configuração do Jira | Só pela interface, o MCP não expõe administração. Não bloqueia nada |
 | Aplicar a Emenda 1 ao ADR 002 e ao ledger | `ledger` e `fora-de-work` | Ainda não pedido. Espera a reescrita da seção 3 e a verificação do Nitro |
 

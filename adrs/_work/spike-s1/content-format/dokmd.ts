@@ -18,7 +18,7 @@ import { z } from 'zod'
 
 export const DOK_FORMAT_VERSION = 1
 
-export type Diagnostic = { code: `DOK-${'E' | 'W'}${number}`; message: string; line?: number }
+export type Diagnostic = { code: `DOK-${'E' | 'W'}${number}`; message: string; line?: number | undefined }
 
 // ---------------------------------------------------------------------------
 // Sintaxe: CommonMark + GFM + frontmatter YAML + directives SÓ DE BLOCO.
@@ -94,9 +94,9 @@ function canonicalYaml(data: Record<string, unknown>): string {
   const ordered: Record<string, unknown> = {}
   for (const k of FRONTMATTER_KEY_ORDER) if (data[k] !== undefined) ordered[k] = data[k]
   for (const k of Object.keys(data)) if (!(k in ordered)) ordered[k] = data[k] // mantém p/ o validador acusar
-  if (ordered.props && typeof ordered.props === 'object') {
-    ordered.props = Object.fromEntries(
-      Object.entries(ordered.props as Record<string, unknown>).sort(([a], [b]) => (a < b ? -1 : 1)),
+  if (ordered['props'] && typeof ordered['props'] === 'object') {
+    ordered['props'] = Object.fromEntries(
+      Object.entries(ordered['props'] as Record<string, unknown>).sort(([a], [b]) => (a < b ? -1 : 1)),
     )
   }
   return YAML.stringify(ordered, { lineWidth: 0 }).trimEnd()
@@ -148,10 +148,10 @@ const ATTR_RULES: Record<string, (v: string) => boolean> = {
 export type UrlClass =
   | { kind: 'forbidden' }
   | { kind: 'invalid' }
-  | { kind: 'page'; id: string; anchor?: string }
+  | { kind: 'page'; id: string; anchor?: string | undefined }
   | { kind: 'unresolved'; title: string }
   | { kind: 'asset'; id: string }
-  | { kind: 'diagram'; id: string; view?: string }
+  | { kind: 'diagram'; id: string; view?: string | undefined }
   | { kind: 'external' }
   | { kind: 'self-anchor' }
   | { kind: 'relative' }
