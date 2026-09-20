@@ -33,6 +33,11 @@ Conferência de consistência entre os dois deve **confirmar** estas divergênci
 | 002 | Restrição de não importar biblioteca de interface | Revisão da ordem da fatia F3, 2026-09-20 |
 | 003 | `getSpaceList` na lista de funções | Extensão aditiva do ADR 006, 2026-09-20 |
 | 004 | `listPendingRevisions` na lista de funções | Extensão aditiva do ADR 006, 2026-09-20 |
+| 003 | `content.pages` tem `project_id` (uuid, nulo, sem FK) | `DEC-0014`, aprovada em `DDP-118`, 2026-09-20 |
+| 003 | A unicidade de `content.pages` é `unique nulls not distinct (space_id, project_id, parent_page_id, slug)` | `DEC-0014`, aprovada em `DDP-118`, 2026-09-20 |
+| 003 | `content.space_members` tem `workspace_id`, denormalizado, fora da chave primária | `DEC-0014`, aprovada em `DDP-118`, 2026-09-20 |
+
+As três linhas do ADR 003 acima vêm da mesma decisão e do mesmo pedido: hierarquia de quatro níveis, unicidade como no Confluence, e estrutura pronta para separar tenants em instâncias. O DDL da seção 6.2 do ADR 003 continua registrando o que foi decidido em 2026-09-18, e o schema aplicado no banco a partir de 2026-09-20 é o descrito aqui.
 
 Os ADRs 001, 005, 006 e a Emenda 1 conferem byte a byte.
 
