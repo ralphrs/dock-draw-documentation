@@ -29,3 +29,5 @@ Uma linha por evento, anexada pelos scripts de `guia-sessoes/bin/`. Não editar 
 2026-09-19T21:37:18 B claim    T-0006-emenda-1-adr-002.md -> tasks/in-progress
 2026-09-19T21:53:23 B complete T-0006-emenda-1-adr-002.md -> tasks/done
 2026-09-19T21:56:05 A create   T-0007-harness-de-medicao.md -> tasks/todo
+2026-09-19T22:59:55 B claim    T-0007-harness-de-medicao.md -> tasks/in-progress
+2026-09-19T23:07:21 A create   T-0008-ordem-fatia-f0.md -> tasks/todo
