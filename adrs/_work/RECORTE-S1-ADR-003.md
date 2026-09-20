@@ -28,16 +28,25 @@ Os blocos 3 e 4 dependem de `pages` e `page_revisions` (blocos 1 e 2). Os blocos
 | :--- | :--- | ---: | :--- | :--- |
 | **S1a** | 0 | 932 | `public.workspaces` (pré-existente) | Cria schema + uma tabela + um trigger que só referencia o que já existe. Nada aponta para frente |
 | **S1b** | 1 | 1.695 | S1a (`workspace_members`, indiretamente via `effective_role` futuro, não usado ainda) | `pages.published_revision_id` fica sem constraint, do jeito que o próprio ADR desenha, não um estado quebrado |
-| **S1c** | 2 (+ a constraint adiada do bloco 1) | ~4.290 | S1b (`content.pages`) | Fecha a constraint que ficou pendente, cria revisões e o event sourcing de status completos, com os dois triggers de imutabilidade |
-| **S1d** | 3, 4 | 1.485 | S1c (`page_revisions`), S1b (`pages`) | Duas tabelas que só acrescentam, nenhuma outra tabela depende delas |
+| **S1c1** | parte de 2 (+ a constraint adiada do bloco 1) | 2.821 | S1b (`content.pages`) | Fecha a constraint pendente, cria `page_revisions` e `revision_status_events` com os dois triggers de imutabilidade. Revisão é gravável e imutável, status é sempre evento: as duas restrições do bloco já valem sem a projeção de leitura |
+| **S1c2** | resto de 2 | 1.427 | S1c1 (`page_revisions`, `revision_status_events`) | `revision_current_status` (projeção) e o trigger que publica a página. Só otimiza leitura e automatiza o efeito de publicar, nada que S1c1 deixasse quebrado |
+| **S1d** | 3, 4 | 1.485 | S1c1 (`page_revisions`), S1b (`pages`) | Duas tabelas que só acrescentam, nenhuma outra tabela depende delas |
 | **S1e** | 5, 6 | 1.490 | `public.workspaces` (pré-existente) | Tabelas auxiliares por workspace, sem relação com páginas ou revisões |
 | **S1f** | 7, 8 | 899 | S1b, S1a (`effective_role` lê `spaces`/`space_members`/`workspace_members`) | Só funções, sem tabela nova, sem trigger |
 
-Ordem de aplicação: S1a, S1b, S1c, S1d, S1e, S1f. S1e e S1f não têm dependência entre si nem com S1d, e poderiam trocar de posição sem quebrar nada, mas a ordem do ADR é mantida para não introduzir uma decisão sem necessidade.
+Ordem de aplicação: S1a, S1b, S1c1, S1c2, S1d, S1e, S1f. S1e e S1f não têm dependência entre si nem com S1d, e poderiam trocar de posição sem quebrar nada, mas a ordem do ADR é mantida para não introduzir uma decisão sem necessidade.
+
+## S1c partida em duas (`DDP-122`, `DEC-0015`)
+
+O bloco 2 sozinho (4.248 caracteres de DDL) não cabe numa ordem: a proporção medida na S1b (9.812 caracteres de ordem para 3.563 de SQL, o resto prosa) estouraria o teto de 10.000 com um DDL maior, e o bloco ainda traz dois triggers de imutabilidade, que pedem roteiro de verificação maior que o de uma tabela comum.
+
+O corte segue o mesmo critério das demais sub-fatias: cada parte deixa o schema em estado consistente. `page_revisions` e `revision_status_events`, com os dois triggers de imutabilidade e a constraint fechada de `pages.published_revision_id`, cumprem sozinhas as duas restrições do ledger que o bloco 2 constrói (revisão imutável, status sempre evento). O que sobra, `revision_current_status` (projeção de leitura) e o trigger `apply_revision_status_event` (que marca a página como publicada), não é necessário para essas restrições valerem: é otimização e automação, adiável sem deixar buraco.
+
+Duas partes, não três: o gatilho de revisão do `DEC-0015` ("três partes para um bloco significa que o critério de corte por bloco não serve para este bloco") não foi acionado.
 
 ## Por que não três restrições na primeira sub-fatia
 
-A issue cita três restrições candidatas para a tabela da primeira ordem: imutabilidade de `page_revisions`, status como evento, e seed automático de `workspace_members`. As duas primeiras só existem depois do bloco 2 (`page_revisions` e os triggers de imutabilidade), que é S1c, não S1a. Forçá-las na tabela de S1a citaria mecanismo que o arquivo daquela sub-fatia não cria. A ordem de S1a, abaixo, traz só a terceira, que é a única que o bloco 0 de fato constrói. As outras duas entram na ordem de S1c, quando essa sub-fatia for escrita.
+A issue cita três restrições candidatas para a tabela da primeira ordem: imutabilidade de `page_revisions`, status como evento, e seed automático de `workspace_members`. As duas primeiras só existem depois do bloco 2 (`page_revisions` e os triggers de imutabilidade), que é S1c1, não S1a. Forçá-las na tabela de S1a citaria mecanismo que o arquivo daquela sub-fatia não cria. A ordem de S1a traz só a terceira, que é a única que o bloco 0 de fato constrói. As outras duas entraram na ordem de S1c1 (`DDP-122`).
 
 ## Formato da migração, conferido contra o app real
 
