@@ -9,8 +9,12 @@ Vamos retomar os ADRs da engine de documentação do DokDraw. O contexto está n
 - `CLAUDE.md` (regras da sessão) e `insumos/ORDEM.md` (numeração e próximo passo)
 - `insumos/BASE.md` (arquitetura base, grade de notas, regras de compatibilidade, estrutura do ADR)
 - `insumos/ESTILO-ADR.md` (regras de escrita do ADR; valem desde o primeiro rascunho)
-- `adrs/LEDGER.md` (contratos: 001 Aceito; 002, 003 e 004 Propostos vinculantes; conflitos C-1 a C-7)
-- `prompts/PROMPT-ADR-005.md` (a tarefa desta sessão)
+- `adrs/LEDGER.md` (contratos: 001 a 005 Aceitos desde 2026-09-19; conflitos C-1, C-2, C-3, C-6 e C-7 em aberto)
+- `decisoes/REGISTRO.md` (decisões que não são contrato de camada: papéis das sessões, skills obrigatórias, numeração, meta da trilha de desenvolvimento)
+- `prompts/PROMPT-ADR-005.md` (a tarefa daquela sessão, concluída)
+
+> [!NOTE]
+> Este kickoff foi escrito para a sessão que executou o ADR 005, já aceito. Serve hoje como referência do formato de abertura de uma sessão executora, não como tarefa corrente. A tarefa corrente está em `tasks/todo/`.
 
 ## Objetivo da sessão
 

@@ -2,6 +2,11 @@
 
 Este arquivo transfere para uma nova sessão o papel que uma sessão anterior (no claude.ai) cumpria: parceiro de arquitetura e revisor do processo de ADRs. Leia inteiro antes de responder qualquer coisa.
 
+> [!IMPORTANT]
+> Este handoff é um retrato de 2026-09-19 e envelhece. Onde ele divergir de `adrs/LEDGER.md`, de `decisoes/REGISTRO.md` ou do estado real de `tasks/`, valem esses, nesta ordem.
+>
+> **Leia `decisoes/REGISTRO.md` logo depois deste arquivo.** Ele indexa as decisões que não são contrato de camada, e várias delas mudaram o que está escrito aqui: os papéis das três sessões, quem implementa o app, as skills obrigatórias, a numeração dos ADRs e a meta da trilha de desenvolvimento. A seção 6 abaixo, em especial, descreve o ADR 005 em execução, e ele foi aceito.
+
 ## 1. Seu papel
 
 Existem dois papéis neste repositório. Não os misture.
@@ -50,7 +55,7 @@ Leia `insumos/BASE.md`. Resumo do que mais pesa nas decisões:
 - **Frameworks de docs e apps de wiki prontos foram eliminados** (sem editor, não embutíveis ou licença AGPL/BSL). A pesquisa está em `insumos/pesquisa-editores-wiki.md`, hoje material de entrada, não ADR.
 - **A stack é escolhida por camadas, um ADR por camada**, com três mecanismos de coerência: contrato de saída em YAML, `LEDGER.md` acumulando contratos, checagem de compatibilidade para trás e para frente. O ADR 012 audita o conjunto.
 - **O pipeline de conteúdo não é camada à parte.** O ADR 002 publica a API (`parseDok`, `serializeDok`, `normalizeDok`, `validateDok`, `collectRefs`, `extractText`, `importDialect`, `migrateDok`) em `src/content-format`. O que sobrou vira a Emenda 1 ao ADR 002.
-- **Ledger com "Propostos vinculantes".** Os ADRs 002, 003 e 004 estão Propostos e encadeados ao spike S-1. Os próximos ADRs os respeitam como aceitos. Se o S-1 falhar de vez, a cadeia reabre.
+- **Ledger com "Propostos vinculantes".** Mecanismo para tratar um contrato como aceito enquanto um spike não roda. Foi usado entre 2026-09-18 e 2026-09-19 com os ADRs 002, 003 e 004, encadeados ao spike S-1. O S-1 passou 30/30 com o MDXEditor 4.2.5, os três foram aceitos junto com o ADR 005, e a seção está vazia desde então. Continua disponível para o próximo ADR que precisar dela.
 
 ## 5. Numeração
 
