@@ -2,7 +2,7 @@
 
 | Campo | Valor |
 | :--- | :--- |
-| Status | Proposto em 2026-09-20 |
+| Status | **Aceito** em 2026-09-20 |
 | Data | 2026-09-20 |
 | Camada | Shell da Wiki: rotas, telas e estado do caminho de escrita (criar página, editar, submeter, revisar, publicar) |
 | Depende de | ADR 002 e Emenda 1 (Aceito), ADR 003, Armazenamento e versionamento (Aceito), ADR 004, Fluxo editorial (Aceito), ADR 005, Edição (Aceito) |
@@ -296,7 +296,7 @@ Nenhuma fatia teve spike (seção 8), então os números são estimativa informa
 ```yaml
 adr: "006"
 camada: "Shell da Wiki (caminho de escrita)"
-status: "Proposto"
+status: "Aceito"
 data: "2026-09-20"
 decisao: "As rotas de escrita da Wiki entram sob a mesma fronteira _authenticated do Diagram Studio, herdando ssr:false e o code splitting por rota. O rascunho vive no cliente entre edições, sincronizado por saveDraft a cada 2 s de inatividade com envio forçado a cada 30 s. DraftVersionConflictError recarrega sem bloquear, RevisionConflictError bloqueia com diálogo. A tela de edição consome só a fatia edit do registro de diretivas, nunca a fatia read, reforçado por regra de ESLint."
 dependencias: []

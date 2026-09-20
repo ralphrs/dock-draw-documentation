@@ -1,6 +1,6 @@
 # Plano e previsão de fim
 
-**Escrito em:** 2026-09-20 · **Revisado em:** 2026-09-20, 03:45
+**Escrito em:** 2026-09-20 · **Revisado em:** 2026-09-20, 04:55
 **Mantido por:** sessão A
 
 O `ESTADO.md` diz onde o projeto está. Este arquivo diz quanto falta e quando acaba, com o número que sustenta cada afirmação e com as lacunas declaradas em vez de preenchidas por estimativa confortável.
@@ -11,11 +11,10 @@ O `ESTADO.md` diz onde o projeto está. Este arquivo diz quanto falta e quando a
 
 Duas trilhas, e a de desenvolvimento cresce a cada ADR aceito, porque cada ADR publica fatias novas.
 
-### Trilha de ADR: 9 ADRs restantes
+### Trilha de ADR: 8 ADRs restantes
 
 | ADR | Camada | Depende de | Fatias que vai gerar |
 | :--- | :--- | :--- | :--- |
-| **006** | **Shell da Wiki (caminho de escrita)** | 002, 003, 004, 005 | Desconhecido. **Aceito como camada em 2026-09-20** (`DDP-47`). Sem ele a meta de `DEC-0004` não fecha: as 16 fatias não entregam tela nenhuma |
 | 013 | Tenancy e acesso | 003 | Desconhecido. Fecha os conflitos C-3 e C-7 |
 | 007 | Renderização | 002, 005 | Desconhecido. Desbloqueia a fatia F5 do ADR 005 e o ADR 014 |
 | 008 | Navegação e descoberta | 003, 007 | Desconhecido |
@@ -25,7 +24,7 @@ Duas trilhas, e a de desenvolvimento cresce a cada ADR aceito, porque cada ADR p
 | 014 | Developer Portal | 002, 007 | Desconhecido |
 | 012 | Consolidação da stack | Todos | Nenhuma. Audita os outros e encerra a trilha |
 
-Sete deles publicam fatias de implementação que ainda não existem no backlog abaixo. **O backlog de desenvolvimento de hoje é parcial por construção**, e não há como somar o total do projeto antes de o ADR 012 fechar.
+O ADR 006 saiu desta lista: **aceito em 2026-09-20** (`DDP-66`), com três fatias publicadas (G1 rotas e listagem, 2 dias; G2 edição e autosave, 3; G3 fila de revisão, 2). Sete dos oito restantes publicam fatias de implementação que ainda não existem no backlog abaixo. **O backlog de desenvolvimento de hoje é parcial por construção**, e não há como somar o total do projeto antes de o ADR 012 fechar.
 
 ### Trilha de desenvolvimento: 28 fatias conhecidas, 1 entregue
 
@@ -37,7 +36,8 @@ Dentro da meta de `DEC-0004`, editar e publicar uma página da Wiki ponta a pont
 | 003 Armazenamento | 4 | 6,5 | Não começou |
 | 004 Fluxo editorial | 3 | 4,5 | Não começou |
 | 005 Edição | 4 | 6 | Não começou |
-| **Total na meta** | **16** | **22** | 1 entregue |
+| **006 Shell da Wiki** | **3** | **7** | Aceito em 2026-09-20, não começou |
+| **Total na meta** | **19** | **29** | 1 entregue |
 
 Fora da meta, mas dentro dos ADRs já aceitos:
 
@@ -73,7 +73,7 @@ Em ciclos de fatia, não em dias. Um ciclo é ordem escrita, ordem revisada, exe
 
 | Alvo | Fatias restantes | Previsão |
 | :--- | ---: | :--- |
-| **Meta `DEC-0004`** (editar e publicar uma página) | 15 mais as fatias do ADR 006 | 15 ciclos mais o shell |
+| **Meta `DEC-0004`** (editar e publicar uma página) | 17 | 17 ciclos, e agora sem incógnita |
 | Tudo dos ADRs já aceitos | 27 | 27 ciclos |
 | Projeto inteiro | 27 mais as fatias de 7 ADRs não escritos | não estimável hoje |
 
@@ -83,7 +83,7 @@ Com o processo já construído, uma sessão dessas deveria caber mais de um cicl
 
 Antes disso, qualquer data é invenção.
 
-**A previsão de 15 ciclos está errada por baixo, e o erro tem nome.** O ADR 006 foi aceito como camada em 2026-09-20 porque a meta pede seis ações de interface que nenhuma das 16 fatias entrega. Quantas fatias o shell publica só se sabe quando o ADR for escrito. Até lá, 15 é piso, não estimativa.
+**O piso virou número.** Em 2026-09-20 a previsão era "15 ciclos mais o shell", com o shell sendo uma incógnita, porque o ADR 006 ainda não existia. Ele foi escrito e aceito no mesmo dia (`DDP-66`) e publicou três fatias, 7 dias. A meta passa a ser 17 fatias restantes, sem incógnita, e duas delas encolheram: a ordem da F1 absorveu a fatia F2 do ADR 002, que vira verificação em vez de código novo.
 
 ---
 
