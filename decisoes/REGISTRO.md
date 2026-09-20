@@ -18,6 +18,7 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 
 | Id | Data | Decisão | Quem decidiu |
 | --- | --- | --- | --- |
+| [ACHADO: dois históricos de migração](ACHADO-2026-09-20-dois-historicos-de-migracao.md) | 2026-09-20 | A plataforma bloqueia escrita em `supabase/migrations/` e usa journal próprio. Nenhum dos dois históricos reconstrói o banco sozinho. Decisão em `DDP-102` | Arquiteto |
 | [DEC-0012](DEC-0012-recorte-da-fatia-f4.md) | 2026-09-20 | A fatia F4 entrega o pipeline de save e não a gravação, porque a tabela de destino é do ADR 003 e não existe. Descrição e critério da fatia discordavam entre si | Arquiteto, por delegação |
 | [AUDITORIA: restrição × mecanismo](AUDITORIA-2026-09-20-restricao-x-mecanismo.md) | 2026-09-20 | As 37 restrições do ledger auditadas contra o comando que reprova cada uma. Quatro lacunas sobre código existente, 28 restrições sem verificação porque a camada não existe | Arquiteto, por delegação |
 | [DEC-0011](DEC-0011-sequenciamento-do-diagram-studio.md) | 2026-09-20 | As doze notações do Diagram Studio entram por inteiro, depois que a meta de `DEC-0004` fechar. Nenhuma fatia da Wiki é adiada por elas | Humano |
