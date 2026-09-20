@@ -236,6 +236,10 @@ Resposta errada não se edita. A escreve uma issue nova ou quem perguntou abre o
 
   Verde é um bloco `<pre>` para cada trecho de código, e nenhum marcador sobrando: nada de crase, `{code`, `{{` ou `#` literais no HTML.
 
+  **Em wiki markup, `{{...}}` não sobrevive a chave dentro.** O macro fecha no primeiro `}}`, e o resto do trecho vaza como texto. `{{z.object({ text: z.string() })}}` e `{{async ({ data }) => f(data)}}` saíram truncados em `DDP-91` e `DDP-104`. Trecho com chave vai em bloco `{code}`, que não interpreta nada dentro.
+
+  **Emenda que muda o entregável vai para a descrição, nunca só para um comentário.** A sessão A mandou por comentário a coluna `workspace_id` de `space_members` em 2026-09-20, a sessão B entregou sem ela, e o ciclo se repetiu. Quem executa lê a descrição. É a mesma regra que a sessão A aplica em revisão de ordem, violada na direção contrária.
+
   **O que sobrevive a todas as versões desta regra:** formato de canal é premissa de infraestrutura, muda sem aviso e não se herda de uma entrega para a seguinte. Três regras diferentes em um dia, cada uma correta na hora em que foi escrita. A que não envelhece é a de medir o renderizado a cada uso.
 - **A sessão A confere o commit contra a ordem versionada, caractere a caractere, antes de mandar para a revisão de resultado.** O executor pode ter reconstruído o que recebeu deturpado, e o relato dele de que reconstruiu certo não é evidência. Na F1 a conferência deu idêntico nos três arquivos, e foi o que permitiu seguir.
 - **Uma ordem entrega uma fatia, e tem teto de tamanho.** O teto é 10.000 caracteres de texto de ordem. Fatia cujo código não cabe nisso é dividida em sub-fatias antes de a ordem ser escrita, cada uma com bateria própria e com a `main` verde ao fim. Quem escreve a ordem confere, antes de entregar, que o conjunto de símbolos exportados é o da fatia e não o do arquivo inteiro de onde o código veio.
@@ -373,6 +377,29 @@ loop:
 - B e C incluem `EM ANDAMENTO` na consulta porque é o status para onde A devolve uma issue respondida. Ao ver uma issue própria em `EM ANDAMENTO` com comentário novo, leia o comentário antes de retomar.
 - Nada novo na fila: espere de novo, sem comentar.
 - O custo real de escutar não é a chamada, é o contexto da sessão, que viaja inteiro a cada volta. Por isso a volta vazia não deve produzir texto nenhum: nem resumo, nem "nada novo até agora", nem atualização de painel.
+
+## A conferência que roda por máquina
+
+Toda regra deste arquivo nasceu de um defeito medido, e por muito tempo todas viviam só como prosa aqui. Prosa depende de alguém lembrar de ler, o que é exatamente o defeito que a auditoria de 2026-09-20 nomeou nas restrições do ledger: afirmação sem mecanismo que a reprove. As regras de processo tinham a mesma falha, e a prova é que a sessão A violou a regra de formato de canal quinze minutos depois de escrevê-la.
+
+`guia-sessoes/bin/confere-quadro.sh` reprova, por máquina, cinco defeitos que já aconteceram:
+
+| # | O que reprova | De onde veio |
+| :-- | :--- | :--- |
+| 1 | Issue tratada pela sessão A deixada num status que a JQL dela vigia | Quatro ocorrências em 2026-09-20, cada uma queimando um ciclo de escuta |
+| 2 | Chave de issue citada antes de a issue existir | Duas ocorrências, mandando o leitor para a issue errada |
+| 3 | Texto publicado no formato errado para o caminho de escrita | A ordem da fatia F1 e quatro cartões de 2026-09-20 |
+| 4 | Aprovação com mais de uma opção sem nomear a recomendada | `DDP-110`, que voltou movida e sem resposta |
+| 5 | Emenda da sessão A com código só em comentário, fora da descrição | `DDP-113`, entregue sem a coluna que a emenda pedia |
+
+**Ela roda dentro do `aguarda-fila.sh`, na partida da escuta da sessão A**, e não como comando à parte. Religar a escuta é o único ponto por onde a sessão passa em todo ciclo, então é onde a conferência não pode ser esquecida: esquecê-la significa parar de escutar, que é parar de trabalhar. A saída aparece no mesmo lugar onde a sessão lê o motivo de ter acordado.
+
+**Ela não bloqueia a escuta.** Falso positivo que trave a fila custa mais que o defeito procurado.
+
+Duas propriedades que a conferência precisa manter, e que custaram conserto no primeiro dia:
+
+- **Ela precisa conseguir ficar verde.** Issue fechada fica fora das checagens de texto, porque ninguém vai agir nela e achado impossível de consertar deixa o script vermelho para sempre. Checagem que nunca alcança o verde ensina a ignorar a checagem.
+- **Ela não pode reprovar o sistema correto.** A checagem 5 reprovava emenda repetida na descrição e no comentário, que é o caminho certo. Passou a comparar o conteúdo dos dois antes de acusar.
 
 ## Revisão do humano, depois de toda entrega do Lovable
 

@@ -68,6 +68,23 @@ if [ -z "$eu" ]; then
 fi
 printf 'Autenticado como %s. Escutando a fila da sessão %s a cada %ss, por até %ss.\n' "$eu" "$sessao" "$intervalo" "$limite" >&2
 
+# A conferência do quadro roda aqui de propósito, e não num comando à parte.
+# Toda regra de processo deste projeto nasceu de um defeito medido, e todas
+# viviam só em prosa no PROTOCOLO.md, que depende de alguém lembrar de ler.
+# Religar a escuta é o único ponto por onde a sessão A passa em todo ciclo,
+# então é aqui que a conferência não pode ser esquecida: esquecê-la significa
+# parar de escutar, que é parar de trabalhar.
+#
+# Ela não bloqueia a escuta. Um falso positivo que trave a fila custaria mais
+# que o defeito que ela procura, e a saída aparece no mesmo lugar onde a sessão
+# lê o motivo de ter acordado.
+if [ "$sessao" = "A" ] || [ "$sessao" = "a" ]; then
+  conferencia="$(dirname "$0")/confere-quadro.sh"
+  if [ -x "$conferencia" ]; then
+    "$conferencia" || true
+  fi
+fi
+
 conta() {
   resposta=$(curl -sS --max-time 30 -u "$JIRA_EMAIL:$JIRA_TOKEN" \
     -H 'Content-Type: application/json' \
