@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 04:05
+**Atualizado em:** 2026-09-20, 04:25
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo do agora. Quanto falta e quando acaba está em `PLANO.md`. A sessão A atualiza este arquivo a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -45,7 +45,7 @@ Do `insumos/BASE.md`. Nada aqui é entrega, é o alvo.
 | 003 | Armazenamento e versionamento | **Aceito** | Postgres puro, revisão imutável append-only, status como log de eventos |
 | 004 | Fluxo editorial | **Aceito** | Máquina de estados em Postgres, `REVISION_TRANSITIONS` declarativa em TS |
 | 005 | Edição | **Aceito** | MDXEditor 4.2.5, adaptador via DokAST, modo fonte CodeMirror 6 |
-| 006 | **Shell da Wiki (caminho de escrita)** | Não escrito. Escopo em `adrs/_work/ADR-006-escopo.md` | Rotas, listagem, edição, fila de revisão. Deixou de ser vago em 2026-09-20 (`DDP-47`) |
+| 006 | **Shell da Wiki (caminho de escrita)** | **Proposto** em 2026-09-20, em correção (`DDP-64`) | Rotas sob `_authenticated`, autosave com debounce de 2 s e envio forçado de 30 s, os dois conflitos do ADR 003 tratados por gravidade, só a fatia `edit` na tela de edição |
 | 007 | Renderização | Não escrito | Próximo depois de Tenancy |
 | 008 | Navegação e descoberta | Não escrito | |
 | 009 | Busca | Não escrito | Depende do 013 |
@@ -114,7 +114,7 @@ Fora da meta: busca, export, sync, publicação pública, navegação. E a rende
 | # | Fatia | Estado |
 | :--- | :--- | :--- |
 | 1 | ADR 002 F0: dependências, runner de teste, fixtures no app | **Aceita** (`ccc3ce2`, `DDP-5`). Typecheck, build, teste 2/2 e verificação de ambiente verdes. A dívida de formatação dos quatro arquivos novos ficou: 17 problemas só em `environment.test.ts`, que a F1 não pode tocar. Vai para `DDP-61` |
-| 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | Ordem reprovada em `DDP-57` com quatro defeitos, corrigida em `DDP-59` e conferida. **Em segunda revisão com a sessão C** (`DDP-62`), com três pontos nomeados. Despacha se voltar limpa |
+| 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | Duas revisões reprovadas. A segunda mediu o que faltava: o parse triplo põe o `p50` de 5 mil linhas em 295,98 ms contra um orçamento de 300 ms. Em correção na `DDP-63`, com parse único e `DOK-E011` na frente, depois terceira revisão |
 | 3 | ADR 002 F2: validação | Não começou |
 | 4 | ADR 002 F3: URIs e referências | Não começou |
 
@@ -126,9 +126,9 @@ A fatia F0 é maior do que a seção 11 do ADR 002 previa, porque o critério de
 
 | Sessão | Papel | Agora |
 | :--- | :--- | :--- |
-| **A** | Arquiteto principal, gerente de projeto, scrum master | Conferiu a ordem corrigida e abriu a segunda revisão. Aplicou a aprovação do ADR 005 |
-| **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Seis tarefas entregues e aceitas, a última `DDP-59`. Tem `DDP-58`, escrever o ADR 006 |
-| **C** | Especialista em arquitetura, UX e UI, revisora | Os dois achados de `DDP-57` procederam. Está na segunda revisão da mesma ordem (`DDP-62`), que inclui medir o custo de dois parses contra o orçamento de 300 ms |
+| **A** | Arquiteto principal, gerente de projeto, scrum master | Revisou o ADR 006 e a ordem da F1. Decidiu não emendar o ledger para acomodar a sequência de diagnósticos, e inverter o código em vez disso |
+| **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Sete entregas aceitas, as últimas `DDP-59` e `DDP-58`. Tem `DDP-63` (parse único na ordem da F1) e `DDP-64` (correções do ADR 006) |
+| **C** | Especialista em arquitetura, UX e UI, revisora | Duas revisões de ordem entregues, as quatro conclusões confirmadas. A segunda mediu o parse triplo no harness do spike e derrubou um argumento da sessão A. Sem tarefa aberta até a ordem voltar |
 | **Lovable** | Implementador. Executa ordem, não decide | Lê o quadro `DDP` direto, desde 2026-09-20. Canal verificado em `DDP-6` |
 
 O quadro `DDP` guarda o backlog inteiro desde 2026-09-20: 34 issues de estoque com o rótulo `backlog` e sem responsável, 2 ativas, 8 concluídas. O humano cria issue direto lá, com `draft` enquanto escreve e `liberada` quando quer que a sessão A refine no padrão.
