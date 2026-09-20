@@ -18,6 +18,7 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 
 | Id | Data | Decisão | Quem decidiu |
 | --- | --- | --- | --- |
+| [DEC-0017](DEC-0017-a-wiki-vive-dentro-do-projeto.md) | 2026-09-20 | A wiki entra pelo projeto, não pelo espaço. Reabre o ADR 006 nas rotas e promove a `DDP-114` | Humano |
 | [DEC-0016](DEC-0016-trilha-de-processo-e-trabalho-ocioso.md) | 2026-09-20 | Melhoria de processo vira trilha própria sob `DDP-55`, com o rótulo `processo`, sem responsável, e só roda com a fila vazia. Dez itens, todos de defeito medido. A prioridade em tempo ocioso sai executável do `aguarda-fila.sh`, em vez de ficar em prosa | Arquiteto, por delegação. Revisão aberta ao humano em `DDP-133` |
 | [DEC-0015](DEC-0015-caminho-ate-a-primeira-tela.md) | 2026-09-20 | A sprint reordena para entregar tela antes, sem cortar escopo. `page_refs`, `assets`, `sync_state` e `position_between` saem do caminho crítico e voltam depois | Arquiteto, por delegação |
 | [DEC-0014](DEC-0014-hierarquia-de-quatro-niveis-e-prontidao-de-tenant.md) | 2026-09-20 | Hierarquia de quatro níveis: `pages` ganha `project_id` nulo sem FK, unicidade `nulls not distinct` escopada ao projeto, e `workspace_id` em toda tabela de tenant. Controle de tenant não entra agora | Humano |

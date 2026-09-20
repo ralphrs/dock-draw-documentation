@@ -12,7 +12,7 @@
 
 ## 1. Decisão
 
-**A Wiki entra sob a mesma fronteira `_authenticated` que já resolve autenticação e layout para o Diagram Studio, com três rotas de arquivo novas (`wiki.$spaceId.index`, `wiki.$spaceId.paginas.$pageId.editar`, `wiki.$spaceId.revisao`) mais uma rota de nível superior (`wiki.index`) para a escolha de espaço, todas herdando `ssr: false` do layout pai. O estado do rascunho vive no cliente entre edições, sincronizado com `page_drafts` por `saveDraft` a cada 2 segundos de inatividade de digitação, com um envio forçado a cada 30 segundos se o rascunho continuar sujo, o mesmo padrão de debounce que o Diagram Studio já usa para posição de nó. `DraftVersionConflictError` reabre o rascunho gravado no servidor com um aviso não bloqueante. `RevisionConflictError` bloqueia a tela de edição com um diálogo modal, porque a publicação mudou sob o rascunho. A tela de edição importa só a fatia `edit` do registro de diretivas e o adaptador do ADR 005, nunca a fatia `read` nem o renderer do ADR 007, reforçado por uma regra de ESLint escopada ao arquivo da rota.**
+**A Wiki entra sob a mesma fronteira `_authenticated` que já resolve autenticação e layout para o Diagram Studio, com três rotas de arquivo novas (`projetos.$projectId.wiki.index`, `projetos.$projectId.wiki.paginas.$pageId`, `projetos.$projectId.wiki.paginas.$pageId.editar`), todas herdando `ssr: false` do layout pai. O escopo é o projeto desde a `DEC-0017`, e a fila de revisão da seção 6.4 ficou fora do contrato porque o escopo dela não foi decidido (seção 14). O estado do rascunho vive no cliente entre edições, sincronizado com `page_drafts` por `saveDraft` a cada 2 segundos de inatividade de digitação, com um envio forçado a cada 30 segundos se o rascunho continuar sujo, o mesmo padrão de debounce que o Diagram Studio já usa para posição de nó. `DraftVersionConflictError` reabre o rascunho gravado no servidor com um aviso não bloqueante. `RevisionConflictError` bloqueia a tela de edição com um diálogo modal, porque a publicação mudou sob o rascunho. A tela de edição importa só a fatia `edit` do registro de diretivas e o adaptador do ADR 005, nunca a fatia `read` nem o renderer do ADR 007, reforçado por uma regra de ESLint escopada ao arquivo da rota.**
 
 Por quê, em uma linha cada:
 
@@ -103,15 +103,16 @@ A1 e B1 sobrevivem sozinhas em cada decisão, sem candidata concorrente para pon
 
 ```
 src/routes/_authenticated/
-  wiki.index.tsx                              → /wiki
-  wiki.$spaceId.index.tsx                     → /wiki/:spaceId
-  wiki.$spaceId.paginas.$pageId.editar.tsx    → /wiki/:spaceId/paginas/:pageId/editar
-  wiki.$spaceId.revisao.tsx                   → /wiki/:spaceId/revisao
+  projetos.$projectId.wiki.index.tsx                       → /projetos/:projectId/wiki
+  projetos.$projectId.wiki.paginas.$pageId.tsx             → /projetos/:projectId/wiki/paginas/:pageId
+  projetos.$projectId.wiki.paginas.$pageId.editar.tsx      → /projetos/:projectId/wiki/paginas/:pageId/editar
 ```
 
-Todas herdam `ssr: false` e o `beforeLoad` de `_authenticated/route.tsx`, sem `beforeLoad` próprio. `src/components/app-shell.tsx` ganha um `NavItem` para `/wiki`, ao lado de `/projetos`.
+Todas herdam `ssr: false` e o `beforeLoad` de `_authenticated/route.tsx`, sem `beforeLoad` próprio. A wiki não ganha item de menu próprio: a entrada é a tela do projeto, que passa a ter duas áreas irmãs, Diagramas e Wiki.
 
-`wiki.index.tsx` lista os espaços do workspace com:
+O escopo era `:spaceId` até a `DEC-0017`, aprovada pelo humano em 2026-09-20. A correção está na seção 14.
+
+A rota de índice resolve o espaço a partir do projeto, e lista os espaços do workspace com:
 
 ```ts
 // src/content-store/server.ts: extensão aditiva ao ADR 003
@@ -120,11 +121,11 @@ export function getSpaceList(workspaceId: UUID): Promise<Space[]>
 
 `getSpaceList` mora em `src/content-store/server.ts`, o mesmo arquivo de `getPageTree`, porque consulta `content.spaces`, tabela do ADR 003, com a mesma forma de leitura simples por chave estrangeira que `getPageTree` já usa para `content.pages`. Alternativa descartada: um módulo próprio desta camada para consultas de leitura sobre `content.*`. Descartada porque o app já teria dois lugares para "como ler `content.spaces`", um em `content-store` e outro na Wiki, sem ganho, e a fatia G1 (seção 11) já depende de `src/content-store/server.ts` existir no app. Custo aceito: o ADR 003 recebe uma função nova sem ter sido reaberto por completo, registrada na "Verificação de compatibilidade" (seção 7) e no contrato de saída (seção 13) para o `LEDGER.md` acolher em nome dele.
 
-Com um único espaço, a rota redireciona direto para `/wiki/:spaceId` sem exibir a lista, porque não há escolha real a fazer. Com mais de um, mostra o nome de cada espaço como link, sem ação de criar espaço (ver aviso da seção 1).
+`getSpaceList` continua existindo porque a criação de página precisa do `space_id`, coluna `not null` de `content.pages`. Com a wiki entrando pelo projeto, o espaço deixa de ser escolhido na tela e passa a vir do projeto, e `public.projects` ainda não tem a coluna que aponta para o espaço (`DDP-114`). Até ela existir, a resolução é de aplicação.
 
-### 6.2 Tela de listagem e criação de página (`wiki.$spaceId.index.tsx`)
+### 6.2 Tela de listagem e criação de página (`projetos.$projectId.wiki.index.tsx`)
 
-Chama `getPageTree(spaceId)`, que devolve `Array<Page & { children: Page[] }>`. Renderiza como árvore expansível, título de cada página vindo de `Page.title` (a coluna cache, não o frontmatter, porque `getPageTree` não carrega revisão). Um botão "Nova página" abre um diálogo pedindo só o título, chama `createPage({ spaceId, parentPageId: null, authorId, initialContentDokmd })` com um DokMD mínimo (frontmatter com `dok: 1`, `id` novo, `title` do diálogo, corpo vazio) e navega para `/wiki/:spaceId/paginas/:pageId/editar` da página criada.
+Chama `getPageTree(spaceId)`, que devolve `Array<Page & { children: Page[] }>`. Renderiza como árvore expansível, título de cada página vindo de `Page.title` (a coluna cache, não o frontmatter, porque `getPageTree` não carrega revisão). Um botão "Nova página" abre um diálogo pedindo só o título, chama `createPage({ spaceId, projectId, parentPageId: null, authorId, initialContentDokmd })` com um DokMD mínimo (frontmatter com `dok: 1`, `id` novo, `title` do diálogo, corpo vazio) e navega para `/projetos/:projectId/wiki/paginas/:pageId/editar` da página criada.
 
 Cada linha da árvore linka para a rota de edição da página. Nenhuma linha renderiza conteúdo de leitura (isso é o ADR 007): a listagem mostra só título, posição na árvore e a data de `updatedAt`.
 
@@ -181,7 +182,7 @@ Toda a camada roda sob `ssr: false`, herdado. Nenhuma rota desta camada precisa 
 
 ```js
 {
-  files: ["src/routes/_authenticated/wiki.*.editar.tsx"],
+  files: ["src/routes/_authenticated/projetos.$projectId.wiki.*.editar.tsx"],
   rules: {
     "no-restricted-imports": [
       "error",
@@ -225,7 +226,7 @@ O `files` deste bloco casa só com o arquivo da rota de edição, e o texto dest
 | Camada | Premissa que este ADR deixa | Evidência |
 | :--- | :--- | :--- |
 | Renderização (ADR 007) | As rotas de leitura pública ficam fora de `_authenticated`, porque conteúdo publicado precisa de SSR e indexação, que este ADR não usa | Seção 6.6 |
-| Navegação e descoberta (ADR 008) | Um link para editar uma página aponta para `/wiki/:spaceId/paginas/:pageId/editar`, o caminho exato publicado na seção 6.1 | Seção 6.1 |
+| Navegação e descoberta (ADR 008) | Um link para editar uma página aponta para `/projetos/:projectId/wiki/paginas/:pageId/editar`, o caminho exato publicado na seção 6.1 | Seção 6.1 |
 | Tenancy (ADR 013) | Decide como um `content.spaces` é criado. Até lá, `wiki.index` assume que o espaço já existe | Seção 1, aviso |
 
 ## 8. Spike
@@ -301,9 +302,9 @@ data: "2026-09-20"
 decisao: "As rotas de escrita da Wiki entram sob a mesma fronteira _authenticated do Diagram Studio, herdando ssr:false e o code splitting por rota. O rascunho vive no cliente entre edições, sincronizado por saveDraft a cada 2 s de inatividade com envio forçado a cada 30 s. DraftVersionConflictError recarrega sem bloquear, RevisionConflictError bloqueia com diálogo. A tela de edição consome só a fatia edit do registro de diretivas, nunca a fatia read, reforçado por regra de ESLint."
 dependencias: []
 interfaces_publicadas:
-  - nome: "Rotas /wiki, /wiki/:spaceId, /wiki/:spaceId/paginas/:pageId/editar, /wiki/:spaceId/revisao"
+  - nome: "Rotas /projetos/:projectId/wiki, /projetos/:projectId/wiki/paginas/:pageId, /projetos/:projectId/wiki/paginas/:pageId/editar"
     tipo: "rota"
-    descricao: "src/routes/_authenticated/wiki.*.tsx, seção 6.1. Todas herdam ssr:false e beforeLoad de _authenticated/route.tsx"
+    descricao: "src/routes/_authenticated/projetos.$projectId.wiki.*.tsx, seção 6.1. Todas herdam ssr:false e beforeLoad de _authenticated/route.tsx. Escopo fixado por DEC-0017; a rota de fila de revisão não tem escopo decidido e saiu do contrato"
   - nome: "getSpaceList(workspaceId): Promise<Space[]>"
     tipo: "função"
     descricao: "Extensão aditiva ao ADR 003, não interface nova desta camada. Entra em src/content-store/server.ts, seção 6.1. LEDGER.md acolhe esta função na entrada do ADR 003, não numa entrada nova para o 006"
@@ -320,9 +321,9 @@ premissas_sobre_camadas_futuras:
   - camada: "Renderização (ADR 007)"
     premissa: "As rotas de leitura pública ficam fora de _authenticated, porque a publicação exige SSR e indexação que esta camada não usa"
   - camada: "Navegação e descoberta (ADR 008)"
-    premissa: "Um link para editar uma página usa o caminho exato /wiki/:spaceId/paginas/:pageId/editar publicado por este ADR"
+    premissa: "Um link para editar uma página usa o caminho exato /projetos/:projectId/wiki/paginas/:pageId/editar publicado por este ADR"
   - camada: "Tenancy (ADR 013)"
-    premissa: "Decide como um content.spaces é criado. Até essa decisão, a rota /wiki assume que ao menos um espaço já existe no workspace"
+    premissa: "Decide como um content.spaces é criado. Até essa decisão, a rota de índice da wiki assume que ao menos um espaço já existe no workspace"
 riscos_abertos:
   - "Nenhum ADR decide criação de content.spaces. content.workspace_members é semeado por trigger para o dono do workspace, mas nenhuma função pública cria um espaço. wiki.index fica sem ação de saída quando o workspace tem zero espaços. Dono: ADR 013 ou uma decisão de produto ainda não tomada"
   - "O debounce de 2 s de inatividade com envio forçado de 30 s é escolha informada por analogia ao padrão de 400 ms já em produção para posição de nó, sem medição de uso real de digitação de texto nesta camada. Ajuste é o gatilho de reabertura da seção 10"
@@ -333,3 +334,13 @@ gatilhos_de_reabertura:
   - "ADR 007 decidir que leitura publicada também exige sessão, eliminando a distinção de SSR da seção 6.6"
   - "Uso real mostrar que 2 s ou 30 s produzem perda de digitação ou carga excessiva de escrita no Postgres"
 ```
+
+## 14. Correção de 2026-09-20: o escopo das rotas
+
+A versão aceita deste ADR publicou as rotas sob `/wiki/:spaceId`. A `DEC-0014`, do mesmo dia, fixou a hierarquia de quatro níveis e deu `project_id` a `content.pages`, citando o pedido de produto "wiki e diagramas para cada projeto". Os dois documentos ficaram aceitos e discordantes, e a discordância só apareceu quando a primeira tela foi construída.
+
+A `DEC-0017` resolveu a favor do projeto, com aprovação do humano. O escopo das rotas passou de `:spaceId` para `:projectId`. O segmento `paginas` e a identificação por id continuam como estavam, porque só o escopo estava errado.
+
+A rota `/wiki/:spaceId/revisao`, fila de revisão, saiu do contrato em vez de ser traduzida. Fila por projeto e fila por espaço servem a papéis diferentes, quem escreve olha o projeto e quem revisa costuma olhar o espaço inteiro, e a escolha não foi feita. Até ela ser feita, a rota não existe.
+
+Custo aceito: página com `project_id` nulo, a página de espaço que a `DEC-0014` admitiu de propósito, fica sem endereço. O dado permanece correto no banco e inalcançável pela interface.

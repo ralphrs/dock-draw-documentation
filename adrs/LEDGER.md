@@ -479,9 +479,9 @@ data: "2026-09-20"
 decisao: "As rotas de escrita da Wiki entram sob a mesma fronteira _authenticated do Diagram Studio, herdando ssr:false e o code splitting por rota. O rascunho vive no cliente entre edições, sincronizado por saveDraft a cada 2 s de inatividade com envio forçado a cada 30 s. DraftVersionConflictError recarrega sem bloquear, RevisionConflictError bloqueia com diálogo. A tela de edição consome só a fatia edit do registro de diretivas, nunca a fatia read, reforçado por regra de ESLint."
 dependencias: []
 interfaces_publicadas:
-  - nome: "Rotas /wiki, /wiki/:spaceId, /wiki/:spaceId/paginas/:pageId/editar, /wiki/:spaceId/revisao"
+  - nome: "Rotas /projetos/:projectId/wiki, /projetos/:projectId/wiki/paginas/:pageId, /projetos/:projectId/wiki/paginas/:pageId/editar"
     tipo: "rota"
-    descricao: "src/routes/_authenticated/wiki.*.tsx, seção 6.1. Todas herdam ssr:false e beforeLoad de _authenticated/route.tsx"
+    descricao: "src/routes/_authenticated/projetos.$projectId.wiki.*.tsx. Todas herdam ssr:false e beforeLoad de _authenticated/route.tsx. O escopo era :spaceId até DEC-0017, aprovada pelo humano em 2026-09-20, que moveu a wiki para dentro do projeto. A rota de fila de revisão não tem escopo decidido e por isso não consta aqui"
   - nome: "getSpaceList(workspaceId): Promise<Space[]>"
     tipo: "função"
     descricao: "Extensão aditiva ao ADR 003, não interface nova desta camada. Entra em src/content-store/server.ts, seção 6.1. LEDGER.md acolhe esta função na entrada do ADR 003, não numa entrada nova para o 006"
@@ -498,7 +498,7 @@ premissas_sobre_camadas_futuras:
   - camada: "Renderização (ADR 007)"
     premissa: "As rotas de leitura pública ficam fora de _authenticated, porque a publicação exige SSR e indexação que esta camada não usa"
   - camada: "Navegação e descoberta (ADR 008)"
-    premissa: "Um link para editar uma página usa o caminho exato /wiki/:spaceId/paginas/:pageId/editar publicado por este ADR"
+    premissa: "Um link para editar uma página usa o caminho exato /projetos/:projectId/wiki/paginas/:pageId/editar publicado por este ADR, escopo fixado por DEC-0017"
   - camada: "Tenancy (ADR 013)"
     premissa: "Decide como um content.spaces é criado. Até essa decisão, a rota /wiki assume que ao menos um espaço já existe no workspace"
 riscos_abertos:
@@ -558,7 +558,7 @@ Vazia em 2026-09-19. Os ADRs 002, 003 e 004 passaram para "Aceitos" quando o S-1
 | --- | --- |
 | Edição (005) | Aceito. Produz DokAST/DokMD sem perda nas 30 fixtures via adaptador (002), directives só de bloco. Diff textual e renderizado, indicador changes_requested, somente leitura (004). Comentário por faixa de linhas resolvido pelo ADR 005: a ancoragem acontece em `<RevisionView>`, fora do editor. O renderer da fatia `read` (ADR 007) emite `data-line-start`/`data-line-end` por bloco, e a seleção na visão de leitura vira faixa de linhas a partir desses atributos. Lacuna registrada com dono na fatia F5 do ADR 005: mapear comentário de uma revisão anterior para as linhas do rascunho atual, quando divergem. Modo sugestão fica fora da v1 (D-7 do escopo do 005) |
 | Renderização (007) | As rotas de leitura pública ficam fora de `_authenticated`, porque a publicação exige SSR e indexação que o shell de escrita não usa (006). Renderiza DokAST sem MDX, resolve `dok:`, política de imagem externa (002); resolução dinâmica de diagrama até existir versionamento (004); exibe view em modo leitura (001); dono da geração estática de view (C-2); implementa a fatia `read` de `src/content-components` para todos os nomes do registro, com o renderer emitindo `data-line-start`/`data-line-end` por bloco, e é o único renderizador de DokAST do app (005) |
-| Navegação e descoberta (008) | Um link para editar uma página usa o caminho exato `/wiki/:spaceId/paginas/:pageId/editar` publicado pelo ADR 006 |
+| Navegação e descoberta (008) | Um link para editar uma página usa o caminho exato `/projetos/:projectId/wiki/paginas/:pageId/editar` publicado pelo ADR 006, escopo fixado por `DEC-0017` |
 | Tenancy e acesso (013) | Decide como um `content.spaces` é criado. Até essa decisão, a rota `/wiki` assume que ao menos um espaço já existe no workspace, e um workspace com zero espaços fica sem caminho de saída dentro da Wiki (006) |
 | Busca (009) | Indexa `extractText` (002); só `pages.published_revision_id` na busca pública; rascunhos só no escopo do autor (003, 004) |
 | Exportação (010) | Implementa a matriz do Apêndice B, escape de `{` e `<` no .mdx, datas vindas do banco (002); usa `content.sync_state` (003); só publicadas, rascunho só por ação manual do autor (004); implementa a fatia `export` de `src/content-components` para todos os nomes do registro (005) |
