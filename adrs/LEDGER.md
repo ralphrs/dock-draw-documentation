@@ -36,8 +36,11 @@ Conferência de consistência entre os dois deve **confirmar** estas divergênci
 | 003 | `content.pages` tem `project_id` (uuid, nulo, sem FK) | `DEC-0014`, aprovada em `DDP-118`, 2026-09-20 |
 | 003 | A unicidade de `content.pages` é `unique nulls not distinct (space_id, project_id, parent_page_id, slug)` | `DEC-0014`, aprovada em `DDP-118`, 2026-09-20 |
 | 003 | `content.space_members` tem `workspace_id`, denormalizado, fora da chave primária | `DEC-0014`, aprovada em `DDP-118`, 2026-09-20 |
+| 003 | `content.revision_status_events` tem `workspace_id`, denormalizado, fora da chave primária | `DEC-0014`, aprovada em `DDP-118`. Registro completado em `DDP-134`, 2026-09-20 |
+| 003 | `content.revision_current_status` tem `workspace_id`, denormalizado | `DEC-0014`, aprovada em `DDP-118`. Registro completado em `DDP-134`, 2026-09-20 |
+| 003 | `content.page_drafts` tem `workspace_id`, denormalizado | `DEC-0014`, aprovada em `DDP-118`. Registro completado em `DDP-134`, 2026-09-20 |
 
-As três linhas do ADR 003 acima vêm da mesma decisão e do mesmo pedido: hierarquia de quatro níveis, unicidade como no Confluence, e estrutura pronta para separar tenants em instâncias. O DDL da seção 6.2 do ADR 003 continua registrando o que foi decidido em 2026-09-18, e o schema aplicado no banco a partir de 2026-09-20 é o descrito aqui.
+As seis linhas do ADR 003 acima vêm da mesma decisão e do mesmo pedido: hierarquia de quatro níveis, unicidade como no Confluence, e estrutura pronta para separar tenants em instâncias. As três primeiras foram registradas quando a sub-fatia S1b fechou, e cobriam só as tabelas que ela tocava. As três últimas faltavam, e a falta custou uma volta: a ordem da S1c1 criou `content.revision_status_events` sem a coluna, porque o ledger é a fonte de verdade que a sessão B lê e o requisito não estava nele (`DDP-122`, `DDP-134`). O DDL da seção 6.2 do ADR 003 continua registrando o que foi decidido em 2026-09-18, e o schema aplicado no banco a partir de 2026-09-20 é o descrito aqui.
 
 Os ADRs 001, 005, 006 e a Emenda 1 conferem byte a byte.
 
