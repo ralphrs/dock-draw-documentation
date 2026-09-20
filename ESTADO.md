@@ -1,6 +1,6 @@
 # Estado do DokDraw
 
-**Atualizado em:** 2026-09-20, 02:40
+**Atualizado em:** 2026-09-20, 02:42
 **Mantido por:** sessão A (arquiteto e scrum master)
 
 Painel vivo. A sessão A atualiza a cada tarefa concluída, a cada decisão registrada e a cada sprint aberta ou fechada. Quando divergir de `adrs/LEDGER.md` ou do código do app, vale a fonte, e este arquivo está atrasado.
@@ -114,7 +114,7 @@ Fora da meta: busca, export, sync, publicação pública, navegação. E a rende
 | # | Fatia | Estado |
 | :--- | :--- | :--- |
 | 1 | ADR 002 F0: dependências, runner de teste, fixtures no app | **Aceita** (`ccc3ce2`, `DDP-5`). Typecheck, build, teste 2/2 e verificação de ambiente verdes. Sobram 27 problemas de formatação nos quatro arquivos novos, que a ordem da F1 resolve |
-| 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | Não começou. A ordem carrega dois itens vindos de revisão: os 27 problemas de `prettier` da F0 e o padrão de correção das flags estritas (`DDP-2`) |
+| 2 | ADR 002 F1: `parseDok`, `serializeDok`, `normalizeDok` | **Ordem sendo escrita** (`DDP-9`, sessão B). Carrega três itens de revisão: os 27 problemas de `prettier` da F0, o padrão de correção das flags estritas (`DDP-2`) e `runFixtureSuite` da Emenda 1 |
 | 3 | ADR 002 F2: validação | Não começou |
 | 4 | ADR 002 F3: URIs e referências | Não começou |
 
@@ -126,8 +126,8 @@ A fatia F0 é maior do que a seção 11 do ADR 002 previa, porque o critério de
 
 | Sessão | Papel | Agora |
 | :--- | :--- | :--- |
-| **A** | Arquiteto principal, gerente de projeto, scrum master | Aplicou a Emenda 1 ao ledger. Próximo: abrir o ADR 013 para a B e a ordem da fatia F1 |
-| **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Entregou `DDP-1`, `DDP-2` e `DDP-7`, as três aceitas. Sem issue aberta |
+| **A** | Arquiteto principal, gerente de projeto, scrum master | Aplicou a Emenda 1 ao ledger e abriu `DDP-9`. O ADR 013 espera a F1 sair, para a trilha de desenvolvimento não ficar atrás de novo |
+| **B** | Arquiteto especialista que escreve: ADRs e ordens de implementação | Entregou `DDP-1`, `DDP-2` e `DDP-7`, as três aceitas. Tem `DDP-9`, a ordem da fatia F1 |
 | **C** | Especialista em arquitetura, UX e UI, revisora | Revisou o resultado da F0 (`DDP-5`, aceita). Sem issue aberta |
 | **Lovable** | Implementador. Executa ordem, não decide | Lê o quadro `DDP` direto, desde 2026-09-20. Canal verificado em `DDP-6` |
 
