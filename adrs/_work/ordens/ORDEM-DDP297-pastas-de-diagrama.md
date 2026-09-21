@@ -20,7 +20,7 @@ Nome da tabela, colunas, e se ela vive em `public` ou em `content` (decidido aba
 
 **5. RLS, reaproveitando `private.can_access_project`.** `public.views` já usa essa função hoje; `view_folders` usa a mesma, sem função nova.
 
-**6. Interface da árvore.** Criar pasta (na raiz ou dentro de outra pasta), renomear, mover (arrastar para dentro de outra pasta ou para a raiz, dentro do mesmo projeto) e excluir, no mesmo componente de árvore que a wiki já usa, parametrizado para aceitar os dois tipos de nó do Studio (pasta e diagrama) em vez dos da wiki. Excluir uma pasta pede confirmação, porque apaga o conteúdo junto (`DD3`).
+**6. Interface da árvore.** Criar pasta (na raiz ou dentro de outra pasta), renomear, mover (arrastar para dentro de outra pasta ou para a raiz, dentro do mesmo projeto) e excluir, no mesmo componente de árvore que a wiki já usa, parametrizado para aceitar os dois tipos de nó do Studio (pasta e diagrama) em vez dos da wiki. Excluir uma pasta pede confirmação, porque apaga o conteúdo junto (`DD3`). A confirmação diz o nome da pasta e quantas subpastas e quantos diagramas vão ser apagados, e o botão de confirmar diz "Excluir pasta e N diagramas". Pasta vazia também pede confirmação, mais curta. Pedido do humano na aprovação da `DDP-313`.
 
 ## 1. Migração
 
