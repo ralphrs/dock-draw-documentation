@@ -111,8 +111,8 @@ DECLARE
   vf oid := to_regclass('public.view_folders');
 BEGIN
   IF vf IS NULL THEN falhas := falhas || ' tabela;'; END IF;
-  IF NOT EXISTS (SELECT 1 FROM information_schema.columns
-                 WHERE table_schema='public' AND table_name='views' AND column_name='folder_id')
+  IF NOT EXISTS (SELECT 1 FROM pg_attribute
+                 WHERE attrelid = to_regclass('public.views') AND attname = 'folder_id' AND NOT attisdropped)
     THEN falhas := falhas || ' views.folder_id;'; END IF;
   IF (SELECT count(*) FROM pg_constraint WHERE contype='f' AND confrelid = vf
         AND conrelid IN (vf, to_regclass('public.views'))
