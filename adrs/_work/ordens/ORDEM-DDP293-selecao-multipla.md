@@ -1,5 +1,7 @@
 # Ordem DDP-293: seleção múltipla, Ctrl+A, mover com as setas e sem atribuição do React Flow
 
+Issue da ordem: `DDP-301`, rótulo `lovable`.
+
 Prioridade 1, itens 1, 4 e 5 de `adrs/_work/ANALISE-editor-o-basico.md`. Pré-requisito da ordem de desfazer e refazer (`DDP-294`).
 
 ## Estado atual
@@ -23,6 +25,13 @@ Medido em `src/routes/_authenticated/projetos.$projectId.diagramas.$viewId.tsx` 
 - Colar imagem externa: `DDP-296`, ordem separada.
 - Alinhar, distribuir, travar elemento, clonar com Alt: prioridade 2 de `ANALISE-editor-o-basico.md`, fora desta ordem.
 - Nenhuma migração, nenhuma tabela nova, nenhuma política RLS. Todo o trabalho é de estado do cliente e de props do `ReactFlow`.
+
+## Tabela de restrições do contrato
+
+| Restrição (`LEDGER.md`) | Onde esta ordem cumpre |
+| --- | --- |
+| ADR 001: `@xyflow/react`, com nodes e edges controlados pelo estado do app | Item 1: a seleção que o React Flow reporta (`onSelectionChange`) vira o conjunto de ids no estado da rota. Nada passa a modo não controlado |
+| Dependências novas só com justificativa em ADR | Nenhuma dependência nova. Seleção múltipla e `proOptions` são do `@xyflow/react` já instalado |
 
 ## Verificação
 
