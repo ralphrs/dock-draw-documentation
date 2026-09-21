@@ -37,6 +37,23 @@ Antes da primeira chamada a `use_figma`, carregue a skill `figma-use`. Ela é ob
    - `src/domain/c4/catalog.ts`: os 15 tipos C4, o rótulo, a cor e a forma primitiva de cada um.
    - `src/components/editor/element-shape.tsx`: como cada forma primitiva é desenhada hoje.
 
+## Referências da Comunidade do Figma
+
+O humano escolheu quatro arquivos para acelerar o trabalho. Use como ponto de partida, não como resultado:
+
+| Arquivo | Serve para |
+| --- | --- |
+| [AWS (Cloud Icons)](https://www.figma.com/design/XKr3iIEHDomL1D6SNiXz6S/AWS--CLOUD-ICONS--Community-) | Épicos da AWS |
+| [AWS Diagrams](https://www.figma.com/design/IygTCLXBvIR9NxnbHeYzzZ/AWS-Diagrams--Community-) | Épicos da AWS, sobretudo os contêineres aninhados |
+| [The C4 model for Figma](https://www.figma.com/design/S7dO1OB6E3aJCrCG9d7W5A/The-C4-model-for-Figma--Community-) | Épicos das formas C4 e de conexões |
+| [Relational Database Diagram, Component Kit](https://www.figma.com/design/H4JwM0Bt3IybcMxsP58eyA/Relational-Database-Diagram---Component-Kit--Community-) | Leva futura de DER. **Não use agora** |
+
+Três regras, sem exceção:
+
+1. **Licença antes de copiar.** Confira a licença de cada arquivo na página dele na Comunidade antes de trazer qualquer componente, e registre no resultado da tarefa o que diz a licença e o que foi copiado. Sem licença clara, use só como inspiração, sem copiar.
+2. **Ícone AWS vindo desses arquivos só entra se for idêntico ao oficial.** Arquivo da Comunidade costuma recolorir ou redesenhar ícone. Compare com o SVG do pacote oficial da AWS. Se diferir em cor, forma ou proporção, descarte o ícone do arquivo e use o oficial (`DEC-0023`).
+3. **Tudo que vier deles é refeito com as variáveis do DokDraw.** Cor, tipografia, raio e espaçamento passam a ser os da fundação. A exceção é só o ícone AWS oficial.
+
 ## Regras do desenho
 
 - **Cor só por variável.** Toda cor do arquivo é uma variável do Figma, espelhando os tokens de `src/styles.css`, com os modos claro e escuro. Nenhuma cor solta.
@@ -54,7 +71,9 @@ A sessão D não tem conta própria no Jira. As suas tarefas são as issues do p
 project = DDP AND labels = "sessao-d" AND status in ("A FAZER", "EM ANDAMENTO")
 ```
 
-Faça uma de cada vez, na ordem das chaves. A primeira é a fundação, e as outras dependem dela.
+O trabalho está em épicos com o rótulo `web-design`: um épico de fundação, um por forma, um de conexões e dois da AWS. Cada épico tem uma tarefa por preocupação. A fila são as **tarefas**, nunca os épicos.
+
+Faça uma tarefa de cada vez, na ordem das chaves. As cinco primeiras são do épico de fundação, e todas as outras dependem delas. A última tarefa de cada épico é a de revisão nos dois temas: é ela que o humano olha para aprovar a forma.
 
 ## Como falar com A
 
