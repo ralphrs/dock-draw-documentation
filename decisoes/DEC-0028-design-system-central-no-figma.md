@@ -21,3 +21,7 @@ Alternativa descartada: manter o arquivo central e as bibliotecas por família a
 ## Lacuna declarada
 
 O humano escreveu "design-system.figma (ou a extensão correta)". Arquivo do Figma não tem extensão visível na nuvem, e o nome fica `design-system`.
+
+## Qual arquivo é o design-system, respondido em 2026-09-21
+
+Na `DDP-368` o humano escolheu o arquivo **Design-System** (`gN8mZGcM6KXDP6iWkMQCHL`), a antiga biblioteca, e não o arquivo de trabalho `VomOXhYuTYoBTALAuT0r1e` que esta decisão tinha indicado. O Design-System recebe tudo o que já foi aprovado, organizado por camadas: fundação (temas, paletas, tipografia, espaçamento), componentes de base (moldura, alça de conexão), conexões e uma camada por família de formas (C4 Model, AWS, Básicas). O arquivo `VomOXhYuTYoBTALAuT0r1e` deixa de ser o central e vira fonte da migração. O que não foi aprovado continua em arquivos de draft.
