@@ -1,6 +1,6 @@
 # Referência: persistência, autosave e conexões no draw.io
 
-**Procedência:** cinco textos de pesquisa trazidos pelo dono do produto em 2026-09-21, consolidados aqui sem as partes repetidas. É material de terceiro e **não foi conferido contra o código-fonte do draw.io**. Nomes de classe, de propriedade e de algoritmo citados abaixo (`scheduleAutosave`, `autosaveDelay`, `desktopAutoSync`, `extractGraphModelFromPng`, o teste de conflito em duas camadas) são alegações da pesquisa, e precisam ser conferidos no repositório `jgraph/drawio` antes de servirem de evidência num ADR.
+**Procedência:** seis textos de pesquisa trazidos pelo dono do produto em 2026-09-21, consolidados aqui sem as partes repetidas. É material de terceiro e **não foi conferido contra o código-fonte do draw.io**. Nomes de classe, de propriedade e de algoritmo citados abaixo (`scheduleAutosave`, `autosaveDelay`, `desktopAutoSync`, `extractGraphModelFromPng`, o teste de conflito em duas camadas) são alegações da pesquisa, e precisam ser conferidos no repositório `jgraph/drawio` antes de servirem de evidência num ADR.
 
 **Para que serve:** insumo do ADR 015 (`DDP-151`) e da discussão sobre atraso no editor de diagrama (`adrs/_work/ANALISE-latencia-ao-soltar-elemento.md`).
 
@@ -113,6 +113,12 @@ function encodeLibraryEntry(xmlContent) {
 ## 9. Acréscimo do quinto texto
 
 O quinto texto repete o conteúdo das seções anteriores em tom didático. O único dado novo é a flag **`compressXml`**: os passos de URL-encoding, DEFLATE cru e Base64 só acontecem com ela ativa. Com `compressXml` em `false`, o `<diagram>` guarda o XML em texto puro, legível e comparável linha a linha. Alegação não conferida, como o resto.
+
+## 10. Acréscimo do sexto texto
+
+O sexto texto é um prompt escrito por outra ferramenta para gerar um relatório, e repete as seções anteriores. O único dado novo é a **troca do `mxGraph` pelo `maxGraph`**: o motor novo teria abandonado o VML e o suporte ao IE11, e introduzido a classe `BaseGraph`, que permite *tree-shaking* e reduz o tamanho do pacote. Alegação não conferida.
+
+Para o DokDraw, isso só pesa se o modo embutido ou a troca de motor voltarem à mesa no ADR 015. O editor de diagrama atual usa React Flow (ADR 001), não `mxGraph`.
 
 ---
 
