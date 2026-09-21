@@ -416,6 +416,8 @@ Toda regra deste arquivo nasceu de um defeito medido, e por muito tempo todas vi
 | 8 | Issue de rótulo `aprovacao-humana` sem a seção `A pergunta` na descrição | `DDP-140`, `DDP-141` e `DDP-142`, abertas afirmando e propondo, sem nada a responder |
 | 9 | Ordem de S1 sem declarar os blocos do recorte, ou declarando bloco que não existe | `DDP-127`. Nenhum comando respondia qual decisão do ADR nenhuma ordem implementou |
 
+**A conferência também lista o que espera o humano fora do quadro**: issue aberta com `acao-humana` (arquivo que só o humano escreve, em `insumos/`, `prompts/` ou `adrs/`) ou `bloqueio-externo` (permissão da sessão). É aviso, nunca reprovação, e some quando a issue fecha. Origem: a `DDP-66` e a `DDP-75` fecharam com linhas por colar em `insumos/ORDEM.md`, e nada lembrava delas (`DDP-131`). Pendência manual nova vira issue aberta com `acao-humana`, nunca comentário numa issue que vai fechar.
+
 **O check 9 não reprova bloco sem ordem.** Bloco do recorte que ainda não virou ordem sai como inventário, impresso antes dos achados, sem derrubar a conferência. Check que fica sempre vermelho é check que ninguém lê, e cinco blocos da S1 seguem legitimamente por escrever.
 
 **Ela roda dentro do `aguarda-fila.sh`, na partida da escuta da sessão A**, e não como comando à parte. Religar a escuta é o único ponto por onde a sessão passa em todo ciclo, então é onde a conferência não pode ser esquecida: esquecê-la significa parar de escutar, que é parar de trabalhar. A saída aparece no mesmo lugar onde a sessão lê o motivo de ter acordado.

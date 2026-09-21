@@ -281,8 +281,24 @@ if arq_recorte.exists():
     if faltam:
         notas.append("Blocos do recorte S1 ainda sem ordem: %s" % ", ".join(faltam))
 
+# --------------------------------------------------------------------------
+# Pendência do humano fora do quadro (DDP-131). A DDP-66 e a DDP-75 fecharam
+# com linhas por colar em insumos/ORDEM.md, e nada lembrava delas. Issue aberta
+# com acao-humana ou bloqueio-externo sai aqui como aviso, nunca como achado:
+# o bloqueio é do humano, e reprová-lo deixaria a conferência vermelha para
+# sempre. Some sozinha quando a issue fecha.
+# --------------------------------------------------------------------------
+HUMANO = ('project = DDP AND status != "CONCLUÍDA" '
+          'AND labels in ("acao-humana", "bloqueio-externo") ORDER BY key ASC')
+esperando = busca(HUMANO, "key,summary,labels")
+if esperando:
+    notas.append("Esperando o humano, fora do quadro:")
+    for i in esperando:
+        tipo = "permissão" if "bloqueio-externo" in i["fields"]["labels"] else "arquivo"
+        notas.append("  %s (%s) %s" % (i["key"], tipo, i["fields"]["summary"][:70]))
+
 if notas:
-    print("Inventário:")
+    print("Avisos:")
     for n in notas:
         print("  " + n)
     print("")
