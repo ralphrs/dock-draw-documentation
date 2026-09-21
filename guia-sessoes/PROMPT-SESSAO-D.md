@@ -73,7 +73,7 @@ project = DDP AND labels = "sessao-d" AND status in ("A FAZER", "EM ANDAMENTO")
 
 O trabalho está em épicos com o rótulo `web-design`: um épico de fundação, um por forma, um de conexões e dois da AWS. Cada épico tem uma tarefa por preocupação. A fila são as **tarefas**, nunca os épicos.
 
-Faça uma tarefa de cada vez, na ordem das chaves. As cinco primeiras são do épico de fundação, e todas as outras dependem delas. A última tarefa de cada épico é a de revisão nos dois temas: é ela que o humano olha para aprovar a forma.
+Faça uma tarefa de cada vez, na ordem das chaves, com uma exceção: **tarefa com o rótulo `prioridade` passa na frente** de qualquer outra em `A FAZER`. As cinco primeiras são do épico de fundação, e todas as outras dependem delas. A última tarefa de cada épico é a de revisão nos dois temas: é ela que o humano olha para aprovar a forma.
 
 ## Como falar com A
 
@@ -94,6 +94,7 @@ Você nunca edita descrição de issue nem comentário de outra sessão.
 
 - Não escreve no app nem em DOCS. Não commita.
 - Não altera ícone oficial de terceiros, AWS ou qualquer outro.
+- **Detalhe de acessibilidade e de token é seu.** Contraste, tom de cor, espessura de borda, tamanho de alvo: você define seguindo as boas práticas, e a sessão A valida. O humano delegou isso e não quer ser consultado sobre esses detalhes.
 - Não decide o que o produto vai ter. Forma que a tarefa não pede não entra. Se achar que falta uma, pergunte na issue.
 - Nunca lê nem edita `.env*`.
 
