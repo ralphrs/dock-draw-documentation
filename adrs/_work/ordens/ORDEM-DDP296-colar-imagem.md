@@ -10,9 +10,9 @@ Prioridade 1, item 7 de `adrs/_work/ANALISE-editor-o-basico.md`. Categoria `app-
 
 **2. Armazenamento.** A imagem vai para um bucket privado do Supabase Storage, não para base64 dentro do elemento (descartado na análise, incha toda leitura do diagrama). Caminho do objeto: `{projectId}/{elementId}.{extensão}`, para a política poder ler o projeto direto do caminho.
 
-**3. Tipos aceitos.** PNG, JPEG e WebP. Sem SVG: SVG pode carregar `<script>`, e a regra base do produto é que conteúdo de usuário nunca é compilado nem avaliado como código (`LEDGER.md`). Sem GIF animado, para não abrir a porta de arquivo grande disfarçado de imagem pequena.
+**3. Tipos aceitos.** PNG, JPEG e WebP, recusados também pelo próprio bucket (`allowed_mime_types`), e não só pelo cliente. Sem SVG: SVG pode carregar `<script>`, e a regra base do produto é que conteúdo de usuário nunca é compilado nem avaliado como código (`LEDGER.md`). Sem GIF animado, para não abrir a porta de arquivo grande disfarçado de imagem pequena.
 
-**4. Tamanho máximo.** 5 MB por arquivo. Decisão desta ordem, sem medição de uso real; ajustável pelo humano se a prática mostrar que é pouco ou muito.
+**4. Tamanho máximo.** 5 MB por arquivo, recusado também pelo bucket (`file_size_limit`). Decisão desta ordem, sem medição de uso real; ajustável pelo humano se a prática mostrar que é pouco ou muito.
 
 **5. Elemento de imagem.** `type: "image"` novo em `C4ElementType`. Ao contrário dos tipos hoje, não usa nenhuma das dez formas de `element-shape.tsx`: desenha a imagem em si, escalada à largura e à altura do nó, com o quadro e a borda de seleção que os outros elementos já têm. O caminho do objeto fica em `style.imagePath` (campo novo em `C4ElementStyle`, dentro do JSONB que a tabela já tem), sem migração de coluna nova em `model_elements`.
 
@@ -22,22 +22,25 @@ Prioridade 1, item 7 de `adrs/_work/ANALISE-editor-o-basico.md`. Categoria `app-
 
 **8. Exclusão não apaga o arquivo.** Apagar o elemento de imagem remove só o elemento. O arquivo fica no bucket, porque desfazer a exclusão (`DDP-294`) recria o elemento com o mesmo id e precisa da imagem de volta. Arquivo sem elemento que aponte para ele fica como lacuna declarada, para uma limpeza futura.
 
-**9. Exportar leva a imagem junto.** PNG, SVG e .drawio embutem a imagem no arquivo exportado no momento da exportação, lida pela URL assinada. Arquivo exportado não depende de URL que expira.
+**9. Exportar leva a imagem junto.** PNG, SVG e .drawio embutem a imagem no arquivo exportado no momento da exportação, lida pela URL assinada. Arquivo exportado não depende de URL que expira. Buscar os bytes é assíncrono: `buildSvg`, `exportViewAsSvg` e `exportViewAsDrawio`, em `src/components/editor/export-diagram.tsx`, passam a ser `async`, e `runExport` trata as duas como promessa, como já trata `exportViewAsPng`.
 
 ## Bucket e política (app-release, aprovação humana antes de rodar)
 
 ```sql
-INSERT INTO storage.buckets (id, name, public)
-VALUES ('diagram-images', 'diagram-images', false)
+INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+VALUES ('diagram-images', 'diagram-images', false, 5242880,
+        ARRAY['image/png', 'image/jpeg', 'image/webp'])
 ON CONFLICT (id) DO NOTHING;
 
 CREATE POLICY diagram_images_select ON storage.objects FOR SELECT USING (
   bucket_id = 'diagram-images'
+  AND (storage.foldername(name))[1] ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
   AND private.can_access_project((storage.foldername(name))[1]::uuid)
 );
 
 CREATE POLICY diagram_images_insert ON storage.objects FOR INSERT WITH CHECK (
   bucket_id = 'diagram-images'
+  AND (storage.foldername(name))[1] ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
   AND private.can_access_project((storage.foldername(name))[1]::uuid)
 );
 
