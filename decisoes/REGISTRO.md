@@ -18,6 +18,7 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 
 | Id | Data | Decisão | Quem decidiu |
 | --- | --- | --- | --- |
+| [DEC-0025](DEC-0025-esquema-de-cores-dos-diagramas.md) | 2026-09-21 | Padrão de cor dos diagramas: cor principal do app nos internos, cinza nos externos. Esquema C4 Padrão em cinza e azuis como opção | Humano |
 | [DEC-0024](DEC-0024-sessao-d-designer-de-formas.md) | 2026-09-21 | Sessão D desenha as formas do Diagram Studio no Figma, uma tarefa por forma. Fila pelo rótulo sessao-d | Humano |
 | [DEC-0023](DEC-0023-icone-aws-oficial-na-moldura-do-dokdraw.md) | 2026-09-21 | Ícone AWS oficial e intacto como selo, dentro de uma forma que segue o padrão do DokDraw. Risco residual de uso em SaaS aceito | Humano |
 | [DEC-0022](DEC-0022-pasta-de-diagrama-e-tabela-propria.md) | 2026-09-20 | Pasta de diagrama é tabela própria, pasta de página é a mesma linha com outro rótulo. A assimetria tem razão escrita | Arquiteto, por delegação |
