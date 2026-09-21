@@ -2,33 +2,37 @@
 
 **Blocos do recorte:** `S1-B2` (segunda metade)
 
-Segunda metade da sub-fatia S1c do ADR 003 (seção 6.2, bloco 2, linhas 265 a 297), partida em `DDP-122` (`DEC-0015`). A primeira metade, `content.page_revisions` e `content.revision_status_events` com os triggers de imutabilidade, está aplicada em produção (commit `f619fb1` no app, migração `0002_create_content_page_revisions.sql`) e conferida no catálogo. Depende da S1c1.
+Segunda metade da sub-fatia S1c do ADR 003 (seção 6.2, bloco 2, linhas 265 a 297), partida em `DDP-122` (`DEC-0015`). A primeira metade, `content.page_revisions` e `content.revision_status_events` com os triggers de imutabilidade, está aplicada em produção (commit `f619fb1`, migração `0002_create_content_page_revisions.sql`) e conferida no catálogo. Depende da S1c1.
 
 ## O que esta ordem cria
 
-`content.revision_current_status` (projeção de leitura, uma linha por revisão), a função `content.apply_revision_status_event()` e o trigger `revision_status_events_apply`. Nomes diferentes: a função projeta o evento e, quando o status vira `published`, atualiza `content.pages`.
+`content.revision_current_status` (projeção, uma linha por revisão), a função `content.apply_revision_status_event()` e o trigger `revision_status_events_apply`, nomes diferentes: a função projeta o evento e atualiza `content.pages` quando o status vira `published`.
 
 ## Como aplicar esta migração
 
-A plataforma grava pela ferramenta própria, journal em `drizzle/migrations/` (`DEC-0013`). Não crie arquivo em `supabase/migrations/`.
+Grava pela ferramenta própria, journal em `drizzle/migrations/` (`DEC-0013`). Não crie arquivo em `supabase/migrations/`.
 
-1. **Aplicar é categoria `app-release`** (`DEC-0007`), exige aprovação do humano.
-2. **Desfazer não é `git revert`.** Falha no meio desfaz tudo, transação única. Reaplicar só é seguro se a tentativa anterior falhou.
-3. **`content.page_revisions`, `content.revision_statuses` e `content.revision_status_events` já existem, aplicadas na S1c1.** Este DDL não as recria.
+1. **Categoria `app-release`** (`DEC-0007`), exige aprovação do humano.
+2. **Desfazer não é `git revert`.** Falha no meio desfaz tudo. Reaplicar só é seguro se a tentativa anterior falhou.
+3. **`content.page_revisions`, `content.revision_statuses` e `content.revision_status_events` já existem, da S1c1.** Este DDL não as recria.
 
 ## Restrições do contrato
 
 | Restrição (`LEDGER.md`, ADR 003) | Como se confere |
 | :--- | :--- |
-| "`content.revision_current_status` tem `workspace_id`, denormalizado" (entrada do ADR 003 no ledger, `DEC-0014`, aprovada em `DDP-118`, registro completado em `DDP-134`) | A tabela nasce com `workspace_id uuid not null references public.workspaces(id)`, fora da chave primária, que continua `revision_id`. A função copia o valor de `NEW.workspace_id` no `INSERT` do trigger. O DDL do ADR (linhas 265 a 269) não tem a coluna, porque é anterior à decisão |
+| "`content.revision_current_status` tem `workspace_id`, denormalizado" (ledger, ADR 003, `DEC-0014`, `DDP-118`, registro completado em `DDP-134`) | Nasce com `workspace_id uuid not null references public.workspaces(id)`, fora da chave primária, que continua `revision_id`. A função copia `NEW.workspace_id` no `INSERT`. O DDL do ADR (linhas 265 a 269) não tem a coluna: é anterior à decisão |
 
 ## A projeção nasce vazia
 
-`content.revision_status_events` tem zero linhas hoje, conferido por consulta em 2026-09-20. O trigger só projeta evento inserido depois de ele existir, então não há linha anterior para popular por backfill. Se algum evento já existir no momento de aplicar esta migração, a projeção nasce incompleta para ele, sem erro, porque o trigger passa a rodar só dali em diante. Conferir a contagem de `revision_status_events` antes de aplicar é responsabilidade de quem aplica.
+`content.revision_status_events` tem zero linhas hoje, conferido em 2026-09-20. O trigger só projeta evento inserido depois de existir: sem linha anterior, nada para backfill. Evento já existente no momento de aplicar deixa a projeção incompleta, sem erro, porque o trigger só passa a rodar dali em diante. Conferir a contagem antes de aplicar é responsabilidade de quem aplica.
 
 ## O evento e a projeção nascem juntos, ou nenhum dos dois
 
-O trigger é `AFTER INSERT` em `revision_status_events`, executado dentro da mesma transação e da mesma instrução SQL que dispara o `INSERT`. `content.apply_revision_status_event()` não captura exceção nenhuma: se o `INSERT` em `revision_current_status` ou o `UPDATE` em `content.pages` falhar, a função propaga o erro, o Postgres aborta a transação corrente, e o `INSERT` em `revision_status_events` que disparou o trigger desfaz junto com ela. Não existe estado em que o evento fica gravado sem a projeção. É comportamento do banco, trigger na mesma transação da instrução que a dispara, não uma captura de erro desta ordem, e é o desenho pretendido: evento e leitura rápida nunca divergem por falha parcial.
+O trigger é `AFTER INSERT` em `revision_status_events`, na mesma transação e instrução SQL do `INSERT` que dispara. `content.apply_revision_status_event()` não captura exceção: falha no `INSERT` em `revision_current_status` ou no `UPDATE` em `content.pages` propaga, o Postgres aborta a transação, e o `INSERT` em `revision_status_events` desfaz junto. Evento e projeção nascem juntos, ou nenhum dos dois. Comportamento do banco, não captura de erro desta ordem.
+
+## Emenda (`DDP-155`): a função vira `security definer`
+
+Achado da RLS recortada (S2): sem `security definer`, o trigger roda com o papel de quem insere o evento, exigindo escrita direta em `revision_current_status` (contorna status-sempre-evento) e falhando em silêncio quando um revisor publica, porque o `UPDATE` em `content.pages` é barrado pela política de admin/editor. `security definer` com `search_path` fixo resolve os dois: o trigger escreve por fora da RLS dessas duas tabelas. A S2 fecha `revision_current_status` para `SELECT` apenas.
 
 ## 1. Criar a migração
 
@@ -41,7 +45,7 @@ CREATE TABLE content.revision_current_status (
 );
 
 CREATE OR REPLACE FUNCTION content.apply_revision_status_event()
-RETURNS trigger LANGUAGE plpgsql AS $$
+RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, content AS $$
 BEGIN
   INSERT INTO content.revision_current_status (revision_id, workspace_id, status_code, updated_at)
   VALUES (NEW.revision_id, NEW.workspace_id, NEW.to_status, NEW.created_at)
@@ -67,7 +71,7 @@ CREATE TRIGGER revision_status_events_apply
   FOR EACH ROW EXECUTE FUNCTION content.apply_revision_status_event();
 ```
 
-Nenhum `GRANT` nesta migração, mesmo motivo das sub-fatias anteriores.
+Nenhum `GRANT`, mesmo motivo das sub-fatias anteriores.
 
 ## Verificação
 
@@ -152,18 +156,18 @@ BEGIN
 END $$;
 ```
 
-A saída esperada é o erro `VEREDITO: PASSOU a, b, c e d`. Outro texto depois de `VEREDITO:` reprova e diz qual afirmação caiu. Erro que não comece por `VEREDITO:` é falha de montagem, não resultado.
+A saída esperada é o erro `VEREDITO: PASSOU a, b, c e d`. Outro texto depois de `VEREDITO:` reprova e diz qual afirmação caiu. Erro que não comece por `VEREDITO:` é falha de montagem.
 
-A afirmação `d` é o controle negativo: sem ela, `a` a `c` não provariam que foi o trigger que projetou.
+A afirmação `d` é o controle negativo: sem ela, `a` a `c` não provariam que o trigger projetou.
 
 ### Lacuna declarada
 
-Este roteiro não distingue "o trigger roda na mesma transação do `INSERT`" de "o tratador de exceção desfez o bloco". As duas explicações produzem a mesma saída em SQL. A garantia de que evento e projeção nascem juntos fica apoiada no comportamento documentado do Postgres para trigger `AFTER INSERT` sem `EXCEPTION`, como a seção acima descreve, e não em medição desta ordem.
+Este roteiro não distingue "o trigger roda na mesma transação do `INSERT`" de "o tratador de exceção desfez o bloco": as duas produzem a mesma saída em SQL. A garantia de que evento e projeção nascem juntos apoia-se no comportamento documentado do Postgres para trigger `AFTER INSERT` sem `EXCEPTION`, não em medição desta ordem.
 
 ## Restrições
 
 - Só este SQL. Não crie nem altere `content.page_revisions`, `content.revision_statuses` nem `content.revision_status_events`: estão aplicadas.
-- A única tabela existente tocada é `content.pages`, e só pela escrita que o trigger faz em tempo de execução. Nenhum `ALTER TABLE`.
+- A única tabela existente tocada é `content.pages`, só pela escrita do trigger em tempo de execução. Nenhum `ALTER TABLE`.
 - Não aplique sem aprovação humana explícita (`app-release`).
 - Nenhum contrato do ledger muda.
 - Não escreva RLS, nem policy, nem server function.

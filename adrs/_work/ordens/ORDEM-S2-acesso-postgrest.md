@@ -13,9 +13,12 @@ Medido em `DDP-154`: o papel `authenticated` não tem `USAGE` no schema `content
 | `workspace_members`, `spaces`, `space_members`, `revision_statuses` | SELECT |
 | `pages` | SELECT, INSERT, UPDATE |
 | `page_revisions`, `revision_status_events` | SELECT, INSERT |
-| `revision_current_status`, `page_drafts` | SELECT, INSERT, UPDATE |
+| `revision_current_status` | SELECT |
+| `page_drafts` | SELECT, INSERT, UPDATE |
 
 Nenhuma tabela ganha `DELETE`. Nada no recorte precisa apagar linha diretamente: página some por `deleted_at`, revisão e evento são append-only, e a projeção segue o ciclo de vida da revisão. Sem o `GRANT`, um `DELETE` falha na camada de privilégio mesmo que uma policy de RLS não o proibisse explicitamente.
+
+`revision_current_status` só recebe `SELECT` (achado da revisão, `DDP-155`): quem escreve nela é o trigger `revision_status_events_apply`, `security definer` desde a emenda da S1c2, que roda com o papel de quem definiu a função, não com o de `authenticated`. `GRANT` de escrita nesta tabela para `authenticated` permitiria gravar status sem evento, contornando a restrição do ADR 003.
 
 ## 1. Privilégios
 
@@ -29,7 +32,7 @@ GRANT SELECT, INSERT, UPDATE ON content.pages TO authenticated;
 GRANT SELECT, INSERT ON content.page_revisions TO authenticated;
 GRANT SELECT ON content.revision_statuses TO authenticated;
 GRANT SELECT, INSERT ON content.revision_status_events TO authenticated;
-GRANT SELECT, INSERT, UPDATE ON content.revision_current_status TO authenticated;
+GRANT SELECT ON content.revision_current_status TO authenticated;
 GRANT SELECT, INSERT, UPDATE ON content.page_drafts TO authenticated;
 ```
 

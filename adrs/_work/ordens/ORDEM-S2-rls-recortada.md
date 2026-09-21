@@ -10,7 +10,7 @@ RLS recortada às tabelas com ordem pronta ou aplicada: `workspace_members` (S1a
 
 | Tabela | Comando | Quem passa |
 | :--- | :--- | :--- |
-| `workspace_members` | SELECT | membro do mesmo workspace |
+| `workspace_members` | SELECT | a própria linha de membro |
 | `spaces` | SELECT | `effective_role` não nulo, não deletado |
 | `space_members` | SELECT | `effective_role` não nulo no espaço |
 | `pages` | SELECT | `effective_role` não nulo; deletada só para admin/editor |
@@ -19,15 +19,28 @@ RLS recortada às tabelas com ordem pronta ou aplicada: `workspace_members` (S1a
 | `page_revisions` | INSERT | autor é o próprio usuário, e admin/editor no espaço |
 | `revision_statuses` | SELECT | qualquer autenticado |
 | `revision_status_events` | SELECT | mesmo critério de `page_revisions`, por join |
-| `revision_status_events` | INSERT | ator é o próprio usuário, `effective_role` não nulo |
-| `revision_current_status` | ALL | mesmo critério de `page_revisions`, por join |
-| `page_drafts` | ALL | autor é o próprio usuário |
+| `revision_status_events` | INSERT | ator é o próprio usuário, admin/editor/reviewer no espaço |
+| `revision_current_status` | SELECT | mesmo critério de `page_revisions`, por join |
+| `page_drafts` | SELECT, UPDATE, DELETE | autor é o próprio usuário |
+| `page_drafts` | INSERT | autor é o próprio usuário, e admin/editor no espaço |
 
-Nenhuma tabela fica sem linha nesta lista. Onde não há comando de escrita, RLS nega por padrão: é o caso de `workspace_members` e `space_members`, sem fluxo de convite ainda (risco aberto do ADR 003), e de `page_revisions`/`revision_status_events`, onde a ausência de política de UPDATE/DELETE é a segunda garantia de imutabilidade que o próprio ADR já descreve para `page_revisions`.
+Nenhuma tabela fica sem linha nesta lista. Onde não há comando de escrita, RLS nega por padrão: é o caso de `workspace_members` e `space_members`, sem fluxo de convite ainda (risco aberto do ADR 003), e de `page_revisions`/`revision_status_events`, onde a ausência de política de UPDATE/DELETE é a segunda garantia de imutabilidade que o próprio ADR já descreve para `page_revisions`. `revision_current_status` também fica sem política de escrita: só o trigger grava nela, e a partir da emenda da S1c2 (`DDP-155`) ele roda `security definer`, por fora desta RLS.
 
 ## `pages` ganha UPDATE, que o ADR não escreve
 
 O ADR 003 (seção 6.3) só dá `pages_select` e `pages_write` (INSERT). Sem UPDATE, o trigger `revision_status_events_apply` (S1c2) não consegue gravar `published_revision_id`/`title`/`updated_at`: a função não é `security definer`, roda com o papel de quem insere o evento, e RLS bloquearia o `UPDATE` interno dela. A política `pages_update` deste ordem fecha essa lacuna, com o mesmo filtro de `pages_write`.
+
+## `revision_current_status` só lê
+
+Achado da revisão: com `content` exposto no PostgREST (`DDP-154`), RLS vira a única barreira de escrita, não uma segunda linha atrás de server function. Uma política de escrita em `revision_current_status`, mesmo restrita por `effective_role`, deixaria qualquer membro do espaço gravar `status_code = 'published'` direto na projeção, sem evento nenhum, contornando a restrição "status é sempre evento". A emenda da `DDP-155` na S1c2 torna `content.apply_revision_status_event()` `security definer`, e o trigger passa a escrever por fora desta RLS. Aqui só entra `SELECT`.
+
+## `revision_status_events` exige papel, não só acesso
+
+Achado da mesma revisão: `effective_role` não nulo inclui `viewer`, e um leitor não pode inserir evento de transição, muito menos publicar. O `INSERT` exige `admin`, `editor` ou `reviewer`. Lacuna declarada: qual papel pode fazer qual transição (quem aprova, quem publica) não é garantido pelo banco. A máquina de estados é do ADR 004, fatia E2, ainda não escrita.
+
+## `page_drafts` separa leitura de criação
+
+`drafts_own` original deixava qualquer `effective_role`, inclusive `viewer`, criar rascunho. `SELECT`, `UPDATE` e `DELETE` continuam restritos ao próprio autor. `INSERT` soma a exigência de admin/editor no espaço da página, mesmo filtro de `pages_write`.
 
 ## `revision_statuses` é exceção deliberada
 
@@ -47,8 +60,7 @@ ALTER TABLE content.revision_current_status ENABLE ROW LEVEL SECURITY;
 ALTER TABLE content.page_drafts           ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY workspace_members_select ON content.workspace_members FOR SELECT USING (
-  EXISTS (SELECT 1 FROM content.workspace_members m
-          WHERE m.workspace_id = workspace_members.workspace_id AND m.user_id = auth.uid())
+  user_id = auth.uid()
 );
 
 CREATE POLICY spaces_select ON content.spaces FOR SELECT USING (
@@ -106,21 +118,24 @@ CREATE POLICY revision_status_events_insert ON content.revision_status_events FO
   actor_id = auth.uid()
   AND EXISTS (SELECT 1 FROM content.page_revisions r JOIN content.pages p ON p.id = r.page_id
               WHERE r.id = revision_status_events.revision_id
-                AND content.effective_role(p.space_id, auth.uid()) IS NOT NULL)
+                AND content.effective_role(p.space_id, auth.uid()) IN ('admin', 'editor', 'reviewer'))
 );
 
-CREATE POLICY revision_current_status_rw ON content.revision_current_status FOR ALL USING (
-  EXISTS (SELECT 1 FROM content.page_revisions r JOIN content.pages p ON p.id = r.page_id
-          WHERE r.id = revision_current_status.revision_id
-            AND content.effective_role(p.space_id, auth.uid()) IS NOT NULL)
-) WITH CHECK (
+CREATE POLICY revision_current_status_select ON content.revision_current_status FOR SELECT USING (
   EXISTS (SELECT 1 FROM content.page_revisions r JOIN content.pages p ON p.id = r.page_id
           WHERE r.id = revision_current_status.revision_id
             AND content.effective_role(p.space_id, auth.uid()) IS NOT NULL)
 );
 
-CREATE POLICY drafts_own ON content.page_drafts FOR ALL
+CREATE POLICY drafts_select ON content.page_drafts FOR SELECT USING (author_id = auth.uid());
+CREATE POLICY drafts_update ON content.page_drafts FOR UPDATE
   USING (author_id = auth.uid()) WITH CHECK (author_id = auth.uid());
+CREATE POLICY drafts_delete ON content.page_drafts FOR DELETE USING (author_id = auth.uid());
+CREATE POLICY drafts_insert ON content.page_drafts FOR INSERT WITH CHECK (
+  author_id = auth.uid()
+  AND EXISTS (SELECT 1 FROM content.pages p WHERE p.id = page_drafts.page_id
+              AND content.effective_role(p.space_id, auth.uid()) IN ('admin', 'editor'))
+);
 ```
 
 ## Verificação
