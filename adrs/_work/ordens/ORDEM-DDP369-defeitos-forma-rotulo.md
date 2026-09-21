@@ -6,7 +6,7 @@ Cinco defeitos achados pela sessão D ao desenhar as formas, reunidos na `DDP-24
 
 ## Estado atual
 
-`truncate(text, max)` corta por número de caractere, sem medir a largura real do texto renderizado. `ElementLabels` usa `truncate(name, Math.floor(w / 8))` em dois lugares (caso `boundary` e o caso genérico) e `truncate(description, Math.floor(w / 6))`; a tecnologia usa `truncate(technology, 20)`, teto fixo; o tipo curto (`short`) não passa por `truncate` nenhum. No caso `person` de `renderShape`, a cabeça é `cy={r * 0.55}` e o corpo começa em `bodyY = r * 0.85`. Em `catalog.ts`, `external_person.short` é `"Pessoa"` e `external_system.short` é `"Sistema de Software"`, iguais aos tipos internos correspondentes. No caso `terminal`, o ícone de prompt é desenhado fixo em `x=10` a `28`, `y=10` a `25`, sem relação com a posição do rótulo.
+`truncate(text, max)` corta por número de caractere, sem medir a largura real do texto renderizado. `ElementLabels` usa `truncate(name, Math.floor(w / 8))` em dois lugares (caso `boundary` e o caso genérico) e `truncate(description, Math.floor(w / 6))`; a tecnologia usa `truncate(technology, 20)`, teto fixo; o tipo curto (`short`) não passa por `truncate` nenhum. No caso `person` de `renderShape`, a cabeça é `cy={r * 0.55}` e o corpo começa em `bodyY = r * 0.85`. Em `catalog.ts`, `external_person.short` é `"Pessoa"` e `external_system.short` é `"Sistema de Software"`, iguais aos tipos internos correspondentes. No caso `terminal`, o ícone de prompt parte de `x=10`, `y=10` e vai até `x = 10 + 1,5 * size` e `y = 10 + 0,9 * size`, com `size = Math.min(18, h * 0.3)`: no tamanho máximo, até `x=37` e `y` perto de 26, sem relação com a posição do rótulo.
 
 ## O que fazer
 
