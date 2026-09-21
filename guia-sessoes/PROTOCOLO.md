@@ -402,7 +402,7 @@ loop:
 
 Toda regra deste arquivo nasceu de um defeito medido, e por muito tempo todas viviam só como prosa aqui. Prosa depende de alguém lembrar de ler, o que é exatamente o defeito que a auditoria de 2026-09-20 nomeou nas restrições do ledger: afirmação sem mecanismo que a reprove. As regras de processo tinham a mesma falha, e a prova é que a sessão A violou a regra de formato de canal quinze minutos depois de escrevê-la.
 
-`guia-sessoes/bin/confere-quadro.sh` reprova, por máquina, oito defeitos que já aconteceram:
+`guia-sessoes/bin/confere-quadro.sh` reprova, por máquina, nove defeitos que já aconteceram, e imprime um inventário do que falta antes deles:
 
 | # | O que reprova | De onde veio |
 | :-- | :--- | :--- |
@@ -414,6 +414,9 @@ Toda regra deste arquivo nasceu de um defeito medido, e por muito tempo todas vi
 | 6 | Ordem versionada acima de 10.000 bytes | O teto da S1c foi descoberto na mão, com a ordem já escrita, e a da S1c1 estourou de novo na volta da revisão (`DDP-124`) |
 | 7 | `information_schema` dentro de bloco SQL executável | `DDP-121`. A view filtra por privilégio e devolve zero linha sem provar nada (`DDP-125`) |
 | 8 | Issue de rótulo `aprovacao-humana` sem a seção `A pergunta` na descrição | `DDP-140`, `DDP-141` e `DDP-142`, abertas afirmando e propondo, sem nada a responder |
+| 9 | Ordem de S1 sem declarar os blocos do recorte, ou declarando bloco que não existe | `DDP-127`. Nenhum comando respondia qual decisão do ADR nenhuma ordem implementou |
+
+**O check 9 não reprova bloco sem ordem.** Bloco do recorte que ainda não virou ordem sai como inventário, impresso antes dos achados, sem derrubar a conferência. Check que fica sempre vermelho é check que ninguém lê, e cinco blocos da S1 seguem legitimamente por escrever.
 
 **Ela roda dentro do `aguarda-fila.sh`, na partida da escuta da sessão A**, e não como comando à parte. Religar a escuta é o único ponto por onde a sessão passa em todo ciclo, então é onde a conferência não pode ser esquecida: esquecê-la significa parar de escutar, que é parar de trabalhar. A saída aparece no mesmo lugar onde a sessão lê o motivo de ter acordado.
 

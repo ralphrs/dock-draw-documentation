@@ -1,5 +1,7 @@
 # Ordem S1b: `spaces`, `space_members` e `pages`
 
+**Blocos do recorte:** `S1-B1`
+
 Segunda sub-fatia de S1 do ADR 003 (seção 6.2), recortada em `adrs/_work/RECORTE-S1-ADR-003.md`. Cria `content.spaces`, `content.space_members` e `content.pages`. Depende da S1a (`content.workspace_members`, aplicada em `DDP-103`) e de `public.workspaces`, pré-existente.
 
 **Emendada em `DDP-113`** (`DEC-0014`, a partir de `DDP-110`): `content.pages` ganha `project_id` (hierarquia de quatro níveis) e `UNIQUE NULLS NOT DISTINCT`. `content.space_members` ganha `workspace_id`, denormalizado. `content.spaces` não muda.

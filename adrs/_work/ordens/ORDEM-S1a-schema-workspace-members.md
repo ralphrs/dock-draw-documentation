@@ -1,5 +1,7 @@
 # Ordem S1a: schema `content` e `workspace_members`
 
+**Blocos do recorte:** `S1-B0`
+
 Primeira sub-fatia de S1 do ADR 003 (seção 6.2), recortada em `adrs/_work/RECORTE-S1-ADR-003.md`. Cria o schema `content`, a tabela `content.workspace_members` e o trigger que semeia o dono do workspace. Sem dependência de outra fatia do ADR 003 além de `public.workspaces`, que já existe no app.
 
 ## É a primeira fatia do projeto que toca banco

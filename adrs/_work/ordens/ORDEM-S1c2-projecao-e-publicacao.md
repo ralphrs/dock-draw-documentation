@@ -1,5 +1,7 @@
 # Ordem S1c2: projeção de status e publicação da página
 
+**Blocos do recorte:** `S1-B2` (segunda metade)
+
 Segunda metade da sub-fatia S1c do ADR 003 (seção 6.2, bloco 2, linhas 265 a 297), partida em `DDP-122` (`DEC-0015`). A primeira metade, `content.page_revisions` e `content.revision_status_events` com os triggers de imutabilidade, está aplicada em produção (commit `f619fb1` no app, migração `0002_create_content_page_revisions.sql`) e conferida no catálogo. Depende da S1c1.
 
 ## O que esta ordem cria
@@ -150,7 +152,7 @@ BEGIN
 END $$;
 ```
 
-A saída esperada é o erro `VEREDITO: PASSOU a, b, c e d`. Qualquer outro texto depois de `VEREDITO:` reprova e diz qual afirmação caiu. Erro que não comece por `VEREDITO:` é falha de montagem do teste, não resultado, e precisa ser resolvido antes de concluir.
+A saída esperada é o erro `VEREDITO: PASSOU a, b, c e d`. Outro texto depois de `VEREDITO:` reprova e diz qual afirmação caiu. Erro que não comece por `VEREDITO:` é falha de montagem, não resultado.
 
 A afirmação `d` é o controle negativo: sem ela, `a` a `c` não provariam que foi o trigger que projetou.
 

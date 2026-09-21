@@ -91,7 +91,7 @@ for i in recentes_l:
 # --------------------------------------------------------------------------
 LIMPA = re.compile(r"<(pre|code|tt)\b.*?</\1>", re.S | re.I)
 MARCADORES = [("{code", "macro {code} que não abriu"),
-              ("{{", "monospace {{...}} que não renderizou"),
+              ("{{", "monospace {{...}} que não renderizou. Causa quase sempre: chave dentro do conteúdo, como um trecho de código com objeto. Use {noformat} ou {code} para qualquer coisa que tenha chave"),
               ("`", "crase de Markdown que não virou código")]
 for i in recentes_l:
     d = get(f'/rest/api/2/issue/{i["key"]}?expand=renderedFields&fields=description,comment')
@@ -236,6 +236,46 @@ for arq in sorted(dir_ordens.glob("*.md")):
             "usa information_schema dentro de bloco SQL. Ele filtra por privilégio "
             "e devolve zero linha sem provar nada (DDP-121). Use pg_class, "
             "pg_constraint, pg_index ou pg_trigger."))
+
+# --------------------------------------------------------------------------
+# 9. Rastro entre o recorte e as ordens. Nenhum comando respondia qual decisão
+#    do ADR nenhuma ordem implementou: a ordem citava a fatia em prosa, e prosa
+#    não é consultável (DDP-127). Cada bloco do recorte tem id estável e cada
+#    ordem declara os ids que implementa.
+#
+#    Só reprova o que é defeito: ordem sem declaração, e ordem citando id que
+#    não existe. Bloco sem ordem é inventário do que falta, e sai como nota:
+#    um check sempre vermelho é um check que ninguém lê.
+# --------------------------------------------------------------------------
+notas = []
+arq_recorte = pathlib.Path(os.environ["raiz"]) / "adrs" / "_work" / "RECORTE-S1-ADR-003.md"
+if arq_recorte.exists():
+    ids_recorte = set(re.findall(r"`(S1-B\d+)`", arq_recorte.read_text(encoding="utf-8")))
+    cobertos = set()
+    for arq in sorted(dir_ordens.glob("ORDEM-S1*.md")):
+        texto = arq.read_text(encoding="utf-8")
+        decl = re.search(r"^\*\*Blocos do recorte:\*\*\s*(.+)$", texto, re.M)
+        if not decl:
+            achados.append((arq.name,
+                "não declara quais blocos do recorte implementa. Ponha "
+                "'**Blocos do recorte:** `S1-Bn`' logo abaixo do título, ou "
+                "'nenhum' com a razão, quando o DDL não vier do recorte."))
+            continue
+        citados = set(re.findall(r"S1-B\d+", decl.group(1)))
+        fantasmas = sorted(c for c in citados if c not in ids_recorte)
+        if fantasmas:
+            achados.append((arq.name,
+                "declara bloco que não existe no recorte: %s" % ", ".join(fantasmas)))
+        cobertos |= citados
+    faltam = sorted(ids_recorte - cobertos, key=lambda s: int(s.split("B")[1]))
+    if faltam:
+        notas.append("Blocos do recorte S1 ainda sem ordem: %s" % ", ".join(faltam))
+
+if notas:
+    print("Inventário:")
+    for n in notas:
+        print("  " + n)
+    print("")
 
 if achados:
     print("ATENÇÃO: a conferência do quadro achou %d problema(s).\n" % len(achados))

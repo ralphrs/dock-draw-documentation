@@ -1,5 +1,7 @@
 # Ordem S1c1: `page_revisions`, `revision_statuses`, `revision_status_events`
 
+**Blocos do recorte:** `S1-B2` (primeira metade)
+
 Primeira metade da sub-fatia S1c do ADR 003 (seção 6.2, bloco 2), partida em `DDP-122` (`DEC-0015`): o bloco tem 4.248 caracteres de DDL e dois triggers de imutabilidade. Fecha a constraint adiada de `pages.published_revision_id`. Depende da S1b (`content.pages`, aplicada).
 
 ## O corte, e por que cada metade fica consistente

@@ -1,5 +1,7 @@
 # Ordem S1f': `content.effective_role`
 
+**Blocos do recorte:** `S1-B7`
+
 Sub-fatia S1f' da `DEC-0015`: só o bloco 7 do recorte, `content.effective_role` (ADR 003, seção 6.2, linhas 393 a 405). O bloco 8, `content.position_between`, fica fora desta ordem: a `DEC-0015` tirou `effective_role` da posição original para ela chegar antes da RLS, e trazer o bloco 8 junto não serve a esse propósito. Depende de S1a (`content.workspace_members`) e S1b (`content.spaces`, `content.space_members`), ambas aplicadas.
 
 ## Como aplicar esta migração

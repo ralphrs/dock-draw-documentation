@@ -4,17 +4,19 @@ Medido nesta sessão: o DDL de `adrs/ADR-003-armazenamento-e-versionamento.md` s
 
 ## Tamanho de cada bloco numerado do DDL (medido)
 
-| # | Bloco | Caracteres |
-| :- | :--- | ---: |
-| 0 | `workspace_members` + trigger de seed | 932 |
-| 1 | `spaces`, `space_members`, `pages` | 1.695 |
-| 2 | `page_revisions`, `revision_statuses`, `revision_status_events`, `revision_current_status`, triggers de imutabilidade | 4.248 |
-| 3 | `page_drafts` | 484 |
-| 4 | `page_refs` | 1.001 |
-| 5 | `assets` | 783 |
-| 6 | `sync_state` | 707 |
-| 7 | `content.effective_role` | 562 |
-| 8 | `content.position_between` | 337 |
+| Id | Bloco | Caracteres |
+| :-- | :--- | ---: |
+| `S1-B0` | `workspace_members` + trigger de seed | 932 |
+| `S1-B1` | `spaces`, `space_members`, `pages` | 1.695 |
+| `S1-B2` | `page_revisions`, `revision_statuses`, `revision_status_events`, `revision_current_status`, triggers de imutabilidade | 4.248 |
+| `S1-B3` | `page_drafts` | 484 |
+| `S1-B4` | `page_refs` | 1.001 |
+| `S1-B5` | `assets` | 783 |
+| `S1-B6` | `sync_state` | 707 |
+| `S1-B7` | `content.effective_role` | 562 |
+| `S1-B8` | `content.position_between` | 337 |
+
+O id é estável e não é reaproveitado. Toda ordem declara, logo abaixo do título, quais ids implementa, e o check 9 do `confere-quadro.sh` compara as duas listas nos dois sentidos: ordem citando id que não existe, e ordem sem declaração nenhuma. O id existir sem ordem é inventário do que falta, não defeito.
 
 ## Por que a ordem dos blocos não é livre
 

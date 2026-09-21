@@ -1,5 +1,7 @@
 # Ordem S1g: `node_kind` em `content.pages`
 
+**Blocos do recorte:** nenhum. Esta ordem não implementa bloco do recorte: o DDL nasce da `DEC-0018` e da resposta em `DDP-141`, não do texto do ADR 003
+
 Coluna que distingue pasta de página. Não vem do texto do ADR 003: nasce da `DEC-0018` e da resposta do humano em `DDP-141`, "pasta e página são a mesma coisa com um rótulo diferente". É extensão aditiva ao schema do ADR 003, sem reabrir o ADR. Depende de S1b (`content.pages`, aplicada).
 
 ## Como aplicar esta migração
