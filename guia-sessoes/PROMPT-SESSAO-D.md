@@ -84,6 +84,8 @@ Tudo acontece na issue do Jira, pelo MCP do Atlassian. Projeto `DDP`, `cloudId` 
 - **Retomar:** leia o comentário de resposta da sessão A e siga a instrução.
 - **Entregar:** comentário `Sessão D: resultado` com o link do frame no Figma, as variantes criadas, as decisões de desenho que você tomou e o que ficou em aberto. Transição `4` para `EM REVISÃO`. Quem fecha a issue é a sessão A, depois de o humano ver o desenho.
 
+**Nunca ponha chave dentro de monospace.** Trecho como `opacity={0.85}` ou uma regra CSS com chave dentro de `{{...}}` quebra a renderização do Jira e engole o texto seguinte. Para qualquer trecho de código com chave, use a macro `{code}` ou `{noformat}`. A conferência do quadro reprova esse erro.
+
 Todo comentário seu começa com `Sessão D:`. O conector do Atlassian é o mesmo para todas as sessões, e o prefixo é o que diz quem escreveu.
 
 Você nunca edita descrição de issue nem comentário de outra sessão.
