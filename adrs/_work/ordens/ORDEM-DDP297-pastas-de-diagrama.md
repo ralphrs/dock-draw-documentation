@@ -28,7 +28,7 @@ Nome da tabela, colunas, e se ela vive em `public` ou em `content` (decidido aba
 CREATE TABLE public.view_folders (
   id                uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   project_id        uuid NOT NULL REFERENCES public.projects(id) ON DELETE CASCADE,
-  parent_folder_id  uuid REFERENCES public.view_folders(id) ON DELETE CASCADE,
+  parent_folder_id  uuid,
   name              text NOT NULL,
   position          numeric NOT NULL DEFAULT 0,
   created_by        uuid NOT NULL DEFAULT auth.uid() REFERENCES auth.users(id),
@@ -86,6 +86,10 @@ CREATE POLICY view_folders_delete ON public.view_folders FOR DELETE USING (
 );
 ```
 
+## Lacuna declarada
+
+O gatilho lê a tabela pelo retrato do início da instrução. Um `UPDATE` só que troca o pai de duas pastas ao mesmo tempo, cada uma para dentro da outra, passa pelos dois disparos e fecha um ciclo. A interface move uma pasta por vez e nunca gera essa instrução. Quem escrever operação em lote sobre `view_folders`, como importação, precisa checar ciclo depois da instrução inteira (achado da sessão C na `DDP-312`).
+
 ## O que não fazer aqui
 
 - Pasta com escopo entre projetos: `project_id` não muda ao mover, só `parent_folder_id`.
@@ -109,6 +113,11 @@ DO $$
 DECLARE
   falhas text := '';
   vf oid := to_regclass('public.view_folders');
+  proj uuid;
+  usr uuid;
+  a uuid := gen_random_uuid();
+  b uuid := gen_random_uuid();
+  barrou boolean := false;
 BEGIN
   IF vf IS NULL THEN falhas := falhas || ' tabela;'; END IF;
   IF NOT EXISTS (SELECT 1 FROM pg_attribute
@@ -118,17 +127,44 @@ BEGIN
         AND conrelid IN (vf, to_regclass('public.views'))
         AND array_length(conkey,1) = 2 AND confdeltype = 'c') <> 2
     THEN falhas := falhas || ' fk compostas;'; END IF;
-  IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname='view_folders_no_cycle' AND tgrelid = vf)
-    THEN falhas := falhas || ' gatilho;'; END IF;
+  IF (SELECT count(*) FROM pg_constraint WHERE contype='f' AND confrelid = vf
+        AND conrelid = vf AND array_length(conkey,1) = 1) <> 0
+    THEN falhas := falhas || ' fk simples sobrando;'; END IF;
   IF NOT coalesce((SELECT relrowsecurity FROM pg_class WHERE oid = vf), false)
     THEN falhas := falhas || ' rls;'; END IF;
-  IF (SELECT count(*) FROM pg_policies WHERE schemaname='public' AND tablename='view_folders') <> 4
+  IF (SELECT count(*) FROM pg_policies WHERE schemaname='public' AND tablename='view_folders'
+        AND coalesce(qual, with_check) LIKE '%can_access_project(project_id)%'
+        AND (with_check IS NULL OR with_check LIKE '%can_access_project(project_id)%')) <> 4
     THEN falhas := falhas || ' políticas;'; END IF;
+
+  -- Comportamento do gatilho: A na raiz, B dentro de A, e mover A para dentro de B tem de falhar.
+  IF vf IS NOT NULL THEN
+    SELECT id INTO proj FROM public.projects LIMIT 1;
+    SELECT id INTO usr FROM auth.users LIMIT 1;
+    EXECUTE 'INSERT INTO public.view_folders (id, project_id, parent_folder_id, name, created_by) VALUES ($1, $2, NULL, $3, $4)'
+      USING a, proj, 'veredito-a', usr;
+    EXECUTE 'INSERT INTO public.view_folders (id, project_id, parent_folder_id, name, created_by) VALUES ($1, $2, $3, $4, $5)'
+      USING b, proj, a, 'veredito-b', usr;
+    BEGIN
+      EXECUTE 'UPDATE public.view_folders SET parent_folder_id = $1 WHERE id = $2' USING b, a;
+    EXCEPTION WHEN raise_exception THEN barrou := true;
+    END;
+    IF NOT barrou THEN falhas := falhas || ' gatilho não barra ciclo;'; END IF;
+    barrou := false;
+    BEGIN
+      EXECUTE 'UPDATE public.view_folders SET parent_folder_id = $1 WHERE id = $1' USING a;
+    EXCEPTION WHEN raise_exception THEN barrou := true;
+    END;
+    IF NOT barrou THEN falhas := falhas || ' gatilho não barra pasta dentro de si;'; END IF;
+  ELSE
+    falhas := falhas || ' gatilho;';
+  END IF;
+
   RAISE EXCEPTION 'VEREDITO: %', CASE WHEN falhas = '' THEN 'VERDE' ELSE 'VERMELHO' || falhas END;
 END $$;
 ```
 
-Antes da migração, o bloco sai `VERMELHO tabela; views.folder_id; fk compostas; gatilho; rls; políticas;`, medido pela sessão A contra produção em 2026-09-21. Depois, `VERDE`. A direção verde só se exerce com a migração aplicada, e fica para a revisão de resultado.
+O bloco testa o gatilho de verdade: cria duas pastas e tenta os dois ciclos, e a exceção final desfaz tudo o que ele gravou. As políticas contam só se o texto delas usa `can_access_project(project_id)`. Antes da migração, o bloco sai `VERMELHO tabela; views.folder_id; fk compostas; rls; políticas; gatilho;`, medido pela sessão A contra produção em 2026-09-21. Depois, `VERDE`. A direção verde só se exerce com a migração aplicada, e fica para a revisão de resultado.
 
 No preview, a sessão C confere: criar pasta na raiz e dentro de outra pasta, renomear, arrastar diagrama e pasta para dentro de outra pasta, excluir pasta com conteúdo pede confirmação e remove tudo dentro, duas pastas irmãs com o mesmo nome são recusadas, e arrastar uma pasta para dentro de uma subpasta dela é recusado.
 
