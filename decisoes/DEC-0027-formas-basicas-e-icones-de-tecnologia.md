@@ -32,3 +32,9 @@ Cada logotipo tem dono e marca registrada. A licença do arquivo do ícone não 
 ## Lacuna declarada
 
 Conjunto de ícones do tamanho do landscape da CNCF, com centenas de projetos, não se desenha à mão, um épico por ícone. O desenho da sessão D é a moldura e o padrão de encaixe. A carga dos ícones é trabalho de dados, e o formato de catálogo sai do ADR 015.
+
+## Nuvens sem permissão escrita, decidido em 2026-09-21
+
+Na `DDP-249` o humano decidiu: ícone genérico, colagem de imagem para quem quiser logotipo, e nenhum logotipo de terceiro no produto, com exceção das nuvens que dão permissão escrita para diagrama (AWS e Azure). Na `DDP-366` aprovou o caminho para o Google Cloud e as outras nuvens sem essa permissão: um conjunto próprio do DokDraw de ícones por categoria de serviço (computação, função, contêiner, banco relacional, banco NoSQL, armazenamento de objetos, fila e mensageria, rede, balanceador, cache, identidade, monitoramento), com o desenho vindo da Lucide (ISC), a cor da paleta do DokDraw, o nome do serviço no rótulo e um selo de texto com o provedor, sem logotipo.
+
+Alternativa descartada: pedir autorização ao Google. Sem prazo, e o mesmo pedido se repetiria para cada provedor.
