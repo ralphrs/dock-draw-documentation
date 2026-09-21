@@ -69,7 +69,11 @@ for i in busca(VIGIADA, "key,summary,status,comment"):
 # Issue fechada fica de fora das checagens de texto de propósito. Ninguém vai
 # agir nela, e achado que não se pode consertar deixa o script vermelho para
 # sempre. Checagem que nunca alcança o verde ensina a ignorar a checagem.
-recentes_l = busca('project = DDP AND status != "CONCLUÍDA" ORDER BY updated DESC',
+# Os checks 2 e 3 olham texto publicado, e o texto mais longo da sessão A é o
+# comentário de fechamento, escrito imediatamente antes de mover a issue para
+# CONCLUÍDA. Filtrar por status aberto deixava esses comentários fora de toda
+# conferência. Achado em DDP-150, cujo monospace mal fechado passou verde.
+recentes_l = busca('project = DDP ORDER BY updated DESC',
                    "key,summary,description,comment", limit=N)
 existentes = {i["key"] for i in busca("project = DDP ORDER BY key ASC", "key", limit=200)}
 for i in recentes_l:
@@ -102,6 +106,11 @@ for i in recentes_l:
     for onde, html in partes:
         nu = LIMPA.sub("", html)
         vazou = [nome for m, nome in MARCADORES if m in nu]
+        # Monospace mal fechado não vaza {{: ele renderiza e engole o resto do
+        # parágrafo. O rastro é chave solta dentro do <tt>. Pego em DDP-150,
+        # onde {{DEC-0022}] passou verde pelo teste acima.
+        if any(re.search(r"[{}]", m) for m in re.findall(r"<tt>(.*?)</tt>", html, re.S)):
+            vazou.append("monospace mal fechado, com chave solta dentro do <tt>")
         if re.search(r"(^|>)\s*##\s", nu):
             vazou.append("## de Markdown que não virou cabeçalho")
         if vazou:
