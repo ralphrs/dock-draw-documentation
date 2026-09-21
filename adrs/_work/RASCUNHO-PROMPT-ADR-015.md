@@ -23,6 +23,8 @@ Este ADR reabre o ADR 001 no ponto central dele, que é o que o banco guarda de 
 10. **Esquema de cores do tenant (`DEC-0025`).** Onde o esquema é guardado, como tenant, espaço e projeto herdam um do outro, cor por forma e por tema, e que esquema vale para um diagrama embutido na wiki de outro espaço.
 11. **Catálogo de ícones em escala (`DEC-0027`).** Landscape da CNCF, linguagens e infraestrutura somam centenas de ícones. Diga o formato do catálogo e como um ícone novo entra sem mudar código.
 
+12. **Tipos de diagrama do C4 que faltam (`DEC-0029`).** Nível de código, panorama de sistemas, diagrama dinâmico e diagrama de implantação com nó de implantação e de infraestrutura. Base: `adrs/_work/INVENTARIO-C4-contra-documentacao.md`.
+
 # Eliminatórios específicos
 - R-01 Cor só por token, igual em tema claro e escuro, como no resto do app.
 - R-02 Nenhuma forma de conjunto de terceiros entra sem licença conferida que permita o uso no produto.
