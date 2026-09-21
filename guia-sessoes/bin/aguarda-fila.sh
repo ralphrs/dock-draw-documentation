@@ -103,6 +103,31 @@ fi
 #
 # Falha de rede aqui não é erro: o limite já foi atingido e a sessão vai
 # acordar de todo jeito. Silêncio é melhor que travar a saída.
+proxima_d() {
+  # Uma sessão que já está rodando não relê o próprio prompt. Em 2026-09-21 a
+  # sessão D passou por uma tarefa de prioridade porque a regra entrou no prompt
+  # depois que ela começou. A escuta é o texto que ela lê a cada volta, então a
+  # ordem certa sai daqui: prioridade primeiro, depois a menor chave.
+  jqld='project = DDP AND labels = "sessao-d" AND status in ("A FAZER", "EM ANDAMENTO") ORDER BY key ASC'
+  curl -sS --max-time 20 -u "$JIRA_EMAIL:$JIRA_TOKEN" -G \
+    --data-urlencode "jql=$jqld" --data-urlencode 'fields=summary,labels,status' \
+    --data-urlencode 'maxResults=100' "$site/rest/api/2/search/jql" 2>/dev/null |
+    python3 -c 'import json,sys
+try:
+    itens = json.load(sys.stdin).get("issues", [])
+except Exception:
+    itens = []
+andando = [i for i in itens if i["fields"]["status"]["name"] == "EM ANDAMENTO"]
+prio = [i for i in itens if "prioridade" in i["fields"]["labels"] and i not in andando]
+resto = [i for i in itens if i not in andando and i not in prio]
+ordem = andando + prio + resto
+if ordem:
+    i = ordem[0]
+    motivo = "retomar" if i in andando else ("prioridade" if i in prio else "menor chave")
+    print("PRÓXIMA TAREFA DA SESSÃO D: %s (%s) %s" % (i["key"], motivo, i["fields"]["summary"]))
+    print("Leia a descrição inteira antes de começar: ela pode trazer correção da sessão A.")' || true
+}
+
 religue() {
   # A escuta morre em toda saída, e religá-la depende de alguém lembrar. Em
   # 2026-09-20 a sessão A esqueceu depois da DDP-139, despachou a DDP-146 e
@@ -158,6 +183,9 @@ while :; do
 
   if [ "$n" -gt 0 ]; then
     printf 'FILA %s: %s issue(s) esperando, %s\n' "$sessao" "$n" "$(date +%Y-%m-%dT%H:%M:%S)"
+    if [ "$sessao" = "D" ] || [ "$sessao" = "d" ]; then
+      proxima_d
+    fi
     religue
     exit 0
   fi
