@@ -35,3 +35,15 @@ O pedido foi estilizar para o padrão do produto. Aplicado ao ícone, ele cai em
 ## Lacuna declarada
 
 O tamanho do ícone. A apresentação da AWS pede os tamanhos predefinidos, e uma forma redimensionável no quadro livre tende a escalar o que tem dentro. A regra sobre como o ícone se comporta quando a forma cresce fica para o ADR 015.
+
+## Complemento de 2026-09-21: cópia do pacote, resolução e cantos
+
+O humano pediu "um tipo de fork": manter os ícones e as cores oficiais, arredondar cantos e garantir resolução boa nas exportações. A sessão A baixou o pacote oficial (`Icon-package_07312026`, 13.988.918 bytes) e conferiu os arquivos antes de decidir.
+
+**Cópia do pacote dentro do projeto: sim.** Os ícones entram sem nenhuma alteração, com a versão do pacote e a atribuição. A CC-BY-ND 2.0 permite redistribuir o arquivo como ele é.
+
+**Resolução nas exportações: sim, sem alterar o ícone.** O pacote traz 3.620 arquivos SVG, vetoriais, e cada ícone de serviço vem em quatro tamanhos desenhados para a escala (16, 32, 48 e 64). Exportação em SVG ou PDF mantém o vetor, e exportação em PNG é gerada a partir do vetor na resolução pedida. A CC-BY-ND 2.0 permite as modificações tecnicamente necessárias para usar a obra em outros meios e formatos, e é esse o caso.
+
+**Arredondar os cantos do ícone: não.** O ícone de serviço é um quadrado de canto reto com a cor da categoria, medido no arquivo do Lambda (`<rect x="0" y="0" width="80" height="80">`, sem raio). Arredondar esse quadrado muda a forma do ícone, e a apresentação oficial proíbe "Change icon shapes" e "Crop service icons". Recortar o canto com `clip-path` na renderização também é recorte.
+
+O arredondado fica na moldura do DokDraw, com margem interna entre a borda e o ícone. O pacote também traz ícones de recurso, sem quadrado de fundo, que se encaixam melhor numa moldura arredondada. Qual dos dois vira o padrão de cada forma é decisão do ADR 015.
