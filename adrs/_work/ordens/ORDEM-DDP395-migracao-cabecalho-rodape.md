@@ -13,7 +13,7 @@ Categoria `app-release`. Solução aprovada em `DDP-392`, texto completo em `adr
 **3. Função de leitura e gravação, com validação Zod.** Arquivo novo, `src/application/export-frames.functions.ts`, no padrão das server functions de `src/application/diagram.functions.ts` (`createServerFn`, `requireSupabaseAuth`, validação no `inputValidator`):
 
 * `fetchExportFrames({ projectId })` devolve `{ header, footer }` do projeto, ou os dois nulos quando não há linha.
-* `saveExportFrames({ projectId, header, footer })` valida a entrada com `ProjectExportFrames`, confere que todo `imagePath` de todo item de imagem, nas duas faixas, começa com `` `${projectId}/frames/` ``, e só então grava com `upsert` por `project_id`. Caminho de outro projeto recusa a gravação inteira com erro, sem tocar a linha existente.
+* `saveExportFrames({ projectId, header, footer })` valida a entrada com `ProjectExportFrames`, confere que todo `imagePath` de todo item de imagem, nas duas faixas, começa com o `projectId` da chamada seguido de `/frames/`, e só então grava com `upsert` por `project_id`. Caminho de outro projeto recusa a gravação inteira com erro, sem tocar a linha existente.
 
 O JSON nunca é interpretado como código nem gravado sem passar pelo esquema.
 
