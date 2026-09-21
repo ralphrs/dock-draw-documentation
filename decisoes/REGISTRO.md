@@ -18,7 +18,7 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 
 | Id | Data | Decisão | Quem decidiu |
 | --- | --- | --- | --- |
-| [DEC-0030](DEC-0030-icones-oficiais-das-nuvens.md) | 2026-09-21 | Ícones oficiais de AWS, Azure, Google Cloud e OCI no produto, sem alteração, com aviso de marca. Risco aceito pelo humano | Humano |
+| [DEC-0030](DEC-0030-icones-oficiais-das-nuvens.md) | 2026-09-21 | Ícones oficiais de AWS, Azure, Google Cloud e OCI no produto, e depois todas as marcas, sem alteração, com aviso de marca. Risco aceito pelo humano | Humano |
 | [DEC-0029](DEC-0029-c4-so-o-que-a-documentacao-define.md) | 2026-09-21 | A família C4 usa só o que c4model.com define. Inventário do catálogo atual contra a documentação antes de nova forma C4 | Humano |
 | [DEC-0028](DEC-0028-design-system-central-no-figma.md) | 2026-09-21 | Um design-system central no Figma, na raiz de dok draw app. Proposta nasce em draft e é consolidada depois da aprovação | Humano |
 | [DEC-0027](DEC-0027-formas-basicas-e-icones-de-tecnologia.md) | 2026-09-21 | Depois de C4 e AWS: formas e setas básicas, depois ícones de tecnologia (CNCF, linguagens, infraestrutura) | Humano |

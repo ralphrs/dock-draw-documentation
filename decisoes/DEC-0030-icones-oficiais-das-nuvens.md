@@ -34,8 +34,14 @@ As regras acima vieram de uma conversa com um assistente de IA que o humano colo
 
 Alternativa descartada: o conjunto próprio por categoria, aprovado na `DDP-366` e registrado na `DEC-0027`. Tira o risco de marca e custa o reconhecimento imediato do ícone oficial, que é o que o humano quer oferecer.
 
+## Vale para todas as marcas, decidido em 2026-09-21
+
+Na `DDP-385` o humano estendeu a decisão "para tudo": as mesmas regras valem para os logotipos que não são de nuvem, como CNCF e Kubernetes, Docker, linguagens de programação e ferramentas de CI/CD. A decisão da `DDP-249` (ícone genérico e colagem de imagem) fica substituída. O risco é o mesmo da seção anterior, e maior para as marcas que pedem autorização escrita, como a CNCF e o Docker (`DDP-247`). O humano assume esse risco.
+
+Arquivo de marca entra da fonte oficial do dono (kit de imprensa ou repositório de artwork), sem alteração. Onde a única fonte for uma coleção de terceiros, como o simple-icons, isso fica registrado por marca, porque o desenho ali pode ser redesenhado e não o original.
+
 ## Lacuna declarada
 
-A regra dos quatro provedores não diz nada sobre logotipos que não são de nuvem: CNCF e Kubernetes, Docker, linguagens e ferramentas de CI/CD. Para esses, vale a `DDP-249` (ícone genérico e colagem de imagem) até o humano dizer outra coisa.
+O aviso de marca da seção anterior cita só os quatro provedores. Ele ganha a lista das outras marcas quando elas entrarem no produto.
 
-A versão e os termos de cada pacote (Google Cloud e OCI) são conferidos na web, com link e data, antes de o pacote entrar no produto.
+A versão e os termos de cada pacote são conferidos na web, com link e data, antes de o pacote entrar no produto. Google Cloud e OCI foram registrados na `DDP-384`.
