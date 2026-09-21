@@ -76,7 +76,23 @@ for i in busca(VIGIADA, "key,summary,status,comment"):
 # conferência. Achado em DDP-150, cujo monospace mal fechado passou verde.
 recentes_l = busca('project = DDP ORDER BY updated DESC',
                    "key,summary,description,comment", limit=N)
-existentes = {i["key"] for i in busca("project = DDP ORDER BY key ASC", "key", limit=200)}
+# Lista completa, paginada. Com limit fixo, toda chave acima do limite parecia
+# inexistente: em 2026-09-21 o projeto passou de 200 issues e a DDP-243, que
+# existe, foi acusada de fantasma. O check reprovava um quadro correto.
+def todas_as_chaves():
+    from urllib.parse import quote
+    chaves, token = set(), None
+    while True:
+        p = (f"/rest/api/2/search/jql?jql={quote('project = DDP ORDER BY key ASC')}"
+             f"&fields=key&maxResults=100")
+        if token:
+            p += "&nextPageToken=" + quote(token)
+        d = get(p)
+        chaves |= {i["key"] for i in d.get("issues", [])}
+        token = d.get("nextPageToken")
+        if d.get("isLast", True) or not token:
+            return chaves
+existentes = todas_as_chaves()
 for i in recentes_l:
     textos = [i["fields"].get("description") or ""]
     textos += [c["body"] for c in ((i["fields"].get("comment") or {}).get("comments") or [])]
