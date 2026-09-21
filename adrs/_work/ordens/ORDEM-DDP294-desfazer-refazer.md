@@ -20,7 +20,11 @@ Nenhuma pilha de comando existe hoje. Toda mutação em `src/routes/_authenticat
 
 **5. A pilha esvazia por sessão de edição.** Trocar de vista (abrir outro diagrama) ou recarregar a página limpa a pilha. Desfazer não atravessa vistas nem sobrevive a um recarregamento.
 
-**6. Excluir e recriar mantêm o id.** Desfazer uma exclusão recria o elemento com o mesmo id que ele tinha, e recria junto as conexões que a exclusão levou. Com id novo, as outras entradas da pilha que apontam para o elemento ficariam órfãs, e refazer quebraria.
+**6. Excluir e recriar mantêm o id.** Desfazer uma exclusão recria o elemento com o mesmo id que ele tinha, e recria junto as conexões que a exclusão levou, também com os ids delas. Com id novo, as outras entradas da pilha que apontam para o elemento ficariam órfãs, e refazer quebraria.
+
+Hoje o servidor escolhe o id: `addElement` e `addRelationship`, em `src/application/diagram.functions.ts`, não aceitam `id`. As duas passam a aceitar um `id` opcional (`z.string().uuid().optional()`), usado só pelo caminho de desfazer uma exclusão. Sem `id`, o comportamento de hoje não muda. `addRelationship` também não aceita `technology` nem `waypoints`: a recriação de uma conexão com esses campos faz duas chamadas, criar e depois completar, no mesmo padrão que `pasteAt` já usa. Esta é a exceção declarada ao item 3: desfazer uma exclusão usa as mesmas funções, com o `id` a mais.
+
+**6b. A pilha precisa saber se a gravação falhou.** `deleteNodeById` e `apagarConexao` tratam o próprio erro e não o repassam: quem chama nunca sabe se a exclusão falhou. As duas passam a devolver `true` quando a exclusão gravou e `false` quando falhou, mantendo o aviso e a reversão de tela que já fazem. As mutações do React Query, quando chamadas pela pilha, usam `mutateAsync`, que rejeita no erro. Com esses dois sinais a pilha cumpre o item 4 para toda operação.
 
 **7. Ação nova limpa o refazer.** Depois de desfazer, qualquer ação nova do usuário descarta as entradas de refazer, como em todo editor.
 
