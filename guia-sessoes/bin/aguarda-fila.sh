@@ -125,7 +125,8 @@ if ordem:
     i = ordem[0]
     motivo = "retomar" if i in andando else ("prioridade" if i in prio else "menor chave")
     print("PRÓXIMA TAREFA DA SESSÃO D: %s (%s) %s" % (i["key"], motivo, i["fields"]["summary"]))
-    print("Leia a descrição inteira antes de começar: ela pode trazer correção da sessão A.")' || true
+    print("Leia a descrição inteira antes de começar: ela pode trazer correção da sessão A.")
+    print("No comentário de resultado, nunca ponha chave dentro de monospace: use a macro de código.")' || true
 }
 
 religue() {
