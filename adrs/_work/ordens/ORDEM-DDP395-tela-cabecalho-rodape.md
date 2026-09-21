@@ -1,6 +1,8 @@
 # Ordem DDP-395b: tela de configuração e exportação do cabeçalho e rodapé
 
-Segunda de duas ordens da mesma proposta (`DDP-392`, `adrs/_work/PROPOSTA-cabecalho-rodape.md`, layout aprovado em [claude.ai/artifact/2K35f1bCzXYUumpNCr2yCD](https://claude.ai/artifact/2K35f1bCzXYUumpNCr2yCD)). Depende da `ORDEM-DDP395-migracao-cabecalho-rodape.md`: tabela, RLS e função de leitura/gravação validada por Zod precisam estar aplicadas antes desta.
+Issue da ordem: `DDP-399`, rótulo `lovable`.
+
+Segunda de duas ordens da mesma proposta (`DDP-392`, `adrs/_work/PROPOSTA-cabecalho-rodape.md`, layout aprovado em [claude.ai/artifact/2K35f1bCzXYUumpNCr2yCD](https://claude.ai/artifact/2K35f1bCzXYUumpNCr2yCD)). Depende da `ORDEM-DDP395-migracao-cabecalho-rodape.md`: tabela, RLS e função de leitura/gravação validada por Zod precisam estar aplicadas antes desta. Depende também das telas no Figma (`DDP-394`), que trazem os componentes, a regra de margens e a fonte serifada: esta ordem roda depois delas, e o valor `serif` do schema usa a família registrada lá.
 
 ## O que fazer
 
@@ -12,13 +14,13 @@ Segunda de duas ordens da mesma proposta (`DDP-392`, `adrs/_work/PROPOSTA-cabeca
 
 **4. Painel da faixa.** Altura (`Compacta, 40 px` / `Média, 56 px` / `Alta, 72 px`), fundo (cor ou transparente) e a caixa "Linha separando do diagrama".
 
-**5. Prévia ao lado, ao vivo.** Um diagrama real do projeto (o mais recente editado, ou o primeiro da lista se nenhum tiver sido aberto), com a faixa sendo editada desenhada por cima, atualizando a cada mudança de campo.
+**5. Prévia ao lado, ao vivo.** Um diagrama real do projeto (o mais recente editado, ou o primeiro da lista se nenhum tiver sido aberto), com a faixa do cabeçalho acima e a do rodapé abaixo, por fora do diagrama e sem cobrir nada dele, como no layout aprovado, atualizando a cada mudança de campo.
 
 **6. Salvar.** Grava por debounce (a cada pausa de digitação ou mudança de campo) pela função da `ORDEM-DDP395-migracao-cabecalho-rodape.md`. Falha de gravação mostra aviso, no padrão de erro que as mutações do app já usam, sem perder o que a pessoa digitou na tela.
 
 **7. Diálogo de exportação, novo.** Hoje `runExport(kind)` (`src/routes/_authenticated/projetos.$projectId.diagramas.$viewId.tsx`) chama a exportação direto, sem diálogo. Essa chamada direta vira um `Dialog` (mesmo componente que o app já usa em outros diálogos, como o de detalhes do elemento): título "Exportar '[nome do diagrama]'", seleção de formato (PNG, SVG, .drawio, um selecionado por vez), a caixa "Incluir cabeçalho e rodapé do projeto" com o texto de apoio descrevendo o que está configurado, prévia em miniatura do resultado, e os botões Cancelar e Baixar. A caixa vem marcada quando o projeto tem `header` ou `footer` gravado (qualquer um dos dois, não precisa dos dois), e o app lembra a última escolha por pessoa em `localStorage`, mesmo padrão de `usePalette` (`src/lib/palette.tsx`). Link "Editar cabeçalho e rodapé" no rodapé do diálogo leva à rota do item 1.
 
-**8. `buildSvg` monta as faixas.** Em `src/components/editor/export-diagram.tsx`, `buildSvg` recebe `header` e `footer` opcionais (o formato do schema Zod da outra ordem). Quando presentes e a exportação pede as faixas: a altura da faixa de cabeçalho soma ao topo do `viewBox` (o diagrama desce a mesma medida), a do rodapé soma à base, cada faixa desenha seu fundo, a linha separadora (se marcada) e os itens de cada zona (texto como `<text>`, imagem como `<image>` com a URL assinada do bucket, mesmo mecanismo de embutir imagem que a `DDP-308` já pede para elementos de imagem no diagrama). `exportViewAsSvg` e `exportViewAsPng` passam adiante o resultado maior, sem mudar a montagem do diagrama em si.
+**8. `buildSvg` monta as faixas.** Em `src/components/editor/export-diagram.tsx`, `buildSvg` recebe `header` e `footer` opcionais (o formato do schema Zod da outra ordem). Quando presentes e a exportação pede as faixas: a altura da faixa de cabeçalho soma ao topo do `viewBox` (o diagrama desce a mesma medida), a do rodapé soma à base, cada faixa desenha seu fundo, a linha separadora (se marcada) e os itens de cada zona (texto como `<text>`, imagem como `<image>` com a URL assinada do bucket, mesmo mecanismo de embutir imagem que a `DDP-308` já pede para elementos de imagem no diagrama). `exportViewAsSvg` e `exportViewAsPng` passam adiante o resultado maior, sem mudar a montagem do diagrama em si. Se a ordem de colar imagem (`DDP-308`) já estiver no app, `buildSvg` já é assíncrona, e esta ordem segue a assinatura que encontrar.
 
 **9. `.drawio` monta as faixas como dois grupos travados.** Em `exportViewAsDrawio`, quando as faixas estão marcadas: dois `mxCell` do tipo grupo (`vertex="1"` com `style` incluindo `group;locked=1`), um acima e um abaixo do retângulo que hoje envolve os nós do diagrama, cada um com os `mxCell` filhos de texto e imagem posicionados dentro pela mesma zona/alinhamento da faixa. `locked=1` impede mover ou editar o grupo depois de aberto no draw.io, mantendo o desenho original.
 

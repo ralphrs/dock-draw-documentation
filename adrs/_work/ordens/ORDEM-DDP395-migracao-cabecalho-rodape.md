@@ -1,12 +1,16 @@
 # Ordem DDP-395a: tabela de cabeçalho e rodapé, migração
 
+Issue da ordem: `DDP-397`, rótulo `lovable`.
+
 Categoria `app-release`. Solução aprovada em `DDP-392`, texto completo em `adrs/_work/PROPOSTA-cabecalho-rodape.md`. Primeira de duas ordens da mesma proposta: esta cobre só a tabela, a RLS e a função de leitura e gravação validada. A tela de configuração e exportação é a `ORDEM-DDP395-tela-cabecalho-rodape.md`, e depende desta.
 
 ## O que fazer
 
 **1. Tabela `public.project_export_frames`, uma linha por projeto.** `header` e `footer` guardam a faixa inteira em JSONB, no formato do schema Zod abaixo. RLS por `private.can_access_project(project_id)`, já usada em `public.views`: qualquer pessoa com acesso ao projeto lê e grava, mesma regra de hoje para os diagramas.
 
-**2. Função de leitura e gravação, com validação Zod.** O JSON de `header`/`footer` nunca é interpretado como código nem gravado sem validar contra o schema abaixo. Falha de validação recusa a gravação com erro, sem tocar a linha existente.
+**2. Permissão e carimbo.** Tabela nova em `public` precisa de `GRANT` para `authenticated`, como a `DDP-311` mostrou. Um gatilho atualiza `updated_at` e `updated_by` em toda alteração, para o carimbo não depender de quem grava lembrar.
+
+**3. Função de leitura e gravação, com validação Zod.** O JSON de `header`/`footer` nunca é interpretado como código nem gravado sem validar contra o schema abaixo. Falha de validação recusa a gravação com erro, sem tocar a linha existente.
 
 ## Migração
 
@@ -38,6 +42,21 @@ CREATE POLICY project_export_frames_update ON public.project_export_frames FOR U
 CREATE POLICY project_export_frames_delete ON public.project_export_frames FOR DELETE USING (
   private.can_access_project(project_id)
 );
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.project_export_frames TO authenticated;
+
+CREATE OR REPLACE FUNCTION public.project_export_frames_touch()
+RETURNS trigger LANGUAGE plpgsql AS $$
+BEGIN
+  NEW.updated_at := now();
+  NEW.updated_by := coalesce(auth.uid(), NEW.updated_by);
+  RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER project_export_frames_touch
+  BEFORE UPDATE ON public.project_export_frames
+  FOR EACH ROW EXECUTE FUNCTION public.project_export_frames_touch();
 ```
 
 ## Schema Zod da faixa
@@ -59,7 +78,7 @@ const TextItem = z.object({
 
 const ImageItem = z.object({
   kind: z.literal("image"),
-  imagePath: z.string().min(1),
+  imagePath: z.string().regex(/^[0-9a-f-]{36}\/frames\/[0-9a-f-]{36}\.(png|jpe?g|webp)$/),
   height: z.number().int().min(8).max(200),
   align: z.enum(["left", "center", "right"]),
 });
@@ -83,7 +102,7 @@ const ProjectExportFrames = z.object({
 });
 ```
 
-`imagePath` de `ImageItem` segue o prefixo `{projectId}/frames/{elementId}.{extensão}` no bucket `diagram-images` (`DDP-308`). Tipos aceitos e teto de tamanho são os mesmos da `DDP-296`: PNG, JPEG, WebP, até 5 MB, sem SVG.
+`imagePath` de `ImageItem` segue o prefixo `{projectId}/frames/{id}.{extensão}` no bucket `diagram-images` (`DDP-308`). A função de gravação confere, além do formato, que o `{projectId}` do caminho é o mesmo projeto da linha, e recusa imagem de outro projeto. Tipos aceitos e teto de tamanho são os mesmos da `DDP-296`: PNG, JPEG, WebP, até 5 MB, sem SVG.
 
 ## O que não fazer aqui
 
@@ -101,7 +120,51 @@ const ProjectExportFrames = z.object({
 
 ## Verificação
 
-A seção de verificação é escrita pela sessão A.
+Roteiro da sessão A. Testa o gatilho de verdade: grava uma linha com data antiga, altera e confere que a data avançou. A exceção final desfaz tudo o que ele gravou. As políticas contam só se o texto usar `can_access_project(project_id)`.
+
+```sql
+DO $$
+DECLARE
+  falhas text := '';
+  t oid := to_regclass('public.project_export_frames');
+  proj uuid;
+  usr uuid;
+  antes timestamptz;
+  depois timestamptz;
+BEGIN
+  IF t IS NULL THEN falhas := falhas || ' tabela;'; END IF;
+  IF NOT coalesce((SELECT relrowsecurity FROM pg_class WHERE oid = t), false)
+    THEN falhas := falhas || ' rls;'; END IF;
+  IF (SELECT count(*) FROM pg_policies WHERE schemaname='public' AND tablename='project_export_frames'
+        AND coalesce(qual, with_check) LIKE '%can_access_project(project_id)%'
+        AND (with_check IS NULL OR with_check LIKE '%can_access_project(project_id)%')) <> 4
+    THEN falhas := falhas || ' políticas;'; END IF;
+  IF t IS NULL OR NOT (has_table_privilege('authenticated', t, 'SELECT')
+                       AND has_table_privilege('authenticated', t, 'INSERT')
+                       AND has_table_privilege('authenticated', t, 'UPDATE')
+                       AND has_table_privilege('authenticated', t, 'DELETE'))
+    THEN falhas := falhas || ' grant;'; END IF;
+
+  -- Comportamento do gatilho: uma alteração tem de avançar updated_at.
+  IF t IS NOT NULL THEN
+    SELECT p.id INTO proj FROM public.projects p
+      WHERE NOT EXISTS (SELECT 1 FROM public.project_export_frames f WHERE f.project_id = p.id) LIMIT 1;
+    SELECT id INTO usr FROM auth.users LIMIT 1;
+    EXECUTE 'INSERT INTO public.project_export_frames (project_id, header, updated_by, updated_at) VALUES ($1, NULL, $2, now() - interval ''1 day'')'
+      USING proj, usr;
+    EXECUTE 'SELECT updated_at FROM public.project_export_frames WHERE project_id = $1' INTO antes USING proj;
+    EXECUTE 'UPDATE public.project_export_frames SET footer = ''null''::jsonb WHERE project_id = $1' USING proj;
+    EXECUTE 'SELECT updated_at FROM public.project_export_frames WHERE project_id = $1' INTO depois USING proj;
+    IF NOT (depois > antes) THEN falhas := falhas || ' gatilho não carimba;'; END IF;
+  ELSE
+    falhas := falhas || ' gatilho;';
+  END IF;
+
+  RAISE EXCEPTION 'VEREDITO: %', CASE WHEN falhas = '' THEN 'VERDE' ELSE 'VERMELHO' || falhas END;
+END $$;
+```
+
+Antes da migração, o bloco sai `VERMELHO tabela; rls; políticas; grant; gatilho;`, medido pela sessão A contra produção em 2026-09-21. Depois, `VERDE`.
 
 ## Restrições
 
