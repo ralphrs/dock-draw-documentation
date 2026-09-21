@@ -1,6 +1,6 @@
 # Referência: persistência, autosave e conexões no draw.io
 
-**Procedência:** quatro textos de pesquisa trazidos pelo dono do produto em 2026-09-21, consolidados aqui sem as partes repetidas. É material de terceiro e **não foi conferido contra o código-fonte do draw.io**. Nomes de classe, de propriedade e de algoritmo citados abaixo (`scheduleAutosave`, `autosaveDelay`, `desktopAutoSync`, `extractGraphModelFromPng`, o teste de conflito em duas camadas) são alegações da pesquisa, e precisam ser conferidos no repositório `jgraph/drawio` antes de servirem de evidência num ADR.
+**Procedência:** cinco textos de pesquisa trazidos pelo dono do produto em 2026-09-21, consolidados aqui sem as partes repetidas. É material de terceiro e **não foi conferido contra o código-fonte do draw.io**. Nomes de classe, de propriedade e de algoritmo citados abaixo (`scheduleAutosave`, `autosaveDelay`, `desktopAutoSync`, `extractGraphModelFromPng`, o teste de conflito em duas camadas) são alegações da pesquisa, e precisam ser conferidos no repositório `jgraph/drawio` antes de servirem de evidência num ADR.
 
 **Para que serve:** insumo do ADR 015 (`DDP-151`) e da discussão sobre atraso no editor de diagrama (`adrs/_work/ANALISE-latencia-ao-soltar-elemento.md`).
 
@@ -109,6 +109,10 @@ function encodeLibraryEntry(xmlContent) {
 **Integridade de id ao remover elemento.** O texto cita a [discussão #4468 do `jgraph/drawio`](https://github.com/jgraph/drawio/discussions/4468), que **foi conferida e existe**: "(embed mode) Merge doesnt always work", aberta em junho de 2024. O relato é que o merge por `postMessage` falha depois que algo é removido do diagrama. O texto apresenta a causa como diagnosticada, e na discussão ela é **hipótese de quem abriu**: os ids removidos continuariam numa lista interna, e o motor acharia que a forma ainda existe.
 
 **Web Worker a partir de 1.000 células.** O limiar é alegação do texto, sem fonte.
+
+## 9. Acréscimo do quinto texto
+
+O quinto texto repete o conteúdo das seções anteriores em tom didático. O único dado novo é a flag **`compressXml`**: os passos de URL-encoding, DEFLATE cru e Base64 só acontecem com ela ativa. Com `compressXml` em `false`, o `<diagram>` guarda o XML em texto puro, legível e comparável linha a linha. Alegação não conferida, como o resto.
 
 ---
 
