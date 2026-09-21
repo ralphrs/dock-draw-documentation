@@ -18,6 +18,7 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 
 | Id | Data | Decisão | Quem decidiu |
 | --- | --- | --- | --- |
+| [DEC-0020](DEC-0020-escopo-das-duas-arvores.md) | 2026-09-20 | 59 operações de árvore escolhidas, agrupadas por dependência em vez da ordem do pedido. Nove esperam ADRs não escritos | Humano |
 | [DEC-0019](DEC-0019-diagrama-versiona-e-o-vinculo-e-sempre-o-ultimo.md) | 2026-09-20 | Diagrama versiona no mesmo id, a página vincula o id e renderiza sempre o último. `target_rev_id` fica nulo por decisão | Humano |
 | [DEC-0018](DEC-0018-a-arvore-e-a-forma-do-projeto.md) | 2026-09-20 | A wiki é a tela inicial do projeto e o Diagram Studio vira árvore. Pasta nas duas, e as duas árvores continuam separadas | Humano |
 | [DEC-0017](DEC-0017-a-wiki-vive-dentro-do-projeto.md) | 2026-09-20 | A wiki entra pelo projeto, não pelo espaço. Reabre o ADR 006 nas rotas e promove a `DDP-114` | Humano |
