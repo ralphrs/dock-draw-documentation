@@ -191,6 +191,14 @@ while :; do
     if [ "$sessao" = "D" ] || [ "$sessao" = "d" ]; then
       proxima_d
     fi
+    case "$sessao" in
+    B | b | C | c)
+      # Sessão rodando não relê o próprio prompt, e a escuta é o texto que ela
+      # lê a cada volta. Em 2026-09-21 a sessão C pôs chave em monospace em
+      # dois comentários seguidos (DDP-305, DDP-307).
+      echo "No comentário, nunca ponha chave dentro de monospace: trecho com chave vai na macro de código."
+      ;;
+    esac
     religue
     exit 0
   fi

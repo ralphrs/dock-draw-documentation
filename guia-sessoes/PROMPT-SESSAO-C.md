@@ -147,3 +147,5 @@ loop:
 ```
 
 A volta vazia não produz texto nenhum. O custo de escutar é o contexto da sessão viajando a cada volta, não a chamada ao Jira.
+
+**Nunca ponha chave dentro de monospace no Jira.** Trecho com chave entre chaves duplas quebra a renderização e engole o texto seguinte. Trecho de código com chave vai na macro de código. A conferência do quadro reprova esse erro.

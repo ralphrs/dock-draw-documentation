@@ -68,3 +68,4 @@ A volta vazia não produz texto nenhum. O custo de escutar é o contexto da sess
 
 Toda chamada ao Jira passa o `cloudId` `5f3024da-2ee6-4363-81e4-ec0230c86f6e`. Ids de transição no protocolo, seção "O quadro". Todo comentário seu começa com `Sessão B:`, porque o conector do Atlassian é o mesmo para as três sessões.
 
+**Nunca ponha chave dentro de monospace no Jira.** Trecho com chave entre chaves duplas quebra a renderização e engole o texto seguinte. Trecho de código com chave vai na macro de código. A conferência do quadro reprova esse erro.

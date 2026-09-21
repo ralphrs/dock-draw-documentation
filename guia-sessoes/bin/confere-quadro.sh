@@ -211,7 +211,8 @@ for i in busca(ABERTA, "key,summary,description,comment"):
 # As duas checagens pulam as ordens já executadas. Achado que ninguém pode
 # consertar deixa o script vermelho para sempre, e checagem que nunca alcança
 # o verde ensina a ignorar a checagem. A lista abaixo está fechada: ordem
-# nova nunca entra nela. Cada entrada diz por que está fora.
+# nova só entra depois de despachada, quando já não pode ser corrigida, e
+# com o erro que a deixou passar. Cada entrada diz por que está fora.
 # --------------------------------------------------------------------------
 HISTORICAS = {
     # Anteriores ao teto, que nasceu com a DEC-0015 em 2026-09-20.
@@ -220,6 +221,10 @@ HISTORICAS = {
     "ORDEM-F3-uris-e-referencias.md":      "10.813 bytes, executada antes do teto existir",
     # Anterior à DDP-121, que descobriu o falso-negativo do information_schema.
     "ORDEM-S1b-spaces-e-pages.md":         "usa information_schema, aplicada antes da DDP-121",
+    # Despachada acima do teto por erro da sessão A em 2026-09-21: o roteiro de
+    # verificação, acrescentado na revisão, levou a ordem a 10.319 bytes, e a
+    # conferência não rodou antes do envio. Depois de despachada não se corta.
+    "ORDEM-DDP297-pastas-de-diagrama.md":  "10.319 bytes, despachada sem rodar a conferência (DDP-311)",
 }
 
 TETO = 10000
