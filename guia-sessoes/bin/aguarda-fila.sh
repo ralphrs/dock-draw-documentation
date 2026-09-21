@@ -27,7 +27,7 @@ fi
 : "${JIRA_TOKEN:?JIRA_TOKEN não definido em $cred}"
 
 site=${JIRA_SITE:-https://dokdrawapp.atlassian.net}
-sessao=${1:?uso: aguarda-fila.sh <A|B|C> [intervalo_s] [limite_s]}
+sessao=${1:?uso: aguarda-fila.sh <A|B|C|D> [intervalo_s] [limite_s]}
 intervalo=${2:-60}
 limite=${3:-3600}
 
@@ -43,8 +43,10 @@ case "$sessao" in
   A | a) jql='project = DDP AND ((status in ("BLOQUEADA", "EM REVISÃO") AND (labels is EMPTY OR labels not in ("bloqueio-externo"))) OR (status = "EM ANDAMENTO" AND labels in ("aprovacao-humana", "revisao-humana")) OR (labels = "liberada" AND labels != "draft" AND status != "CONCLUÍDA"))' ;;
   B | b) jql='project = DDP AND assignee = "712020:ec30868f-8e34-4c25-97e2-cd920e5da679" AND status in ("A FAZER", "EM ANDAMENTO")' ;;
   C | c) jql='project = DDP AND assignee = "712020:6ac2f667-9728-4b07-bffb-eaa19704a4c9" AND status in ("A FAZER", "EM ANDAMENTO")' ;;
+  # D não tem conta no Jira: a fila dela é o rótulo sessao-d.
+  D | d) jql='project = DDP AND labels = "sessao-d" AND status in ("A FAZER", "EM ANDAMENTO")' ;;
   *)
-    echo "ERRO: sessão '$sessao' não é A, B nem C" >&2
+    echo "ERRO: sessão '$sessao' não é A, B, C nem D" >&2
     exit 1
     ;;
 esac

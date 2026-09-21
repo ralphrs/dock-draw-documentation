@@ -77,6 +77,7 @@ O conector do Atlassian é autorizado na conta Claude, não por sessão, então 
 | `revisao-humana` | Entrega do Lovable esperando o olhar do dono do produto no preview |
 | `revisar-ordem`, `revisar-resultado`, `encerrar` | Tipo de tarefa, quando não é implementação comum |
 | `aprovacao-humana` mais a categoria (`ledger`, `app-release`, ...) | O que a issue espera do humano |
+| `sessao-d` | Tarefa da sessão D, designer de formas no Figma. É a fila dela, porque a D não tem conta no Jira (`DEC-0024`) |
 
 ## Pedidos do humano
 
