@@ -2,7 +2,7 @@
 
 Issue da ordem: `DDP-399`, rótulo `lovable`.
 
-Segunda de duas ordens da mesma proposta (`DDP-392`, `adrs/_work/PROPOSTA-cabecalho-rodape.md`, layout aprovado em [claude.ai/artifact/2K35f1bCzXYUumpNCr2yCD](https://claude.ai/artifact/2K35f1bCzXYUumpNCr2yCD)). Depende da `ORDEM-DDP395-migracao-cabecalho-rodape.md`: tabela, RLS e função de leitura/gravação validada por Zod precisam estar aplicadas antes desta. Depende também das telas no Figma (`DDP-394`), que trazem os componentes, a regra de margens e a fonte serifada: esta ordem roda depois delas, e o valor `serif` do schema usa a família registrada lá.
+Segunda de duas ordens da mesma proposta (`DDP-392`, `adrs/_work/PROPOSTA-cabecalho-rodape.md`, layout aprovado em [claude.ai/artifact/2K35f1bCzXYUumpNCr2yCD](https://claude.ai/artifact/2K35f1bCzXYUumpNCr2yCD)). Depende da `ORDEM-DDP395-migracao-cabecalho-rodape.md`: tabela, RLS e função de leitura/gravação validada por Zod precisam estar aplicadas antes desta. Depende também das telas no Figma (`DDP-394`), que trazem os componentes, a regra de margens e a fonte serifada: esta ordem roda depois delas. O valor `serif` do schema é a fonte Source Serif 4 (licença SIL OFL 1.1, escolhida na `DDP-394`), carregada do Google Fonts em `src/routes/__root.tsx`, no mesmo link que já traz Inter e JetBrains Mono. As telas de referência estão em https://www.figma.com/design/ERbVjRpQNnuTfugDbh7fkc.
 
 ## O que fazer
 
