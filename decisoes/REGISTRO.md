@@ -18,6 +18,7 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 
 | Id | Data | Decisão | Quem decidiu |
 | --- | --- | --- | --- |
+| [DEC-0022](DEC-0022-pasta-de-diagrama-e-tabela-propria.md) | 2026-09-20 | Pasta de diagrama é tabela própria, pasta de página é a mesma linha com outro rótulo. A assimetria tem razão escrita | Arquiteto, por delegação |
 | [DEC-0021](DEC-0021-a-aba-e-quadro-livre-e-o-c4-vira-shape.md) | 2026-09-20 | A aba do Diagram Studio é quadro livre e o C4 vira conjunto de shapes. Validação vira plugin. Reabre o ADR 001 no centro | Humano |
 | [DEC-0020](DEC-0020-escopo-das-duas-arvores.md) | 2026-09-20 | 59 operações de árvore escolhidas, agrupadas por dependência em vez da ordem do pedido. Nove esperam ADRs não escritos | Humano |
 | [DEC-0019](DEC-0019-diagrama-versiona-e-o-vinculo-e-sempre-o-ultimo.md) | 2026-09-20 | Diagrama versiona no mesmo id, a página vincula o id e renderiza sempre o último. `target_rev_id` fica nulo por decisão | Humano |
