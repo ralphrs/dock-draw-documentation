@@ -51,7 +51,8 @@ achados = []
 #    ciclo inteiro de escuta com trabalho que a própria sessão acabou de fazer.
 #    Sinal preciso: o último comentário é da sessão A e começa por "Sessão A:".
 # --------------------------------------------------------------------------
-VIGIADA = ('project = DDP AND (status in ("BLOQUEADA", "EM REVISÃO") '
+VIGIADA = ('project = DDP AND ((status in ("BLOQUEADA", "EM REVISÃO") '
+           'AND (labels is EMPTY OR labels not in ("bloqueio-externo"))) '
            'OR (status = "EM ANDAMENTO" AND labels in ("aprovacao-humana", "revisao-humana")))')
 for i in busca(VIGIADA, "key,summary,status,comment"):
     cs = (i["fields"].get("comment") or {}).get("comments") or []
