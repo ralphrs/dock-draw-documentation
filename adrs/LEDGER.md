@@ -242,7 +242,7 @@ premissas_sobre_camadas_futuras:
   - camada: "Exportação (ADR 010)"
     premissa: "Implementa toProfile(tree, destino) sobre DokAST, usando a Matriz de tradução do Apêndice B do ADR 002 como especificação. Decide o runtime do job agendado de sincronização, respeitando a restrição de execução sem DOM/Node builtin"
 riscos_abertos:
-  - "O orçamento de 300 ms p95 (seção 2) foi medido em Node num laptop, não no isolado V8 do Cloudflare Workers nem num navegador real. Mesma família de motor (V8), número exato em produção não confirmado. Dono: quem implementar a fatia F1, antes de travar o orçamento como gate de CI"
+  - "O orçamento de 300 ms p95 (seção 2) e o teto de 300.000 bytes foram medidos em Node num laptop, não no isolado V8 do Cloudflare Workers nem num navegador real. Mesma família de motor (V8), número exato em produção não confirmado. O humano decidiu em 2026-09-20 (DDP-105) que os dois valem como contrato assim medidos: a lacuna fica declarada aqui em vez de virar fatia de medição. As fatias F1 e F4, que eram as donas de revisitar os números, fecharam sem fazê-lo, e o risco deixa de ter dono porque deixou de ser risco a fechar"
   - "O plano do Cloudflare Workers em produção (gratuito, com teto de 10 ms de CPU por requisição, ou pago, com 30 s por padrão) não está registrado em nenhum ADR. Um pipeline de save de página grande no plano gratuito estouraria o teto de CPU. Dono: quem decidir o plano de hospedagem"
   - "O limite de 300.000 bytes assume uma correlação bytes/linha medida em conteúdo misto (headings, listas, código, tabela, callout, tabs, steps, diagrama). Uma página real muito mais densa em um único tipo de bloco (por exemplo, só tabelas largas) pode atingir o teto de bytes bem antes das 20 mil linhas usadas como referência de UX na seção 3"
   - "O limite de 300.000 bytes não marca uma descontinuidade medida. A curva do p50 cresce de forma suave e superlinear entre 5 mil e 40 mil linhas, sem joelho. O corte é escolha de produto ancorada no limiar de um segundo, e uma revisão que decida por 150.000 ou por 600.000 bytes não contraria nenhuma medição desta emenda. Dono: quem implementar a fatia F4 do ADR 002, ao observar tamanhos reais de página"
@@ -265,7 +265,7 @@ data: "2026-09-18"
 decisao: "Postgres puro no Supabase: page_revisions append-only e imutável (snapshot completo, não delta); status editorial em log de eventos à parte, projetado em revision_current_status; pages.published_revision_id aponta a revisão publicada; page_drafts mutável, um por autor por página; page_refs derivada de collectRefs para backlinks e integridade."
 dependencias: []
 interfaces_publicadas:
-  - nome: "content.workspace_members / content.spaces / content.pages / content.page_revisions / content.page_drafts / content.revision_statuses / content.revision_status_events / content.revision_current_status / content.page_refs / content.assets / content.sync_state"
+  - nome: "content.workspace_members / content.spaces / content.space_members / content.pages / content.page_revisions / content.page_drafts / content.revision_statuses / content.revision_status_events / content.revision_current_status / content.page_refs / content.assets / content.sync_state"
     tipo: "tabela"
     descricao: "Schema completo na seção 6.2 deste ADR; page_revisions e revision_status_events são append-only, garantido por trigger. workspace_members não existia no schema real (supabase-types-dokdraw.ts só tinha public.user_roles, global) — é criada por este ADR"
   - nome: "Space, Page, PageRevision, PageDraft, Asset"
