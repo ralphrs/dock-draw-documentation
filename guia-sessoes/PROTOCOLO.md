@@ -349,6 +349,8 @@ O rótulo que entra no lugar diz em que a issue está parada:
 
 Issue que foi movida mas cuja pergunta não aceita o arraste como resposta volta para `AGUARDANDO APROVAÇÃO`, com comentário dizendo por quê. Isso não desfaz o gesto do humano, registra que a resposta ainda não chegou.
 
+**Quando o gesto e o texto discordam, vale o texto.** Em `DDP-149` o humano arrastou o cartão, que naquela pergunta significava uma resposta, e comentou a outra. O arraste é um sinal de um bit, o comentário diz qual é a escolha e por quê. A sessão A segue o comentário, escreve na resposta que seguiu, e diz qual foi o gesto contrário, para o humano poder corrigir se o errado foi o texto.
+
 ## Escuta
 
 Não há mais watcher de arquivo. A espera de uma sessão pode acontecer em dois lugares, e o lugar muda o custo por ordem de grandeza.
