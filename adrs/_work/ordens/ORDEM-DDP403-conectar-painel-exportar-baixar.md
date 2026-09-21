@@ -8,7 +8,7 @@ Pedido do humano em 2026-09-21, urgência. Dois arquivos: `src/routes/_authentic
 
 **Estado atual.** O botão Conectar do cabeçalho (`variant={connectFrom ? "default" : "outline"}`) só liga com um elemento já selecionado (`if (!selectedElement) return toast.info(...)`) e usa o estado `connectFrom`. `DiagramCanvas` recebe `connectFrom` e, no `onNodeClick`, só desvia para `onNodeClickWhileConnecting` quando `connectFrom` já tem valor; sem isso, o clique chama `onSelect`. `handleConnect(targetElementId)` lê `connectFrom`, zera e chama `connectElements(from, targetElementId)`. O menu de clique direito do elemento já tem "Iniciar conexão daqui", que grava `connectFrom` sem passar pelo botão.
 
-**1. Sai o botão Conectar do cabeçalho.** Remove o `Button` de `projetos.$projectId.diagramas.$viewId.tsx`. O item "Iniciar conexão daqui" do menu de clique direito não muda.
+**1. Sai o botão Conectar do cabeçalho.** Remove de `projetos.$projectId.diagramas.$viewId.tsx` o `Button` cujo texto alterna entre "Conectar" e "Escolha o destino". O item "Iniciar conexão daqui" do menu de clique direito não muda.
 
 **2. Estado novo, `connectArmed`.** `const [connectArmed, setConnectArmed] = useState(false)`, ao lado de `connectFrom`. Verdadeiro do clique na seta do painel até a relação nascer ou até Esc, sem depender de elemento já selecionado.
 
