@@ -55,7 +55,98 @@ Nenhum `GRANT` nesta migração, mesmo motivo das sub-fatias anteriores: acesso 
 
 ## Verificação
 
-A seção de verificação é escrita pela sessão A (`DDP-123`).
+### 1. Catálogo
+
+```sql
+SELECT p.proname,
+       p.prosecdef                      AS security_definer,
+       p.provolatile                    AS volatilidade,
+       l.lanname                        AS linguagem,
+       array_to_string(p.proconfig,',') AS config
+  FROM pg_proc p
+  JOIN pg_namespace n ON n.oid = p.pronamespace
+  JOIN pg_language  l ON l.oid = p.prolang
+ WHERE n.nspname = 'content' AND p.proname = 'effective_role';
+```
+
+O esperado é uma linha, `security_definer` verdadeiro, `volatilidade` igual a `s`, `linguagem` igual a `sql` e `config` contendo `search_path=public, content`. Zero linha, `security_definer` falso ou `config` vazio reprovam.
+
+### 2. Comportamento
+
+Todas as afirmações usam o mesmo usuário, porque `user_id` tem chave estrangeira para `auth.users` e inventar usuário não é possível. A separação dos casos vem de workspaces diferentes.
+
+O bloco monta os dados, afirma e termina em exceção de propósito: o veredito sai na mensagem e nada fica gravado.
+
+```sql
+DO $$
+DECLARE
+  usr uuid; w1 uuid; w2 uuid; w3 uuid; w4 uuid;
+  s1 uuid; s2 uuid; s3 uuid; s4 uuid;
+  r text; veredito text := '';
+BEGIN
+  SELECT id INTO usr FROM auth.users LIMIT 1;
+
+  INSERT INTO public.workspaces (name, owner_id) VALUES ('w1 teste', usr) RETURNING id INTO w1;
+  INSERT INTO public.workspaces (name, owner_id) VALUES ('w2 teste', usr) RETURNING id INTO w2;
+  INSERT INTO public.workspaces (name, owner_id) VALUES ('w3 teste', usr) RETURNING id INTO w3;
+  INSERT INTO public.workspaces (name, owner_id) VALUES ('w4 teste', usr) RETURNING id INTO w4;
+
+  -- estado de membro por workspace, independente do que o trigger de seed fez
+  DELETE FROM content.workspace_members WHERE workspace_id IN (w1, w2, w3, w4);
+  INSERT INTO content.workspace_members (workspace_id, user_id, role) VALUES (w1, usr, 'owner');
+  INSERT INTO content.workspace_members (workspace_id, user_id, role) VALUES (w2, usr, 'editor');
+  INSERT INTO content.workspace_members (workspace_id, user_id, role) VALUES (w3, usr, 'viewer');
+  -- w4 fica sem linha nenhuma, de propósito
+
+  INSERT INTO content.spaces (workspace_id, name, slug, created_by) VALUES (w1,'e1','e1',usr) RETURNING id INTO s1;
+  INSERT INTO content.spaces (workspace_id, name, slug, created_by) VALUES (w2,'e2','e2',usr) RETURNING id INTO s2;
+  INSERT INTO content.spaces (workspace_id, name, slug, created_by) VALUES (w3,'e3','e3',usr) RETURNING id INTO s3;
+  INSERT INTO content.spaces (workspace_id, name, slug, created_by) VALUES (w4,'e4','e4',usr) RETURNING id INTO s4;
+
+  INSERT INTO content.space_members (workspace_id, space_id, user_id, role) VALUES (w3, s3, usr, 'reviewer');
+
+  -- a) owner de workspace vira admin
+  r := content.effective_role(s1, usr);
+  IF r IS DISTINCT FROM 'admin' THEN
+    veredito := veredito || 'FALHA a) owner deveria virar admin, veio ' || coalesce(r,'nulo') || '. ';
+  END IF;
+
+  -- b) papel de workspace passa inteiro quando nao e owner
+  r := content.effective_role(s2, usr);
+  IF r IS DISTINCT FROM 'editor' THEN
+    veredito := veredito || 'FALHA b) esperado editor, veio ' || coalesce(r,'nulo') || '. ';
+  END IF;
+
+  -- c) o override do espaco vence o papel do workspace
+  r := content.effective_role(s3, usr);
+  IF r IS DISTINCT FROM 'reviewer' THEN
+    veredito := veredito || 'FALHA c) override do espaco nao venceu, veio ' || coalesce(r,'nulo') || '. ';
+  END IF;
+
+  -- d) sem linha em lugar nenhum, nulo
+  r := content.effective_role(s4, usr);
+  IF r IS NOT NULL THEN
+    veredito := veredito || 'FALHA d) esperado nulo, veio ' || r || '. ';
+  END IF;
+
+  -- e) espaco que nao existe, nulo
+  r := content.effective_role(gen_random_uuid(), usr);
+  IF r IS NOT NULL THEN
+    veredito := veredito || 'FALHA e) espaco inexistente deu ' || r || '. ';
+  END IF;
+
+  IF veredito = '' THEN veredito := 'PASSOU a, b, c, d e e'; END IF;
+  RAISE EXCEPTION 'VEREDITO: %', veredito;
+END $$;
+```
+
+A saída esperada é o erro `VEREDITO: PASSOU a, b, c, d e e`. Qualquer outro texto depois de `VEREDITO:` reprova e diz qual afirmação caiu. Erro que não comece por `VEREDITO:` é falha de montagem, não resultado.
+
+A afirmação `c` é a que separa esta função de uma que só lê `workspace_members`: o papel `reviewer` não pode vir do workspace, então recebê-lo prova que a primeira subconsulta foi lida e venceu. As afirmações `d` e `e` são o controle negativo: sem elas, uma função que devolvesse `admin` sempre passaria em `a`.
+
+### Lacuna declarada
+
+O roteiro não exercita a proteção do `search_path`. Provar que a função resiste a um schema plantado no caminho de busca exige criar esse schema e alterar o caminho da sessão, o que mexe em estado fora da transação. A garantia fica apoiada na leitura do `proconfig` pelo passo 1, que confirma o caminho fixo, não no comportamento sob ataque.
 
 ## Restrições
 

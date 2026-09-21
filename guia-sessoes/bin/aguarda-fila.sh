@@ -99,6 +99,15 @@ fi
 #
 # Falha de rede aqui não é erro: o limite já foi atingido e a sessão vai
 # acordar de todo jeito. Silêncio é melhor que travar a saída.
+religue() {
+  # A escuta morre em toda saída, e religá-la depende de alguém lembrar. Em
+  # 2026-09-20 a sessão A esqueceu depois da DDP-139, despachou a DDP-146 e
+  # ficou sem ouvir a volta. O lembrete vive aqui porque este é o único texto
+  # que a sessão lê no instante exato em que a escuta acabou de cair.
+  printf '\n>>> A ESCUTA CAIU. Religue agora, antes de qualquer outra coisa:\n'
+  printf '>>>   %s %s %s %s\n' "$0" "$sessao" "$intervalo" "$limite"
+}
+
 estoque_processo() {
   jqlp='project = DDP AND labels = "processo" AND assignee IS EMPTY AND status = "A FAZER" ORDER BY key ASC'
   curl -sS --max-time 20 -u "$JIRA_EMAIL:$JIRA_TOKEN" -G \
@@ -145,6 +154,7 @@ while :; do
 
   if [ "$n" -gt 0 ]; then
     printf 'FILA %s: %s issue(s) esperando, %s\n' "$sessao" "$n" "$(date +%Y-%m-%dT%H:%M:%S)"
+    religue
     exit 0
   fi
 
@@ -152,6 +162,7 @@ while :; do
     falhas=$((falhas + 1))
     if [ "$falhas" -ge 5 ]; then
       printf 'ERRO: cinco consultas seguidas falharam. Confira a credencial em %s\n' "$cred" >&2
+      religue
       exit 2
     fi
   else
@@ -165,6 +176,7 @@ while :; do
     if [ "$sessao" = "A" ] || [ "$sessao" = "a" ]; then
       estoque_processo
     fi
+    religue
     exit 0
   fi
   sleep "$intervalo"
