@@ -21,6 +21,10 @@ O inventário da sessão B fecha a lista. O ponto de partida é retângulo, ret�
 
 Várias já existem como primitiva do editor C4 (retângulo, hexágono, cilindro). A forma básica reaproveita a primitiva sem o significado C4 e com a cor da paleta neutra.
 
+### Lista do humano, 2026-09-21
+
+Na `DDP-249` o humano fechou a lista das formas genéricas por enquanto: retângulo, retângulo arredondado, quadrado, texto, caixa de texto, elipse, círculo, losango, triângulo, cilindro, ator, nuvem, contêiner e raia horizontal e vertical, mais linha, conector, seta direcional e linha curva. Paralelogramo, documento e nota, que a lista inicial desta decisão trazia, ficam em backlog.
+
 ## Ícones de tecnologia
 
 Cada logotipo tem dono e marca registrada. A licença do arquivo do ícone não autoriza o uso da marca. A CNCF publica os logotipos dos projetos dela em um repositório de artwork, e linguagens e ferramentas de infraestrutura têm, cada uma, a própria regra de uso de marca. O inventário confere fonte, licença e regra de marca por fornecedor, na web e na data, com link. A regra da `DEC-0023` vale aqui: o ícone entra intacto, dentro da moldura do DokDraw.
