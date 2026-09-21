@@ -48,11 +48,84 @@ Nenhum `GRANT` nesta migração, mesmo motivo das sub-fatias anteriores.
 
 ## Verificação
 
-A seção de verificação é escrita pela sessão A (`DDP-123`).
+### 1. Catálogo
+
+```sql
+SELECT a.attname, format_type(a.atttypid, a.atttypmod) AS tipo, a.attnotnull,
+       pg_get_expr(d.adbin, d.adrelid) AS padrao,
+       (SELECT pg_get_constraintdef(c.oid) FROM pg_constraint c
+         WHERE c.conrelid = a.attrelid AND c.contype = 'c'
+           AND a.attnum = ANY (c.conkey)) AS checagem
+  FROM pg_attribute a
+  LEFT JOIN pg_attrdef d ON d.adrelid = a.attrelid AND d.adnum = a.attnum
+ WHERE a.attrelid = 'content.pages'::regclass AND a.attname = 'node_kind';
+```
+
+O esperado é uma linha: tipo `text`, `attnotnull` verdadeiro, padrão `'pagina'::text`, e a checagem aceitando exatamente `pasta` e `pagina`.
+
+### 2. Comportamento
+
+O bloco termina em exceção de propósito: o veredito sai na mensagem e nada fica gravado.
+
+```sql
+DO $$
+DECLARE
+  ws uuid; usr uuid; sp uuid; pasta uuid; filho uuid; k text; veredito text := '';
+BEGIN
+  SELECT id INTO ws FROM public.workspaces LIMIT 1;
+  SELECT id INTO usr FROM auth.users LIMIT 1;
+  INSERT INTO content.spaces (workspace_id, name, slug, created_by)
+       VALUES (ws, 'e', 'e-s1g', usr) RETURNING id INTO sp;
+
+  -- a) sem node_kind, nasce pagina
+  INSERT INTO content.pages (workspace_id, space_id, slug, title, position, created_by)
+       VALUES (ws, sp, 'a', 'A', 1, usr) RETURNING node_kind INTO k;
+  IF k IS DISTINCT FROM 'pagina' THEN veredito := veredito || 'FALHA a) veio ' || coalesce(k,'nulo') || '. '; END IF;
+
+  -- b) pasta aceita, com um filho
+  INSERT INTO content.pages (workspace_id, space_id, slug, title, position, created_by, node_kind)
+       VALUES (ws, sp, 'p', 'P', 2, usr, 'pasta') RETURNING id INTO pasta;
+  INSERT INTO content.pages (workspace_id, space_id, parent_page_id, slug, title, position, created_by)
+       VALUES (ws, sp, pasta, 'f', 'F', 1, usr) RETURNING id INTO filho;
+
+  -- c) valor fora do dominio recusado
+  BEGIN
+    INSERT INTO content.pages (workspace_id, space_id, slug, title, position, created_by, node_kind)
+         VALUES (ws, sp, 'd', 'D', 3, usr, 'diagrama');
+    veredito := veredito || 'FALHA c) diagrama foi aceito. ';
+  EXCEPTION WHEN check_violation THEN NULL;
+  END;
+
+  -- d) converter pasta em pagina mantem o filho
+  UPDATE content.pages SET node_kind = 'pagina' WHERE id = pasta;
+  IF NOT EXISTS (SELECT 1 FROM content.pages WHERE id = filho AND parent_page_id = pasta) THEN
+    veredito := veredito || 'FALHA d) filho perdeu o pai na conversao. ';
+  END IF;
+
+  -- e) pasta e pagina dividem o espaco de nomes do slug
+  BEGIN
+    INSERT INTO content.pages (workspace_id, space_id, slug, title, position, created_by, node_kind)
+         VALUES (ws, sp, 'a', 'A2', 4, usr, 'pasta');
+    veredito := veredito || 'FALHA e) pasta repetiu o slug de uma pagina irma. ';
+  EXCEPTION WHEN unique_violation THEN NULL;
+  END;
+
+  IF veredito = '' THEN veredito := 'PASSOU a, b, c, d e e'; END IF;
+  RAISE EXCEPTION 'VEREDITO: %', veredito;
+END $$;
+```
+
+A saída esperada é o erro `VEREDITO: PASSOU a, b, c, d e e`. Outro texto depois de `VEREDITO:` reprova e diz qual afirmação caiu.
+
+A afirmação `c` é a discriminante: sem o `CHECK`, a coluna aceita `diagrama` e a decisão de manter as árvores separadas (`DEC-0018`) passa a depender de disciplina. A `e` prova a afirmação da seção de restrições de que pasta e página dividem o espaço de nomes.
+
+### Lacuna declarada
+
+O roteiro não prova que a aplicação impede pasta de ganhar revisão, porque essa regra não mora no banco. Nada aqui a verifica.
 
 ## Restrições
 
-- Só este SQL. Nenhuma coluna nova em `public.views`: pasta de diagrama é outra decisão, sem resposta ainda (`DDP-142`).
+- Só este SQL. Nenhuma coluna nova em `public.views`: pasta de diagrama é tabela própria (`DEC-0022`), fora desta ordem.
 - Não crie função nem trigger de conversão entre pasta e página: fica para quando for pedido.
 - Não aplique a migração. A aplicação é categoria `app-release`, com aprovação humana, fora desta ordem.
 - Nenhum contrato do ledger muda.
