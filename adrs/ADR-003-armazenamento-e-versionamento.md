@@ -136,7 +136,7 @@ C perde principalmente em I-1 e I-3: manter um segundo sistema (repositório git
 ### 6.2 DDL proposto
 
 > [!NOTE]
-> Marcado como **proposta**, não como migração final. Assume o schema `content` dedicado (não precisa de exposição via PostgREST — o acesso é mediado por server functions com conexão direta) e a tabela externa `public.workspaces(id, name, owner_id)` — confirmada em `supabase-types-dokdraw.ts` — como pré-existente. `content.workspace_members` **não** é pré-existente: este ADR a cria, porque `public.user_roles` é global (sem `workspace_id`) e não serve para RLS por workspace.
+> Marcado como **proposta**, não como migração final. Assume o schema `content` dedicado, exposto no PostgREST com `GRANT` para `authenticated` e protegido pela RLS da seção 6.3 (correção de 2026-09-21, aprovada em `DDP-154`: o app não tem conexão direta ao Postgres, todo acesso passa pelo `supabase-js`), e a tabela externa `public.workspaces(id, name, owner_id)` — confirmada em `supabase-types-dokdraw.ts` — como pré-existente. `content.workspace_members` **não** é pré-existente: este ADR a cria, porque `public.user_roles` é global (sem `workspace_id`) e não serve para RLS por workspace.
 
 ```sql
 create schema if not exists content;
@@ -838,3 +838,13 @@ gatilhos_de_reabertura:
   - "ADR 004 precisa de merge automático entre revisores, não só detecção de conflito"
   - "public.invites ganha workspace_id e muda a forma de content.workspace_members ser populada"
 ```
+
+## Correção de 2026-09-21: o acesso ao schema `content`
+
+A versão aceita dizia, na seção 6.2, que o schema `content` não precisava ser exposto no PostgREST porque o acesso seria mediado por server functions com conexão direta ao Postgres. O app não tem conexão direta. Nenhum driver Postgres nem `drizzle-orm` roda em `src/`, e todo acesso ao banco passa pelo `supabase-js`, como usuário ou como service role.
+
+A correção, aprovada pelo humano em `DDP-154`: o schema é exposto no PostgREST, o papel `authenticated` recebe `GRANT` por tabela, e a RLS da seção 6.3 é a fronteira de autorização. É o mesmo caminho que o editor de diagrama já usa.
+
+Consequência que a versão aceita não previa: com a API exposta, qualquer usuário chama o PostgREST direto do navegador com o próprio token, então a RLS é a única barreira de escrita, não uma segunda linha atrás das server functions. As ordens da RLS recortada foram revistas sob essa premissa (`DDP-155`).
+
+Alternativas descartadas: conexão direta com driver Postgres, porque pede dependência nova e só aplica a RLS se cada requisição assumir o papel do usuário, e service role para o schema `content`, porque ignora a RLS e move a autorização para o código.
