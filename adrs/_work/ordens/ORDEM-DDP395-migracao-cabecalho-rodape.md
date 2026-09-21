@@ -8,9 +8,14 @@ Categoria `app-release`. Solução aprovada em `DDP-392`, texto completo em `adr
 
 **1. Tabela `public.project_export_frames`, uma linha por projeto.** `header` e `footer` guardam a faixa inteira em JSONB, no formato do schema Zod abaixo. RLS por `private.can_access_project(project_id)`, já usada em `public.views`: qualquer pessoa com acesso ao projeto lê e grava, mesma regra de hoje para os diagramas.
 
-**2. Permissão e carimbo.** Tabela nova em `public` precisa de `GRANT` para `authenticated`, como a `DDP-311` mostrou. Um gatilho atualiza `updated_at` e `updated_by` em toda alteração, para o carimbo não depender de quem grava lembrar.
+**2. Permissão e carimbo.** Tabela nova em `public` precisa de `GRANT` para `authenticated`, como a migração das pastas (`DDP-311`) precisou: o arquivo `drizzle/migrations/0003_create_public_view_folders.sql` que o Lovable gerou tem o `GRANT` nas linhas 19 e 20. Um gatilho atualiza `updated_at` e `updated_by` em toda alteração, para o carimbo não depender de quem grava lembrar.
 
-**3. Função de leitura e gravação, com validação Zod.** O JSON de `header`/`footer` nunca é interpretado como código nem gravado sem validar contra o schema abaixo. Falha de validação recusa a gravação com erro, sem tocar a linha existente.
+**3. Função de leitura e gravação, com validação Zod.** Arquivo novo, `src/application/export-frames.functions.ts`, no padrão das server functions de `src/application/diagram.functions.ts` (`createServerFn`, `requireSupabaseAuth`, validação no `inputValidator`):
+
+* `fetchExportFrames({ projectId })` devolve `{ header, footer }` do projeto, ou os dois nulos quando não há linha.
+* `saveExportFrames({ projectId, header, footer })` valida a entrada com `ProjectExportFrames`, confere que todo `imagePath` de todo item de imagem, nas duas faixas, começa com `` `${projectId}/frames/` ``, e só então grava com `upsert` por `project_id`. Caminho de outro projeto recusa a gravação inteira com erro, sem tocar a linha existente.
+
+O JSON nunca é interpretado como código nem gravado sem passar pelo esquema.
 
 ## Migração
 
@@ -78,7 +83,7 @@ const TextItem = z.object({
 
 const ImageItem = z.object({
   kind: z.literal("image"),
-  imagePath: z.string().regex(/^[0-9a-f-]{36}\/frames\/[0-9a-f-]{36}\.(png|jpe?g|webp)$/),
+  imagePath: z.string().regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/frames\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.(png|jpe?g|webp)$/),
   height: z.number().int().min(8).max(200),
   align: z.enum(["left", "center", "right"]),
 });
@@ -120,7 +125,7 @@ const ProjectExportFrames = z.object({
 
 ## Verificação
 
-Roteiro da sessão A. Testa o gatilho de verdade: grava uma linha com data antiga, altera e confere que a data avançou. A exceção final desfaz tudo o que ele gravou. As políticas contam só se o texto usar `can_access_project(project_id)`.
+Roteiro da sessão A. Testa o gatilho de verdade: grava uma linha com data antiga, altera e confere que a data avançou. Testa também `updated_by`: com a sessão apontando para um usuário inexistente, o gatilho grava esse id e a chave estrangeira recusa. A exceção final desfaz tudo o que ele gravou. As políticas contam só se o texto usar `can_access_project(project_id)`.
 
 ```sql
 DO $$
@@ -156,6 +161,15 @@ BEGIN
     EXECUTE 'UPDATE public.project_export_frames SET footer = ''null''::jsonb WHERE project_id = $1' USING proj;
     EXECUTE 'SELECT updated_at FROM public.project_export_frames WHERE project_id = $1' INTO depois USING proj;
     IF NOT (depois > antes) THEN falhas := falhas || ' gatilho não carimba;'; END IF;
+    -- updated_by: com a sessão apontando para um usuário que não existe, o gatilho
+    -- precisa gravar esse id, e a chave estrangeira recusa. Se o UPDATE passar,
+    -- o gatilho ignorou updated_by.
+    BEGIN
+      PERFORM set_config('request.jwt.claim.sub', gen_random_uuid()::text, true);
+      EXECUTE 'UPDATE public.project_export_frames SET footer = NULL WHERE project_id = $1' USING proj;
+      falhas := falhas || ' updated_by não carimba;';
+    EXCEPTION WHEN foreign_key_violation THEN NULL;
+    END;
   ELSE
     falhas := falhas || ' gatilho;';
   END IF;
