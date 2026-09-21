@@ -129,7 +129,8 @@ if ordem:
     motivo = "retomar" if i in andando else ("prioridade" if i in prio else "menor chave")
     print("PRÓXIMA TAREFA DA SESSÃO D: %s (%s) %s" % (i["key"], motivo, i["fields"]["summary"]))
     print("Leia a descrição inteira antes de começar: ela pode trazer correção da sessão A.")
-    print("No comentário de resultado, nunca ponha chave dentro de monospace: use a macro de código.")' || true
+    print("No comentário de resultado, nunca ponha chave dentro de monospace: use a macro de código.")
+    print("Nunca mova card com o rótulo aprovacao-humana: só o humano e a sessão A movem esse card.")' || true
 }
 
 religue() {
