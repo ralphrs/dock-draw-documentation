@@ -1,5 +1,7 @@
 # Ordem DDP-294: desfazer e refazer no editor de diagrama
 
+Issue da ordem: `DDP-304`, rótulo `lovable`.
+
 Prioridade 1, item 2 de `adrs/_work/ANALISE-editor-o-basico.md`. Depende da `DDP-293` (seleção múltipla), que troca o id único de seleção por um conjunto: as ações em lote desta ordem operam sobre esse conjunto.
 
 ## Estado atual
@@ -18,6 +20,12 @@ Nenhuma pilha de comando existe hoje. Toda mutação em `src/routes/_authenticat
 
 **5. A pilha esvazia por sessão de edição.** Trocar de vista (abrir outro diagrama) ou recarregar a página limpa a pilha. Desfazer não atravessa vistas nem sobrevive a um recarregamento.
 
+**6. Excluir e recriar mantêm o id.** Desfazer uma exclusão recria o elemento com o mesmo id que ele tinha, e recria junto as conexões que a exclusão levou. Com id novo, as outras entradas da pilha que apontam para o elemento ficariam órfãs, e refazer quebraria.
+
+**7. Ação nova limpa o refazer.** Depois de desfazer, qualquer ação nova do usuário descarta as entradas de refazer, como em todo editor.
+
+**8. Atalho dentro de campo de texto é do campo.** Com o foco num campo de texto (nome, rótulo, painel de propriedades), Ctrl+Z e Ctrl+Y desfazem a digitação do campo, e a pilha do diagrama não é tocada. É a mesma regra que o atalho de excluir já segue hoje.
+
 ## O que não fazer aqui
 
 - Persistir a pilha de desfazer no banco ou entre sessões: fica só em memória do cliente.
@@ -25,9 +33,16 @@ Nenhuma pilha de comando existe hoje. Toda mutação em `src/routes/_authenticat
 - Setas de conexão ao passar o mouse (`DDP-295`) e colar imagem externa (`DDP-296`): ordens separadas. Se alguma delas já estiver no app quando esta ordem rodar, as ações que criam devem entrar na pilha pelo mesmo mecanismo desta ordem, sem ordem nova.
 - Nenhuma migração, nenhuma tabela nova, nenhuma política RLS.
 
+## Tabela de restrições do contrato
+
+| Restrição (`LEDGER.md`) | Onde esta ordem cumpre |
+| --- | --- |
+| ADR 001: `@xyflow/react`, com nodes e edges controlados pelo estado do app | A pilha só chama as funções de mutação que já existem, e a tela muda pelo `setModel` de hoje. Nenhum estado paralelo do React Flow |
+| Dependências novas só com justificativa em ADR | Nenhuma dependência nova |
+
 ## Verificação
 
-A sessão C confere no preview: Ctrl+Z e Ctrl+Shift+Z/Ctrl+Y para cada operação da lista (criar, excluir, mover, redimensionar, renomear, mudar estilo, conectar, desconectar, colar, duplicar), exclusão em lote desfeita e refeita como um passo só, e que trocar de vista limpa a pilha.
+A sessão C confere no preview: Ctrl+Z e Ctrl+Shift+Z/Ctrl+Y para cada operação da lista (criar, excluir, mover, redimensionar, renomear, mudar estilo, conectar, desconectar, colar, duplicar), exclusão em lote desfeita e refeita como um passo só, e que trocar de vista limpa a pilha, excluir um elemento conectado e desfazer devolve o elemento com as conexões, e Ctrl+Z dentro do campo de nome desfaz só a digitação.
 
 ## Restrições
 
