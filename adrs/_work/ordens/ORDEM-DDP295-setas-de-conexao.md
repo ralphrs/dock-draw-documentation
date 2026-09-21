@@ -18,7 +18,7 @@ Prioridade 1, item 3 de `adrs/_work/ANALISE-editor-o-basico.md`, no molde das se
 
 **4. Clicar numa seta com elemento já naquela direção conecta a ele.** Em vez de clonar, o clique cria a relação entre o elemento de origem e o elemento existente na direção da seta, sem criar elemento novo. "Naquela direção" é o elemento mais próximo que cumpre três condições: o centro dele está do lado da seta, a distância entre os centros no eixo da seta é de no máximo 400 px, e o desvio no outro eixo é menor que metade da largura (setas de cima e de baixo) ou da altura (setas da esquerda e da direita) do elemento de origem. Entre vários que cumprem as três, vale o mais próximo pela distância no eixo da seta. Empate nessa distância fica com o de menor desvio no outro eixo. Sem elemento que cumpra as três, o clique clona.
 
-**5. `pasteAt` devolve o id criado.** Hoje ela gera o `elementId` no começo e não devolve. Passa a devolver esse id, sem mudar mais nada, para o clique poder chamar `connectElements` com a origem e o clone.
+**5. O id do clone.** A ordem da seleção múltipla (`DDP-301`), que roda antes desta, faz `pasteAt` colar uma lista e devolver os ids criados na ordem da lista. O clique cola uma lista de um item e usa o primeiro id devolvido para chamar `connectElements` com a origem e o clone.
 
 ## O que não fazer aqui
 
