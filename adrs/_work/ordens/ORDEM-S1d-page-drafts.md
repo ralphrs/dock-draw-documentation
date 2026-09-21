@@ -46,7 +46,54 @@ Nenhum `GRANT` nesta migração, mesmo motivo das sub-fatias anteriores.
 
 ## Verificação
 
-A seção de verificação é escrita pela sessão A (`DDP-123`).
+### 1. Catálogo
+
+Rode a consulta que `guia-sessoes/bin/confere-execucao.sh --sql` gera a partir deste arquivo e compare com `--compara`. Divergência em qualquer linha reprova.
+
+### 2. Comportamento
+
+O bloco termina em exceção de propósito: o veredito sai na mensagem e nada fica gravado.
+
+```sql
+DO $$
+DECLARE ws uuid; usr uuid; sp uuid; pg uuid; v int; veredito text := '';
+BEGIN
+  SELECT id INTO ws FROM public.workspaces LIMIT 1;
+  SELECT id INTO usr FROM auth.users LIMIT 1;
+  INSERT INTO content.spaces (workspace_id, name, slug, created_by) VALUES (ws,'e','e-s1d',usr) RETURNING id INTO sp;
+  INSERT INTO content.pages (workspace_id, space_id, slug, title, position, created_by)
+       VALUES (ws, sp, 'p', 'P', 1, usr) RETURNING id INTO pg;
+
+  -- a) rascunho de pagina nunca publicada, versao comeca em 1
+  INSERT INTO content.page_drafts (page_id, workspace_id, author_id, content_dokmd)
+       VALUES (pg, ws, usr, '# r') RETURNING version INTO v;
+  IF v IS DISTINCT FROM 1 THEN veredito := veredito || 'FALHA a) versao ' || coalesce(v::text,'nula') || '. '; END IF;
+
+  -- b) um rascunho por autor por pagina
+  BEGIN
+    INSERT INTO content.page_drafts (page_id, workspace_id, author_id, content_dokmd) VALUES (pg, ws, usr, '# r2');
+    veredito := veredito || 'FALHA b) segundo rascunho do mesmo autor aceito. ';
+  EXCEPTION WHEN unique_violation THEN NULL;
+  END;
+
+  -- c) apagar a pagina leva o rascunho junto
+  DELETE FROM content.pages WHERE id = pg;
+  IF EXISTS (SELECT 1 FROM content.page_drafts WHERE page_id = pg) THEN
+    veredito := veredito || 'FALHA c) rascunho sobreviveu a pagina. ';
+  END IF;
+
+  IF veredito = '' THEN veredito := 'PASSOU a, b e c'; END IF;
+  RAISE EXCEPTION 'VEREDITO: %', veredito;
+END $$;
+```
+
+A saída esperada é o erro `VEREDITO: PASSOU a, b e c`. A afirmação `b` é a discriminante: sem a chave primária composta, o mesmo autor abre dois rascunhos da mesma página, e o autosave passa a não saber qual atualizar.
+
+### Lacuna declarada
+
+Dois autores com rascunho na mesma página não são testados: `author_id` tem chave estrangeira para `auth.users` e o banco tem um usuário só.
+
+A afirmação `c` usa página sem revisão. Apagar página que tem revisão falha antes de chegar ao rascunho, porque o trigger de imutabilidade de `content.page_revisions` recusa o `DELETE` em cascata. Isso é desenho do ADR 003, que apaga página por `deleted_at`, não por `DELETE`.
 
 ## Restrições
 
