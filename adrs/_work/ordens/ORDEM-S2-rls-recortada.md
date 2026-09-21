@@ -20,7 +20,7 @@ RLS recortada às tabelas com ordem pronta ou aplicada: `workspace_members` (S1a
 | `revision_statuses` | SELECT | qualquer autenticado |
 | `revision_status_events` | SELECT | mesmo critério de `page_revisions`, por join |
 | `revision_status_events` | INSERT | ator é o próprio usuário, admin/editor/reviewer no espaço |
-| `revision_current_status` | SELECT | mesmo critério de `page_revisions`, por join |
+| `revision_current_status` | SELECT | mesmo critério de `page_revisions`, via `revision_space_id()` |
 | `page_drafts` | SELECT, UPDATE, DELETE | autor é o próprio usuário |
 | `page_drafts` | INSERT | autor é o próprio usuário, e admin/editor no espaço |
 
@@ -28,19 +28,27 @@ Nenhuma tabela fica sem linha nesta lista. Onde não há comando de escrita, RLS
 
 ## `pages` ganha UPDATE, que o ADR não escreve
 
-O ADR 003 (seção 6.3) só dá `pages_select` e `pages_write` (INSERT). Sem UPDATE, o trigger `revision_status_events_apply` (S1c2) não consegue gravar `published_revision_id`/`title`/`updated_at`: a função não é `security definer`, roda com o papel de quem insere o evento, e RLS bloquearia o `UPDATE` interno dela. A política `pages_update` deste ordem fecha essa lacuna, com o mesmo filtro de `pages_write`.
+ADR 003 (6.3) só dá `pages_select` e `pages_write` (INSERT). Renomear/mover página são `UPDATE`, sem política recusados. `pages_update` usa o filtro de `pages_write`. Publicação não depende dela: o trigger da S1c2 grava `published_revision_id` como `security definer`, por fora desta RLS, e um revisor que publica move o ponteiro mesmo sem ser admin/editor.
 
 ## `revision_current_status` só lê
 
-Achado da revisão: com `content` exposto no PostgREST (`DDP-154`), RLS vira a única barreira de escrita, não uma segunda linha atrás de server function. Uma política de escrita em `revision_current_status`, mesmo restrita por `effective_role`, deixaria qualquer membro do espaço gravar `status_code = 'published'` direto na projeção, sem evento nenhum, contornando a restrição "status é sempre evento". A emenda da `DDP-155` na S1c2 torna `content.apply_revision_status_event()` `security definer`, e o trigger passa a escrever por fora desta RLS. Aqui só entra `SELECT`.
+Com `content` exposto no PostgREST (`DDP-154`), RLS vira a única barreira de escrita. Política de escrita, mesmo restrita, deixaria gravar `status_code = 'published'` sem evento, contornando "status é sempre evento". A emenda da S1c2 torna a função do trigger `security definer`, escrevendo por fora desta RLS. Aqui só `SELECT`.
+
+## A segunda recursão, achada em teste contra produção
+
+`revisions_select` faz join em `revision_current_status`; uma primeira versão desta fazia join de volta em `page_revisions`, e o Postgres recusa com `infinite recursion detected in policy`. Correção: `content.revision_space_id(p_revision_id)`, função `security definer` que lê o espaço por fora da RLS, quebrando o ciclo. Testado como `authenticated` contra produção, em transação desfeita: sete afirmações passaram.
+
+## `page_drafts` tem política de `DELETE` sem `GRANT`
+
+`drafts_delete` existe na RLS, a parte 2 não concede `DELETE` para `authenticated`. Lacuna declarada: nada no fluxo de rascunho apaga linha direto hoje, a política fica pronta sem abrir a porta antes da hora.
 
 ## `revision_status_events` exige papel, não só acesso
 
-Achado da mesma revisão: `effective_role` não nulo inclui `viewer`, e um leitor não pode inserir evento de transição, muito menos publicar. O `INSERT` exige `admin`, `editor` ou `reviewer`. Lacuna declarada: qual papel pode fazer qual transição (quem aprova, quem publica) não é garantido pelo banco. A máquina de estados é do ADR 004, fatia E2, ainda não escrita.
+`effective_role` não nulo inclui `viewer`, que não deveria publicar. `INSERT` exige `admin`, `editor` ou `reviewer`. Lacuna declarada: qual papel faz qual transição não é garantido pelo banco, é máquina de estados do ADR 004 (fatia E2), ainda não escrita.
 
 ## `page_drafts` separa leitura de criação
 
-`drafts_own` original deixava qualquer `effective_role`, inclusive `viewer`, criar rascunho. `SELECT`, `UPDATE` e `DELETE` continuam restritos ao próprio autor. `INSERT` soma a exigência de admin/editor no espaço da página, mesmo filtro de `pages_write`.
+`drafts_own` original deixava `viewer` criar rascunho. `SELECT`/`UPDATE`/`DELETE` restritos ao autor. `INSERT` soma admin/editor no espaço, filtro de `pages_write`.
 
 ## `revision_statuses` é exceção deliberada
 
@@ -121,10 +129,15 @@ CREATE POLICY revision_status_events_insert ON content.revision_status_events FO
                 AND content.effective_role(p.space_id, auth.uid()) IN ('admin', 'editor', 'reviewer'))
 );
 
+CREATE OR REPLACE FUNCTION content.revision_space_id(p_revision_id uuid)
+RETURNS uuid LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public, content
+AS $$
+  SELECT p.space_id FROM content.page_revisions r JOIN content.pages p ON p.id = r.page_id
+   WHERE r.id = p_revision_id;
+$$;
+
 CREATE POLICY revision_current_status_select ON content.revision_current_status FOR SELECT USING (
-  EXISTS (SELECT 1 FROM content.page_revisions r JOIN content.pages p ON p.id = r.page_id
-          WHERE r.id = revision_current_status.revision_id
-            AND content.effective_role(p.space_id, auth.uid()) IS NOT NULL)
+  content.effective_role(content.revision_space_id(revision_id), auth.uid()) IS NOT NULL
 );
 
 CREATE POLICY drafts_select ON content.page_drafts FOR SELECT USING (author_id = auth.uid());
@@ -144,7 +157,7 @@ A seção de verificação é escrita pela sessão A (`DDP-123`).
 
 ## Restrições
 
-- Só políticas e `ENABLE ROW LEVEL SECURITY`. Sem `GRANT`, sem exposição de schema: é a parte 2.
+- Só políticas, `ENABLE ROW LEVEL SECURITY` e `content.revision_space_id()` (necessária para evitar a recursão). Sem `GRANT`, sem exposição de schema: é a parte 2.
 - Não crie `content.page_refs`, `content.assets` nem `content.sync_state`: fora do recorte.
 - Não aplique sem a `DDP-115` resolvida antes ou junto.
 - Não aplique sem aprovação humana (`app-release`).
