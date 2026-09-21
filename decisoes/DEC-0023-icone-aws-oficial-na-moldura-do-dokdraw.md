@@ -8,7 +8,7 @@
 
 O conjunto de formas AWS usa o ícone oficial da AWS **sem modificação**, com atribuição visível no produto. Tudo em volta do ícone segue o padrão do DokDraw: moldura, fundo, borda, raio de canto, tipografia e posição do rótulo, estado de seleção, espaçamento, e os contêineres de região, VPC, zona de disponibilidade, sub-rede e grupo de segurança.
 
-O ícone funciona como selo dentro de uma forma do DokDraw. O tema claro e o escuro usam os dois arquivos que a própria AWS distribui para fundo claro e fundo escuro, sem recolorir.
+O ícone funciona como selo dentro de uma forma do DokDraw. O tema claro e o escuro usam os dois arquivos que a própria AWS distribui para fundo claro e fundo escuro, sem recolorir. Correção de 2026-09-21, medida pela sessão D no pacote `Icon-package_07312026` (`DDP-235`): só os ícones genéricos (`Res_General-Icons`) têm arquivo separado para fundo escuro. Os ícones de serviço e os de recurso por serviço vêm num arquivo só, na cor da categoria, e o mesmo arquivo vale para os dois temas.
 
 ## Por que o ícone em si não é estilizado
 
