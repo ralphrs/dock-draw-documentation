@@ -18,7 +18,7 @@ Issue da ordem: `DDP-354`, rótulo `lovable`.
 
 **4. Esquema novo `c4`, rótulo C4 Padrão.** Em `PALETTES` (`src/lib/palette.tsx`), um item novo `{ id: "c4", label: "C4 Padrão", swatches: [...] }`. Em `src/styles.css`, dois blocos novos, `:root[data-palette="c4"]` e `.dark[data-palette="c4"]`, com os hexadecimais da tabela. Sem `--c4-fill-alpha` nesses blocos, pelo mesmo motivo do item 2.
 
-**5. `iris` e `ntconsult` não mudam.** Nenhuma linha dos blocos deles é tocada.
+**5. `iris` e `ntconsult` não mudam.** O `dokdraw` muda também em `PALETTES`: as `swatches` dele passam para as cores novas, porque o seletor de paleta pinta a prévia com elas. Nenhuma linha dos blocos deles é tocada.
 
 **6. Esquema continua salvo no navegador.** `DEFAULT_PALETTE`, `STORAGE_KEY` e o mecanismo de `localStorage` em `usePalette` não mudam. Guardar por tenant é do ADR 015, fora desta ordem.
 
@@ -108,7 +108,7 @@ Preenchimento e texto não mudam entre temas (cor direta, sem card por baixo). S
 ```
 
 ```tsx
-// src/lib/palette.tsx — PALETTES ganha o item c4, os outros três ficam como estão
+// src/lib/palette.tsx — PALETTES ganha o item c4; dokdraw troca as swatches para as cores novas; iris e ntconsult ficam como estão
 export const PALETTES = [
   { id: "dokdraw", label: "DokDraw", swatches: ["#301c5f", "#502e9e", "#e0d7f4", "#e4e4ea"] },
   { id: "iris", label: "Íris", swatches: ["#7a4f93", "#b184c8", "#4c3a5e", "#e6dcf0"] },
