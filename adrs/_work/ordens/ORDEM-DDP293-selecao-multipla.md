@@ -14,6 +14,10 @@ Medido em `src/routes/_authenticated/projetos.$projectId.diagramas.$viewId.tsx` 
 
 **2. Ações em lote.** Excluir, copiar, recortar, colar e duplicar (Ctrl+D) passam a valer para a seleção inteira, não só para o último elemento clicado. Colar mantém a posição relativa entre os elementos copiados. Duplicar aplica o mesmo deslocamento fixo que já existe hoje (`+40, +40`) a cada elemento da seleção, preservando a posição relativa entre eles.
 
+**2b. Arrastar o grupo com o mouse.** Hoje `onNodeDrag` e `onNodeDragStop`, em `diagram-canvas.tsx`, mandam para `onMoveNodes` e `onCommitNodes` só o nó que recebem no segundo parâmetro. Com seleção múltipla, o React Flow arrasta o grupo inteiro e manda todos os nós movidos no terceiro parâmetro. Os dois passam a mandar as posições de todos os nós desse terceiro parâmetro. Sem isso, os outros elementos do grupo voltam para o lugar assim que o estado da rota pinta de novo.
+
+**2c. Área de transferência com vários itens.** Hoje o `Clipboard` guarda um item só, sem posição. Ele passa a guardar uma lista, e cada item leva o deslocamento dele em relação ao canto superior esquerdo da caixa da seleção copiada. `copyNode` passa a copiar a seleção inteira, e `pasteAt` passa a colar a lista a partir de um ponto de destino, somando o deslocamento de cada item. Duplicar é copiar e colar a lista com o ponto de destino deslocado em `+40, +40`. `pasteAt` devolve os ids criados, na mesma ordem da lista, como a `DDP-295` já pede para o caso de um item.
+
 **3. Mover com o teclado.** Com a seleção não vazia e o foco fora de campo de texto, as quatro setas do teclado movem a seleção inteira em 1 pixel por toque. Com Shift, o passo é o da grade (`20`, o mesmo valor de `snapGrid`). O movimento por teclado usa o mesmo caminho de gravação otimista que o arrasto de mouse já usa hoje (pintar antes, persistir depois).
 
 **4. Sem a atribuição do React Flow.** `proOptions={{ hideAttribution: true }}` no componente `ReactFlow`. A licença MIT permite ([reactflow.dev/learn/troubleshooting/remove-attribution](https://reactflow.dev/learn/troubleshooting/remove-attribution)).
@@ -35,7 +39,7 @@ Medido em `src/routes/_authenticated/projetos.$projectId.diagramas.$viewId.tsx` 
 
 ## Verificação
 
-A sessão C confere no preview: seleção por arrasto, Shift+clique, Ctrl+A, exclusão/cópia/colagem/duplicação em lote, movimento por seta do teclado com e sem Shift, e a ausência da marca do React Flow no canto do quadro.
+A sessão C confere no preview: seleção por arrasto, Shift+clique, Ctrl+A, arrastar um grupo selecionado com o mouse e ver todos ficarem onde caíram depois de recarregar, copiar e colar três elementos e ver a posição relativa mantida, exclusão/cópia/colagem/duplicação em lote, movimento por seta do teclado com e sem Shift, e a ausência da marca do React Flow no canto do quadro.
 
 ## Restrições
 
