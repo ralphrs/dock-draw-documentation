@@ -1,5 +1,7 @@
 # Ordem DDP-403: conectar pela seta do painel, sem botão Conectar, e exportar só pelo Baixar
 
+Issue da ordem: `DDP-407`, rótulo `lovable`.
+
 Pedido do humano em 2026-09-21, urgência. Dois arquivos: `src/routes/_authenticated/projetos.$projectId.diagramas.$viewId.tsx` e `src/components/editor/diagram-canvas.tsx` (app `dok-draw-app`).
 
 ## Parte 1: conectar pela seta do painel
