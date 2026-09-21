@@ -1,6 +1,6 @@
 # Referência: persistência, autosave e conexões no draw.io
 
-**Procedência:** três textos de pesquisa trazidos pelo dono do produto em 2026-09-21, consolidados aqui sem as partes repetidas. É material de terceiro e **não foi conferido contra o código-fonte do draw.io**. Nomes de classe, de propriedade e de algoritmo citados abaixo (`scheduleAutosave`, `autosaveDelay`, `desktopAutoSync`, `extractGraphModelFromPng`, o teste de conflito em duas camadas) são alegações da pesquisa, e precisam ser conferidos no repositório `jgraph/drawio` antes de servirem de evidência num ADR.
+**Procedência:** quatro textos de pesquisa trazidos pelo dono do produto em 2026-09-21, consolidados aqui sem as partes repetidas. É material de terceiro e **não foi conferido contra o código-fonte do draw.io**. Nomes de classe, de propriedade e de algoritmo citados abaixo (`scheduleAutosave`, `autosaveDelay`, `desktopAutoSync`, `extractGraphModelFromPng`, o teste de conflito em duas camadas) são alegações da pesquisa, e precisam ser conferidos no repositório `jgraph/drawio` antes de servirem de evidência num ADR.
 
 **Para que serve:** insumo do ADR 015 (`DDP-151`) e da discussão sobre atraso no editor de diagrama (`adrs/_work/ANALISE-latencia-ao-soltar-elemento.md`).
 
@@ -86,6 +86,30 @@ Hospedado em `iframe` (`embed.diagrams.net`), o draw.io delega a persistência �
 2. A hospedeira responde com `load`, trazendo o diagrama (XML, CSV ou imagem comprimida).
 3. Durante a edição, o editor emite eventos de estado e mensagens `save` ou `exit`, e a hospedeira grava no próprio banco ou armazenamento.
 
+## 8. Acréscimos do quarto texto
+
+O quarto texto é escrito em tom prescritivo ("mandatório", "a única via"). As prescrições são opinião do texto, não documentação do draw.io, e ficam registradas como alegação.
+
+**Início da sessão no modo embutido.** O texto diz que o editor emite `ready`. A seção 7 acima, vinda de outro texto, diz `init`. Os dois não podem estar certos ao mesmo tempo, e a divergência fica em aberto até conferência.
+
+**Carga de formato que não é XML.** Por padrão o editor passa a carga por `mxUtils.parseXml`. CSV e outros formatos precisam de descritor: `{action: 'load', descriptor: {format: 'csv', data: '...'}}`. Mandar CSV sem descritor produz `Not a diagram file (error on line 1 at column 1)`.
+
+**Pipeline de compressão**, em quatro passos: `mxUtils.getXml()` sobre o modelo, `encodeURIComponent()`, `pako.deflateRaw()` (DEFLATE cru, RFC 1951, sem cabeçalho zlib) e Base64. Na leitura de PNG, o fallback de zlib (RFC 1950) para DEFLATE cru, descrito na seção 4, cobre arquivos gerados por versões ou ferramentas diferentes.
+
+```js
+const pako = require('pako')
+function encodeLibraryEntry(xmlContent) {
+  const compressed = pako.deflateRaw(encodeURIComponent(xmlContent))
+  return Buffer.from(compressed).toString('base64')
+}
+```
+
+**Detecção de conflito em três níveis**, acrescentando o `ETag` na frente das duas camadas da seção 5: divergência de `ETag` na nuvem, variação de tamanho em bytes, e checksum estrutural quando o tamanho é igual.
+
+**Integridade de id ao remover elemento.** O texto cita a [discussão #4468 do `jgraph/drawio`](https://github.com/jgraph/drawio/discussions/4468), que **foi conferida e existe**: "(embed mode) Merge doesnt always work", aberta em junho de 2024. O relato é que o merge por `postMessage` falha depois que algo é removido do diagrama. O texto apresenta a causa como diagnosticada, e na discussão ela é **hipótese de quem abriu**: os ids removidos continuariam numa lista interna, e o motor acharia que a forma ainda existe.
+
+**Web Worker a partir de 1.000 células.** O limiar é alegação do texto, sem fonte.
+
 ---
 
 ## Leitura da sessão A contra o DokDraw
@@ -98,6 +122,8 @@ Hospedado em `iframe` (`embed.diagrams.net`), o draw.io delega a persistência �
 
 **O modo embutido é uma alternativa inteira, não um detalhe.** Hospedar o draw.io num `iframe` substituiria o editor React Flow do ADR 001 em vez de reproduzir a arquitetura dele. Fica registrado como opção a pesar, não como recomendação.
 
+**O caso da #4468 tem espelho no DokDraw.** A atualização otimista despachada em 2026-09-21 cria elemento com id provisório, troca pelo real quando o servidor responde, e desfaz apagamento reinserindo o que saiu. É o mesmo terreno: um id que sai do estado e volta, ou uma conexão que aponta para um elemento ainda provisório. A conferência daquela entrega precisa olhar exatamente isso.
+
 ## Lacuna declarada
 
-Nada deste arquivo foi conferido no código-fonte. As afirmações de maior peso para uma decisão, e que por isso precisam de conferência primeiro, são o gatilho de gravação por `autosaveDelay`, a mesclagem por id de célula e o protocolo de mensagens do modo embutido.
+Só a discussão #4468 foi conferida. O resto deste arquivo não foi conferido no código-fonte. As afirmações de maior peso para uma decisão, e que por isso precisam de conferência primeiro, são o gatilho de gravação por `autosaveDelay`, a mesclagem por id de célula e o protocolo de mensagens do modo embutido.
