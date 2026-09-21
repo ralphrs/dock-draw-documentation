@@ -20,8 +20,14 @@ A paleta `dokdraw` de `src/styles.css` troca a cor por tipo pela cor principal. 
 
 Os tons exatos, o contraste e as bordas são da sessão D, com validação da sessão A (delegação do humano na `DDP-243`). Contraste mínimo: texto 4,5:1 e borda 3:1 contra o canvas, nos dois temas.
 
+## De quem é o esquema, respondido em 2026-09-21
+
+O esquema de cores pertence ao tenant, não à pessoa. Cada tenant, espaço ou projeto pode criar o próprio esquema, com cor por forma e por tema, claro e escuro. Os esquemas prontos (DokDraw e C4 Padrão) são o ponto de partida.
+
+Hoje o app guarda o esquema como preferência do navegador (`localStorage`), o que contraria a decisão. Onde o esquema é guardado, como tenant, espaço e projeto herdam um do outro, e o que acontece com um diagrama embutido na wiki de outro espaço é decisão do ADR 015, com a tenancy do ADR 013.
+
+Alternativa descartada: esquema por pessoa, como está hoje. Duas pessoas veriam o mesmo diagrama com cores diferentes, e a cor deixa de organizar o diagrama.
+
 ## Lacuna declarada
 
-O esquema escolhido é preferência do navegador de cada pessoa (`localStorage`), não propriedade do diagrama. Duas pessoas olhando o mesmo diagrama podem ver cores diferentes. Se o esquema tiver que viajar com o diagrama, por exemplo na exportação ou na página da wiki, isso é decisão do ADR 015, que define o que o diagrama guarda.
-
-As paletas `iris` e `ntconsult` continuam como estão.
+Até o ADR 015 decidir o armazenamento, o app continua com a escolha no navegador. As paletas `iris` e `ntconsult` continuam como estão.
