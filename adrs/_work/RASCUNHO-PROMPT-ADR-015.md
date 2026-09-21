@@ -2,7 +2,7 @@
 
 > Rascunho da sessão A, para o humano revisar e copiar para `prompts/PROMPT-ADR-015.md`. A pasta `prompts/` é de escrita do humano.
 
-[Colar o Bloco 0. Anexar: LEDGER.md; ADR-001 (Motor de diagrama), que precisa estar em `adrs/`; DEC-0019, DEC-0021 e DEC-0022; `adrs/_work/REFERENCIA-drawio-persistencia.md` como material de pesquisa, não conferido; `adrs/_work/ANALISE-latencia-ao-soltar-elemento.md` e `adrs/_work/ANALISE-cache-no-navegador-e-escrita-assincrona.md`.]
+[Colar o Bloco 0. Anexar: LEDGER.md; ADR-001 (Motor de diagrama), que precisa estar em `adrs/`; DEC-0019, DEC-0021, DEC-0022, DEC-0025 e DEC-0026; `adrs/_work/REFERENCIA-drawio-persistencia.md` como material de pesquisa, não conferido; `adrs/_work/ANALISE-latencia-ao-soltar-elemento.md` e `adrs/_work/ANALISE-cache-no-navegador-e-escrita-assincrona.md`.]
 
 # Tarefa
 Escreva o ADR 015 — Conjuntos de formas do Diagram Studio. A `DEC-0021` decidiu que a aba do Studio é um quadro livre e que o C4 deixa de ser o modelo e passa a ser um conjunto de formas entre outros. O humano pediu dois conjuntos para as próximas versões: **C4 model** e **AWS**. Decida o que é um conjunto de formas neste produto, como ele é guardado, versionado e validado, e entregue os dois primeiros.
@@ -18,6 +18,7 @@ Este ADR reabre o ADR 001 no ponto central dele, que é o que o banco guarda de 
 6. **Versionamento.** A `DEC-0019` decidiu que o diagrama versiona mantendo o mesmo id e que a página vincula o id e renderiza sempre o último. Como o formato escolhido na pergunta 5 ganha histórico.
 7. **Migração.** Três projetos existem em produção no modelo C4 estruturado. O que acontece com eles.
 8. **Ícones AWS.** Qual é a fonte oficial dos ícones, qual a licença e o que ela permite num produto. Versão e licença conferidas na web na data da pesquisa, com link. README não é evidência.
+9. **Os 24 tipos da `DEC-0026`.** O contrato de conjunto de formas precisa acomodar todos. Para roadmap, Gantt e ciclo de vida, com eixo de tempo, e para AS-IS vs. TO-BE, que compara dois estados, diga como entram: modo próprio do editor, posição derivada ou comparação entre versões. Base: `adrs/_work/INVENTARIO-formas-por-diagrama.md`.
 
 # Eliminatórios específicos
 - R-01 Cor só por token, igual em tema claro e escuro, como no resto do app.
