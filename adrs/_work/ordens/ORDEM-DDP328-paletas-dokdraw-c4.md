@@ -1,5 +1,7 @@
 # Ordem DDP-328: paletas DokDraw e C4 Padrão no app
 
+Issue da ordem: `DDP-354`, rótulo `lovable`.
+
 `DEC-0025-esquema-de-cores-dos-diagramas.md`, cores aprovadas pelo humano na `DDP-246`, comentário de resultado da sessão D (id `10338`), aceito pela sessão A no mesmo card.
 
 ## Estado atual
