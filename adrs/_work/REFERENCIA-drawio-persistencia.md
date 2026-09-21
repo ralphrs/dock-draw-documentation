@@ -1,6 +1,6 @@
 # Referência: persistência, autosave e conexões no draw.io
 
-**Procedência:** seis textos de pesquisa trazidos pelo dono do produto em 2026-09-21, consolidados aqui sem as partes repetidas. É material de terceiro e **não foi conferido contra o código-fonte do draw.io**. Nomes de classe, de propriedade e de algoritmo citados abaixo (`scheduleAutosave`, `autosaveDelay`, `desktopAutoSync`, `extractGraphModelFromPng`, o teste de conflito em duas camadas) são alegações da pesquisa, e precisam ser conferidos no repositório `jgraph/drawio` antes de servirem de evidência num ADR.
+**Procedência:** sete textos de pesquisa trazidos pelo dono do produto em 2026-09-21, consolidados aqui sem as partes repetidas. É material de terceiro e **não foi conferido contra o código-fonte do draw.io**. Nomes de classe, de propriedade e de algoritmo citados abaixo (`scheduleAutosave`, `autosaveDelay`, `desktopAutoSync`, `extractGraphModelFromPng`, o teste de conflito em duas camadas) são alegações da pesquisa, e precisam ser conferidos no repositório `jgraph/drawio` antes de servirem de evidência num ADR.
 
 **Para que serve:** insumo do ADR 015 (`DDP-151`) e da discussão sobre atraso no editor de diagrama (`adrs/_work/ANALISE-latencia-ao-soltar-elemento.md`).
 
@@ -120,6 +120,33 @@ O sexto texto é um prompt escrito por outra ferramenta para gerar um relatório
 
 Para o DokDraw, isso só pesa se o modo embutido ou a troca de motor voltarem à mesa no ADR 015. O editor de diagrama atual usa React Flow (ADR 001), não `mxGraph`.
 
+## 11. Acréscimos do sétimo texto, um panorama
+
+Tudo abaixo é alegação não conferida. O que o texto repete das seções anteriores foi omitido.
+
+**Anatomia do modelo.** A `mxCell` é vértice (`vertex="1"`) ou aresta (`edge="1"`). A célula `0` é o contêiner absoluto e a célula `1` é a camada padrão, por isso toda forma do exemplo da seção 4 tem `parent="1"`. A geometria segue a hierarquia pai-filho.
+
+**Dado de negócio dentro da forma.** Por `UserObject` e marcadores como `%variableName%`, uma forma carrega atributos além do visual, e o diagrama pode ser gerado ou atualizado a partir de dados.
+
+**Concorrência por provedor:**
+
+| Provedor | Gravação | Detecção de conflito |
+| :--- | :--- | :--- |
+| Local e desktop | IndexedDB, IPC com o sistema de arquivos | checksum de conteúdo e tamanho em bytes |
+| Google Drive, OneDrive | REST com OAuth2 | `ETag` |
+| Dropbox | REST | checksum estrutural |
+| GitHub, GitLab | commit pela API | hash SHA-1 do commit |
+
+**Importação no modo embutido.** Além de CSV, o descritor aceita Mermaid.
+
+**Automação e agentes.** Um servidor MCP usaria o esquema `mxfile.xsd` para agentes de IA lerem e escreverem diagramas. A URL `#create=ENCODED_JSON` cria diagrama sem interação. Converter imagem ou captura de tela em diagrama editável é serviço de parceiro, não do motor.
+
+**Recursos de interface.** O modo sketch usa Rough.js (`ui=sketch`) para dar aspecto de quadro branco desenhado à mão. Há animações (fade, wipe, pop), links de ação `data:action/json` e filtro de visibilidade por tag.
+
+**Mudança transitória.** Por padrão, mudança visual de animação ou apresentação é `transient: true` e não altera o modelo. Mudança persistente exige `transient: false` escrito à mão no JSON, sem controle na interface.
+
+**Argumento de integração.** Em muitas configurações o dado nunca passa pelos servidores da JGraph, e parceiros como Jira e BookStack usam o draw.io como motor de edição sem custo de servidor.
+
 ---
 
 ## Leitura da sessão A contra o DokDraw
@@ -131,6 +158,8 @@ Para o DokDraw, isso só pesa se o modo embutido ou a troca de motor voltarem à
 **O que pesa para o ADR 015:** a `DEC-0021` (aba como quadro livre) e a `DEC-0019` (diagrama versiona no mesmo id) combinam com documento versionado por diagrama. A mesclagem por id de célula sai quase de graça nesse modelo.
 
 **O modo embutido é uma alternativa inteira, não um detalhe.** Hospedar o draw.io num `iframe` substituiria o editor React Flow do ADR 001 em vez de reproduzir a arquitetura dele. Fica registrado como opção a pesar, não como recomendação.
+
+**Três itens do sétimo texto conversam com decisões já tomadas.** O `UserObject` é uma forma concreta de fazer o que a `DEC-0021` pediu: o C4 vira um conjunto de shapes, e o tipo C4 passa a ser atributo da forma, que um plugin validador lê. O conflito por hash de commit no GitHub e GitLab é o terreno do ADR 010, exportação e sincronização. E `transient` separa mudança de apresentação de mudança de conteúdo, distinção que o DokDraw vai precisar quando a wiki mostrar diagrama em modo leitura.
 
 **O caso da #4468 tem espelho no DokDraw.** A atualização otimista despachada em 2026-09-21 cria elemento com id provisório, troca pelo real quando o servidor responde, e desfaz apagamento reinserindo o que saiu. É o mesmo terreno: um id que sai do estado e volta, ou uma conexão que aponta para um elemento ainda provisório. A conferência daquela entrega precisa olhar exatamente isso.
 
