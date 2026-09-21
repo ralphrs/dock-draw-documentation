@@ -338,6 +338,17 @@ Cartão que só afirma e propõe obriga o humano a inferir o que o gesto aprova,
 
 Nos dois caminhos, A registra o sim no comentário de resposta com `aprovado_por: humano`, porque B e C leem a issue, não a conversa.
 
+**Depois de consumir a resposta, A tira o rótulo `aprovacao-humana`.** O rótulo significa "A espera o humano". Quando o humano já respondeu, ele passa a mentir, e a JQL da sessão A continua acordando a escuta a cada ciclo por uma issue que não tem nada de novo. Em 2026-09-20 cinco issues respondidas derrubaram a escuta três vezes seguidas sem trabalho nenhum atrás.
+
+O rótulo que entra no lugar diz em que a issue está parada:
+
+| Rótulo | Quando |
+| :--- | :--- |
+| `aprovado` | A resposta veio e o trabalho está em curso |
+| `bloqueio-externo` | A resposta veio e algo fora do quadro impede executar, como uma permissão da sessão |
+
+Issue que foi movida mas cuja pergunta não aceita o arraste como resposta volta para `AGUARDANDO APROVAÇÃO`, com comentário dizendo por quê. Isso não desfaz o gesto do humano, registra que a resposta ainda não chegou.
+
 ## Escuta
 
 Não há mais watcher de arquivo. A espera de uma sessão pode acontecer em dois lugares, e o lugar muda o custo por ordem de grandeza.
