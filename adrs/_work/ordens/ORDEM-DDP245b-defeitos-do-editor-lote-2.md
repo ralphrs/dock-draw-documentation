@@ -1,6 +1,6 @@
 # Ordem DDP-245b: defeitos do editor, lote 2
 
-Issue da ordem: a criar, rótulo `lovable`.
+Issue da ordem: `DDP-432`, rótulo `lovable`.
 
 Segundo lote do cartão `DDP-245`, que junta defeitos pequenos do editor achados pelas sessões C e D. Cinco itens, sem migração.
 
