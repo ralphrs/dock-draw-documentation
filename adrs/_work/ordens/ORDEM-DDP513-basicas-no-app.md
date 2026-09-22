@@ -38,13 +38,13 @@ text:     { type: "text",     label: "Texto solto", short: "Texto",     colorVar
 **6. Família em `src/domain/c4/families.ts`.** Linha 38: `{ id: "basicas", label: "Básicas", category: "Geral", available: true, groups: [{ id: "formas", label: "Formas", types: ["ellipse", "diamond", "triangle", "text"] }] }`.
 
 **7. Cor da família, `src/styles.css`.** Três variáveis novas, `--basica-fill`, `--basica-linha`, `--basica-texto`, com os valores aprovados na `DDP-250` (reaproveita o neutro já usado por `--c4-external`/`--c4-group` em preenchimento e borda, com um texto próprio fixo):
-  - `:root[data-palette="dokdraw"]` (perto da linha 442): fill `#e4e4ea`, linha `#6b6b78`, texto `#241a44`.
-  - `.dark[data-palette="dokdraw"]` (perto da linha 464): fill `#e4e4ea`, linha `#9a9aa8`, texto `#241a44`.
-  - `:root[data-palette="c4"]` (perto da linha 488): fill `#e4e4e8`, linha `#686f78`, texto `#17233a`.
-  - `.dark[data-palette="c4"]` (perto da linha 510): fill `#e4e4e8`, linha `#9aa0a8`, texto `#17233a`.
+  - `:root[data-palette="dokdraw"]` (linha 429): fill `#e4e4ea`, linha `#6b6b78`, texto `#241a44`.
+  - `.dark[data-palette="dokdraw"]` (linha 451): fill `#e4e4ea`, linha `#9a9aa8`, texto `#241a44`.
+  - `:root[data-palette="c4"]` (linha 475): fill `#e4e4e8`, linha `#686f78`, texto `#17233a`.
+  - `.dark[data-palette="c4"]` (linha 497): fill `#e4e4e8`, linha `#9aa0a8`, texto `#17233a`.
   - Acrescentar `--color-basica-fill`, `--color-basica-linha`, `--color-basica-texto` no bloco `@theme` (linhas 70 a 78), mesmo padrão de `--color-c4-external`.
 
-**8. Exportação draw.io, `src/components/editor/export-diagram.tsx`, função `drawioStyle` (linhas 450 a 461).** SVG e PNG não precisam de nenhuma mudança neste arquivo: `buildSvg` (linha 209) já desenha por `ElementShape`/`ElementLabels`, os mesmos componentes do item 3, então herdam as quatro formas de graça. Só o `.drawio` monta estilo próprio. Quatro ramos novos antes do `return` padrão da linha 460:
+**8. Exportação draw.io, `src/components/editor/export-diagram.tsx`, função `drawioStyle` (linhas 499 a 510, `base` na 500).** SVG e PNG não precisam de nenhuma mudança neste arquivo: `buildSvg` (linha 218) já desenha por `ElementShape`/`ElementLabels`, os mesmos componentes do item 3, então herdam as quatro formas de graça. Só o `.drawio` monta estilo próprio. Quatro ramos novos antes do `return` padrão da linha 509:
 
 ```ts
 if (shape === "ellipse") return `${base}ellipse;`;
