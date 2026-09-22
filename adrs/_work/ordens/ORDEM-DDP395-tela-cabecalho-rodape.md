@@ -28,6 +28,8 @@ Segunda de duas ordens da mesma proposta (`DDP-392`, `adrs/_work/PROPOSTA-cabeca
 
 **11. Linha de atribuição da AWS, fora desta ordem.** O arquivo exportado reserva a faixa inteira, abaixo do rodapé (ou abaixo do diagrama, se o rodapé estiver desligado), sempre que o diagrama tiver algum ícone AWS, independente da caixa "Incluir cabeçalho e rodapé" estar marcada. O texto e a regra de quando mostrar ficam para a ordem que implementar a `DDP-236` no fluxo de exportação: esta ordem só deixa o espaço reservado, sem desenhar nada nele.
 
+**12. Tipos da tabela.** Com a tabela `project_export_frames` aplicada, gere de novo os tipos do Supabase e tire o `(supabase as any)` das duas funções de `src/application/export-frames.functions.ts`, que a `DDP-397` deixou marcado como pendente.
+
 ## O que não fazer aqui
 
 - Campo automático no texto (nome do diagrama, data, versão): a proposta pede texto livre só, nesta versão.
