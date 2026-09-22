@@ -77,6 +77,7 @@ O conector do Atlassian é autorizado na conta Claude, não por sessão, então 
 | `revisao-humana` | Entrega do Lovable esperando o olhar do dono do produto no preview |
 | `revisar-ordem`, `revisar-resultado`, `encerrar` | Tipo de tarefa, quando não é implementação comum |
 | `aprovacao-humana` mais a categoria (`ledger`, `app-release`, ...) | O que a issue espera do humano |
+| `humano` | Toda issue que espera algo do humano, seja aprovação, resposta, conferência no preview ou tarefa manual. Vai junto de `aprovacao-humana`, `revisao-humana` e das bloqueadas por ele. É o filtro que o humano usa para achar o que é dele. Pedido dele em 2026-09-22 |
 | `sessao-d` | Tarefa da sessão D, designer de formas no Figma. É a fila dela, porque a D não tem conta no Jira (`DEC-0024`) |
 
 **Correção da sessão A para a sessão D vai na descrição de uma tarefa dela ainda aberta, nunca só num comentário de cartão fechado.** A sessão D não lê cartão depois de entregar e não relê o próprio prompt enquanto roda. Em 2026-09-21 duas correções escritas em cartão fechado não chegaram a ela, e uma tarefa de prioridade foi pulada porque a regra entrou no prompt depois que ela começou. A escuta dela, `aguarda-fila.sh D`, passou a imprimir a próxima tarefa na ordem certa (em andamento, depois prioridade, depois menor chave) e a mandar ler a descrição inteira.
@@ -138,7 +139,7 @@ A cria issue ──► A FAZER ──(B ou C assume)──► EM ANDAMENTO ─�
 | assumir | B ou C | Transição `31` para `EM ANDAMENTO` |
 | perguntar | B ou C | Comentário `Sessão X: dúvida` e transição `2` para `BLOQUEADA` |
 | responder | A | Comentário `Sessão A: resposta` e transição `31` de volta. Reatribui se mudar de fila |
-| escalar | A | Rótulos `aprovacao-humana` e a categoria, responsável passa a ser o humano, transição `3` |
+| escalar | A | Rótulos `humano`, `aprovacao-humana` e a categoria, responsável passa a ser o humano, transição `3` |
 | liberar | A | Depois do sim do humano, comentário de resposta com `aprovado_por: humano`, responsável volta para B ou C, transição `31` |
 | entregar | B ou C | Comentário `Sessão X: resultado` e transição `4` para `EM REVISÃO` |
 | revisar | A | Comentário `Sessão A: revisão` com o veredito e transição `41` para `CONCLUÍDA` |

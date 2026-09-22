@@ -148,6 +148,15 @@ for i in busca('project = DDP AND labels = "aprovacao-humana" AND status = "AGUA
             'Arrastar o cartão não vai dizer qual foi escolhida.'))
 
 # --------------------------------------------------------------------------
+# 4b. Issue que espera o humano sem o rótulo `humano`.
+#    Pedido do humano em 2026-09-22: todo cartão que espera aprovação,
+#    resposta, conferência no preview ou tarefa manual dele leva o rótulo
+#    `humano`, que é o filtro que ele usa para achar o que é dele.
+for i in busca('project = DDP AND status != "CONCLUÍDA" AND labels in ("aprovacao-humana", "revisao-humana") AND labels != "humano"',
+               "key,summary"):
+    achados.append((i["key"], 'espera o humano e não tem o rótulo humano. Acrescente o rótulo.'))
+
+# --------------------------------------------------------------------------
 # 5. Emenda que muda o entregável deixada só em comentário.
 #    Defeito medido em 2026-09-20: a sessão A mandou por comentário a coluna
 #    workspace_id de space_members, a sessão B entregou sem ela, e o ciclo se
