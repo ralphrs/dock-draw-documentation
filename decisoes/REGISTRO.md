@@ -65,5 +65,6 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 | [DEC-0038](DEC-0038-ordem-de-trabalho-da-direita-para-a-esquerda.md) | 2026-09-22 | Ordem de trabalho de toda sessão: da direita para a esquerda no quadro, EM REVISÃO, AGUARDANDO APROVAÇÃO, BLOQUEADA, EM ANDAMENTO, só então tarefa nova | Humano |
 | [DEC-0039](DEC-0039-wiki-em-backlog-por-enquanto.md) | 2026-09-22 | Trabalho de wiki em backlog por enquanto: DDP-490, 491, 497, 500, 501 saem das filas | Humano |
 | [DEC-0040](DEC-0040-rotulos-humano-e-backlog.md) | 2026-09-22 | Um só rótulo humano (aprovacao-humana e revisao-humana extintos) e backlog no lugar de roadmap | Humano |
+| [DEC-0041](DEC-0041-tela-sem-referencia-interna.md) | 2026-09-22 | Texto de tela nunca cita tarefa, ADR, ordem ou sessão. Varredura antes de publicar | Humano |
 | A-Q-0002 | 2026-09-19 | Aplicar o diff no ledger, aceitar os ADRs 002 a 005 e commitar a etapa do ADR 005 | Humano |
 | A-Q-0001 | 2026-09-19 | Parada 4 do ADR 005: corrigir a fixture 05 no MDXEditor, com três travas, e criar o arquivo do ADR | Humano |
