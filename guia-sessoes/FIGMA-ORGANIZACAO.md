@@ -16,6 +16,8 @@ Tudo fica no plano `SquadPro`, projeto `dok draw app`. Três lugares, cada um co
 
 Camadas do `design-system-latest`, uma página por camada: Fundação (temas, paletas, tipografia, espaçamento), Componentes de base (moldura, alça de conexão), Conexões, e uma página por família de formas: C4 Model, Básicas, AWS, Azure, Google Cloud, OCI, Tecnologias, UML, BPMN. Página nova só quando a primeira forma da família é aprovada.
 
+As páginas são numeradas com dois dígitos na ordem de dependência (01 Fundação, 02 Componentes de base, 03 Conexões, 04 C4 Model, 05 Básicas, 06 AWS, e as seguintes conforme entram), com uma página 00 Capa que guarda o índice, a regra de numeração e a data da última consolidação. Dentro de cada página: título no topo, uma Section por grupo, componentes em grade com espaçamento fixo, Claro e Escuro lado a lado, nenhum nó solto. A organização é permanente, não uma arrumação única: toda consolidação entra na página certa, na Section certa, e atualiza a capa. Card de origem: `DDP-506`.
+
 ## Ciclo de vida de uma proposta
 
 1. **Nasce em `draft`.** A sessão D cria o arquivo com `create_new_file` passando `planKey` do `SquadPro` e `projectId: "658381844"`. Sem o `projectId` o arquivo cai no rascunho pessoal e fica perdido para o humano. Nome do arquivo: `Forma básica: <nome>` para forma, `Contêineres <família>: <tema>` para contêiner, `Wireflow <área>` para wireflow. Um arquivo por tarefa de conferência final, com as páginas das subtarefas dentro.
@@ -46,6 +48,7 @@ Todo card que precisa de um desses gestos manuais leva o rótulo `humano`, com a
 - Antes de criar arquivo, confira com `whoami` o `planKey` do `SquadPro` e use `projectId: "658381844"`. Registre no resultado o link do arquivo e a pasta em que ele nasceu.
 - Um arquivo por proposta, pequeno, feito para o humano validar. Nada de arquivo "de trabalho" fora do ciclo.
 - Nunca edite o `design-system-latest` fora de um card de consolidação aberto pela sessão A.
+- Mantenha a organização do `design-system-latest` sempre atualizada: página numerada na ordem, Section por grupo, grade alinhada, capa com o índice e a data. Consolidação que deixa nó solto, página sem número ou capa desatualizada volta com correção.
 - Nunca recrie no `done` o que está no draft. `done` é arquivo do humano.
 - No resultado de toda consolidação, liste os arquivos de draft que ficaram aprovados, para a sessão A montar o card de mover.
 
