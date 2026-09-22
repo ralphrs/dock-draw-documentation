@@ -22,7 +22,7 @@ O humano aprovou a janela "Mais formas" e escolheu a organização 3 do painel, 
 
 Só `c4` tem formas hoje. Família nova entra neste arquivo quando for construída, por outra ordem.
 
-**2. Famílias ligadas, por pessoa e por projeto.** Guardadas em `localStorage` na chave `dokdraw:familias:` seguida do id do projeto, no mesmo padrão de `usePalette` (`src/lib/palette.tsx`), com leitura e gravação dentro de `try/catch`. Sem nada gravado, valem `basicas` e `c4`. Família "em breve" gravada como ligada não mostra nada no painel.
+**2. Famílias ligadas, por pessoa e por projeto.** Guardadas em `localStorage` na chave `dokdraw-familias-` seguida do id do projeto, com hífen como as chaves que o app já usa (`dokdraw-palette`, `dokdraw-export-format`). O formato de hook é o de `usePalette` (`src/lib/palette.tsx`), com uma diferença: leitura e gravação ficam dentro de `try/catch`, que `usePalette` não tem. Sem nada gravado, valem `basicas` e `c4`. Família "em breve" gravada como ligada não mostra nada no painel.
 
 **3. Janela "Mais formas".** Botão "+ Mais formas" logo abaixo do título "Elementos" abre um `Dialog`, o mesmo componente dos outros diálogos do app. Dentro:
 
@@ -34,14 +34,14 @@ Só `c4` tem formas hoje. Família nova entra neste arquivo quando for construí
 **4. Painel "Favoritas primeiro".** A seção "Elementos" troca o `Accordion` por esta ordem, de cima para baixo:
 
 1. Busca "Buscar forma", que filtra por nome em todas as famílias ligadas e esconde as seções vazias.
-2. "Favoritas": as formas marcadas com estrela. Cada `PaletteItem` ganha uma estrela que aparece no hover e fica fixa quando marcada. As favoritas ficam em `localStorage` na chave `dokdraw:formas-favoritas`, por pessoa e não por projeto, como lista de família e tipo (por exemplo `c4:person`).
-3. "Usadas por último": as seis últimas formas criadas no quadro, mais recente primeiro, sem repetir. Ficam em `localStorage` na chave `dokdraw:formas-recentes:` seguida do id do projeto. Entra na lista toda criação a partir do painel, por clique ou por arrasto. Clone e colagem não contam.
+2. "Favoritas": as formas marcadas com estrela. Cada `PaletteItem` ganha uma estrela que aparece no hover e fica fixa quando marcada. As favoritas ficam em `localStorage` na chave `dokdraw-formas-favoritas`, por pessoa e não por projeto, como lista de família e tipo (por exemplo `c4:person`).
+3. "Usadas por último": as seis últimas formas criadas no quadro, mais recente primeiro, sem repetir. Ficam em `localStorage` na chave `dokdraw-formas-recentes-` seguida do id do projeto. Entra na lista toda criação a partir do painel, por duplo clique ou por arrasto, os dois pontos que chamam `criarElementoComHistorico`. Clone e colagem não contam.
 4. Chips de família: "Todas" e um chip por família ligada e disponível. O chip escolhido filtra a grade abaixo.
 5. A grade: as formas das famílias filtradas, com os subtítulos dos grupos de `ELEMENT_GROUPS` como hoje, sem abrir e fechar.
 
 Favoritas e recentes também obedecem ao nível da visão: forma que `groupsForLevel` não oferece naquele nível não aparece em nenhuma das seções. Seção sem item some, título incluído.
 
-**5. `PaletteItem` continua igual no resto.** Clique cria em (120, 120) e arrasto solta no quadro, pelo mesmo `criarElementoComHistorico`. A seção "Conexões", com a "Relação", fica onde está.
+**5. `PaletteItem` continua igual no resto.** Duplo clique cria em (120, 120) e arrasto solta no quadro, pelo mesmo `criarElementoComHistorico`. A seção "Conexões", com a "Relação", fica onde está.
 
 ## O que não fazer aqui
 
