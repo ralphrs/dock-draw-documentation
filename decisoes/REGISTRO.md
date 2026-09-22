@@ -56,5 +56,6 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 | [DEC-0003](DEC-0003-aspas-no-watcher.md) | 2026-09-19 | O comando de escuta passa os padrões entre aspas simples, porque o shell é zsh | Arquiteto |
 | [DEC-0002](DEC-0002-registro-de-decisoes.md) | 2026-09-19 | Decisão que não é contrato de camada vive em `decisoes/`, fora do ledger e fora de `adrs/_work/` | Humano |
 | [DEC-0001](DEC-0001-skills-por-sessao.md) | 2026-09-19 | Skills do plugin superpowers são obrigatórias por gatilho nomeado, mapeadas por sessão, com três proibições na sessão C | Humano |
+| [DEC-0032](DEC-0032-vinculo-diagrama-wiki-como-drawio.md) | 2026-09-22 | Vínculo página-diagrama no modelo do draw.io no Confluence e exportação com sidecar `.dokdraw.yaml` | Humano |
 | A-Q-0002 | 2026-09-19 | Aplicar o diff no ledger, aceitar os ADRs 002 a 005 e commitar a etapa do ADR 005 | Humano |
 | A-Q-0001 | 2026-09-19 | Parada 4 do ADR 005: corrigir a fixture 05 no MDXEditor, com três travas, e criar o arquivo do ADR | Humano |
