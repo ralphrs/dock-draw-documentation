@@ -76,7 +76,7 @@ O conector do Atlassian é autorizado na conta Claude, não por sessão, então 
 | `draft`, `liberada` | Canal de entrada do humano. Ver "Pedidos do humano" |
 | `revisar-ordem`, `revisar-resultado`, `encerrar` | Tipo de tarefa, quando não é implementação comum |
 | categoria (`ledger`, `app-release`, ...) | O que a issue espera do humano, junto de `humano` |
-| `humano` | Único rótulo de humano desde 2026-09-22 (os antigos `aprovacao-humana` e `humano` foram fundidos nele a pedido do humano). Toda issue que espera algo do humano, seja aprovação, resposta, conferência no preview ou tarefa manual. Vai junto de `aprovacao-humana`, `humano` e das bloqueadas por ele. É o filtro que o humano usa para achar o que é dele. Pedido dele em 2026-09-22 |
+| `humano` | Único rótulo de humano desde 2026-09-22: os antigos `aprovacao-humana` e `revisao-humana` foram fundidos nele (`DEC-0040`). Toda issue que espera algo do humano, seja aprovação, resposta, conferência no preview ou tarefa manual, leva `humano` mais a categoria quando houver |
 | `sessao-d` | Tarefa da sessão D, designer de formas no Figma. É a fila dela, porque a D não tem conta no Jira (`DEC-0024`) |
 
 **Correção da sessão A para a sessão D vai na descrição de uma tarefa dela ainda aberta, nunca só num comentário de cartão fechado.** A sessão D não lê cartão depois de entregar e não relê o próprio prompt enquanto roda. Em 2026-09-21 duas correções escritas em cartão fechado não chegaram a ela, e uma tarefa de prioridade foi pulada porque a regra entrou no prompt depois que ela começou. A escuta dela, `aguarda-fila.sh D`, passou a imprimir a próxima tarefa na ordem certa (em andamento, depois prioridade, depois menor chave) e a mandar ler a descrição inteira.
