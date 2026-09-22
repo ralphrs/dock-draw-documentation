@@ -70,14 +70,13 @@ O conector do Atlassian é autorizado na conta Claude, não por sessão, então 
 | `sprint-1`, ... | Sprint da trilha de desenvolvimento |
 | `lovable` | A issue é uma ordem de implementação. A descrição é o texto que o agente do Lovable executa |
 | `arquitetura`, `analise`, `ux-ui`, `desenvolvimento` | **Disciplina do trabalho.** Escrever ADR e decidir contrato é `arquitetura`. Medir, estimar, escrever ordem e revisar ordem é `analise`. Fatia com interface leva `ux-ui` junto de `desenvolvimento`. Uma issue pode ter mais de uma |
-| `backlog` | Estoque, sem responsável. Não está na fila de ninguém e não vira trabalho até A priorizar |
+| `backlog` | Estoque, sem responsável: tudo que não será desenvolvido agora, inclusive o que antes se chamava roadmap (rótulo extinto em 2026-09-22). Não está na fila de ninguém e não vira trabalho até A priorizar |
 | `processo` | Melhoria do próprio processo, sob o agrupador `Governança e processo`. Nasce sem responsável, em `A FAZER`, e só a sessão A puxa. Ver `decisoes/DEC-0016` |
 | `fatia` | A issue representa uma fatia de implementação inteira, que A desdobra em ordem, revisão, execução e revisão quando chega a vez |
 | `draft`, `liberada` | Canal de entrada do humano. Ver "Pedidos do humano" |
-| `revisao-humana` | Entrega do Lovable esperando o olhar do dono do produto no preview |
 | `revisar-ordem`, `revisar-resultado`, `encerrar` | Tipo de tarefa, quando não é implementação comum |
-| `aprovacao-humana` mais a categoria (`ledger`, `app-release`, ...) | O que a issue espera do humano |
-| `humano` | Toda issue que espera algo do humano, seja aprovação, resposta, conferência no preview ou tarefa manual. Vai junto de `aprovacao-humana`, `revisao-humana` e das bloqueadas por ele. É o filtro que o humano usa para achar o que é dele. Pedido dele em 2026-09-22 |
+| categoria (`ledger`, `app-release`, ...) | O que a issue espera do humano, junto de `humano` |
+| `humano` | Único rótulo de humano desde 2026-09-22 (os antigos `aprovacao-humana` e `humano` foram fundidos nele a pedido do humano). Toda issue que espera algo do humano, seja aprovação, resposta, conferência no preview ou tarefa manual. Vai junto de `aprovacao-humana`, `humano` e das bloqueadas por ele. É o filtro que o humano usa para achar o que é dele. Pedido dele em 2026-09-22 |
 | `sessao-d` | Tarefa da sessão D, designer de formas no Figma. É a fila dela, porque a D não tem conta no Jira (`DEC-0024`) |
 
 **Correção da sessão A para a sessão D vai na descrição de uma tarefa dela ainda aberta, nunca só num comentário de cartão fechado.** A sessão D não lê cartão depois de entregar e não relê o próprio prompt enquanto roda. Em 2026-09-21 duas correções escritas em cartão fechado não chegaram a ela, e uma tarefa de prioridade foi pulada porque a regra entrou no prompt depois que ela começou. A escuta dela, `aguarda-fila.sh D`, passou a imprimir a próxima tarefa na ordem certa (em andamento, depois prioridade, depois menor chave) e a mandar ler a descrição inteira.
@@ -89,7 +88,7 @@ Toda sessão escolhe o que fazer olhando o quadro da direita para a esquerda e a
 | Ordem | Coluna | Sessão A | Sessões B, C e D |
 | --- | --- | --- | --- |
 | 1 | `EM REVISÃO` | Conferir a entrega e mover no mesmo ciclo | Nada, a bola é de A |
-| 2 | `AGUARDANDO APROVAÇÃO` | Resposta do humano e card órfão sem `humano` e `aprovacao-humana` | Nada |
+| 2 | `AGUARDANDO APROVAÇÃO` | Resposta do humano e card órfão sem `humano` | Nada |
 | 3 | `BLOQUEADA` | Responder a dúvida | Card próprio cuja resposta de A já chegou |
 | 4 | `EM ANDAMENTO` | Aprovação respondida, despacho ao Lovable, pedido `liberada` | Retomar o que começou, inclusive correção devolvida na descrição |
 | 5 | `A FAZER` | Estoque `processo` por último (`DEC-0016`) | Tarefa nova: `prioridade` primeiro, depois a menor chave |
@@ -153,7 +152,7 @@ A cria issue ──► A FAZER ──(B ou C assume)──► EM ANDAMENTO ─�
 | assumir | B ou C | Transição `31` para `EM ANDAMENTO` |
 | perguntar | B ou C | Comentário `Sessão X: dúvida` e transição `2` para `BLOQUEADA` |
 | responder | A | Comentário `Sessão A: resposta` e transição `31` de volta. Reatribui se mudar de fila |
-| escalar | A | Rótulos `humano`, `aprovacao-humana` e a categoria, responsável passa a ser o humano, transição `3` |
+| escalar | A | Rótulos `humano` e a categoria, responsável passa a ser o humano, transição `3` |
 | liberar | A | Depois do sim do humano, comentário de resposta com `aprovado_por: humano`, responsável volta para B ou C, transição `31` |
 | entregar | B ou C | Comentário `Sessão X: resultado` e transição `4` para `EM REVISÃO` |
 | revisar | A | Comentário `Sessão A: revisão` com o veredito e transição `41` para `CONCLUÍDA` |
@@ -300,7 +299,7 @@ Ciclo de uma fatia:
 4. A pede o sim humano   ->  send_message consome crédito do workspace
 5. A acorda o Lovable    ->  mensagem curta com a chave. Ele executa, comenta e move para EM REVISÃO
 6. A abre issue para C   ->  rótulo revisar-resultado. Diff, build, typecheck, preview
-7. A abre issue para o humano -> rótulo revisao-humana. O que olhar no preview, com a URL
+7. A abre issue para o humano -> rótulo humano. O que olhar no preview, com a URL
 8. A pede app-release    ->  deploy_project só com o sim do humano
 ```
 
@@ -350,13 +349,13 @@ Uma issue de aprovação é escrita para caber nesse gesto: a lista de ações q
 Cartão que só afirma e propõe obriga o humano a inferir o que o gesto aprova, e o gesto é justamente a única assinatura que existe. `DDP-140`, `DDP-141` e `DDP-142` nasceram assim em 2026-09-20 e precisaram ser corrigidas depois de abertas. O check 8 reprova por máquina.
 
 > [!IMPORTANT]
-> **A sessão A nunca move uma issue de rótulo `aprovacao-humana` para `EM ANDAMENTO`.** Esse movimento é a assinatura do humano, e é a única coisa que distingue uma aprovação dada de uma aprovação pedida. O conector do Atlassian é da conta, não da sessão, então todo comentário e toda transição das três sessões e do Lovable aparecem com o mesmo autor do humano. O histórico do cartão não sabe dizer quem arrastou. A separação entre pedir e aprovar existe porque a sessão A se abstém do gesto, e não porque o Jira a impeça.
+> **A sessão A nunca move uma issue de rótulo `humano` para `EM ANDAMENTO`.** Esse movimento é a assinatura do humano, e é a única coisa que distingue uma aprovação dada de uma aprovação pedida. O conector do Atlassian é da conta, não da sessão, então todo comentário e toda transição das três sessões e do Lovable aparecem com o mesmo autor do humano. O histórico do cartão não sabe dizer quem arrastou. A separação entre pedir e aprovar existe porque a sessão A se abstém do gesto, e não porque o Jira a impeça.
 >
 > Os movimentos que A faz numa issue de aprovação são dois: criar em `AGUARDANDO APROVAÇÃO`, e fechar em `CONCLUÍDA` depois de executar. Se uma issue de aprovação aparecer em `EM ANDAMENTO` e A não souber de resposta nenhuma, a saída é perguntar ao humano, nunca presumir o sim.
 
 Nos dois caminhos, A registra o sim no comentário de resposta com `aprovado_por: humano`, porque B e C leem a issue, não a conversa.
 
-**Depois de consumir a resposta, A tira o rótulo `aprovacao-humana`.** O rótulo significa "A espera o humano". Quando o humano já respondeu, ele passa a mentir, e a JQL da sessão A continua acordando a escuta a cada ciclo por uma issue que não tem nada de novo. Em 2026-09-20 cinco issues respondidas derrubaram a escuta três vezes seguidas sem trabalho nenhum atrás.
+**Depois de consumir a resposta, A tira o rótulo `humano`.** O rótulo significa "A espera o humano". Quando o humano já respondeu, ele passa a mentir, e a JQL da sessão A continua acordando a escuta a cada ciclo por uma issue que não tem nada de novo. Em 2026-09-20 cinco issues respondidas derrubaram a escuta três vezes seguidas sem trabalho nenhum atrás.
 
 O rótulo que entra no lugar diz em que a issue está parada:
 
@@ -402,7 +401,7 @@ loop:
 
 | Sessão | JQL da fila |
 | --- | --- |
-| A | `project = DDP AND (status in ("BLOQUEADA", "EM REVISÃO") OR (status = "EM ANDAMENTO" AND labels in ("aprovacao-humana", "revisao-humana")) OR (status = "AGUARDANDO APROVAÇÃO" AND (labels is EMPTY OR labels not in ("humano", "aprovacao-humana"))) OR (labels = "liberada" AND labels != "draft" AND status != "CONCLUÍDA"))` |
+| A | `project = DDP AND (status in ("BLOQUEADA", "EM REVISÃO") OR (status = "EM ANDAMENTO" AND labels = "humano") OR (status = "AGUARDANDO APROVAÇÃO" AND (labels is EMPTY OR labels != "humano")) OR (labels = "liberada" AND labels != "draft" AND status != "CONCLUÍDA"))` |
 | B | `project = DDP AND assignee = "712020:ec30868f-8e34-4c25-97e2-cd920e5da679" AND status in ("A FAZER", "EM ANDAMENTO")` |
 | C | `project = DDP AND assignee = "712020:6ac2f667-9728-4b07-bffb-eaa19704a4c9" AND status in ("A FAZER", "EM ANDAMENTO")` |
 
@@ -431,7 +430,7 @@ Toda regra deste arquivo nasceu de um defeito medido, e por muito tempo todas vi
 | 5 | Emenda da sessão A com código só em comentário, fora da descrição | `DDP-113`, entregue sem a coluna que a emenda pedia |
 | 6 | Ordem versionada acima de 10.000 bytes | O teto da S1c foi descoberto na mão, com a ordem já escrita, e a da S1c1 estourou de novo na volta da revisão (`DDP-124`) |
 | 7 | `information_schema` dentro de bloco SQL executável | `DDP-121`. A view filtra por privilégio e devolve zero linha sem provar nada (`DDP-125`) |
-| 8 | Issue de rótulo `aprovacao-humana` sem a seção `A pergunta` na descrição | `DDP-140`, `DDP-141` e `DDP-142`, abertas afirmando e propondo, sem nada a responder |
+| 8 | Issue de rótulo `humano` sem a seção `A pergunta` na descrição | `DDP-140`, `DDP-141` e `DDP-142`, abertas afirmando e propondo, sem nada a responder |
 | 9 | Ordem de S1 sem declarar os blocos do recorte, ou declarando bloco que não existe | `DDP-127`. Nenhum comando respondia qual decisão do ADR nenhuma ordem implementou |
 
 **A conferência também lista o que espera o humano fora do quadro**: issue aberta com `acao-humana` (arquivo que só o humano escreve, em `insumos/`, `prompts/` ou `adrs/`) ou `bloqueio-externo` (permissão da sessão). É aviso, nunca reprovação, e some quando a issue fecha. Origem: a `DDP-66` e a `DDP-75` fecharam com linhas por colar em `insumos/ORDEM.md`, e nada lembrava delas (`DDP-131`). Pendência manual nova vira issue aberta com `acao-humana`, nunca comentário numa issue que vai fechar.
@@ -468,7 +467,7 @@ A conferência da S1b, feita na mão em 2026-09-20, custou trinta e cinco linhas
 
 ## Revisão do humano, depois de toda entrega do Lovable
 
-Toda vez que o agente do Lovable entrega, a sessão A abre uma issue de rótulo `revisao-humana` para o dono do produto olhar o resultado com os próprios olhos. Ela vem depois da revisão da sessão C, para ele não gastar tempo com o que já foi reprovado por build, typecheck ou contrato.
+Toda vez que o agente do Lovable entrega, a sessão A abre uma issue de rótulo `humano` para o dono do produto olhar o resultado com os próprios olhos. Ela vem depois da revisão da sessão C, para ele não gastar tempo com o que já foi reprovado por build, typecheck ou contrato.
 
 A issue não pede um parecer genérico. Ela diz o que olhar:
 
@@ -488,7 +487,7 @@ O formato que funciona: a recomendação com as razões primeiro, as alternativa
 
 **A sessão A nunca supre a resposta que faltou.** Decisão de contrato adivinhada a partir de um status é decisão sem dono, e o custo aparece quando alguém procurar quem decidiu.
 
-**A issue nasce em `AGUARDANDO APROVAÇÃO`**, nunca em `EM ANDAMENTO`. A JQL de escuta da sessão A lê `EM ANDAMENTO` com o rótulo `revisao-humana` como resposta já dada, então uma issue criada nesse status se anuncia respondida antes de ser lida.
+**A issue nasce em `AGUARDANDO APROVAÇÃO`**, nunca em `EM ANDAMENTO`. A JQL de escuta da sessão A lê `EM ANDAMENTO` com o rótulo `humano` como resposta já dada, então uma issue criada nesse status se anuncia respondida antes de ser lida.
 
 **Como ele responde**, pelo mesmo gesto das aprovações: arrastar para `EM ANDAMENTO` quando estiver bom, ou para `BLOQUEADA` quando achar problema, com o problema em comentário. Problema achado aqui vira ordem nova para o Lovable, nunca ajuste direto no código.
 

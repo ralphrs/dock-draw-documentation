@@ -43,7 +43,7 @@ case "$sessao" in
   # Card fechado que volta para EM ANDAMENTO é o humano pedindo algo novo num
   # card velho. Em 2026-09-21 o pedido dos 24 tipos chegou assim na DDP-184 e
   # ficou 25 minutos sem ser visto, porque nenhum rótulo o punha na fila.
-  A | a) jql='project = DDP AND ((status in ("BLOQUEADA", "EM REVISÃO") AND (labels is EMPTY OR labels not in ("bloqueio-externo"))) OR (status = "EM ANDAMENTO" AND labels in ("aprovacao-humana", "revisao-humana")) OR (status = "AGUARDANDO APROVAÇÃO" AND (labels is EMPTY OR labels not in ("humano", "aprovacao-humana"))) OR (labels = "liberada" AND labels != "draft" AND status != "CONCLUÍDA") OR (status = "EM ANDAMENTO" AND status changed FROM "CONCLUÍDA" AFTER -1d))' ;;
+  A | a) jql='project = DDP AND ((status in ("BLOQUEADA", "EM REVISÃO") AND (labels is EMPTY OR labels not in ("bloqueio-externo"))) OR (status = "EM ANDAMENTO" AND labels = "humano") OR (status = "AGUARDANDO APROVAÇÃO" AND (labels is EMPTY OR labels != "humano")) OR (labels = "liberada" AND labels != "draft" AND status != "CONCLUÍDA") OR (status = "EM ANDAMENTO" AND status changed FROM "CONCLUÍDA" AFTER -1d))' ;;
   B | b) jql='project = DDP AND assignee = "712020:ec30868f-8e34-4c25-97e2-cd920e5da679" AND status in ("A FAZER", "EM ANDAMENTO")' ;;
   C | c) jql='project = DDP AND assignee = "712020:6ac2f667-9728-4b07-bffb-eaa19704a4c9" AND status in ("A FAZER", "EM ANDAMENTO")' ;;
   # D não tem conta no Jira: a fila dela é o rótulo sessao-d.
@@ -139,7 +139,7 @@ if ordem:
     print("Leia a descrição inteira antes de começar: ela pode trazer correção da sessão A.")
     print("No comentário de resultado, nunca ponha chave dentro de monospace: use a macro de código.")
     if s == "D":
-        print("Nunca mova card com o rótulo aprovacao-humana: só o humano e a sessão A movem esse card.")' || true
+        print("Nunca mova card com o rótulo humano: só o humano e a sessão A movem esse card.")' || true
 }
 
 religue() {

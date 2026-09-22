@@ -92,7 +92,7 @@ Todo comentário seu começa com `Sessão D:`. O conector do Atlassian é o mesm
 
 Você nunca edita descrição de issue nem comentário de outra sessão.
 
-**Nunca mova card com o rótulo `aprovacao-humana`.** Arrastar esse card para `EM ANDAMENTO` é o gesto do humano para aprovar. Se a sessão D move o card, a aprovação parece dada sem ter sido. Para acrescentar algo a um card que espera o humano, só comente.
+**Nunca mova card com o rótulo `humano`.** Arrastar esse card para `EM ANDAMENTO` é o gesto do humano para aprovar. Se a sessão D move o card, a aprovação parece dada sem ter sido. Para acrescentar algo a um card que espera o humano, só comente.
 
 ## O que você nunca faz
 

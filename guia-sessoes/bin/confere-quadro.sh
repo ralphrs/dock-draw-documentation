@@ -53,7 +53,7 @@ achados = []
 # --------------------------------------------------------------------------
 VIGIADA = ('project = DDP AND ((status in ("BLOQUEADA", "EM REVISÃO") '
            'AND (labels is EMPTY OR labels not in ("bloqueio-externo"))) '
-           'OR (status = "EM ANDAMENTO" AND labels in ("aprovacao-humana", "revisao-humana")))')
+           'OR (status = "EM ANDAMENTO" AND labels = "humano"))')
 for i in busca(VIGIADA, "key,summary,status,comment"):
     cs = (i["fields"].get("comment") or {}).get("comments") or []
     if cs and cs[-1]["body"].strip().startswith("Sessão A:"):
@@ -139,7 +139,7 @@ for i in recentes_l:
 #    movida e sem comentário porque o gesto não tinha destino definido.
 # --------------------------------------------------------------------------
 OPCOES = re.compile(r"\b(sa[ií]da|op[çc][ãa]o|alternativa)\s*[2-9]\b", re.I)
-for i in busca('project = DDP AND labels = "aprovacao-humana" AND status = "AGUARDANDO APROVAÇÃO"',
+for i in busca('project = DDP AND labels = "humano" AND status = "AGUARDANDO APROVAÇÃO"',
                "key,summary,description"):
     t = i["fields"].get("description") or ""
     if OPCOES.search(t) and not re.search(r"recomend", t, re.I):
@@ -152,7 +152,7 @@ for i in busca('project = DDP AND labels = "aprovacao-humana" AND status = "AGUA
 #    Pedido do humano em 2026-09-22: todo cartão que espera aprovação,
 #    resposta, conferência no preview ou tarefa manual dele leva o rótulo
 #    `humano`, que é o filtro que ele usa para achar o que é dele.
-for i in busca('project = DDP AND status != "CONCLUÍDA" AND labels in ("aprovacao-humana", "revisao-humana") AND labels != "humano"',
+for i in busca('project = DDP AND status != "CONCLUÍDA" AND labels = "humano" AND labels != "humano"',
                "key,summary"):
     achados.append((i["key"], 'espera o humano e não tem o rótulo humano. Acrescente o rótulo.'))
 
@@ -246,7 +246,7 @@ TETO = 10000
 #    O sinal é a seção "A pergunta" na descrição, não num comentário: quem
 #    abre o cartão pela primeira vez lê a descrição.
 # --------------------------------------------------------------------------
-PEDE = ('project = DDP AND labels = "aprovacao-humana" '
+PEDE = ('project = DDP AND labels = "humano" '
         'AND status != "CONCLUÍDA"')
 for i in busca(PEDE, "key,summary,description"):
     desc = i["fields"].get("description") or ""
