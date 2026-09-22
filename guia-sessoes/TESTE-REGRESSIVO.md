@@ -28,9 +28,9 @@ Cobre tudo que o Lovable entregou até 2026-09-22 e que passou pela revisão da 
 
 | Id | Origem | Passos | Esperado | Onde |
 | --- | --- | --- | --- | --- |
-| RT-B01 | S1a a S2 (`DDP-98`, `119`, `140`) | `confere-execucao.sh` contra o DDL das ordens | Schema `content` com `spaces`, `space_members`, `pages`, `page_revisions`, `revision_statuses`, `revision_status_events`, `page_drafts`, `effective_role`, `node_kind`, políticas RLS da S2 | prod |
-| RT-B02 | `DDP-308`, `419` | Consultar `storage.buckets` | Bucket `diagram-images` com a lista de tipos `png`, `jpeg`, `webp` e limite de 5 MB | prod |
-| RT-B03 | `DDP-311` | Consultar `view_folders` | Tabela existe, com `parent_id` e restrição de nome único entre irmãs | prod |
+| RT-B01 | S1a a S1g (`DDP-98`, `119`, `140`) | `confere-execucao.sh` contra o DDL das ordens | Schema `content` com `workspace_members`, `spaces`, `space_members`, `pages`, `page_revisions`, `revision_statuses`, `revision_status_events`, `revision_current_status`, `page_drafts`, a função `effective_role`, a coluna `pages.node_kind` com CHECK e a linha `owner` do workspace. Sem RLS em `content`: a S2 ainda não foi pedida (`DDP-155`) | prod |
+| RT-B02 | `DDP-308`, `419` | Consultar `storage.buckets` e `pg_policies` | Bucket `diagram-images` privado, limite de 5 MB, política de envio com extensão `png`, `jpg`, `webp`. `allowed_mime_types` fica nulo, lacuna aceita na `DDP-430` | prod |
+| RT-B03 | `DDP-311` | Consultar `view_folders` | Tabela existe, com `parent_folder_id` e índice único `(project_id, parent_folder_id, name)` com `NULLS NOT DISTINCT` | prod |
 | RT-B04 | `DDP-397` | Consultar `project_export_frames` | Tabela existe, uma linha por projeto configurado | prod |
 | RT-B05 | `DDP-453` | Consultar `relationships` do diagrama `RT` | Conexão nova gravada com `label` vazio, `style_props` com o que o painel gravou | preview |
 
