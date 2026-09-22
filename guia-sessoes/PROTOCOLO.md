@@ -34,7 +34,8 @@ Site `https://dokdrawapp.atlassian.net`, `cloudId` `5f3024da-2ee6-4363-81e4-ec02
 | `A FAZER` | Tarefa escrita por A, esperando quem assume | B ou C |
 | `EM ANDAMENTO` | Assumida, trabalho rodando | B ou C |
 | `BLOQUEADA` | Dúvida aberta em comentário, esperando decisão da arquitetura | A |
-| `AGUARDANDO APROVAÇÃO` | Escalada ao humano, numa das sete categorias | humano |
+| `AGUARDANDO APROVAÇÃO` | Escalada ao humano, numa das sete categorias, sem deploy | humano |
+| `FAZER DEPLOY` | Código no preview, revisado e aceito, esperando o humano publicar ou aplicar migração (`DEC-0042`) | humano |
 | `EM REVISÃO` | Entregue com resultado e evidência, esperando conferência | A |
 | `CONCLUÍDA` | Revisada e aceita por A | ninguém |
 
@@ -46,6 +47,7 @@ Ids de transição, para a chamada de transição do MCP:
 | EM ANDAMENTO | `31` |
 | BLOQUEADA | `2` |
 | AGUARDANDO APROVAÇÃO | `3` |
+| FAZER DEPLOY | `10` |
 | EM REVISÃO | `4` |
 | CONCLUÍDA | `41` |
 
@@ -88,10 +90,11 @@ Toda sessão escolhe o que fazer olhando o quadro da direita para a esquerda e a
 | Ordem | Coluna | Sessão A | Sessões B, C e D |
 | --- | --- | --- | --- |
 | 1 | `EM REVISÃO` | Conferir a entrega e mover no mesmo ciclo | Nada, a bola é de A |
-| 2 | `AGUARDANDO APROVAÇÃO` | Resposta do humano e card órfão sem `humano` | Nada |
-| 3 | `BLOQUEADA` | Responder a dúvida | Card próprio cuja resposta de A já chegou |
-| 4 | `EM ANDAMENTO` | Aprovação respondida, despacho ao Lovable, pedido `liberada` | Retomar o que começou, inclusive correção devolvida na descrição |
-| 5 | `A FAZER` | Estoque `processo` por último (`DEC-0016`) | Tarefa nova: `prioridade` primeiro, depois a menor chave |
+| 2 | `FAZER DEPLOY` | Só quando o humano devolve com comentário. Nunca tirar card de lá | Nada, nunca tocar (`DEC-0042`) |
+| 3 | `AGUARDANDO APROVAÇÃO` | Resposta do humano e card órfão sem `humano` | Nada |
+| 4 | `BLOQUEADA` | Responder a dúvida | Card próprio cuja resposta de A já chegou |
+| 5 | `EM ANDAMENTO` | Aprovação respondida, despacho ao Lovable, pedido `liberada` | Retomar o que começou, inclusive correção devolvida na descrição |
+| 6 | `A FAZER` | Estoque `processo` por último (`DEC-0016`) | Tarefa nova: `prioridade` primeiro, depois a menor chave |
 
 A escuta `aguarda-fila.sh` imprime a fila já nessa ordem e nomeia a próxima tarefa. O card mais à direita é o que já custou trabalho de mais gente, e terminar vale mais que começar.
 
@@ -342,6 +345,8 @@ Dois caminhos valem, e a diferença é só quando A fica sabendo.
 O movimento é o que faz A acordar. Comentário sozinho não aparece em consulta nenhuma, porque JQL não sabe procurar por comentário novo, e um cartão parado em `AGUARDANDO APROVAÇÃO` é indistinguível de um que ninguém leu.
 
 O destino do sim é `EM ANDAMENTO` e não `CONCLUÍDA` porque `CONCLUÍDA` quer dizer que as ações aprovadas já aconteceram. Fechar o cartão no momento da aprovação deixa o quadro afirmando um trabalho que ainda não foi feito, e apaga o rastro caso a execução falhe no meio. Quem move para `CONCLUÍDA` é A, depois de executar e dizer o que executou.
+
+**Card de deploy (`DEC-0042`).** Publicação em produção e migração a colar no Lovable não vão para `AGUARDANDO APROVAÇÃO`: a sessão A move o card `app-release` para `FAZER DEPLOY` (transição `10`) quando o código já está no preview, revisado por C e aceito por A. O humano publica ou aplica e arrasta para `CONCLUÍDA`. Problema: comentário e `EM ANDAMENTO`. Só A põe card nessa coluna, só o humano tira.
 
 Uma issue de aprovação é escrita para caber nesse gesto: a lista de ações que o sim cobre é fechada e numerada, e A não faz nada fora dela.
 

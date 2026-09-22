@@ -27,7 +27,7 @@ A documentação e os ADRs ficam em outro repositório: `/Users/ralphrenatodasil
 4. `DOCS/decisoes/REGISTRO.md`: as decisões que não são contrato de camada.
 5. Os ADRs citados em cada issue, em `DOCS/adrs/`.
 
-**Ordem de trabalho (`DEC-0038`):** a cada volta, olhe o quadro da direita para a esquerda e aja na primeira coluna em que você tem card com a bola: EM REVISÃO, AGUARDANDO APROVAÇÃO, BLOQUEADA, EM ANDAMENTO, e só então tarefa nova em A FAZER. A escuta imprime a fila já nessa ordem e nomeia a próxima tarefa. Seção "Ordem de trabalho" do protocolo.
+**Ordem de trabalho (`DEC-0038`):** a cada volta, olhe o quadro da direita para a esquerda e aja na primeira coluna em que você tem card com a bola: EM REVISÃO, AGUARDANDO APROVAÇÃO, BLOQUEADA, EM ANDAMENTO, e só então tarefa nova em A FAZER. A escuta imprime a fila já nessa ordem e nomeia a próxima tarefa. Seção "Ordem de trabalho" do protocolo. A coluna `FAZER DEPLOY` é do humano: nunca mova nem comente card que está nela (`DEC-0042`).
 
 ## Os dois tipos de issue que você recebe
 

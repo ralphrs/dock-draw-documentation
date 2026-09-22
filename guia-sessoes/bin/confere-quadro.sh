@@ -157,6 +157,17 @@ for i in busca('project = DDP AND status != "CONCLUÍDA" AND labels = "humano" A
     achados.append((i["key"], 'espera o humano e não tem o rótulo humano. Acrescente o rótulo.'))
 
 # --------------------------------------------------------------------------
+# 4c. Coluna FAZER DEPLOY (DEC-0042): só card app-release com rótulo humano
+#    fica lá, e card app-release pronto para o humano não fica em
+#    AGUARDANDO APROVAÇÃO.
+for i in busca('project = DDP AND status = "FAZER DEPLOY" AND (labels != "humano" OR labels != "app-release" OR labels is EMPTY)',
+               "key,summary"):
+    achados.append((i["key"], 'está em FAZER DEPLOY sem os rótulos humano e app-release. Essa coluna é só para publicação e migração que o humano executa (DEC-0042).'))
+for i in busca('project = DDP AND status = "AGUARDANDO APROVAÇÃO" AND labels = "app-release" AND labels = "humano"',
+               "key,summary"):
+    achados.append((i["key"], 'é app-release esperando o humano e está em AGUARDANDO APROVAÇÃO. Publicação e migração vão para FAZER DEPLOY (DEC-0042).'))
+
+# --------------------------------------------------------------------------
 # 5. Emenda que muda o entregável deixada só em comentário.
 #    Defeito medido em 2026-09-20: a sessão A mandou por comentário a coluna
 #    workspace_id de space_members, a sessão B entregou sem ela, e o ciclo se

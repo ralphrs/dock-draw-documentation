@@ -122,7 +122,7 @@ try:
     itens = json.load(sys.stdin).get("issues", [])
 except Exception:
     itens = []
-colunas = ["EM REVISÃO", "AGUARDANDO APROVAÇÃO", "BLOQUEADA", "EM ANDAMENTO", "A FAZER"]
+colunas = ["EM REVISÃO", "FAZER DEPLOY", "AGUARDANDO APROVAÇÃO", "BLOQUEADA", "EM ANDAMENTO", "A FAZER"]
 def chave(i):
     st = i["fields"]["status"]["name"]
     col = colunas.index(st) if st in colunas else len(colunas)
