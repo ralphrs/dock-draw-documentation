@@ -15,9 +15,18 @@ Segundo lote do cartão `DDP-245`, que junta defeitos pequenos do editor achados
 
 As outras formas não mudam.
 
-**3. Clonar pela seta é um passo só no desfazer (`DDP-414`).** Em `handleSetaClique` (rota do editor), o clique sem vizinho chama `pasteAt` e depois `conectarComHistorico`, e cada um empilha uma entrada. O primeiro Ctrl+Z tira só a ligação. Troque por uma entrada só: depois que `conectarComHistorico` empilhar, tire as duas últimas entradas de `undoStack` e empilhe uma composta, cujo `undo` roda o `undo` da ligação e depois o da colagem, e cujo `redo` roda o `redo` da colagem e depois o da ligação. O `redo` da colagem recria o clone com o mesmo id (`DDP-294`, item 6), então o `redo` da ligação continua apontando para ele. Se a ligação falhar, nada é fundido e a colagem fica como passo próprio. O clique com vizinho na direção (só liga) não muda.
+**3. Clonar pela seta é um passo só no desfazer (`DDP-414`).** Em `handleSetaClique` (rota do editor), o clique sem vizinho chama `pasteAt` e depois `conectarComHistorico`, e cada um empilha uma entrada. O primeiro Ctrl+Z tira só a ligação. O refazer de uma colagem cria o clone com id novo (`colarItem` gera ids novos a cada chamada), então não dá para encadear os dois refazer prontos. Faça assim:
 
-**4. Nome de pasta repetido diz o motivo (`DDP-421`).** As server functions `addViewFolder` e `patchViewFolder` passam a lançar um erro com a mensagem `NOME_REPETIDO` quando o Supabase devolver o código `23505`. Em `src/routes/_authenticated/projetos.$projectId.diagramas.index.tsx`, os `catch` de `criarPasta` e de `renomear` mostram "Já existe uma pasta com esse nome aqui." quando a mensagem for `NOME_REPETIDO`, e o aviso de hoje nos outros casos. O desfazer otimista continua igual.
+- `HistoricoEntry` ganha o campo opcional `refs`, com a lista `ids`. A entrada que `pasteAt` empilha passa a expor nele o objeto `refs` que ela já mantém, atualizado a cada refazer.
+- `conectarComHistorico` passa a devolver o id da relação criada, ou nulo quando `connectElements` falhar. O resto dela não muda.
+- No caminho de clonar de `handleSetaClique`, quando `conectarComHistorico` devolver um id: tire de `undoStack` as duas últimas entradas (a da ligação e a da colagem) e empilhe uma entrada composta, com um objeto próprio que guarda o id atual da relação.
+  - O `undo` chama `apagarConexao` com o id atual da relação e depois o `undo` da entrada da colagem.
+  - O `redo` chama o `redo` da entrada da colagem, pega o primeiro id de `refs.ids`, acha o elemento do clone por `elementIdDeNo`, chama `connectElements` da origem para esse elemento e guarda o id novo da relação. Se qualquer passo falhar, devolve falso.
+- Quando `conectarComHistorico` devolver nulo, nada é fundido e a colagem fica como passo próprio.
+
+O clique com vizinho na direção (só liga) não muda.
+
+**4. Nome de pasta repetido diz o motivo (`DDP-421`).** Hoje `createViewFolder` e `updateViewFolder` (`src/infrastructure/supabase/c4-repository.ts`) devolvem o erro por `unwrap`, que só lê a mensagem e perde o código. Nessas duas funções, antes de `unwrap`, confira se o erro do Supabase tem o código `23505` e, nesse caso, lance um erro com a mensagem `NOME_REPETIDO`. `unwrap` não muda, para não afetar o resto do arquivo. Em `src/routes/_authenticated/projetos.$projectId.diagramas.index.tsx`, os `catch` de `criarPasta` e de `renomear` mostram "Já existe uma pasta com esse nome aqui." quando a mensagem for `NOME_REPETIDO`, e o aviso de hoje nos outros casos. O desfazer otimista continua igual.
 
 **5. Duplo clique na estrela não cria forma (`DDP-429`).** Em `src/components/editor/palette-item.tsx`, o botão da estrela para o `click` com `stopPropagation`, mas o `dblclick` sobe até o `div` que cria a forma. Acrescente ao botão da estrela um `onDoubleClick` que chama `event.stopPropagation()`.
 
