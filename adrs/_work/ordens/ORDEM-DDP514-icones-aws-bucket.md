@@ -18,11 +18,13 @@ Bucket público não precisa de política de `SELECT`: o Supabase serve o objeto
 
 **2. Convenção de caminho.** `{categoria}/{slug-do-serviço}.svg`, com `categoria` em `kebab-case` batendo as categorias oficiais do pacote AWS (`compute`, `storage`, `database`, e as demais que o pacote `Icon-package_07312026` trouxer) e `slug-do-serviço` derivado do nome do arquivo oficial (`Arch_AWS-Lambda_48.svg` vira `lambda.svg`, dentro de `compute/`). Um arquivo por serviço, sem separação clara/escuro: a `DDP-237` já confirmou que o ícone de serviço é um quadrado colorido sólido que funciona nos dois temas sem alteração, só a moldura do DokDraw muda de cor.
 
-**3. Manifesto, `public/aws-icons-manifest.json` no repositório do app (não no bucket).** Lista estática `{ category: string; label: string; services: { slug: string; name: string }[] }[]`, uma entrada por categoria, gerada a partir do mesmo pacote oficial usado para subir os arquivos. É o que a paleta lê para montar os grupos da família `aws` (segunda ordem), sem precisar listar o bucket em tempo de execução.
+**3. Manifesto, `adrs/_work/aws-icons/aws-icons-manifest.json`, copiado para `public/aws-icons-manifest.json` no repositório do app pela outra ordem.** Lista estática `{ category: string; label: string; services: { slug: string; name: string }[] }[]`, uma entrada por categoria. É o que a paleta lê para montar os grupos da família `aws` (segunda ordem), sem precisar listar o bucket em tempo de execução.
 
-**4. Upload da primeira leva.** A partir do `Icon-package_07312026...zip` já baixado na pesquisa da `DDP-514` (`FICHA-ADR015-icones-aws.md`), extrair os SVGs de serviço das categorias Compute, Storage, Database, Networking & Content Delivery, Security Identity & Compliance e Analytics (as seis com mais serviços usados em diagrama de arquitetura), subir para `aws-icons/{categoria}/{slug}.svg` sem nenhuma alteração de path, cor ou conteúdo, e gerar o manifesto do item 3 na mesma leva. As demais categorias do pacote ficam para leva futura, sem bloquear esta ordem.
+**4. A pasta pronta para subir, `adrs/_work/aws-icons/`.** Já extraída do `Icon-package_07312026...zip` (pesquisa da `DDP-514`, `FICHA-ADR015-icones-aws.md`) nesta sessão, sem alteração de conteúdo, só renomeando o arquivo para o slug. Contagem por categoria: Compute 24, Storage 16, Database 11, Networking & Content Delivery 19, Security, Identity & Compliance 28, Analytics 20, mais `groups/` com 4 ícones de contêiner (`region.svg`, `vpc.svg`, `subnet-public.svg`, `subnet-private.svg`, extraídos do `Architecture-Group-Icons_07312026` do mesmo pacote, para a segunda ordem não depender de outro upload). Total: 122 arquivos SVG, 429.766 bytes (0,41 MB). As demais categorias do pacote ficam para leva futura, sem bloquear esta ordem.
 
-**5. Atribuição.** O rodapé de licenças do app (onde já existe algum texto de atribuição, se houver, ou a criar na próxima ordem de interface) precisa citar a AWS conforme a `DEC-0030`. Esta ordem só prepara o bucket, o texto entra na ordem de interface.
+**5. Quem sobe e como.** O Lovable cria o bucket (item 1) e devolve a confirmação. Depois disso, o humano sobe a pasta pelo painel do Supabase (Storage, bucket `aws-icons`, arrastar a pasta `adrs/_work/aws-icons/` inteira: o painel preserva o caminho `categoria/slug.svg` de cada subpasta). O Lovable não sobe os arquivos: são 122 SVGs, fora do que um agente de código deve escrever em massa numa API de storage.
+
+**6. Atribuição.** O rodapé de licenças do app (onde já existe algum texto de atribuição, se houver, ou a criar na próxima ordem de interface) precisa citar a AWS conforme a `DEC-0030`. Esta ordem só prepara o bucket, o texto entra na ordem de interface.
 
 ## O que não fazer aqui
 
@@ -36,13 +38,13 @@ Bucket público não precisa de política de `SELECT`: o Supabase serve o objeto
 
 | Restrição (`LEDGER.md` e decisões) | Onde esta ordem cumpre |
 | --- | --- |
-| `DEC-0030`: ícone oficial sem alteração, com atribuição | Item 2 e 4, upload direto do zip oficial sem edição |
+| `DEC-0030`: ícone oficial sem alteração, com atribuição | Item 2 e 4, arquivos extraídos direto do zip oficial, sem edição de conteúdo, só renomeados para o slug |
 | Dependências novas só com justificativa em ADR | Nenhuma dependência nova, é bucket, não pacote |
 | Migração e RLS exigem aprovação humana explícita (`DEC-0007`) | Categoria `app-release`, aplicação represada até o sim do humano |
 
 ## Verificação
 
-Roteiro da sessão A: `SELECT public FROM storage.buckets WHERE id = 'aws-icons'` devolve `true`. Baixar um SVG por URL pública sem sessão autenticada (`curl` sem header de autorização) devolve 200. Tentar subir um arquivo pela API do app autenticado (não pelo painel) falha por falta de política de `INSERT`. `public/aws-icons-manifest.json` existe e lista pelo menos as seis categorias do item 4, cada uma com pelo menos um serviço.
+Roteiro da sessão A: `SELECT public FROM storage.buckets WHERE id = 'aws-icons'` devolve `true`. Depois do upload manual do item 5, baixar um SVG por URL pública sem sessão autenticada (`curl` sem header de autorização) devolve 200. Tentar subir um arquivo pela API do app autenticado (não pelo painel) falha por falta de política de `INSERT`. `adrs/_work/aws-icons/aws-icons-manifest.json` lista as seis categorias do item 4, cada uma com pelo menos um serviço, e bate com a contagem de arquivos de cada pasta.
 
 ## Restrições
 

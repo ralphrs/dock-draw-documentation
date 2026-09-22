@@ -1,0 +1,510 @@
+[
+  {
+    "category": "compute",
+    "label": "Compute",
+    "services": [
+      {
+        "slug": "app-runner",
+        "name": "AWS App Runner"
+      },
+      {
+        "slug": "batch",
+        "name": "AWS Batch"
+      },
+      {
+        "slug": "compute-optimizer",
+        "name": "AWS Compute Optimizer"
+      },
+      {
+        "slug": "elastic-beanstalk",
+        "name": "AWS Elastic Beanstalk"
+      },
+      {
+        "slug": "lambda",
+        "name": "AWS Lambda"
+      },
+      {
+        "slug": "local-zones",
+        "name": "AWS Local Zones"
+      },
+      {
+        "slug": "nitro-enclaves",
+        "name": "AWS Nitro Enclaves"
+      },
+      {
+        "slug": "outposts-family",
+        "name": "AWS Outposts family"
+      },
+      {
+        "slug": "outposts-rack",
+        "name": "AWS Outposts rack"
+      },
+      {
+        "slug": "outposts-servers",
+        "name": "AWS Outposts servers"
+      },
+      {
+        "slug": "parallel-cluster",
+        "name": "AWS Parallel Cluster"
+      },
+      {
+        "slug": "parallel-computing-service",
+        "name": "AWS Parallel Computing Service"
+      },
+      {
+        "slug": "serverless-application-repository",
+        "name": "AWS Serverless Application Repository"
+      },
+      {
+        "slug": "simspace-weaver",
+        "name": "AWS SimSpace Weaver"
+      },
+      {
+        "slug": "wavelength",
+        "name": "AWS Wavelength"
+      },
+      {
+        "slug": "dcv",
+        "name": "Amazon DCV"
+      },
+      {
+        "slug": "ec2-auto-scaling",
+        "name": "Amazon EC2 Auto Scaling"
+      },
+      {
+        "slug": "ec2-image-builder",
+        "name": "Amazon EC2 Image Builder"
+      },
+      {
+        "slug": "ec2",
+        "name": "Amazon EC2"
+      },
+      {
+        "slug": "elastic-vmware-service",
+        "name": "Amazon Elastic VMware Service"
+      },
+      {
+        "slug": "lightsail-for-research",
+        "name": "Amazon Lightsail for Research"
+      },
+      {
+        "slug": "lightsail",
+        "name": "Amazon Lightsail"
+      },
+      {
+        "slug": "bottlerocket",
+        "name": "Bottlerocket"
+      },
+      {
+        "slug": "elastic-fabric-adapter",
+        "name": "Elastic Fabric Adapter"
+      }
+    ]
+  },
+  {
+    "category": "storage",
+    "label": "Storage",
+    "services": [
+      {
+        "slug": "backup",
+        "name": "AWS Backup"
+      },
+      {
+        "slug": "elastic-disaster-recovery",
+        "name": "AWS Elastic Disaster Recovery"
+      },
+      {
+        "slug": "snowball-edge",
+        "name": "AWS Snowball Edge"
+      },
+      {
+        "slug": "snowball",
+        "name": "AWS Snowball"
+      },
+      {
+        "slug": "storage-gateway",
+        "name": "AWS Storage Gateway"
+      },
+      {
+        "slug": "efs",
+        "name": "Amazon EFS"
+      },
+      {
+        "slug": "elastic-block-store",
+        "name": "Amazon Elastic Block Store"
+      },
+      {
+        "slug": "fsx-for-lustre",
+        "name": "Amazon FSx for Lustre"
+      },
+      {
+        "slug": "fsx-for-netapp-ontap",
+        "name": "Amazon FSx for NetApp ONTAP"
+      },
+      {
+        "slug": "fsx-for-openzfs",
+        "name": "Amazon FSx for OpenZFS"
+      },
+      {
+        "slug": "fsx-for-wfs",
+        "name": "Amazon FSx for WFS"
+      },
+      {
+        "slug": "fsx",
+        "name": "Amazon FSx"
+      },
+      {
+        "slug": "file-cache",
+        "name": "Amazon File Cache"
+      },
+      {
+        "slug": "s3-on-outposts",
+        "name": "Amazon S3 on Outposts"
+      },
+      {
+        "slug": "simple-storage-service-glacier",
+        "name": "Amazon Simple Storage Service Glacier"
+      },
+      {
+        "slug": "simple-storage-service",
+        "name": "Amazon Simple Storage Service"
+      }
+    ]
+  },
+  {
+    "category": "database",
+    "label": "Database",
+    "services": [
+      {
+        "slug": "database-migration-service",
+        "name": "AWS Database Migration Service"
+      },
+      {
+        "slug": "aurora",
+        "name": "Amazon Aurora"
+      },
+      {
+        "slug": "documentdb",
+        "name": "Amazon DocumentDB"
+      },
+      {
+        "slug": "dynamodb",
+        "name": "Amazon DynamoDB"
+      },
+      {
+        "slug": "elasticache",
+        "name": "Amazon ElastiCache"
+      },
+      {
+        "slug": "keyspaces",
+        "name": "Amazon Keyspaces"
+      },
+      {
+        "slug": "memorydb",
+        "name": "Amazon MemoryDB"
+      },
+      {
+        "slug": "neptune",
+        "name": "Amazon Neptune"
+      },
+      {
+        "slug": "rds",
+        "name": "Amazon RDS"
+      },
+      {
+        "slug": "timestream",
+        "name": "Amazon Timestream"
+      },
+      {
+        "slug": "oracle-database-at-aws",
+        "name": "Oracle Database at AWS"
+      }
+    ]
+  },
+  {
+    "category": "networking-content-delivery",
+    "label": "Networking & Content Delivery",
+    "services": [
+      {
+        "slug": "app-mesh",
+        "name": "AWS App Mesh"
+      },
+      {
+        "slug": "client-vpn",
+        "name": "AWS Client VPN"
+      },
+      {
+        "slug": "cloud-map",
+        "name": "AWS Cloud Map"
+      },
+      {
+        "slug": "cloud-wan",
+        "name": "AWS Cloud WAN"
+      },
+      {
+        "slug": "direct-connect",
+        "name": "AWS Direct Connect"
+      },
+      {
+        "slug": "global-accelerator",
+        "name": "AWS Global Accelerator"
+      },
+      {
+        "slug": "interconnect",
+        "name": "AWS Interconnect"
+      },
+      {
+        "slug": "privatelink",
+        "name": "AWS PrivateLink"
+      },
+      {
+        "slug": "rtb-fabric",
+        "name": "AWS RTB Fabric"
+      },
+      {
+        "slug": "site-to-site-vpn",
+        "name": "AWS Site to Site VPN"
+      },
+      {
+        "slug": "transit-gateway",
+        "name": "AWS Transit Gateway"
+      },
+      {
+        "slug": "verified-access",
+        "name": "AWS Verified Access"
+      },
+      {
+        "slug": "api-gateway",
+        "name": "Amazon API Gateway"
+      },
+      {
+        "slug": "application-recovery-controller",
+        "name": "Amazon Application Recovery Controller"
+      },
+      {
+        "slug": "cloudfront",
+        "name": "Amazon CloudFront"
+      },
+      {
+        "slug": "route-53",
+        "name": "Amazon Route 53"
+      },
+      {
+        "slug": "vpc-lattice",
+        "name": "Amazon VPC Lattice"
+      },
+      {
+        "slug": "virtual-private-cloud",
+        "name": "Amazon Virtual Private Cloud"
+      },
+      {
+        "slug": "elastic-load-balancing",
+        "name": "Elastic Load Balancing"
+      }
+    ]
+  },
+  {
+    "category": "security-identity",
+    "label": "Security, Identity & Compliance",
+    "services": [
+      {
+        "slug": "artifact",
+        "name": "AWS Artifact"
+      },
+      {
+        "slug": "audit-manager",
+        "name": "AWS Audit Manager"
+      },
+      {
+        "slug": "certificate-manager",
+        "name": "AWS Certificate Manager"
+      },
+      {
+        "slug": "cloudhsm",
+        "name": "AWS CloudHSM"
+      },
+      {
+        "slug": "directory-service",
+        "name": "AWS Directory Service"
+      },
+      {
+        "slug": "firewall-manager",
+        "name": "AWS Firewall Manager"
+      },
+      {
+        "slug": "iam-identity-center",
+        "name": "AWS IAM Identity Center"
+      },
+      {
+        "slug": "identity-and-access-management",
+        "name": "AWS Identity and Access Management"
+      },
+      {
+        "slug": "key-management-service",
+        "name": "AWS Key Management Service"
+      },
+      {
+        "slug": "network-firewall",
+        "name": "AWS Network Firewall"
+      },
+      {
+        "slug": "payment-cryptography",
+        "name": "AWS Payment Cryptography"
+      },
+      {
+        "slug": "private-certificate-authority",
+        "name": "AWS Private Certificate Authority"
+      },
+      {
+        "slug": "resource-access-manager",
+        "name": "AWS Resource Access Manager"
+      },
+      {
+        "slug": "secrets-manager",
+        "name": "AWS Secrets Manager"
+      },
+      {
+        "slug": "security-agent",
+        "name": "AWS Security Agent"
+      },
+      {
+        "slug": "security-hub",
+        "name": "AWS Security Hub"
+      },
+      {
+        "slug": "security-incident-response",
+        "name": "AWS Security Incident Response"
+      },
+      {
+        "slug": "shield",
+        "name": "AWS Shield"
+      },
+      {
+        "slug": "signer",
+        "name": "AWS Signer"
+      },
+      {
+        "slug": "waf",
+        "name": "AWS WAF"
+      },
+      {
+        "slug": "cloud-directory",
+        "name": "Amazon Cloud Directory"
+      },
+      {
+        "slug": "cognito",
+        "name": "Amazon Cognito"
+      },
+      {
+        "slug": "detective",
+        "name": "Amazon Detective"
+      },
+      {
+        "slug": "guardduty",
+        "name": "Amazon GuardDuty"
+      },
+      {
+        "slug": "inspector",
+        "name": "Amazon Inspector"
+      },
+      {
+        "slug": "macie",
+        "name": "Amazon Macie"
+      },
+      {
+        "slug": "security-lake",
+        "name": "Amazon Security Lake"
+      },
+      {
+        "slug": "verified-permissions",
+        "name": "Amazon Verified Permissions"
+      }
+    ]
+  },
+  {
+    "category": "analytics",
+    "label": "Analytics",
+    "services": [
+      {
+        "slug": "clean-rooms",
+        "name": "AWS Clean Rooms"
+      },
+      {
+        "slug": "data-exchange",
+        "name": "AWS Data Exchange"
+      },
+      {
+        "slug": "entity-resolution",
+        "name": "AWS Entity Resolution"
+      },
+      {
+        "slug": "glue-databrew",
+        "name": "AWS Glue DataBrew"
+      },
+      {
+        "slug": "glue",
+        "name": "AWS Glue"
+      },
+      {
+        "slug": "lake-formation",
+        "name": "AWS Lake Formation"
+      },
+      {
+        "slug": "athena",
+        "name": "Amazon Athena"
+      },
+      {
+        "slug": "cloudsearch",
+        "name": "Amazon CloudSearch"
+      },
+      {
+        "slug": "data-firehose",
+        "name": "Amazon Data Firehose"
+      },
+      {
+        "slug": "datazone",
+        "name": "Amazon DataZone"
+      },
+      {
+        "slug": "emr",
+        "name": "Amazon EMR"
+      },
+      {
+        "slug": "finspace",
+        "name": "Amazon FinSpace"
+      },
+      {
+        "slug": "kinesis-data-streams",
+        "name": "Amazon Kinesis Data Streams"
+      },
+      {
+        "slug": "kinesis-video-streams",
+        "name": "Amazon Kinesis Video Streams"
+      },
+      {
+        "slug": "kinesis",
+        "name": "Amazon Kinesis"
+      },
+      {
+        "slug": "managed-service-for-apache-flink",
+        "name": "Amazon Managed Service for Apache Flink"
+      },
+      {
+        "slug": "managed-streaming-for-apache-kafka",
+        "name": "Amazon Managed Streaming for Apache Kafka"
+      },
+      {
+        "slug": "opensearch-service",
+        "name": "Amazon OpenSearch Service"
+      },
+      {
+        "slug": "redshift",
+        "name": "Amazon Redshift"
+      },
+      {
+        "slug": "sagemaker",
+        "name": "Amazon SageMaker"
+      }
+    ]
+  }
+]
