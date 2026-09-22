@@ -60,5 +60,6 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 | [DEC-0033](DEC-0033-familias-de-diagrama-por-referencia-visual.md) | 2026-09-22 | Famílias de diagrama fixadas por referência visual: contêineres GCP e OCI, referência por nuvem, linha do tempo, UML moderno, BPMN 2.0, estilo rascunho, ícones Lucide | Humano |
 | [DEC-0034](DEC-0034-importar-e-exportar-projeto-de-wiki.md) | 2026-09-22 | Importar e exportar projeto de wiki em .md e .mdx pelas configurações do projeto e pelo menu de três pontos | Humano |
 | [DEC-0035](DEC-0035-lateral-espacos-e-administracao.md) | 2026-09-22 | Lateral pinável, espaços e projetos na lateral, administração da plataforma e do tenant, direção para o ADR 013 | Humano |
+| [DEC-0036](DEC-0036-roadmap-plugins-e-modelos.md) | 2026-09-22 | Roadmap: plugin do Claude Code, plugin do Obsidian e modelos pré-definidos de diagrama, com estudos da sessão B | Humano |
 | A-Q-0002 | 2026-09-19 | Aplicar o diff no ledger, aceitar os ADRs 002 a 005 e commitar a etapa do ADR 005 | Humano |
 | A-Q-0001 | 2026-09-19 | Parada 4 do ADR 005: corrigir a fixture 05 no MDXEditor, com três travas, e criar o arquivo do ADR | Humano |
