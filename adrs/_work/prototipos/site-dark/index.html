@@ -1,7 +1,7 @@
 <meta charset="utf-8">
 <title>DokDraw Direção D</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@1&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@1&display=swap">
 <style>
 :root{
   --bg-0:#0b0912;--bg-1:#120e1f;--bg-2:#1a1430;--bg-3:#221b3d;
@@ -79,23 +79,33 @@ p{margin:0}
 .app .page h4{margin:0 0 8px;font-weight:500;font-size:20px;letter-spacing:-.01em}
 .app .page p{font-size:13.5px;color:var(--text-2);margin-bottom:10px}
 .app .page .blk{border:1px solid var(--border-1);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.02em;background:var(--bg-1)}
-.app .canvas{position:relative;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:20px 20px;padding:16px}
+.app .canvas{position:relative;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:20px 20px;padding:16px;display:grid;align-content:center}
 .app .canvas svg{width:100%;height:auto;display:block}
 @media (max-width:860px){.app{grid-template-columns:minmax(0,1fr)}.app .tree{display:none}.app .page{border-right:0;border-bottom:1px solid var(--border-1)}}
 
 /* diagram text */
-.dg text{font-family:var(--sans);font-size:12px;fill:var(--text-1)}
-.dg text.k{font-family:var(--mono);font-size:8.5px;letter-spacing:.06em;fill:var(--text-2)}
+.dg text{font-family:var(--sans);font-size:13px;font-weight:600;fill:var(--text-1)}
+.dg text.k{font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:0;fill:var(--text-2)}
 .dg text.ink{fill:var(--ink)}
-.dg text.kink{font-family:var(--mono);font-size:8.5px;letter-spacing:.06em;fill:#4a3f70}
-.dg text.lbl{font-family:var(--mono);font-size:8.5px;fill:var(--text-3);letter-spacing:.04em}
-.dg .edge{stroke:var(--text-2);stroke-width:1.2;fill:none}
+.dg text.kink{font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:0;fill:#4a3f70}
+.dg text.lbl{font-family:var(--mono);font-size:10px;font-weight:400;letter-spacing:0;fill:var(--text-2)}
+.dg text.cap{font-family:var(--sans);font-size:12px;font-weight:400;fill:var(--text-2)}
+.dg text.tag{font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:0;fill:#4a3f70}
+.dg .edge{stroke:var(--text-2);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.dg .pill{fill:var(--bg-2);stroke:var(--border-2);stroke-width:1}
+.card .pic .pill,.mini .pill{fill:var(--bg-1)}
 .dg .cont{fill:var(--accent-deep);stroke:#6b45c9;stroke-width:1}
 .dg .sys{fill:var(--brand);stroke:#5a3fa0;stroke-width:1}
 .dg .comp{fill:var(--comp);stroke:#b9a9e6;stroke-width:1}
 .dg .ext{fill:var(--ext);stroke:#b5b5c2;stroke-width:1}
 .dg .db{fill:var(--accent-deep);stroke:#6b45c9;stroke-width:1}
 .dg .person{fill:var(--brand);stroke:#5a3fa0;stroke-width:1}
+.dg .bnd{fill:none;stroke:var(--text-3);stroke-width:1.2;stroke-dasharray:8 8}
+.dg .sh{fill:none;stroke:var(--accent);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dg .bp{fill:none;stroke:var(--text-1);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dg .lane{fill:none;stroke:var(--text-3);stroke-width:1.2}
+.dg .gl{color:var(--text-1);opacity:.9}
+.dg .gl.dk{color:var(--ink)}
 
 /* sections */
 section{padding-block:88px}
@@ -138,6 +148,8 @@ section{padding-block:88px}
 .why p{color:var(--text-2);font-size:14.5px}
 .wire{fill:none;stroke:var(--text-3);stroke-width:1}
 .wire-a{fill:none;stroke:var(--accent);stroke-width:1}
+.wf text{font-family:var(--mono);font-size:10px;fill:var(--text-3)}
+.wire,.wire-a{stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
 
 /* themes */
 .themes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:36px}
@@ -171,6 +183,18 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   <defs>
     <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#aaa3c2"/></marker>
     <marker id="arr-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#241a44"/></marker>
+    <marker id="arr-w" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8f88a8"/></marker>
+    <marker id="arr-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#a78bfa"/></marker>
+    <marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M1 1L11 6L1 11z" fill="#120e1f" stroke="#aaa3c2" stroke-width="1.2" stroke-linejoin="round"/></marker>
+          <symbol fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" id="g-fn" viewBox="0 0 20 20"><rect x=".7" y=".7" width="18.6" height="18.6" rx="4" opacity=".6"/><path d="M6 5.5h2.6l5.4 9.5M10.4 9.6 6 15"/></symbol>
+      <symbol fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" id="g-db" viewBox="0 0 20 20"><rect x=".7" y=".7" width="18.6" height="18.6" rx="4" opacity=".6"/><ellipse cx="10" cy="6.5" rx="5" ry="2"/><path d="M5 6.5v7a5 2 0 0 0 10 0v-7M5 10a5 2 0 0 0 10 0"/></symbol>
+      <symbol fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" id="g-queue" viewBox="0 0 20 20"><rect x=".7" y=".7" width="18.6" height="18.6" rx="4" opacity=".6"/><path d="M5 6.5h10M5 10h7M5 13.5h10"/></symbol>
+      <symbol fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" id="g-win" viewBox="0 0 20 20"><rect x=".7" y=".7" width="18.6" height="18.6" rx="4" opacity=".6"/><rect x="4.5" y="5" width="11" height="10" rx="1.5"/><path d="M4.5 8.2h11"/></symbol>
+      <symbol fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" id="g-run" viewBox="0 0 20 20"><rect x=".7" y=".7" width="18.6" height="18.6" rx="4" opacity=".6"/><path d="M7.5 5.5l7 4.5-7 4.5z"/></symbol>
+      <symbol fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" id="g-bolt" viewBox="0 0 20 20"><rect x=".7" y=".7" width="18.6" height="18.6" rx="4" opacity=".6"/><path d="M11 4l-5 7h4l-1 5 5-7h-4z"/></symbol>
+      <symbol fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" id="g-wave" viewBox="0 0 20 20"><rect x=".7" y=".7" width="18.6" height="18.6" rx="4" opacity=".6"/><path d="M4 10c2-4 4-4 6 0s4 4 6 0"/></symbol>
+      <symbol fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" id="g-fan" viewBox="0 0 20 20"><rect x=".7" y=".7" width="18.6" height="18.6" rx="4" opacity=".6"/><circle cx="6" cy="10" r="1.6"/><circle cx="14.5" cy="5.5" r="1.4"/><circle cx="14.5" cy="14.5" r="1.4"/><path d="M7.6 10h3M10.6 10l2.6-3.3M10.6 10l2.6 3.3"/></symbol>
+      <symbol fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" id="g-cloud" viewBox="0 0 20 20"><rect x=".7" y=".7" width="18.6" height="18.6" rx="4" opacity=".6"/><path d="M6.5 14a3 3 0 0 1 .3-6a4 4 0 0 1 7.6-1a2.8 2.8 0 0 1 .6 7z"/></symbol>
   </defs>
 </svg>
 
@@ -219,40 +243,31 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
           <p style="margin-top:12px">Sessões ficam no banco. Nada de estado no front.</p>
         </div>
         <div class="canvas">
-          <svg class="dg" viewBox="0 0 440 300" role="img" aria-label="Diagrama de containers: arquiteto usa a Loja web, que chama a API, que grava no banco e chama o provedor de pagamento">
-            <!-- pessoa -->
-            <circle cx="60" cy="34" r="12" class="person"/>
-            <rect x="34" y="48" width="52" height="40" rx="14" class="person"/>
-            <text x="60" y="108" text-anchor="middle">Cliente</text>
-            <text x="60" y="120" text-anchor="middle" class="k">[Person]</text>
-            <!-- web -->
-            <rect x="150" y="30" width="140" height="70" rx="8" class="cont"/>
-            <text x="220" y="58" text-anchor="middle">Loja web</text>
-            <text x="220" y="74" text-anchor="middle" class="k">[Container: React]</text>
-            <!-- api -->
-            <rect x="140" y="150" width="160" height="70" rx="8" class="cont"/>
-            <text x="220" y="178" text-anchor="middle">API</text>
-            <text x="220" y="194" text-anchor="middle" class="k">[Container: Functions]</text>
-            <!-- db -->
-            <g class="db">
-              <path d="M22 176 a44 10 0 0 1 88 0 v54 a44 10 0 0 1 -88 0 z"/>
-              <ellipse cx="66" cy="176" rx="44" ry="10"/>
-            </g>
-            <text x="66" y="210" text-anchor="middle">Banco</text>
-            <text x="66" y="224" text-anchor="middle" class="k">[Postgres]</text>
-            <!-- externo -->
-            <rect x="320" y="150" width="110" height="70" rx="8" class="ext"/>
-            <text x="375" y="178" text-anchor="middle" class="ink">Pagamento</text>
-            <text x="375" y="194" text-anchor="middle" class="kink">[External]</text>
-            <!-- setas -->
-            <path d="M92 65 H148" class="edge" marker-end="url(#arr)"/>
-            <text x="120" y="58" text-anchor="middle" class="lbl">usa</text>
-            <path d="M220 102 V148" class="edge" marker-end="url(#arr)"/>
-            <text x="238" y="128" class="lbl">HTTPS</text>
-            <path d="M138 185 H114" class="edge" marker-end="url(#arr)"/>
-            <text x="126" y="176" text-anchor="middle" class="lbl">SQL</text>
-            <path d="M302 185 H318" class="edge" marker-end="url(#arr)"/>
-            <text x="310" y="176" text-anchor="middle" class="lbl">REST</text>
+          <svg class="dg" viewBox="0 0 490 330" role="img" aria-label="Diagrama de containers: o cliente usa a Loja web, que chama a API, que grava no banco e chama o provedor de pagamento">
+            <!-- Cliente -->
+            <g class="person"><rect x="14" y="64.3" width="84" height="61.7" rx="22"/><circle cx="56" cy="58.2" r="20.2"/></g>
+            <text x="56" y="95.4" text-anchor="middle">Cliente</text><text x="56" y="112.4" text-anchor="middle" class="k">[Person]</text>
+            <!-- Loja web -->
+            <rect x="166" y="52" width="160" height="60" rx="8" class="cont"/>
+            <text x="246" y="80" text-anchor="middle">Loja web</text><text x="246" y="97" text-anchor="middle" class="k">[Container: React]</text>
+            <!-- API -->
+            <rect x="166" y="232" width="160" height="60" rx="8" class="cont"/>
+            <text x="246" y="260" text-anchor="middle">API</text><text x="246" y="277" text-anchor="middle" class="k">[Container: NestJS]</text>
+            <!-- Banco -->
+            <g class="db"><path d="M14 239a50 13 0 0 1 100 0V285a50 13 0 0 1-100 0Z"/><path d="M14 239a50 13 0 0 0 100 0" fill="none" stroke="#ece8f7" stroke-opacity=".45"/></g>
+            <text x="64" y="261" text-anchor="middle">Banco</text><text x="64" y="278" text-anchor="middle" class="k">[Postgres]</text>
+            <!-- Pagamento -->
+            <rect x="380" y="232" width="100" height="60" rx="8" class="ext"/>
+            <text x="430" y="260" text-anchor="middle" class="ink">Pagamento</text><text x="430" y="277" text-anchor="middle" class="kink">[External]</text>
+            <!-- Relações -->
+            <path d="M98 82H164" class="edge" marker-end="url(#arr)"/>
+            <rect class="pill" x="116" y="74" width="30" height="16" rx="8"/><text class="lbl" x="131" y="85.5" text-anchor="middle">usa</text>
+            <path d="M246 112V230" class="edge" marker-end="url(#arr)"/>
+            <rect class="pill" x="208" y="163" width="76" height="16" rx="8"/><text class="lbl" x="246" y="174.5" text-anchor="middle">HTTPS/JSON</text>
+            <path d="M166 262H116" class="edge" marker-end="url(#arr)"/>
+            <rect class="pill" x="126" y="254" width="30" height="16" rx="8"/><text class="lbl" x="141" y="265.5" text-anchor="middle">SQL</text>
+            <path d="M326 262H378" class="edge" marker-end="url(#arr)"/>
+            <rect class="pill" x="334" y="254" width="36" height="16" rx="8"/><text class="lbl" x="352" y="265.5" text-anchor="middle">REST</text>
           </svg>
         </div>
       </div>
@@ -277,11 +292,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
         <p style="font-size:14px;color:var(--text-2)">A loja tem três containers. O front conversa só com a API.</p>
         <div class="mono" style="text-transform:none;letter-spacing:.02em;color:var(--accent)">```diagram id=containers version=3```</div>
         <div class="card" style="padding:12px;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:16px 16px">
-          <svg class="dg" viewBox="0 0 400 96" role="img" aria-label="Recorte do diagrama de containers embutido na página">
-            <rect x="10" y="20" width="110" height="52" rx="8" class="cont"/><text x="65" y="42" text-anchor="middle">Loja web</text><text x="65" y="56" text-anchor="middle" class="k">[Container]</text>
-            <rect x="150" y="20" width="110" height="52" rx="8" class="cont"/><text x="205" y="42" text-anchor="middle">API</text><text x="205" y="56" text-anchor="middle" class="k">[Container]</text>
-            <rect x="290" y="20" width="100" height="52" rx="8" class="ext"/><text x="340" y="42" text-anchor="middle" class="ink">Pagamento</text><text x="340" y="56" text-anchor="middle" class="kink">[External]</text>
-            <path d="M122 46 H148" class="edge" marker-end="url(#arr)"/><path d="M262 46 H288" class="edge" marker-end="url(#arr)"/>
+          <svg class="dg" viewBox="0 0 480 100" role="img" aria-label="Recorte do diagrama de containers embutido na página: Loja web chama a API, que chama o provedor de pagamento">
+            <rect x="10" y="22" width="112" height="56" rx="8" class="cont"/><text x="66" y="48" text-anchor="middle">Loja web</text><text x="66" y="65" text-anchor="middle" class="k">[Container]</text>
+            <rect x="194" y="22" width="112" height="56" rx="8" class="cont"/><text x="250" y="48" text-anchor="middle">API</text><text x="250" y="65" text-anchor="middle" class="k">[Container]</text>
+            <rect x="372" y="22" width="96" height="56" rx="8" class="ext"/><text x="420" y="48" text-anchor="middle" class="ink">Pagamento</text><text x="420" y="65" text-anchor="middle" class="kink">[External]</text>
+            <path d="M122 50H192" class="edge" marker-end="url(#arr)"/><rect class="pill" x="136" y="42" width="44" height="16" rx="8"/><text class="lbl" x="158" y="53.5" text-anchor="middle">HTTPS</text>
+            <path d="M306 50H370" class="edge" marker-end="url(#arr)"/><rect class="pill" x="320" y="42" width="36" height="16" rx="8"/><text class="lbl" x="338" y="53.5" text-anchor="middle">REST</text>
           </svg>
         </div>
         <p style="font-size:14px;color:var(--text-2)">Sessões ficam no banco. Nada de estado no front.</p>
@@ -297,98 +313,142 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     <p class="lead" style="margin-top:16px">Arquitetura em C4, detalhe em UML, processo em BPMN, as quatro nuvens com ícone oficial e formas básicas para o que não tem notação. Cada família tem a sua página, com as formas, as regras e um exemplo pronto.</p>
     <div class="cards">
       <div class="card" id="d-c4">
-        <div class="pic"><svg class="dg" viewBox="0 0 280 120" role="img" aria-label="C4: pessoa, sistema e sistema externo">
-          <circle cx="40" cy="30" r="9" class="person"/><rect x="21" y="41" width="38" height="28" rx="10" class="person"/><text x="40" y="86" text-anchor="middle" style="font-size:10px">Cliente</text>
-          <rect x="100" y="30" width="90" height="46" rx="8" class="sys"/><text x="145" y="50" text-anchor="middle" style="font-size:10.5px">Loja</text><text x="145" y="63" text-anchor="middle" class="k">[System]</text>
-          <rect x="215" y="30" width="58" height="46" rx="8" class="ext"/><text x="244" y="50" text-anchor="middle" class="ink" style="font-size:10px">Pgto</text><text x="244" y="63" text-anchor="middle" class="kink">[Ext]</text>
-          <path d="M64 53 H98" class="edge" marker-end="url(#arr)"/><path d="M192 53 H213" class="edge" marker-end="url(#arr)"/>
+        <div class="pic"><svg class="dg" viewBox="0 0 372 200" role="img" aria-label="C4 nível 1: o cliente usa a Loja, que chama o provedor de pagamento">
+          <text x="12" y="26" class="cap">Nível 1 · Contexto</text>
+          <g class="person"><rect x="12" y="111" width="80" height="59" rx="21"/><circle cx="52" cy="117.2" r="19.2"/></g>
+          <text x="52" y="141.4" text-anchor="middle">Cliente</text><text x="52" y="158.4" text-anchor="middle" class="k">[Person]</text>
+          <rect x="136" y="98" width="80" height="60" rx="8" class="sys"/><text x="176" y="126" text-anchor="middle">Loja</text><text x="176" y="143" text-anchor="middle" class="k">[System]</text>
+          <rect x="266" y="98" width="92" height="60" rx="8" class="ext"/><text x="312" y="126" text-anchor="middle" class="ink">Pagamento</text><text x="312" y="143" text-anchor="middle" class="kink">[External]</text>
+          <path d="M92 128H134" class="edge" marker-end="url(#arr)"/><rect class="pill" x="98" y="120" width="30" height="16" rx="8"/><text class="lbl" x="113" y="131.5" text-anchor="middle">usa</text>
+          <path d="M216 128H264" class="edge" marker-end="url(#arr)"/><rect class="pill" x="222" y="120" width="36" height="16" rx="8"/><text class="lbl" x="240" y="131.5" text-anchor="middle">REST</text>
         </svg></div>
         <div><span class="mono">Arquitetura</span><h3>C4 Model</h3></div>
         <p>Contexto, container e componente com as mesmas cores. Pessoa, sistema, banco e limite já desenhados.</p>
         <a class="mono" href="#d-c4" style="color:var(--accent)">Ver a página</a>
       </div>
       <div class="card" id="d-basicas">
-        <div class="pic"><svg class="dg" viewBox="0 0 280 120" role="img" aria-label="Formas básicas: retângulo, elipse, losango e cilindro">
-          <rect x="18" y="34" width="60" height="44" rx="6" class="wire-a"/><ellipse cx="118" cy="56" rx="30" ry="22" class="wire-a"/>
-          <path d="M190 34 L218 56 L190 78 L162 56 Z" class="wire-a"/>
-          <path d="M236 40 a13 5 0 0 1 26 0 v32 a13 5 0 0 1 -26 0 z" class="wire-a"/><ellipse cx="249" cy="40" rx="13" ry="5" class="wire-a"/>
+        <div class="pic"><svg class="dg" viewBox="0 0 372 200" role="img" aria-label="Formas básicas: retângulo, elipse, losango, cilindro, ator e nuvem">
+          <rect x="27" y="23" width="70" height="44" rx="8" class="sh"/><text x="62" y="90" text-anchor="middle" class="cap">Retângulo</text>
+          <ellipse cx="186" cy="45" rx="36" ry="22" class="sh"/><text x="186" y="90" text-anchor="middle" class="cap">Elipse</text>
+          <path d="M310 23L346 45L310 67L274 45Z" class="sh"/><text x="310" y="90" text-anchor="middle" class="cap">Losango</text>
+          <path d="M36 121a26 9 0 0 1 52 0V153a26 9 0 0 1-52 0Z" class="sh"/><path d="M36 121a26 9 0 0 0 52 0" class="sh"/><text x="62" y="182" text-anchor="middle" class="cap">Cilindro</text>
+          <circle cx="186" cy="118" r="7" class="sh"/><path d="M186 125V145M172 133H200M186 145L176 160M186 145L196 160" class="sh"/><text x="186" y="182" text-anchor="middle" class="cap">Ator</text>
+          <path d="M286 151a13 13 0 0 1 4-25a16 16 0 0 1 28-8a13 13 0 0 1 20 10a12 12 0 0 1-4 23Z" class="sh"/><text x="310" y="182" text-anchor="middle" class="cap">Nuvem</text>
         </svg></div>
         <div><span class="mono">Livre</span><h3>Formas básicas</h3></div>
         <p>Retângulo, elipse, losango, cilindro, ator, nuvem, raia e seta. Para o desenho que não segue notação.</p>
         <a class="mono" href="#d-basicas" style="color:var(--accent)">Ver a página</a>
       </div>
       <div class="card" id="d-aws">
-        <div class="pic"><svg class="dg" viewBox="0 0 280 120" role="img" aria-label="AWS: Lambda, DynamoDB e SQS">
-          <rect x="16" y="34" width="76" height="46" rx="8" class="cont"/><rect x="24" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="54" y="70" text-anchor="middle" class="k">Lambda</text>
-          <rect x="102" y="34" width="76" height="46" rx="8" class="cont"/><rect x="110" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="140" y="70" text-anchor="middle" class="k">DynamoDB</text>
-          <rect x="188" y="34" width="76" height="46" rx="8" class="cont"/><rect x="196" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="226" y="70" text-anchor="middle" class="k">SQS</text>
-          <path d="M94 57 H100" class="edge" marker-end="url(#arr)"/><path d="M180 57 H186" class="edge" marker-end="url(#arr)"/>
+        <div class="pic"><svg class="dg" viewBox="0 0 372 200" role="img" aria-label="AWS: API em Lambda grava em DynamoDB e publica em SQS">
+          <rect x="86" y="16" width="200" height="54" rx="8" class="cont"/><use href="#g-fn" class="gl" x="94" y="24" width="20" height="20"/>
+          <text x="186" y="41" text-anchor="middle">API</text><text x="186" y="58" text-anchor="middle" class="k">[Container: Lambda]</text>
+          <rect x="8" y="136" width="174" height="54" rx="8" class="cont"/><use href="#g-db" class="gl" x="16" y="144" width="20" height="20"/>
+          <text x="95" y="161" text-anchor="middle">Pedidos</text><text x="95" y="178" text-anchor="middle" class="k">[Container: DynamoDB]</text>
+          <rect x="190" y="136" width="174" height="54" rx="8" class="cont"/><use href="#g-queue" class="gl" x="198" y="144" width="20" height="20"/>
+          <text x="277" y="161" text-anchor="middle">Eventos</text><text x="277" y="178" text-anchor="middle" class="k">[Container: SQS]</text>
+          <path d="M136 70V102a10 10 0 0 1-10 10H105a10 10 0 0 0-10 10V134" class="edge" marker-end="url(#arr)"/>
+          <rect class="pill" x="121.0" y="78" width="30" height="16" rx="8"/><text class="lbl" x="136" y="89.5" text-anchor="middle">SDK</text>
+          <path d="M236 70V102a10 10 0 0 0 10 10H267a10 10 0 0 1 10 10V134" class="edge" marker-end="url(#arr)"/>
+          <rect class="pill" x="214.0" y="78" width="44" height="16" rx="8"/><text class="lbl" x="236" y="89.5" text-anchor="middle">HTTPS</text>
         </svg></div>
         <div><span class="mono">Nuvem</span><h3>AWS</h3></div>
         <p>Ícones oficiais da AWS dentro de qualquer nó. Computação, dados, mensageria e rede.</p>
         <a class="mono" href="#d-aws" style="color:var(--accent)">Ver a página</a>
       </div>
       <div class="card" id="d-azure">
-        <div class="pic"><svg class="dg" viewBox="0 0 280 120" role="img" aria-label="Azure: App Service, Cosmos DB e Service Bus">
-          <rect x="16" y="34" width="76" height="46" rx="8" class="cont"/><rect x="24" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="54" y="70" text-anchor="middle" class="k">App Service</text>
-          <rect x="102" y="34" width="76" height="46" rx="8" class="cont"/><rect x="110" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="140" y="70" text-anchor="middle" class="k">Cosmos DB</text>
-          <rect x="188" y="34" width="76" height="46" rx="8" class="cont"/><rect x="196" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="226" y="70" text-anchor="middle" class="k">Service Bus</text>
-          <path d="M94 57 H100" class="edge" marker-end="url(#arr)"/><path d="M180 57 H186" class="edge" marker-end="url(#arr)"/>
+        <div class="pic"><svg class="dg" viewBox="0 0 372 200" role="img" aria-label="Azure: API em App Service grava em Cosmos DB e publica em Event Hub">
+          <rect x="86" y="16" width="200" height="54" rx="8" class="cont"/><use href="#g-win" class="gl" x="94" y="24" width="20" height="20"/>
+          <text x="186" y="41" text-anchor="middle">API</text><text x="186" y="58" text-anchor="middle" class="k">[Container: App Service]</text>
+          <rect x="8" y="136" width="174" height="54" rx="8" class="cont"/><use href="#g-db" class="gl" x="16" y="144" width="20" height="20"/>
+          <text x="95" y="161" text-anchor="middle">Pedidos</text><text x="95" y="178" text-anchor="middle" class="k">[Container: Cosmos DB]</text>
+          <rect x="190" y="136" width="174" height="54" rx="8" class="cont"/><use href="#g-bolt" class="gl" x="198" y="144" width="20" height="20"/>
+          <text x="277" y="161" text-anchor="middle">Eventos</text><text x="277" y="178" text-anchor="middle" class="k">[Container: Event Hub]</text>
+          <path d="M136 70V102a10 10 0 0 1-10 10H105a10 10 0 0 0-10 10V134" class="edge" marker-end="url(#arr)"/>
+          <rect class="pill" x="121.0" y="78" width="30" height="16" rx="8"/><text class="lbl" x="136" y="89.5" text-anchor="middle">SQL</text>
+          <path d="M236 70V102a10 10 0 0 0 10 10H267a10 10 0 0 1 10 10V134" class="edge" marker-end="url(#arr)"/>
+          <rect class="pill" x="216.0" y="78" width="40" height="16" rx="8"/><text class="lbl" x="236" y="89.5" text-anchor="middle">AMQP</text>
         </svg></div>
         <div><span class="mono">Nuvem</span><h3>Azure</h3></div>
         <p>Os serviços do Azure com o ícone de cada um, no mesmo diagrama que os outros provedores.</p>
         <a class="mono" href="#d-azure" style="color:var(--accent)">Ver a página</a>
       </div>
       <div class="card" id="d-gcp">
-        <div class="pic"><svg class="dg" viewBox="0 0 280 120" role="img" aria-label="Google Cloud: Cloud Run, BigQuery e Pub/Sub">
-          <rect x="16" y="34" width="76" height="46" rx="8" class="cont"/><rect x="24" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="54" y="70" text-anchor="middle" class="k">Cloud Run</text>
-          <rect x="102" y="34" width="76" height="46" rx="8" class="cont"/><rect x="110" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="140" y="70" text-anchor="middle" class="k">BigQuery</text>
-          <rect x="188" y="34" width="76" height="46" rx="8" class="cont"/><rect x="196" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="226" y="70" text-anchor="middle" class="k">Pub/Sub</text>
-          <path d="M94 57 H100" class="edge" marker-end="url(#arr)"/><path d="M180 57 H186" class="edge" marker-end="url(#arr)"/>
+        <div class="pic"><svg class="dg" viewBox="0 0 372 200" role="img" aria-label="Google Cloud: API em Cloud Run grava em Firestore e publica em Pub/Sub">
+          <rect x="86" y="16" width="200" height="54" rx="8" class="cont"/><use href="#g-run" class="gl" x="94" y="24" width="20" height="20"/>
+          <text x="186" y="41" text-anchor="middle">API</text><text x="186" y="58" text-anchor="middle" class="k">[Container: Cloud Run]</text>
+          <rect x="8" y="136" width="174" height="54" rx="8" class="cont"/><use href="#g-db" class="gl" x="16" y="144" width="20" height="20"/>
+          <text x="95" y="161" text-anchor="middle">Pedidos</text><text x="95" y="178" text-anchor="middle" class="k">[Container: Firestore]</text>
+          <rect x="190" y="136" width="174" height="54" rx="8" class="cont"/><use href="#g-fan" class="gl" x="198" y="144" width="20" height="20"/>
+          <text x="277" y="161" text-anchor="middle">Eventos</text><text x="277" y="178" text-anchor="middle" class="k">[Container: Pub/Sub]</text>
+          <path d="M136 70V102a10 10 0 0 1-10 10H105a10 10 0 0 0-10 10V134" class="edge" marker-end="url(#arr)"/>
+          <rect class="pill" x="118.0" y="78" width="36" height="16" rx="8"/><text class="lbl" x="136" y="89.5" text-anchor="middle">gRPC</text>
+          <path d="M236 70V102a10 10 0 0 0 10 10H267a10 10 0 0 1 10 10V134" class="edge" marker-end="url(#arr)"/>
+          <rect class="pill" x="214.0" y="78" width="44" height="16" rx="8"/><text class="lbl" x="236" y="89.5" text-anchor="middle">HTTPS</text>
         </svg></div>
         <div><span class="mono">Nuvem</span><h3>Google Cloud</h3></div>
         <p>Cloud Run, BigQuery, Pub/Sub e o resto do catálogo, com o ícone oficial.</p>
         <a class="mono" href="#d-gcp" style="color:var(--accent)">Ver a página</a>
       </div>
       <div class="card" id="d-oci">
-        <div class="pic"><svg class="dg" viewBox="0 0 280 120" role="img" aria-label="OCI: Functions, Autonomous DB e Streaming">
-          <rect x="16" y="34" width="76" height="46" rx="8" class="cont"/><rect x="24" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="54" y="70" text-anchor="middle" class="k">Functions</text>
-          <rect x="102" y="34" width="76" height="46" rx="8" class="cont"/><rect x="110" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="140" y="70" text-anchor="middle" class="k">Autonomous</text>
-          <rect x="188" y="34" width="76" height="46" rx="8" class="cont"/><rect x="196" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="226" y="70" text-anchor="middle" class="k">Streaming</text>
-          <path d="M94 57 H100" class="edge" marker-end="url(#arr)"/><path d="M180 57 H186" class="edge" marker-end="url(#arr)"/>
+        <div class="pic"><svg class="dg" viewBox="0 0 372 200" role="img" aria-label="OCI: API em Functions grava em Oracle DB e publica em Streaming">
+          <rect x="86" y="16" width="200" height="54" rx="8" class="cont"/><use href="#g-fn" class="gl" x="94" y="24" width="20" height="20"/>
+          <text x="186" y="41" text-anchor="middle">API</text><text x="186" y="58" text-anchor="middle" class="k">[Container: Functions]</text>
+          <rect x="8" y="136" width="174" height="54" rx="8" class="cont"/><use href="#g-db" class="gl" x="16" y="144" width="20" height="20"/>
+          <text x="95" y="161" text-anchor="middle">Pedidos</text><text x="95" y="178" text-anchor="middle" class="k">[Container: Oracle DB]</text>
+          <rect x="190" y="136" width="174" height="54" rx="8" class="cont"/><use href="#g-wave" class="gl" x="198" y="144" width="20" height="20"/>
+          <text x="277" y="161" text-anchor="middle">Eventos</text><text x="277" y="178" text-anchor="middle" class="k">[Container: Streaming]</text>
+          <path d="M136 70V102a10 10 0 0 1-10 10H105a10 10 0 0 0-10 10V134" class="edge" marker-end="url(#arr)"/>
+          <rect class="pill" x="121.0" y="78" width="30" height="16" rx="8"/><text class="lbl" x="136" y="89.5" text-anchor="middle">SQL</text>
+          <path d="M236 70V102a10 10 0 0 0 10 10H267a10 10 0 0 1 10 10V134" class="edge" marker-end="url(#arr)"/>
+          <rect class="pill" x="217.0" y="78" width="38" height="16" rx="8"/><text class="lbl" x="236" y="89.5" text-anchor="middle">Kafka</text>
         </svg></div>
         <div><span class="mono">Nuvem</span><h3>OCI</h3></div>
         <p>Oracle Cloud com os mesmos recursos das outras três nuvens. Ninguém fica de fora.</p>
         <a class="mono" href="#d-oci" style="color:var(--accent)">Ver a página</a>
       </div>
       <div class="card" id="d-tec">
-        <div class="pic"><svg class="dg" viewBox="0 0 280 120" role="img" aria-label="Tecnologias: PostgreSQL, Kafka e React">
-          <rect x="24" y="28" width="232" height="64" rx="8" class="cont"/><text x="140" y="50" text-anchor="middle">API</text>
-          <rect x="52" y="60" width="52" height="18" rx="9" class="comp"/><text x="78" y="72" text-anchor="middle" class="kink">Postgres</text>
-          <rect x="114" y="60" width="52" height="18" rx="9" class="comp"/><text x="140" y="72" text-anchor="middle" class="kink">Kafka</text>
-          <rect x="176" y="60" width="52" height="18" rx="9" class="comp"/><text x="202" y="72" text-anchor="middle" class="kink">React</text>
+        <div class="pic"><svg class="dg" viewBox="0 0 372 200" role="img" aria-label="Tecnologias: container API em Node.js com etiquetas Postgres, Kafka e Redis, dentro do limite do sistema Loja">
+          <rect x="10" y="12" width="352" height="176" rx="10" class="bnd"/>
+          <text x="24" y="168">Loja</text><text x="24" y="182" class="k">[System]</text>
+          <rect x="76" y="30" width="220" height="108" rx="8" class="cont"/>
+          <text x="186" y="58" text-anchor="middle">API</text><text x="186" y="75" text-anchor="middle" class="k">[Container: Node.js]</text>
+          <rect x="93" y="94" width="70" height="22" rx="11" class="comp"/><text class="tag" x="128" y="109" text-anchor="middle">Postgres</text>
+          <rect x="171" y="94" width="50" height="22" rx="11" class="comp"/><text class="tag" x="196" y="109" text-anchor="middle">Kafka</text>
+          <rect x="229" y="94" width="50" height="22" rx="11" class="comp"/><text class="tag" x="254" y="109" text-anchor="middle">Redis</text>
         </svg></div>
         <div><span class="mono">Stack</span><h3>Tecnologias</h3></div>
         <p>Banco, fila, linguagem e framework como etiqueta do nó, com o logotipo quando a marca permite.</p>
         <a class="mono" href="#d-tec" style="color:var(--accent)">Ver a página</a>
       </div>
       <div class="card" id="d-uml">
-        <div class="pic"><svg class="dg" viewBox="0 0 280 120" role="img" aria-label="UML: duas classes com associação">
-          <rect x="24" y="22" width="100" height="76" class="comp"/><path d="M24 44 H124 M24 70 H124" stroke="#b9a9e6" stroke-width="1"/><text x="74" y="37" text-anchor="middle" class="ink" style="font-size:10px">Pedido</text><text x="30" y="59" class="kink">+ total</text><text x="30" y="86" class="kink">+ fechar()</text>
-          <rect x="156" y="22" width="100" height="76" class="comp"/><path d="M156 44 H256 M156 70 H256" stroke="#b9a9e6" stroke-width="1"/><text x="206" y="37" text-anchor="middle" class="ink" style="font-size:10px">Item</text><text x="162" y="59" class="kink">+ qtd</text><text x="162" y="86" class="kink">+ preco()</text>
-          <path d="M126 60 H154" class="edge"/><path d="M146 55 L154 60 L146 65" class="edge"/><text x="140" y="52" text-anchor="middle" class="lbl">1..*</text>
+        <div class="pic"><svg class="dg" viewBox="0 0 372 200" role="img" aria-label="UML: Pedido herda de Documento e tem uma associação um para muitos com Item">
+          <rect x="20" y="16" width="140" height="60" class="comp"/><path d="M20 36H160M20 56H160" stroke="#b9a9e6" stroke-width="1"/>
+          <text x="90" y="30.5" text-anchor="middle" class="ink">Documento</text><text x="30" y="50" class="kink">- id: UUID</text><text x="30" y="70" class="kink">+ publicar()</text>
+          <rect x="20" y="124" width="140" height="60" class="comp"/><path d="M20 144H160M20 164H160" stroke="#b9a9e6" stroke-width="1"/>
+          <text x="90" y="138.5" text-anchor="middle" class="ink">Pedido</text><text x="30" y="158" class="kink">- total: Money</text><text x="30" y="178" class="kink">+ fechar()</text>
+          <rect x="212" y="124" width="140" height="60" class="comp"/><path d="M212 144H352M212 164H352" stroke="#b9a9e6" stroke-width="1"/>
+          <text x="282" y="138.5" text-anchor="middle" class="ink">Item</text><text x="222" y="158" class="kink">- qtd: int</text><text x="222" y="178" class="kink">+ subtotal()</text>
+          <path d="M90 124V78" class="edge" marker-end="url(#tri)"/>
+          <path d="M160 154H212" class="edge"/><text x="166" y="148" class="lbl">1</text><text x="206" y="148" text-anchor="end" class="lbl">0..*</text>
         </svg></div>
         <div><span class="mono">Detalhe</span><h3>UML</h3></div>
         <p>Classe, sequência e estado para o que o C4 não desce a mostrar.</p>
         <a class="mono" href="#d-uml" style="color:var(--accent)">Ver a página</a>
       </div>
       <div class="card" id="d-bpmn">
-        <div class="pic"><svg class="dg" viewBox="0 0 280 120" role="img" aria-label="BPMN: início, tarefa, gateway e fim">
-          <circle cx="34" cy="60" r="12" class="wire-a"/>
-          <rect x="66" y="42" width="70" height="36" rx="8" class="cont"/><text x="101" y="64" text-anchor="middle" style="font-size:10px">Aprovar</text>
-          <path d="M176 44 L192 60 L176 76 L160 60 Z" class="wire-a"/><text x="176" y="63" text-anchor="middle" class="lbl" style="fill:var(--accent)">?</text>
-          <circle cx="234" cy="60" r="12" class="wire-a" style="stroke-width:3"/>
-          <path d="M46 60 H64" class="edge" marker-end="url(#arr)"/><path d="M138 60 H158" class="edge" marker-end="url(#arr)"/><path d="M194 60 H220" class="edge" marker-end="url(#arr)"/>
+        <div class="pic"><svg class="dg" viewBox="0 0 372 200" role="img" aria-label="BPMN: na raia Financeiro, o início leva à tarefa Aprovar, um gateway exclusivo decide sim ou não e cada ramo termina num evento de fim">
+          <rect x="8" y="30" width="356" height="140" class="lane"/><path d="M40 30V170" class="lane"/>
+          <text class="k" x="28" y="100" text-anchor="middle" transform="rotate(-90 28 100)">Financeiro</text>
+          <circle cx="52" cy="100" r="12" class="bp"/>
+          <rect x="110" y="78" width="76" height="44" rx="8" class="cont"/><text x="148" y="104.5" text-anchor="middle">Aprovar</text>
+          <path d="M244 84L260 100L244 116L228 100Z" class="bp"/><path d="M238 94l12 12M250 94l-12 12" class="bp"/>
+          <circle cx="324" cy="100" r="12" class="bp" style="stroke-width:3.5"/>
+          <circle cx="324" cy="144" r="12" class="bp" style="stroke-width:3.5"/>
+          <path d="M64 100H108" class="edge" marker-end="url(#arr)"/>
+          <path d="M186 100H226" class="edge" marker-end="url(#arr)"/>
+          <path d="M260 100H310" class="edge" marker-end="url(#arr)"/><rect class="pill" x="270" y="92" width="30" height="16" rx="8"/><text class="lbl" x="285" y="103.5" text-anchor="middle">sim</text>
+          <path d="M244 116V134a10 10 0 0 0 10 10H310" class="edge" marker-end="url(#arr)"/><rect class="pill" x="267" y="136" width="30" height="16" rx="8"/><text class="lbl" x="282" y="147.5" text-anchor="middle">não</text>
         </svg></div>
         <div><span class="mono">Processo</span><h3>BPMN</h3></div>
         <p>Evento, tarefa, gateway e raia para o processo que passa pelo sistema.</p>
@@ -404,18 +464,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     <h2>AWS, Azure, Google Cloud e OCI<br>com os ícones oficiais, no mesmo canvas.</h2>
     <div class="cards">
       <div class="card wide">
-        <div class="pic"><svg class="dg" viewBox="0 0 900 200" role="img" aria-label="Diagrama de containers com serviços de nuvem">
-          <rect x="30" y="60" width="190" height="80" rx="8" class="cont"/><text x="125" y="92" text-anchor="middle">Loja web</text><text x="125" y="108" text-anchor="middle" class="k">[Container: CloudFront]</text>
-          <rect x="250" y="60" width="190" height="80" rx="8" class="cont"/><text x="345" y="92" text-anchor="middle">API</text><text x="345" y="108" text-anchor="middle" class="k">[Container: Lambda]</text>
-          <g class="db"><path d="M480 76 a60 11 0 0 1 120 0 v48 a60 11 0 0 1 -120 0 z"/><ellipse cx="540" cy="76" rx="60" ry="11"/></g><text x="540" y="112" text-anchor="middle">Pedidos</text><text x="540" y="126" text-anchor="middle" class="k">[Container: RDS]</text>
-          <rect x="640" y="60" width="230" height="80" rx="8" class="ext"/><text x="755" y="92" text-anchor="middle" class="ink">Fila de notificações</text><text x="755" y="108" text-anchor="middle" class="kink">[External: Service Bus]</text>
-          <path d="M222 100 H248" class="edge" marker-end="url(#arr)"/><text x="235" y="92" text-anchor="middle" class="lbl">HTTPS</text>
-          <path d="M442 100 H478" class="edge" marker-end="url(#arr)"/><text x="460" y="92" text-anchor="middle" class="lbl">SQL</text>
-          <path d="M602 100 H638" class="edge" marker-end="url(#arr)"/><text x="620" y="92" text-anchor="middle" class="lbl">AMQP</text>
-          <!-- lugar do ícone oficial -->
-          <rect x="40" y="70" width="18" height="18" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><rect x="260" y="70" width="18" height="18" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><rect x="650" y="70" width="18" height="18" rx="3" fill="none" stroke="#4a3f70" stroke-dasharray="2 2"/>
+        <div class="pic"><svg class="dg" viewBox="0 0 960 160" role="img" aria-label="Diagrama de containers com serviços de nuvem: Loja web em Amplify chama a API em Lambda, que grava em RDS e publica na fila Service Bus">
+          <rect x="16" y="40" width="190" height="80" rx="8" class="cont"/><use href="#g-win" class="gl" x="26" y="50" width="20" height="20"/><text x="111" y="78" text-anchor="middle">Loja web</text><text x="111" y="95" text-anchor="middle" class="k">[Container: Amplify]</text>
+          <rect x="264" y="40" width="190" height="80" rx="8" class="cont"/><use href="#g-fn" class="gl" x="274" y="50" width="20" height="20"/><text x="359" y="78" text-anchor="middle">API</text><text x="359" y="95" text-anchor="middle" class="k">[Container: Lambda]</text>
+          <g class="db"><path d="M512 50a95 14 0 0 1 190 0V110a95 14 0 0 1-190 0Z"/><path d="M512 50a95 14 0 0 0 190 0" fill="none" stroke="#ece8f7" stroke-opacity=".45"/></g><use href="#g-db" class="gl" x="524" y="64" width="20" height="20"/><text x="607" y="78" text-anchor="middle">Pedidos</text><text x="607" y="95" text-anchor="middle" class="k">[Container: RDS]</text>
+          <rect x="760" y="40" width="184" height="80" rx="8" class="ext"/><use href="#g-queue" class="gl dk" x="770" y="50" width="20" height="20"/><text x="852" y="78" text-anchor="middle" class="ink">Notificações</text><text x="852" y="95" text-anchor="middle" class="kink">[External: Service Bus]</text>
+          <path d="M206 80H262" class="edge" marker-end="url(#arr)"/><rect class="pill" x="212" y="72" width="44" height="16" rx="8"/><text class="lbl" x="234" y="83.5" text-anchor="middle">HTTPS</text>
+          <path d="M454 80H510" class="edge" marker-end="url(#arr)"/><rect class="pill" x="467" y="72" width="30" height="16" rx="8"/><text class="lbl" x="482" y="83.5" text-anchor="middle">SQL</text>
+          <path d="M702 80H758" class="edge" marker-end="url(#arr)"/><rect class="pill" x="710" y="72" width="40" height="16" rx="8"/><text class="lbl" x="730" y="83.5" text-anchor="middle">AMQP</text>
         </svg></div>
-        <p>Cada nó leva o ícone do serviço no canto. Os ícones oficiais só aparecem em screenshot real do app, por isso este protótipo marca o lugar deles com um quadrado tracejado. Rótulo que não cabe na caixa é cortado com reticência, como no app, nunca vaza para fora.</p>
+        <p>Cada nó leva o ícone do serviço no canto. Neste protótipo o ícone é um glifo neutro desenhado a traço, porque os logotipos oficiais só entram nas capturas reais do app. Rótulo que não cabe na caixa é cortado com reticência, como no app, nunca vaza para fora.</p>
       </div>
     </div>
   </div>
@@ -453,28 +511,33 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     <h2>Menos ferramentas. Um projeto.</h2>
     <div class="why">
       <div>
-        <svg viewBox="0 0 320 160" role="img" aria-label="Wireframe: dois quadrados ligados a um só ponto">
-          <rect x="40" y="40" width="70" height="50" rx="6" class="wire"/><rect x="210" y="40" width="70" height="50" rx="6" class="wire"/>
-          <rect x="125" y="100" width="70" height="30" rx="6" class="wire-a"/>
-          <path d="M75 92 L140 100" class="wire"/><path d="M245 92 L180 100" class="wire"/>
+        <svg class="wf" viewBox="0 0 320 160" role="img" aria-label="Wireframe: duas páginas apontam para o mesmo diagrama">
+          <rect x="32" y="22" width="72" height="84" rx="6" class="wire"/><path d="M44 40h48M44 52h48M44 64h30" class="wire"/><rect x="44" y="76" width="48" height="18" rx="4" class="wire-a"/>
+          <rect x="216" y="22" width="72" height="84" rx="6" class="wire"/><path d="M228 40h48M228 52h34M228 64h48" class="wire"/><rect x="228" y="76" width="48" height="18" rx="4" class="wire-a"/>
+          <rect x="120" y="112" width="80" height="34" rx="8" class="wire-a"/><text x="160" y="133" text-anchor="middle">diagrama</text>
+          <path d="M68 106V119a10 10 0 0 0 10 10H118" class="wire" marker-end="url(#arr-w)"/>
+          <path d="M252 106V119a10 10 0 0 1-10 10H202" class="wire" marker-end="url(#arr-w)"/>
         </svg>
         <span class="mono"><span style="color:var(--accent)">FIG 02</span> · Fonte única</span>
         <h3>O diagrama não envelhece na wiki.</h3>
         <p>A página aponta para o diagrama, não para uma cópia dele.</p>
       </div>
       <div>
-        <svg viewBox="0 0 320 160" role="img" aria-label="Wireframe: três caixas empilhadas em perspectiva">
-          <path d="M120 40 l60 -20 l60 20 l-60 20 z" class="wire"/><path d="M120 70 l60 -20 l60 20 l-60 20 z" class="wire"/><path d="M120 100 l60 -20 l60 20 l-60 20 z" class="wire-a"/>
-          <path d="M120 40 v60 M240 40 v60 M180 60 v60" class="wire"/>
+        <svg class="wf" viewBox="0 0 320 160" role="img" aria-label="Wireframe: três níveis aninhados, contexto, container e componente">
+          <rect x="32" y="16" width="256" height="128" rx="10" class="wire" stroke-dasharray="8 8"/><text x="44" y="134">Contexto</text>
+          <rect x="76" y="38" width="168" height="84" rx="8" class="wire"/><text x="88" y="112">Container</text>
+          <rect x="120" y="60" width="80" height="34" rx="8" class="wire-a"/><text x="160" y="81" text-anchor="middle" style="fill:var(--accent)">Componente</text>
         </svg>
         <span class="mono"><span style="color:var(--accent)">FIG 03</span> · Três níveis</span>
         <h3>C4 de verdade, não caixas soltas.</h3>
         <p>Pessoa, sistema, container e componente têm forma e cor próprias.</p>
       </div>
       <div>
-        <svg viewBox="0 0 320 160" role="img" aria-label="Wireframe: documento com carimbo de versão">
-          <rect x="110" y="24" width="100" height="120" rx="6" class="wire"/><path d="M125 48 h70 M125 64 h70 M125 80 h50" class="wire"/>
-          <circle cx="200" cy="120" r="18" class="wire-a"/><path d="M192 120 l6 6 l12 -12" class="wire-a"/>
+        <svg class="wf" viewBox="0 0 320 160" role="img" aria-label="Wireframe: página publicada com as versões anteriores guardadas atrás e um carimbo de aprovação">
+          <rect x="126" y="12" width="96" height="112" rx="6" class="wire" opacity=".4"/><rect x="118" y="20" width="96" height="112" rx="6" class="wire" opacity=".7"/>
+          <rect x="110" y="28" width="96" height="112" rx="6" class="wire" style="fill:var(--bg-1)"/><path d="M124 50h68M124 64h68M124 78h44M124 100h68M124 114h30" class="wire"/>
+          <circle cx="204" cy="118" r="18" class="wire-a" style="fill:var(--bg-1);stroke-width:1.5"/><path d="M195 118l6 6 12-12" class="wire-a" style="stroke-width:1.8"/>
+          <text x="94" y="78" text-anchor="end">v1</text><text x="94" y="92" text-anchor="end">v2</text><text x="94" y="106" text-anchor="end" style="fill:var(--accent)">v3</text>
         </svg>
         <span class="mono"><span style="color:var(--accent)">FIG 04</span> · Versões</span>
         <h3>Publicar é uma decisão, não um salvamento.</h3>
@@ -489,8 +552,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     <p class="mono eyebrow">Dois temas no app</p>
     <h2>O site é escuro. O app é como você quiser.</h2>
     <div class="themes">
-      <div class="mini"><div class="bar">App · tema escuro</div><div class="body"><div><div class="ln"></div><div class="ln s"></div><div class="ln"></div><div class="ln s"></div></div><div class="cv"><svg class="dg" viewBox="0 0 200 120"><rect x="20" y="20" width="70" height="36" rx="6" class="cont"/><rect x="110" y="64" width="70" height="36" rx="6" class="ext"/><path d="M92 38 H100 V82 H108" class="edge" marker-end="url(#arr)"/></svg></div></div></div>
-      <div class="mini light"><div class="bar">App · tema claro</div><div class="body"><div><div class="ln"></div><div class="ln s"></div><div class="ln"></div><div class="ln s"></div></div><div class="cv"><svg class="dg" viewBox="0 0 200 120"><rect x="20" y="20" width="70" height="36" rx="6" class="cont"/><rect x="110" y="64" width="70" height="36" rx="6" fill="#e4e4ea" stroke="#b5b5c2"/><path d="M92 38 H100 V82 H108" fill="none" stroke="#241a44" stroke-width="1.2" marker-end="url(#arr-ink)"/></svg></div></div></div>
+      <div class="mini"><div class="bar">App · tema escuro</div><div class="body"><div><div class="ln"></div><div class="ln s"></div><div class="ln"></div><div class="ln s"></div></div><div class="cv"><svg class="dg" viewBox="0 0 280 150" role="img" aria-label="Tema escuro: Loja web chama o provedor de pagamento">
+        <rect x="12" y="16" width="152" height="56" rx="8" class="cont"/><text x="88" y="42" text-anchor="middle">Loja web</text><text x="88" y="59" text-anchor="middle" class="k">[Container: React]</text>
+        <rect x="170" y="92" width="98" height="48" rx="8" class="ext"/><text x="219" y="114" text-anchor="middle" class="ink">Pagamento</text><text x="219" y="131" text-anchor="middle" class="kink">[External]</text>
+        <path d="M88 72V106a10 10 0 0 0 10 10H168" class="edge" marker-end="url(#arr)"/><rect class="pill" x="112" y="108" width="44" height="16" rx="8"/><text class="lbl" x="134" y="119.5" text-anchor="middle">HTTPS</text>
+      </svg></div></div></div>
+      <div class="mini light"><div class="bar">App · tema claro</div><div class="body"><div><div class="ln"></div><div class="ln s"></div><div class="ln"></div><div class="ln s"></div></div><div class="cv"><svg class="dg" viewBox="0 0 280 150" role="img" aria-label="Tema claro: o mesmo diagrama sobre fundo claro">
+        <rect x="12" y="16" width="152" height="56" rx="8" class="cont"/><text x="88" y="42" text-anchor="middle">Loja web</text><text x="88" y="59" text-anchor="middle" class="k">[Container: React]</text>
+        <rect x="170" y="92" width="98" height="48" rx="8" fill="#e4e4ea" stroke="#b5b5c2"/><text x="219" y="114" text-anchor="middle" class="ink">Pagamento</text><text x="219" y="131" text-anchor="middle" class="kink">[External]</text>
+        <path d="M88 72V106a10 10 0 0 0 10 10H168" fill="none" stroke="#241a44" stroke-width="1.5" stroke-linecap="round" marker-end="url(#arr-ink)"/><rect x="112" y="108" width="44" height="16" rx="8" fill="#f7f6fa" stroke="#d9d2ea"/><text class="lbl" x="134" y="119.5" text-anchor="middle" style="fill:#4a3f70">HTTPS</text>
+      </svg></div></div></div>
     </div>
     <div class="note">Nota do protótipo: os frames usam desenhos vetoriais no lugar de screenshots. Na página real entram capturas do app em tema escuro (hero, seções 4 a 6) e uma em tema claro (esta seção).</div>
   </div>
