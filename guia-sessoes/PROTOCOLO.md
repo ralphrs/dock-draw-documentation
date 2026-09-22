@@ -388,7 +388,7 @@ loop:
 
 | Sessão | JQL da fila |
 | --- | --- |
-| A | `project = DDP AND (status in ("BLOQUEADA", "EM REVISÃO") OR (status = "EM ANDAMENTO" AND labels in ("aprovacao-humana", "revisao-humana")) OR (labels = "liberada" AND labels != "draft" AND status != "CONCLUÍDA"))` |
+| A | `project = DDP AND (status in ("BLOQUEADA", "EM REVISÃO") OR (status = "EM ANDAMENTO" AND labels in ("aprovacao-humana", "revisao-humana")) OR (status = "AGUARDANDO APROVAÇÃO" AND (labels is EMPTY OR labels not in ("humano", "aprovacao-humana"))) OR (labels = "liberada" AND labels != "draft" AND status != "CONCLUÍDA"))` |
 | B | `project = DDP AND assignee = "712020:ec30868f-8e34-4c25-97e2-cd920e5da679" AND status in ("A FAZER", "EM ANDAMENTO")` |
 | C | `project = DDP AND assignee = "712020:6ac2f667-9728-4b07-bffb-eaa19704a4c9" AND status in ("A FAZER", "EM ANDAMENTO")` |
 
