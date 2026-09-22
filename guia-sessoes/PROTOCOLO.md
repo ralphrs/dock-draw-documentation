@@ -82,6 +82,20 @@ O conector do Atlassian é autorizado na conta Claude, não por sessão, então 
 
 **Correção da sessão A para a sessão D vai na descrição de uma tarefa dela ainda aberta, nunca só num comentário de cartão fechado.** A sessão D não lê cartão depois de entregar e não relê o próprio prompt enquanto roda. Em 2026-09-21 duas correções escritas em cartão fechado não chegaram a ela, e uma tarefa de prioridade foi pulada porque a regra entrou no prompt depois que ela começou. A escuta dela, `aguarda-fila.sh D`, passou a imprimir a próxima tarefa na ordem certa (em andamento, depois prioridade, depois menor chave) e a mandar ler a descrição inteira.
 
+## Ordem de trabalho
+
+Toda sessão escolhe o que fazer olhando o quadro da direita para a esquerda e age na primeira coluna em que tem um card com a bola (`DEC-0038`). Só passa à coluna seguinte quando a anterior está vazia para ela.
+
+| Ordem | Coluna | Sessão A | Sessões B, C e D |
+| --- | --- | --- | --- |
+| 1 | `EM REVISÃO` | Conferir a entrega e mover no mesmo ciclo | Nada, a bola é de A |
+| 2 | `AGUARDANDO APROVAÇÃO` | Resposta do humano e card órfão sem `humano` e `aprovacao-humana` | Nada |
+| 3 | `BLOQUEADA` | Responder a dúvida | Card próprio cuja resposta de A já chegou |
+| 4 | `EM ANDAMENTO` | Aprovação respondida, despacho ao Lovable, pedido `liberada` | Retomar o que começou, inclusive correção devolvida na descrição |
+| 5 | `A FAZER` | Estoque `processo` por último (`DEC-0016`) | Tarefa nova: `prioridade` primeiro, depois a menor chave |
+
+A escuta `aguarda-fila.sh` imprime a fila já nessa ordem e nomeia a próxima tarefa. O card mais à direita é o que já custou trabalho de mais gente, e terminar vale mais que começar.
+
 ## Pedidos do humano
 
 O humano cria issue direto no quadro, com as próprias palavras e sem seguir formato nenhum. Dois rótulos dizem em que ponto o pedido está.

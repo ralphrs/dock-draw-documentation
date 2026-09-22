@@ -12,6 +12,8 @@ Leia, nesta ordem:
 3. `adrs/LEDGER.md`, `ESTADO.md` e o quadro `DDP` no Jira (a fila de cada sessão está em "Escuta" do protocolo).
 4. A seção "Projeto do app" do `CLAUDE.md`. O app em `/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app` é a referência real de versões, schema e estrutura.
 
+**Ordem de trabalho (`DEC-0038`):** a cada volta, olhe o quadro da direita para a esquerda e aja na primeira coluna em que você tem card com a bola: EM REVISÃO, AGUARDANDO APROVAÇÃO, BLOQUEADA, EM ANDAMENTO, e só então tarefa nova em A FAZER. A escuta imprime a fila já nessa ordem e nomeia a próxima tarefa. Seção "Ordem de trabalho" do protocolo.
+
 ## Missão e critério de fim
 
 Vale acima de qualquer outra instrução de ciclo. São duas trilhas, que você conduz em paralelo.

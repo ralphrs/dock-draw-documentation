@@ -75,6 +75,8 @@ O trabalho está em épicos com o rótulo `web-design`: um épico de fundação,
 
 Faça uma tarefa de cada vez, na ordem das chaves, com uma exceção: **tarefa com o rótulo `prioridade` passa na frente** de qualquer outra em `A FAZER`. As cinco primeiras são do épico de fundação, e todas as outras dependem delas. A última tarefa de cada épico é a de revisão nos dois temas: é ela que o humano olha para aprovar a forma.
 
+**Ordem de trabalho (`DEC-0038`):** a cada volta, olhe o quadro da direita para a esquerda e aja na primeira coluna em que você tem card com a bola: EM REVISÃO, AGUARDANDO APROVAÇÃO, BLOQUEADA, EM ANDAMENTO, e só então tarefa nova em A FAZER. A escuta imprime a fila já nessa ordem e nomeia a próxima tarefa. Seção "Ordem de trabalho" do protocolo.
+
 ## Como falar com A
 
 Tudo acontece na issue do Jira, pelo MCP do Atlassian. Projeto `DDP`, `cloudId` `5f3024da-2ee6-4363-81e4-ec0230c86f6e`.

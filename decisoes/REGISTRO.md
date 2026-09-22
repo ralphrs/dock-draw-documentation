@@ -62,5 +62,6 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 | [DEC-0035](DEC-0035-lateral-espacos-e-administracao.md) | 2026-09-22 | Lateral pinável, espaços e projetos na lateral, administração da plataforma e do tenant, direção para o ADR 013 | Humano |
 | [DEC-0036](DEC-0036-roadmap-plugins-e-modelos.md) | 2026-09-22 | Roadmap: plugin do Claude Code, plugin do Obsidian e modelos pré-definidos de diagrama, com estudos da sessão B | Humano |
 | [DEC-0037](DEC-0037-nome-abaixo-de-toda-forma.md) | 2026-09-22 | Toda forma leva o nome oficial escrito abaixo dela, no Design System, nas pranchas e na paleta do app | Humano |
+| [DEC-0038](DEC-0038-ordem-de-trabalho-da-direita-para-a-esquerda.md) | 2026-09-22 | Ordem de trabalho de toda sessão: da direita para a esquerda no quadro, EM REVISÃO, AGUARDANDO APROVAÇÃO, BLOQUEADA, EM ANDAMENTO, só então tarefa nova | Humano |
 | A-Q-0002 | 2026-09-19 | Aplicar o diff no ledger, aceitar os ADRs 002 a 005 e commitar a etapa do ADR 005 | Humano |
 | A-Q-0001 | 2026-09-19 | Parada 4 do ADR 005: corrigir a fixture 05 no MDXEditor, com três travas, e criar o arquivo do ADR | Humano |

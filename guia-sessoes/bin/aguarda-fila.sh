@@ -106,31 +106,40 @@ fi
 #
 # Falha de rede aqui não é erro: o limite já foi atingido e a sessão vai
 # acordar de todo jeito. Silêncio é melhor que travar a saída.
-proxima_d() {
+proxima() {
   # Uma sessão que já está rodando não relê o próprio prompt. Em 2026-09-21 a
   # sessão D passou por uma tarefa de prioridade porque a regra entrou no prompt
   # depois que ela começou. A escuta é o texto que ela lê a cada volta, então a
-  # ordem certa sai daqui: prioridade primeiro, depois a menor chave.
-  jqld='project = DDP AND labels = "sessao-d" AND status in ("A FAZER", "EM ANDAMENTO") ORDER BY key ASC'
+  # ordem certa sai daqui. Desde 2026-09-22 (DEC-0038) a ordem vale para toda
+  # sessão e é a do quadro lido da direita para a esquerda: EM REVISÃO,
+  # AGUARDANDO APROVAÇÃO, BLOQUEADA, EM ANDAMENTO, A FAZER. Dentro da coluna,
+  # prioridade primeiro, depois a menor chave.
   curl -sS --max-time 20 -u "$JIRA_EMAIL:$JIRA_TOKEN" -G \
-    --data-urlencode "jql=$jqld" --data-urlencode 'fields=summary,labels,status' \
+    --data-urlencode "jql=$jql ORDER BY key ASC" --data-urlencode 'fields=summary,labels,status' \
     --data-urlencode 'maxResults=100' "$site/rest/api/2/search/jql" 2>/dev/null |
-    python3 -c 'import json,sys
+    SESSAO="$sessao" python3 -c 'import json,sys,os
 try:
     itens = json.load(sys.stdin).get("issues", [])
 except Exception:
     itens = []
-andando = [i for i in itens if i["fields"]["status"]["name"] == "EM ANDAMENTO"]
-prio = [i for i in itens if "prioridade" in i["fields"]["labels"] and i not in andando]
-resto = [i for i in itens if i not in andando and i not in prio]
-ordem = andando + prio + resto
+colunas = ["EM REVISÃO", "AGUARDANDO APROVAÇÃO", "BLOQUEADA", "EM ANDAMENTO", "A FAZER"]
+def chave(i):
+    st = i["fields"]["status"]["name"]
+    col = colunas.index(st) if st in colunas else len(colunas)
+    prio = 0 if "prioridade" in i["fields"]["labels"] else 1
+    return (col, prio, int(i["key"].split("-")[1]))
+ordem = sorted(itens, key=chave)
 if ordem:
+    s = os.environ.get("SESSAO", "?").upper()
     i = ordem[0]
-    motivo = "retomar" if i in andando else ("prioridade" if i in prio else "menor chave")
-    print("PRÓXIMA TAREFA DA SESSÃO D: %s (%s) %s" % (i["key"], motivo, i["fields"]["summary"]))
+    print("PRÓXIMA TAREFA DA SESSÃO %s: %s [%s] %s" % (s, i["key"], i["fields"]["status"]["name"], i["fields"]["summary"]))
+    print("Fila na ordem do quadro, da direita para a esquerda (DEC-0038):")
+    for i in ordem:
+        print("  %s  [%s]  %s" % (i["key"], i["fields"]["status"]["name"], i["fields"]["summary"]))
     print("Leia a descrição inteira antes de começar: ela pode trazer correção da sessão A.")
     print("No comentário de resultado, nunca ponha chave dentro de monospace: use a macro de código.")
-    print("Nunca mova card com o rótulo aprovacao-humana: só o humano e a sessão A movem esse card.")' || true
+    if s == "D":
+        print("Nunca mova card com o rótulo aprovacao-humana: só o humano e a sessão A movem esse card.")' || true
 }
 
 religue() {
@@ -188,9 +197,7 @@ while :; do
 
   if [ "$n" -gt 0 ]; then
     printf 'FILA %s: %s issue(s) esperando, %s\n' "$sessao" "$n" "$(date +%Y-%m-%dT%H:%M:%S)"
-    if [ "$sessao" = "D" ] || [ "$sessao" = "d" ]; then
-      proxima_d
-    fi
+    proxima
     case "$sessao" in
     B | b | C | c)
       # Sessão rodando não relê o próprio prompt, e a escuta é o texto que ela
