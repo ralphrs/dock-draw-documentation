@@ -25,3 +25,15 @@ O humano escreveu "design-system.figma (ou a extensão correta)". Arquivo do Fig
 ## Qual arquivo é o design-system, respondido em 2026-09-21
 
 Na `DDP-368` o humano escolheu o arquivo **Design-System** (`gN8mZGcM6KXDP6iWkMQCHL`), a antiga biblioteca, e não o arquivo de trabalho `VomOXhYuTYoBTALAuT0r1e` que esta decisão tinha indicado. O Design-System recebe tudo o que já foi aprovado, organizado por camadas: fundação (temas, paletas, tipografia, espaçamento), componentes de base (moldura, alça de conexão), conexões e uma camada por família de formas (C4 Model, AWS, Básicas). O arquivo `VomOXhYuTYoBTALAuT0r1e` deixa de ser o central e vira fonte da migração. O que não foi aprovado continua em arquivos de draft.
+
+## Emenda de 2026-09-22: `done` volta como arquivo do aprovado, e toda aprovação gera consolidação
+
+O humano procurou a pasta `dok draw app/done` e não encontrou nada, e reafirmou o fluxo que espera: o `Design-System` na raiz de `dok draw app` sempre na versão mais recente, recebendo em camadas o que vai sendo aprovado, e o arquivo de proposta aprovado saindo de `draft` para `done`.
+
+O que faltava no processo, e passa a valer:
+
+1. **Toda aprovação do humano numa revisão nos dois temas gera, no mesmo ciclo, um card de consolidação para a sessão D.** O card nomeia a página do `Design-System` (`gN8mZGcM6KXDP6iWkMQCHL`) que recebe a forma, a camada (fundação, componentes de base, conexões, ou a família: C4 Model, Básicas, AWS, Azure, Google Cloud, OCI, Tecnologias, UML, BPMN) e as regras aceitas na revisão. A sessão A abre esse card. Sem ele, a forma fica aprovada só no draft, que foi o que aconteceu com cilindro e contêiner genéricos (`DDP-338`) e ator (`DDP-343`).
+2. **`done` é o arquivo das propostas aprovadas**, não uma biblioteca. O arquivo de draft aprovado vai inteiro para `dok draw app/done`, com o nome que já tem, e fica como registro de como a proposta foi validada. A biblioteca por família continua descartada, como esta decisão já dizia.
+3. **A API do Figma não move nem renomeia arquivo** (`DDP-368`). Quem move é o humano. Por isso o card de consolidação termina com a lista dos arquivos a mover, e a sessão A abre um card de rótulo `humano` com essa lista assim que a consolidação é aceita.
+
+Custo aceito: um gesto manual do humano por lote de aprovações. Alternativa descartada: pedir à sessão D que recrie o conteúdo aprovado num arquivo novo dentro de `done`, o que duplicaria o desenho e perderia o histórico da proposta.
