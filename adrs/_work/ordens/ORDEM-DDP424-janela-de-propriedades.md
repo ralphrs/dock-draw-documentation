@@ -19,7 +19,7 @@ Tudo em `src/routes/_authenticated/projetos.$projectId.diagramas.$viewId.tsx` (a
 
 **2. Os outros caminhos abrem a mesma janela.** F2, o lápis do painel da direita e o item de menu, que passa de "Editar nome" para "Propriedades…" (atalho F2), abrem a janela na aba Geral, com o nome selecionado, como `focusName` já faz hoje.
 
-**3. A janela.** O `Dialog` de "Detalhes do elemento" é substituído por um `Dialog` mais largo, com abas verticais à esquerda (em tela estreita, abas em linha no topo). O cabeçalho mostra o nome e, embaixo, a família e o rótulo do tipo, por exemplo "C4 Model · Contêiner" (o rótulo vem de `ELEMENT_TYPE_META`). Rodapé com o botão "Concluir" e o texto "Cada campo grava ao sair dele, e Ctrl+Z desfaz."
+**3. A janela.** O `Dialog` de "Detalhes do elemento" é substituído por um `Dialog` mais largo, com abas verticais à esquerda (em tela estreita, abas em linha no topo). O cabeçalho mostra o nome e, embaixo, a família e o rótulo do tipo, por exemplo "C4 Model · Contêiner" (o rótulo vem de `ELEMENT_TYPE_META`). O tipo `image` não tem família (`familyIdOfType("image")` devolve nulo), e o cabeçalho dele mostra só "Imagem", sem o ponto. Rodapé com o botão "Concluir" e o texto "Cada campo grava ao sair dele, e Ctrl+Z desfaz."
 
 **4. Aba Geral, para todo elemento.** Nome, descrição e tags. Tags em campo de chips: Enter adiciona, o x do chip remove, até 40 caracteres cada, sem repetir. Grava em `tags`, coluna que já existe e já está no schema de `patchElement`.
 
@@ -28,13 +28,13 @@ Tudo em `src/routes/_authenticated/projetos.$projectId.diagramas.$viewId.tsx` (a
 - Tecnologia aparece em todo tipo, menos `person`, `external_person` e `group`. Em `container`, `microservice`, `browser`, `spa`, `terminal`, `component`, `store`, `queue`, `bucket` e `folder` (contêineres e componentes no C4, bancos e filas incluídos), a tecnologia vazia mostra o aviso "Sem tecnologia. O C4 pede que todo contêiner e componente tenha uma.", sem bloquear nada.
 - Se `childLevelOf(tipo)` existir, um botão "Abrir visão de" seguido do nível filho chama `openElement` e fecha a janela. Sem nível filho, o texto "Este tipo não tem visão de detalhe no C4."
 
-**6. Aba Imagem, para o tipo `image`.** Prévia pela URL assinada que o nó já usa, o nome do arquivo, e o botão "Substituir imagem…": abre o seletor, valida com `checkImageFile` e sobe por `uploadDiagramImage` com o segundo argumento igual ao id do elemento seguido de hífen e de um sufixo novo a cada envio (o upload usa `upsert: false`, então o nome não pode repetir). Depois grava o `imagePath` novo em `style`. O arquivo antigo fica no bucket, para o desfazer.
+**6. Aba Imagem, para o tipo `image`.** Prévia pela URL assinada que o nó já usa, o nome do arquivo, e o botão "Substituir imagem…": abre o seletor, valida com `checkImageFile` e sobe por `uploadDiagramImage` com o segundo argumento igual ao id do elemento seguido de hífen e de um sufixo novo a cada envio (o upload usa `upsert: false`, então o nome não pode repetir). Depois grava por `patchElementComHistorico` o objeto `style` inteiro com o `imagePath` novo. Como o inverso de `style` já guarda o objeto anterior inteiro, o desfazer volta o `imagePath` antigo sem código novo. O arquivo antigo fica no bucket.
 
 **7. Aba Ligações, para todo elemento.** As relações da visão ativa em que o elemento é origem ou destino, com "sai →" ou "← entra", o rótulo, a tecnologia e o nome do outro elemento. Clicar numa fecha a janela e seleciona a linha, pelo mesmo caminho de `onSelectRelationship`. Sem relação, o texto "Nenhuma relação entra ou sai deste elemento."
 
 **8. Gravação com desfazer.** Todo campo da janela grava ao sair dele por `patchElementComHistorico`. Estenda o inverso de `patchElementComHistorico` para `tags`, no mesmo molde dos outros campos.
 
-**9. Relação.** O item "Editar rótulo" do menu da linha vira "Propriedades…" e abre a mesma janela para a relação, com duas abas: Geral (rótulo, com a linha "De" origem "para" destino embaixo) e C4 (tecnologia ou protocolo, com o texto de apoio "O C4 pede o protocolo explícito entre contêineres."). Grava por `patchRelComHistorico`, estendendo o inverso dele para `technology`. Duplo clique na linha continua criando ponto de quebra.
+**9. Relação.** O item "Editar rótulo" do menu da linha vira "Propriedades…" e abre a mesma janela para a relação, com duas abas: Geral (rótulo, com a linha "De" origem "para" destino embaixo) e C4 (tecnologia ou protocolo, com o texto de apoio "O C4 pede o protocolo explícito entre contêineres."). Grava por `patchRelComHistorico`, estendendo o inverso dele para `technology` e acrescentando `technology` à interface `RelPatchInput` da rota, que hoje não tem esse campo. Duplo clique na linha continua criando ponto de quebra.
 
 ## O que não fazer aqui
 
