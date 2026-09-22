@@ -27,7 +27,8 @@ BEGIN
 
   SELECT count(*) INTO n FROM pg_policies
    WHERE schemaname = 'storage' AND tablename = 'objects' AND policyname = 'diagram_images_insert'
-     AND cmd = 'INSERT' AND with_check LIKE '%diagram-images%' AND with_check LIKE '%can_access_project%';
+     AND cmd = 'INSERT' AND with_check LIKE '%diagram-images%' AND with_check LIKE '%can_access_project%'
+     AND with_check LIKE '%extension(name)%';
   IF n <> 1 THEN falhas := array_append(falhas, 'política diagram_images_insert ausente ou diferente'::text); END IF;
 
   SELECT count(*) INTO n FROM pg_policies

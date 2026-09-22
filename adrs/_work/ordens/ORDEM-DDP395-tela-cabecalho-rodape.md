@@ -24,7 +24,7 @@ Segunda de duas ordens da mesma proposta (`DDP-392`, `adrs/_work/PROPOSTA-cabeca
 
 **9. `.drawio` monta as faixas como dois grupos travados.** Em `exportViewAsDrawio`, quando as faixas estão marcadas: dois `mxCell` do tipo grupo (`vertex="1"` com `style` incluindo `group;locked=1`), um acima e um abaixo da caixa que envolve todos os nós da vista. Essa caixa é conta nova em `exportViewAsDrawio`, que hoje não calcula nenhuma: a mesma conta de `minX`, `minY`, `maxX` e `maxY` que `buildSvg` já faz, cada um com os `mxCell` filhos de texto e imagem posicionados dentro pela mesma zona/alinhamento da faixa. `locked=1` impede mover ou editar o grupo depois de aberto no draw.io, mantendo o desenho original.
 
-**10. Bucket de imagem ainda não existe.** A `DDP-308` (bucket `diagram-images`) segue "A Fazer" nesta data. Enquanto o bucket não existir, o botão "+ Imagem" das zonas fica desabilitado, com aviso "Disponível em breve" ao passar o mouse, e texto funciona normalmente. Quando o bucket entrar, "+ Imagem" habilita sem outra mudança nesta tela, porque o campo `imagePath` do schema já está pronto.
+**10. Imagem nas zonas.** O bucket `diagram-images` existe desde 2026-09-21 (`DDP-308`). "+ Imagem" abre o seletor de arquivo, valida com `checkImageFile` (PNG, JPEG, WebP, até 5 MB) e sobe pelo mesmo `uploadDiagramImage` de `src/infrastructure/supabase/image-storage.ts`, passando como segundo argumento o texto `frames/` seguido do id novo do item. O caminho resultante é `{projectId}/frames/{id}.{extensão}`, o que o campo `imagePath` do schema e a conferência de prefixo de `saveExportFrames` esperam. A ordem `DDP-419` troca o `upsert` desse upload para `false` e trava o tipo no bucket; se ela ainda não tiver rodado, siga a assinatura que encontrar, sem mudar o `upsert` por conta própria.
 
 **11. Linha de atribuição da AWS, fora desta ordem.** O arquivo exportado reserva a faixa inteira, abaixo do rodapé (ou abaixo do diagrama, se o rodapé estiver desligado), sempre que o diagrama tiver algum ícone AWS, independente da caixa "Incluir cabeçalho e rodapé" estar marcada. O texto e a regra de quando mostrar ficam para a ordem que implementar a `DDP-236` no fluxo de exportação: esta ordem só deixa o espaço reservado, sem desenhar nada nele.
 
@@ -48,7 +48,7 @@ Segunda de duas ordens da mesma proposta (`DDP-392`, `adrs/_work/PROPOSTA-cabeca
 
 ## Verificação
 
-A sessão C confere no preview: criar itens de texto nas três zonas do cabeçalho e do rodapé, formatar fonte/tamanho/estilo/cor/alinhamento, mudar altura/fundo/linha da faixa, ver a prévia atualizar; exportar em PNG, SVG e .drawio com a caixa marcada e desmarcada, e ver a diferença no arquivo; reabrir o diálogo de exportação depois e ver a última escolha lembrada; com o bucket de imagem ainda fora do ar, "+ Imagem" aparece desabilitado e o texto continua funcionando.
+A sessão C confere no preview: criar itens de texto nas três zonas do cabeçalho e do rodapé, formatar fonte/tamanho/estilo/cor/alinhamento, mudar altura/fundo/linha da faixa, ver a prévia atualizar; exportar em PNG, SVG e .drawio com a caixa marcada e desmarcada, e ver a diferença no arquivo; reabrir o diálogo de exportação depois e ver a última escolha lembrada; subir uma imagem PNG numa zona e vê-la na prévia e nos três arquivos exportados.
 
 ## Restrições
 
