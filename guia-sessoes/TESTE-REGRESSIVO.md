@@ -11,7 +11,7 @@ Cobre tudo que o Lovable entregou até 2026-09-22 e que passou pela revisão da 
   - **Tela** (seções C a H): quem tem navegador autenticado. A sessão A roda pela extensão do Chrome quando o humano deixa uma aba do app logada. Sem isso, o humano roda.
 - **Evidência.** Cada caso termina com `passou`, `falhou` ou `não rodou`, e um falhou leva captura de tela e o passo em que parou. O resultado da rodada vai num comentário do card da rodada no Jira, na tabela abaixo copiada com a coluna de resultado preenchida.
 - **Falha vira ordem.** Caso que falha abre defeito no quadro com o id do caso no título, e a correção sai como ordem ao Lovable. Ninguém conserta código por fora.
-- **Dados.** Todo caso de tela roda num projeto chamado `Regressão`, criado para isso, com um diagrama `RT` de três elementos (Pessoa `Ana`, Sistema `Portal`, Sistema externo `Pagamentos`) e uma conexão `Ana → Portal`. Nada de projeto real. Ao fim da rodada, o projeto `Regressão` fica, para a próxima.
+- **Dados.** Todo caso de tela roda num projeto chamado `Regressão`, o mesmo que o Lovable usa para conferir cada ordem no preview (regra do `PROTOCOLO.md`, seção "Desenvolvimento no app"), criado para isso, com um diagrama `RT` de três elementos (Pessoa `Ana`, Sistema `Portal`, Sistema externo `Pagamentos`) e uma conexão `Ana → Portal`. Nada de projeto real. Ao fim da rodada, o projeto `Regressão` fica, para a próxima.
 - **Ambiente.** `preview` é `https://id-preview--57b09d7c-1514-4504-a4db-3b392c9dea31.lovable.app`. `prod` é o domínio publicado. A coluna "Onde" diz em qual dos dois o caso roda. `ambos` roda nos dois.
 
 ## Seção A: código (sessão C)
