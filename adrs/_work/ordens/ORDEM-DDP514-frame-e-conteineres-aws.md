@@ -31,7 +31,20 @@ Segunda de duas ordens da `DDP-514`. Depende da `ORDEM-DDP514-icones-aws-bucket.
 
 **8. Exportação SVG e PNG.** Herdam de graça por `ElementShape`/`ElementLabels`, como todo outro tipo (nenhuma mudança em `export-diagram.tsx` para o desenho em si), com uma ressalva: `buildSvg` embute imagem por URL hoje só para o tipo `image` (`carregarImagens`, linha 34). Estender essa função para também embutir `style.awsIcon` do tipo `aws_icon`, buscando a URL pública do bucket em vez da assinada de `diagram-images`.
 
-**9. Exportação `.drawio`, `drawioStyle` em `export-diagram.tsx`.** Para os seis tipos de contêiner, usar o estilo nativo `mxgraph.aws4.group` com o parâmetro de grupo AWS correspondente (`grIcon=Region`, `grIcon=VPC`, `grIcon=Availability_Zone`, `grIcon=Public_Subnet`, `grIcon=Private_Subnet`, `grIcon=Security_Group`, nomes oficiais da paleta `mxgraph.aws4` do draw.io), que já desenha borda, cor e ícone corretos sem precisar montar path manual. Para `aws_icon`, usar `shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.${nome-do-recurso};` quando o nome do recurso existir na paleta `aws4` do draw.io, senão cair para uma imagem embutida (`shape=image;image=${urlPública}`) como os elementos do tipo `image` já fazem.
+**9. Exportação `.drawio`, `drawioStyle` em `export-diagram.tsx`.** Estilos conferidos na paleta "AWS / Groups" do próprio draw.io (`jgraph/drawio`, `src/main/webapp/js/diagramly/sidebar/Sidebar-AWS4.js`, linhas 257 a 305, commit `f3abfe0f` de 2026-09-08, consultado em 2026-09-22). Prefixo comum dos grupos, chamado `G` abaixo: `outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;verticalAlign=top;align=left;spacingLeft=30;`.
+
+| Tipo | Estilo |
+| --- | --- |
+| `aws_region` | `G` + `grIcon=mxgraph.aws4.group_region;strokeColor=#00A4A6;fillColor=none;fontColor=#147EBA;dashed=1;` |
+| `aws_vpc` | `G` + `grIcon=mxgraph.aws4.group_vpc2;strokeColor=#8C4FFF;fillColor=none;fontColor=#AAB7B8;dashed=0;` |
+| `aws_az` | sem `shape` de grupo, como o draw.io faz: `fillColor=none;strokeColor=#147EBA;dashed=1;verticalAlign=top;fontStyle=0;fontColor=#147EBA;whiteSpace=wrap;html=1;` |
+| `aws_subnet_public` | `G` + `grIcon=mxgraph.aws4.group_security_group;grStroke=0;strokeColor=#7AA116;fillColor=#F2F6E8;fontColor=#248814;dashed=0;` |
+| `aws_subnet_private` | `G` + `grIcon=mxgraph.aws4.group_security_group;grStroke=0;strokeColor=#00A4A6;fillColor=#E6F6F7;fontColor=#147EBA;dashed=0;` |
+| `aws_security_group` | sem `shape` de grupo: `fillColor=none;strokeColor=#DD3522;verticalAlign=top;fontStyle=0;fontColor=#DD3522;whiteSpace=wrap;html=1;` |
+
+O draw.io reaproveita o ícone `group_security_group` para as duas sub-redes e não tem ícone de grupo para zona de disponibilidade nem para grupo de segurança na paleta atual. Para `aws_icon`: `shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.{slug};` com `fillColor` da categoria (Compute `#ED7100`, Storage `#7AA116`, os demais conforme a paleta do draw.io), quando o `slug` do manifesto existir no stencil `aws4.xml` (`lambda`, `ec2`, `s3` conferidos). Quando não existir, cair para imagem embutida (`shape=image;image={urlPública}`), como o tipo `image` já faz. A conferência de existência do `resIcon` é por uma lista fixa no app, gerada uma vez a partir do `aws4.xml`, não por chamada de rede.
+
+**10. Atribuição da AWS (`DEC-0030`, texto aprovado na `DDP-236`).** Texto, uma vez por diagrama que tem pelo menos um elemento `aws_icon` ou um dos seis contêineres: "Ícones de arquitetura da AWS usados sob licença. Copyright © Amazon.com, Inc. ou suas afiliadas. Todos os direitos reservados. Amazon Web Services, AWS, o logotipo da AWS e as marcas da AWS são marcas registradas da Amazon.com, Inc. ou suas afiliadas." Onde aparece, decisão da sessão A: na exportação SVG e PNG, uma linha em `muted-foreground`, 10px, alinhada à esquerda, abaixo do rodapé (ou do diagrama, sem rodapé), no espaço que `AWS_ATTRIBUTION_HEIGHT` já reserva em `export-diagram.tsx` (linhas 26 a 32, hoje `0`): a constante vira 24 e a linha só entra quando a visão tem elemento AWS. No `.drawio`, um `mxCell` de texto com o mesmo conteúdo abaixo do diagrama. No canvas, a mesma linha no canto inferior esquerdo do quadro, fora da área de arrasto, visível só quando a visão tem elemento AWS. A moldura de cada serviço não repete o texto.
 
 ## O que não fazer aqui
 
@@ -45,7 +58,7 @@ Segunda de duas ordens da `DDP-514`. Depende da `ORDEM-DDP514-icones-aws-bucket.
 
 | Restrição (`LEDGER.md` e decisões) | Onde esta ordem cumpre |
 | --- | --- |
-| `DEC-0030`: ícone oficial sem alteração, com atribuição | Ícones vêm intactos do bucket, nome do serviço em texto plano no rótulo |
+| `DEC-0030`: ícone oficial sem alteração, com atribuição | Ícones vêm intactos do bucket (itens 2 e 5). Atribuição no item 10, na exportação e no canvas |
 | Cor só por token (regra do kit) | Exceção declarada só para as seis cores oficiais de contêiner AWS, mesmo padrão já aceito na `DDP-239` para o ícone de grupo |
 | ADR 001: nós e edges controlados pelo estado do app | Contêiner é elemento comum do modelo C4, sem mecanismo paralelo |
 | Dependências novas só com justificativa em ADR | Nenhuma dependência nova |
