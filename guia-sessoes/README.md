@@ -6,6 +6,7 @@
 | `PROMPT-SESSAO-A.md` | Abertura da sessão A (arquiteto e scrum master): missão, trilhas, roteiro dos ADRs, sprints de desenvolvimento |
 | `PROMPT-SESSAO-B.md` | Abertura da sessão B (executor de ADR) |
 | `PROMPT-SESSAO-C.md` | Abertura da sessão C (revisora, roda no repositório do app) |
+| `FIGMA-ORGANIZACAO.md` | Pastas do Figma (raiz, draft, done), o arquivo vivo `design-system-latest`, ciclo de vida de uma proposta e o que a API não faz |
 | `CONFIGURACAO.md` | Permissões dos dois repositórios, acesso ao Jira, ordem de início e retomada |
 | `templates/` | Modelos de descrição de issue e de comentário |
 | `bin/` | `aguarda-fila.sh`, que espera a fila fora da sessão e é o modo preferido de escuta, e `espera.sh`, o relógio do modo de reserva. Mais `instalar-fixtures.sh`. Os demais serviram ao protocolo por arquivo, anterior a 2026-09-20 |

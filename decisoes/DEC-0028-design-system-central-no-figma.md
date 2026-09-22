@@ -37,3 +37,19 @@ O que faltava no processo, e passa a valer:
 3. **A API do Figma não move nem renomeia arquivo** (`DDP-368`). Quem move é o humano. Por isso o card de consolidação termina com a lista dos arquivos a mover, e a sessão A abre um card de rótulo `humano` com essa lista assim que a consolidação é aceita.
 
 Custo aceito: um gesto manual do humano por lote de aprovações. Alternativa descartada: pedir à sessão D que recrie o conteúdo aprovado num arquivo novo dentro de `done`, o que duplicaria o desenho e perderia o histórico da proposta.
+
+## Emenda de 2026-09-22 (tarde): pastas com identificador, nome do arquivo vivo e criação direto em `draft`
+
+O humano fixou a estrutura com os links das pastas e pediu que nenhum design novo avance antes de ela estar aplicada:
+
+| Lugar | Identificador | Papel |
+| --- | --- | --- |
+| `dok draw app` (raiz) | `658360362` | Só o arquivo vivo `design-system-latest` |
+| `dok draw app/draft` | `658381844` | Proposta em andamento ou aguardando aprovação |
+| `dok draw app/done` | `658381968` | Proposta aprovada, arquivada |
+
+O arquivo central `gN8mZGcM6KXDP6iWkMQCHL` passa a chamar `design-system-latest`. A API não renomeia documento (teste em 2026-09-22: `figma.root.name` responde "Setting the document name is currently not supported"), então o nome é gesto do humano, pedido na `DDP-449`.
+
+A sessão D cria todo arquivo novo com `create_new_file` e `projectId: "658381844"`, direto em `draft`. Isso fecha a causa dos arquivos soltos na raiz do time. O guia completo, com o ciclo de vida e a tabela do que a API faz, está em `guia-sessoes/FIGMA-ORGANIZACAO.md`, e o prompt da sessão D aponta para ele.
+
+Custo aceito: mover e renomear continuam manuais. Alternativa descartada: usar a API REST do Figma com token do humano para mover arquivos, que a API REST também não oferece.
