@@ -1,8 +1,8 @@
-# Proposta: toda configuração do projeto vive no menu do card
+# Proposta: a página de configuração do projeto, aberta pelos três pontinhos do card
 
-**Data:** 2026-09-22
-**Pedido:** humano. "Toda e qualquer configuração do projeto tem que estar nos três pontinhos do card do projeto."
-**Alcance:** lista de projetos (`/projetos`), cabeçalho das áreas do projeto (wiki, diagramas, editor) e as configurações que já existem no app.
+**Data:** 2026-09-22, segunda versão no mesmo dia
+**Pedido:** humano. "Toda e qualquer configuração do projeto tem que estar nos três pontinhos do card do projeto." E, sobre a primeira versão: "O projeto pode ter muita página na wiki e muito diagrama. Então a página de configuração do projeto tem que abranger os dois mundos. É uma página de configuração. Exportar imagem não pode ir ali, pois não faz sentido. A exportação dos diagramas tem que ser por diagrama ou por aba do diagrama."
+**Alcance:** lista de projetos (`/projetos`), cabeçalho das áreas do projeto e as configurações que já existem no app.
 
 ## O que existe hoje
 
@@ -12,63 +12,78 @@ Levantado no app em 2026-09-22.
 | --- | --- | --- |
 | Nome e descrição | Só na criação. Não existe renomear nem editar descrição | `public.projects` |
 | Excluir projeto | Ícone de lixeira no card, visível só no hover | `public.projects`, cascata |
-| Cabeçalho e rodapé de exportação | Aba "Cabeçalho e rodapé" no cabeçalho de toda área do projeto, e link no diálogo Baixar | `public.project_export_frames` |
+| Cabeçalho e rodapé | Aba "Cabeçalho e rodapé" no cabeçalho de toda área do projeto, rota `/projetos/{id}/configuracoes/cabecalho-rodape` | `public.project_export_frames` |
 | Famílias de formas ligadas | Botão "Mais formas" no painel do editor | `localStorage`, por pessoa e por projeto |
-| Formato de exportação e "incluir faixas" | Diálogo Baixar do editor | `localStorage`, global, sem projeto |
-| Formas favoritas | Estrela no painel do editor | `localStorage`, global |
-| Esquema de cores e tema | Painel Detalhes e clique direito no canvas; rodapé da barra lateral | `localStorage`, preferência da pessoa |
+| Formato de exportação e "incluir faixas" | Diálogo Baixar do editor | `localStorage`, global |
+| Wiki | Nenhuma configuração. A wiki ainda lê dados em memória | nada |
+| Membros | Nenhuma configuração por projeto. Acesso é global por convite | `public.invites` |
 
-O card do projeto não tem menu. O único menu de três pontinhos do app é o dos nós da árvore (`arvore-navegacao.tsx`), com Renomear, extras e Apagar.
+O card do projeto não tem menu. O único menu de três pontinhos do app é o dos nós da árvore (`arvore-navegacao.tsx`).
 
 ## A proposta
 
-Um componente só, `MenuDoProjeto`, com os três pontinhos. Ele aparece em dois lugares e tem os mesmos itens nos dois: no card da lista de projetos, sempre visível no canto direito, e ao lado do nome do projeto no cabeçalho das áreas (wiki, diagramas, editor), para não obrigar a voltar à lista no meio do trabalho. A aba "Cabeçalho e rodapé" sai do cabeçalho: configuração não é área.
+### O menu do card
+
+Três pontinhos sempre visíveis no canto do card, sem depender de hover. Três itens:
 
 ```
 ⋯
-  Renomear…              nome e descrição, diálogo igual ao de "Novo projeto"
-  Cabeçalho e rodapé…    abre a tela que já existe
-  Famílias de formas…    abre o diálogo "Mais formas" que já existe
-  Exportação…            formato padrão (PNG, SVG, .drawio) e "incluir cabeçalho e rodapé"
+  Configurações…    abre a página de configuração do projeto
+  Copiar link       URL do projeto na área de transferência, com toast
   ────────
-  Copiar link            URL do projeto na área de transferência, com toast
-  ────────
-  Excluir…               o mesmo AlertDialog de hoje, em vermelho
+  Excluir…          a confirmação de hoje, em vermelho
 ```
+
+A lixeira do hover sai. Dentro das áreas do projeto (wiki, diagramas, editor), o nome do projeto no cabeçalho ganha um ícone de engrenagem que abre a mesma página, para não obrigar a voltar à lista. A aba "Cabeçalho e rodapé" sai do cabeçalho: ela vira uma seção da página.
+
+### A página de configuração
+
+Rota `/projetos/{id}/configuracoes`, uma página só, com navegação lateral por seção. A tela de cabeçalho e rodapé já mora nesse caminho e passa a ser uma das seções. Cada seção diz de que mundo é.
+
+| Seção | O que tem na fase 1 | O que entra depois |
+| --- | --- | --- |
+| **Geral** | Nome, descrição. Tipo (`kind`) só leitura. Criado em, atualizado em | Ícone ou cor do projeto |
+| **Wiki** | Página inicial da wiki (qual página abre ao entrar) e ordem da árvore (alfabética ou manual). As duas ficam desligadas com o aviso "chega com a wiki gravada no banco", porque hoje a wiki lê memória | Estados do fluxo editorial (ADR 004), quem pode publicar, modelo de página nova |
+| **Diagramas** | Famílias de formas ligadas ao projeto (o diálogo "Mais formas" vira esta seção; o botão do painel continua como atalho). Nível inicial de novo diagrama | Esquema de cores padrão do projeto, tamanho de página padrão |
+| **Cabeçalho e rodapé** | A tela que já existe, sem mudança, agora dentro da página | Modelos prontos |
+| **Membros** | Só o dono, listado. Aviso "convites por projeto chegam com o ADR 013" | Convite, papel por projeto |
+| **Zona de perigo** | Excluir projeto, a mesma confirmação do menu | Arquivar, transferir de workspace |
 
 Regras:
 
-- **Tudo que configura o projeto entra aqui, e só aqui.** Botão solto no card (a lixeira de hoje) e aba de configuração no cabeçalho deixam de existir. Quem criar uma configuração nova de projeto acrescenta um item neste menu, e nada mais.
-- **Ordem fixa:** o que descreve o projeto, o que muda a saída dele, ação de compartilhar, ação destrutiva por último e separada.
-- **O que é preferência da pessoa não entra:** tema, esquema de cores, formas favoritas. São dela, valem em qualquer projeto, e ficam onde estão.
-- **O que é ação sobre conteúdo não entra:** criar diagrama, criar página, pastas. Isso é trabalho dentro da área, não configuração.
-- **Sempre visível.** O botão fica no card em cor apagada, sem depender de hover, porque toque não tem hover. No cabeçalho das áreas ele fica ao lado do nome.
+- **Configuração do projeto vive na página, e a página abre pelos três pontinhos.** Quem criar uma configuração nova de projeto acrescenta uma seção ou um campo aqui, e nada mais.
+- **Os dois mundos têm lugar desde o começo.** A seção Wiki existe na fase 1 mesmo com os campos desligados, para a página nascer com a forma certa e a wiki não chegar depois sem endereço.
+- **Exportar não é configuração.** O diálogo Baixar continua no diagrama, e é lá que se escolhe formato e se inclui cabeçalho e rodapé. Com as abas de diagrama (`DEC-0021`), o diálogo ganha o alcance: "esta aba" ou "todas as abas", uma imagem por aba. A preferência de formato fica no próprio diálogo, lembrando a última escolha, sem nada na página de configuração.
+- **Preferência da pessoa não entra:** tema, esquema de cores da pessoa, formas favoritas. Valem em qualquer projeto e ficam onde estão.
+- **Ação sobre conteúdo não entra:** criar diagrama, criar página, pastas.
 
 ## O que muda no código, sem migração
 
-1. `projects.functions.ts` ganha `updateProject(id, {name, description})`, com a mesma validação zod de `addProject`. O repositório ganha `updateProject`. A política RLS de `projects` já cobre, é `owner_id = auth.uid()`. Nenhuma coluna nova.
-2. `projetos.index.tsx`: o card recebe `MenuDoProjeto`. A lixeira sai. O diálogo "Renomear" reaproveita o formulário de "Novo projeto".
-3. `abas-projeto.tsx`: a aba "Cabeçalho e rodapé" sai. O cabeçalho das áreas recebe `MenuDoProjeto` ao lado do nome. O link "Editar cabeçalho e rodapé" do diálogo Baixar continua, porque quem está exportando quer chegar lá direto.
-4. `mais-formas-dialog.tsx` passa a receber `projectId` e a poder abrir fora do editor. O botão "Mais formas" do painel continua, como atalho para o mesmo diálogo.
-5. Exportação: as duas chaves globais de `localStorage` (`dokdraw-export-format`, `dokdraw-export-incluir-faixas`) viram uma chave por projeto, `dokdraw-exportacao-{projectId}`, lida pelo diálogo Baixar e pelo item "Exportação…" do menu.
-6. "Copiar link": `navigator.clipboard.writeText` com a URL de `/projetos/{id}`, toast "Link copiado.", mesmo padrão dos links de diagrama.
+1. `projects.functions.ts` ganha `updateProject(id, {name, description})`, com a mesma validação zod de `addProject`. O repositório ganha `updateProject`. A política RLS de `projects` já cobre, `owner_id = auth.uid()`. Nenhuma coluna nova.
+2. `projetos.index.tsx`: o card recebe o menu de três pontinhos com os três itens. A lixeira sai.
+3. Rota nova `projetos.$projectId.configuracoes.tsx` como layout com a navegação lateral e `Outlet`; `configuracoes.index.tsx` (Geral), `configuracoes.wiki.tsx`, `configuracoes.diagramas.tsx`, `configuracoes.membros.tsx`. A rota `configuracoes.cabecalho-rodape.tsx` continua no mesmo caminho, e só troca o cabeçalho próprio pela navegação lateral do layout.
+4. `abas-projeto.tsx`: a aba "Cabeçalho e rodapé" sai. O cabeçalho das áreas ganha a engrenagem ao lado do nome, ligando para `/projetos/{id}/configuracoes`.
+5. Seção Diagramas: `useFamiliasLigadas(projectId)` já existe. A seção mostra o mesmo conteúdo do `MaisFormasDialog`, em página, gravando na mesma chave. Nível inicial de novo diagrama: chave nova `dokdraw-nivel-inicial-{projectId}`, lida por "Novo diagrama".
+6. Diálogo Baixar: ganha "Alcance: esta aba / todas as abas" quando o diagrama tiver mais de uma aba. Enquanto não houver abas, o controle não aparece.
+7. "Copiar link": `navigator.clipboard.writeText` com a URL de `/projetos/{id}`, toast "Link copiado.".
 
 ## Fase 2, depois, com migração
 
-Configuração de projeto gravada em `localStorage` é da pessoa e do navegador, não do projeto. Famílias ligadas e exportação padrão deveriam seguir o projeto para qualquer membro e qualquer máquina. Isso pede uma coluna `settings jsonb` em `public.projects`, categoria `app-release`, e entra quando o menu estiver na tela e aprovado. Membros por projeto entram só depois do ADR 013 (tenancy). Tipo do projeto (`kind`) não é editável e não entra.
+Configuração gravada em `localStorage` é da pessoa e do navegador, não do projeto. Famílias ligadas, nível inicial e o que a seção Wiki ligar precisam seguir o projeto para qualquer membro e qualquer máquina. Isso pede `settings jsonb` em `public.projects`, categoria `app-release`, e entra quando a página estiver na tela e aprovada. Membros por projeto entram só depois do ADR 013 (tenancy). Os campos da seção Wiki ligam quando a wiki gravar no banco (S2 e S3 do ADR 003).
 
 ## Alternativas descartadas
 
 | Alternativa | Por que não |
 | --- | --- |
-| Uma página "Configurações do projeto" com abas, aberta por um item só do menu | Esconde as configurações atrás de dois cliques e quebra o pedido: a lista de configurações deixa de estar no menu |
-| Menu só no card, sem repetir no cabeçalho das áreas | Renomear ou trocar o cabeçalho de exportação no meio da edição obrigaria a voltar à lista. O item continua sendo "do card", só fica alcançável de onde a pessoa está |
-| Manter a lixeira no card fora do menu | Contradiz a regra de que tudo vive no menu, e um ícone destrutivo no hover é fácil de acionar sem querer |
+| Menu do card com um item por configuração (primeira versão desta proposta) | Não escala: com muitas páginas e diagramas, a configuração do projeto tem mais campos do que cabe num menu, e os dois mundos não teriam lugar próprio |
+| Exportação como seção da página de configuração | Exportar é ação sobre um diagrama ou uma aba, com escolha na hora. Configuração de projeto não sabe qual diagrama a pessoa quer |
+| Duas páginas, uma de wiki e uma de diagramas | O projeto é um só e o card também. Duas páginas obrigam a saber antes onde cada campo mora |
+| Página de configuração alcançável só pelo card | Trocar o cabeçalho de exportação no meio da edição obrigaria a voltar à lista. A engrenagem no cabeçalho leva ao mesmo lugar |
 
 ## Custo aceito
 
-A aba "Cabeçalho e rodapé" some do cabeçalho, e quem se acostumou com ela passa a achar pelo menu. Um item a mais de clique, em troca de um lugar só para tudo.
+A aba "Cabeçalho e rodapé" some do cabeçalho, e quem se acostumou passa a achar pela engrenagem ou pelo menu. Na fase 1 a seção Wiki e a seção Membros nascem quase vazias, com o aviso do que falta. É preferível a esconder os dois mundos até terem campo.
 
 ## Verificação
 
-Na lista: o card mostra os três pontinhos sem hover, o menu tem os sete itens na ordem acima, Renomear altera nome e descrição e o card atualiza, Excluir pede confirmação e apaga, Copiar link mostra o toast. No editor: o menu ao lado do nome abre os mesmos itens, "Cabeçalho e rodapé…" leva à tela, "Famílias de formas…" abre o diálogo com as famílias do projeto marcadas, "Exportação…" muda o padrão que o diálogo Baixar mostra na próxima abertura. A aba "Cabeçalho e rodapé" não aparece mais. No celular, o botão do card responde ao toque.
+Na lista: o card mostra os três pontinhos sem hover, o menu tem Configurações, Copiar link e Excluir, Excluir pede confirmação e apaga, Copiar link mostra o toast. Na página: as seis seções aparecem na navegação lateral, Geral altera nome e descrição e o card atualiza, Diagramas marca famílias e o painel do editor reflete, Cabeçalho e rodapé continua funcionando com a prévia, Wiki e Membros mostram o aviso. No editor: a engrenagem ao lado do nome abre a página, a aba "Cabeçalho e rodapé" não aparece mais, o diálogo Baixar não mudou de lugar. No celular, o botão do card responde ao toque e a navegação lateral vira lista no topo.
