@@ -292,14 +292,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
         <p style="font-size:15px;color:var(--text-2);margin:0">A loja tem três containers. O front conversa só com a API. O provedor de pagamento fica fora da fronteira do sistema.</p>
         <div class="mono" style="text-transform:none;letter-spacing:.02em;color:var(--accent);font-size:13px;overflow-x:auto;white-space:nowrap">::diagram[Loja, API e Pagamento]{src="dok:diagram/0192f0a1…" view="0192f0a1…" title="Containers da loja"}</div>
         <div class="card" style="padding:18px;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:16px 16px">
-          <svg class="dg" viewBox="0 0 720 150" role="img" aria-label="Diagrama de containers embutido na página: Loja web chama a API, que chama o provedor de pagamento e grava sessões no banco" style="width:100%;height:auto;display:block">
+          <svg class="dg" viewBox="0 0 720 162" role="img" aria-label="Diagrama de containers embutido na página: Loja web chama a API, que chama o provedor de pagamento e grava sessões no banco" style="width:100%;height:auto;display:block">
             <rect x="14" y="30" width="150" height="66" rx="8" class="cont"/><text x="89" y="60" text-anchor="middle">Loja web</text><text x="89" y="79" text-anchor="middle" class="k">[Container: React]</text>
             <rect x="270" y="30" width="150" height="66" rx="8" class="cont"/><text x="345" y="60" text-anchor="middle">API</text><text x="345" y="79" text-anchor="middle" class="k">[Container: Node]</text>
             <rect x="540" y="30" width="150" height="66" rx="8" class="ext"/><text x="615" y="60" text-anchor="middle" class="ink">Pagamento</text><text x="615" y="79" text-anchor="middle" class="kink">[External]</text>
             <path d="M164 63H268" class="edge" marker-end="url(#arr)"/><rect class="pill" x="192" y="54" width="48" height="16" rx="8"/><text class="lbl" x="216" y="65.5" text-anchor="middle">HTTPS</text>
             <path d="M420 63H538" class="edge" marker-end="url(#arr)"/><rect class="pill" x="458" y="54" width="42" height="16" rx="8"/><text class="lbl" x="479" y="65.5" text-anchor="middle">REST</text>
-            <path d="M296 118 v20 a49 8 0 0 0 98 0 v-20" class="db"/><ellipse cx="345" cy="118" rx="49" ry="8" class="db"/><text x="345" y="147" text-anchor="middle" class="k">Sessões [Postgres]</text>
-            <path d="M345 96V110" class="edge" marker-end="url(#arr)"/>
+            <path d="M296 116 v18 a49 8 0 0 0 98 0 v-18" class="db"/><ellipse cx="345" cy="116" rx="49" ry="8" class="db"/><text x="345" y="157" text-anchor="middle" class="k">Sessões [Postgres]</text>
+            <path d="M345 96V107" class="edge" marker-end="url(#arr)"/>
           </svg>
         </div>
         <p style="font-size:15px;color:var(--text-2);margin:0">Sessões ficam no banco. Nada de estado no front.</p>
