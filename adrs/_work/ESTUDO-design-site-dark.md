@@ -158,3 +158,13 @@ Com a página no ar: fundo do hero mede `#0b0912`, nenhum gradiente em texto, um
 ## Fontes complementares
 
 [LogRocket sobre "Linear design"](https://blog.logrocket.com/ux-design/linear-design/), [Linear: como redesenhamos a UI](https://linear.app/now/how-we-redesigned-the-linear-ui), [Geist (Vercel)](https://vercel.com/geist/introduction), [teardown do railway.com](https://design.withfudge.com/share/railway.com-design), [SaaSFrame: tendências 2026](https://www.saasframe.io/blog/10-saas-landing-page-trends-for-2026-with-real-examples).
+
+## Retorno do humano (2026-09-22)
+
+O humano escolheu a direção D pelo protótipo (`DDP-405`, comentário de 11:24) e pediu três mudanças, aplicadas na versão 3 do protótipo, cuja fonte está em `adrs/_work/prototipos/site-dark/`:
+
+1. **Sem estouro de texto.** Rótulos de tipo como `[Container: CloudFront]` e `[External: Azure Service Bus]` vazavam das caixas nos diagramas do hero e da seção das nuvens. As caixas foram alargadas e os rótulos encurtados, e a regra passa a valer para a página real: rótulo que não cabe é cortado com reticência, como o app faz com `truncate`, nunca vaza. A página inicial é a cara comercial do produto, e um vazamento ali custa mais do que no editor.
+2. **Menu Diagramas no lugar de C4.** O C4 deixa de ser o único protagonista. A navegação ganha o item "Diagramas" com um submenu por família, na ordem do catálogo do app (`src/domain/c4/families.ts`): C4 Model, Formas básicas, AWS, Azure, Google Cloud, OCI, Tecnologias, UML e BPMN. A seção "C4 em três níveis" vira a seção "Diagramas", com um card por família e o link "Ver a página", porque cada família terá página própria com formas, regras e exemplo. A seção das nuvens continua, agora "no mesmo canvas" em vez de "dentro do C4".
+3. **Menu Desenvolvedores.** Item de navegação que leva ao Developer Portal, uma segunda página do protótipo (`desenvolvedores.html`). A página mostra o que o portal precisa demonstrar, alinhado à `DEC-0006` (decisão 3, DokMD versionado no git e renderizado pelo produto) e ao ADR 014 ainda não escrito: nove seções (comece aqui, formato DokMD, arquitetura viva, decisões, API e dados, contribuir, versões, qualidade, glossário), as doze seções do arc42 com o diagrama que cada uma carrega, um exemplo de página DokMD com bloco de diagrama versionado, e as três regras que mantêm o portal vivo. Os números do painel de status são exemplo de layout, marcados como tal.
+
+O que continua em aberto: idioma da landing, screenshots reais do app no lugar dos desenhos vetoriais, e a prancha no Figma pela sessão D depois da aprovação da versão 3.

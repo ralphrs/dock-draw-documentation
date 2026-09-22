@@ -1,0 +1,521 @@
+<meta charset="utf-8">
+<title>DokDraw Direção D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@1&display=swap">
+<style>
+:root{
+  --bg-0:#0b0912;--bg-1:#120e1f;--bg-2:#1a1430;--bg-3:#221b3d;
+  --border-1:#2b2344;--border-2:#3a2f5c;
+  --text-1:#ece8f7;--text-2:#aaa3c2;--text-3:#8f88a8;
+  --accent:#a78bfa;--accent-strong:#c4b5fd;--accent-deep:#502e9e;--brand:#301c5f;
+  --comp:#e0d7f4;--ext:#e4e4ea;--ink:#241a44;
+  --glow:rgba(167,139,250,.08);--dot:rgba(167,139,250,.07);
+  --sans:"Geist",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --serif:"Instrument Serif",Georgia,serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg-0);color:var(--text-1);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent-strong);outline-offset:2px;border-radius:8px}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:20px}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+h1,h2,h3{font-weight:500;letter-spacing:-.02em;text-wrap:balance;margin:0}
+h1{font-size:clamp(38px,6.2vw,64px);line-height:1.05}
+h1 .acc{color:var(--accent)}
+h1 .ser{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0}
+h2{font-size:clamp(28px,3.6vw,40px);line-height:1.12}
+h3{font-size:18px;line-height:1.3}
+p{margin:0}
+.lead{color:var(--text-2);font-size:18px;max-width:34em}
+.btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border-radius:8px;font-weight:500;font-size:15px;border:1px solid transparent;cursor:pointer;font-family:inherit}
+.btn-primary{background:var(--accent-strong);color:var(--bg-0)}
+.btn-primary:hover{background:#d6cbff}
+.btn-ghost{background:transparent;color:var(--text-1);border-color:var(--border-2)}
+.btn-ghost:hover{background:var(--bg-2)}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;border-bottom:1px solid transparent;transition:background .2s,border-color .2s}
+.nav.scrolled{background:rgba(11,9,18,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-color:var(--border-1)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:500;letter-spacing:-.01em}
+.logo svg{width:24px;height:24px}
+.nav ul{display:flex;gap:24px;list-style:none;margin:0;padding:0;color:var(--text-2);font-size:14px}
+.nav ul a:hover{color:var(--text-1)}
+.nav .cta{display:flex;gap:8px}
+.nav .btn{height:36px;padding:0 14px;font-size:14px}
+.nav li{position:relative}
+.nav .menu{position:absolute;left:-12px;top:100%;padding-top:10px;display:none;min-width:200px}
+.nav .menu::before{content:"";position:absolute;inset:10px 0 0;background:var(--bg-2);border:1px solid var(--border-1);border-radius:10px;box-shadow:0 16px 40px rgba(0,0,0,.45)}
+.nav .menu a{position:relative;display:block;padding:8px 14px;font-size:14px;color:var(--text-2)}
+.nav .menu a:first-child{padding-top:12px}.nav .menu a:last-child{padding-bottom:12px}
+.nav .menu a:hover{color:var(--text-1);background:var(--bg-3)}
+.nav .has-menu:hover .menu,.nav .has-menu:focus-within .menu{display:block}
+@media (max-width:760px){.nav ul{display:none}}
+
+/* hero */
+.hero{position:relative;padding-block:72px 40px;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:24px 24px;background-position:center top}
+.hero::before{content:"";position:absolute;inset:auto 0 0;height:160px;background:linear-gradient(to bottom,transparent,var(--bg-0))}
+.hero .wrap{position:relative}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;max-width:720px}
+.ctas{display:flex;gap:12px;flex-wrap:wrap}
+.proof{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.proof b{color:var(--text-2);font-weight:500}
+.figlabel{display:flex;gap:12px;align-items:baseline;margin-top:56px;margin-bottom:12px}
+.figlabel .n{color:var(--accent)}
+.frame{position:relative;border:1px solid var(--border-1);border-radius:16px;background:var(--bg-2);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 24px 64px rgba(0,0,0,.5);overflow:hidden}
+.frame::after{content:"";position:absolute;inset:-40% -10% auto;height:70%;background:radial-gradient(ellipse at top,var(--glow),transparent 60%);pointer-events:none}
+.chrome{display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;border-bottom:1px solid var(--border-1);background:var(--bg-1)}
+.chrome i{width:10px;height:10px;border-radius:50%;background:var(--border-2);display:inline-block}
+.chrome .url{margin-left:12px;font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.02em;text-transform:none}
+.app{display:grid;grid-template-columns:200px minmax(0,1fr) minmax(0,1.15fr);min-height:420px}
+.app .tree{border-right:1px solid var(--border-1);padding:14px 12px;font-size:13px;color:var(--text-2)}
+.app .tree .g{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);margin:10px 0 6px}
+.app .tree div{padding:4px 8px;border-radius:6px}
+.app .tree .on{background:var(--bg-3);color:var(--text-1)}
+.app .page{padding:22px 24px;border-right:1px solid var(--border-1)}
+.app .page h4{margin:0 0 8px;font-weight:500;font-size:20px;letter-spacing:-.01em}
+.app .page p{font-size:13.5px;color:var(--text-2);margin-bottom:10px}
+.app .page .blk{border:1px solid var(--border-1);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.02em;background:var(--bg-1)}
+.app .canvas{position:relative;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:20px 20px;padding:16px}
+.app .canvas svg{width:100%;height:auto;display:block}
+@media (max-width:860px){.app{grid-template-columns:minmax(0,1fr)}.app .tree{display:none}.app .page{border-right:0;border-bottom:1px solid var(--border-1)}}
+
+/* diagram text */
+.dg text{font-family:var(--sans);font-size:12px;fill:var(--text-1)}
+.dg text.k{font-family:var(--mono);font-size:8.5px;letter-spacing:.06em;fill:var(--text-2)}
+.dg text.ink{fill:var(--ink)}
+.dg text.kink{font-family:var(--mono);font-size:8.5px;letter-spacing:.06em;fill:#4a3f70}
+.dg text.lbl{font-family:var(--mono);font-size:8.5px;fill:var(--text-3);letter-spacing:.04em}
+.dg .edge{stroke:var(--text-2);stroke-width:1.2;fill:none}
+.dg .cont{fill:var(--accent-deep);stroke:#6b45c9;stroke-width:1}
+.dg .sys{fill:var(--brand);stroke:#5a3fa0;stroke-width:1}
+.dg .comp{fill:var(--comp);stroke:#b9a9e6;stroke-width:1}
+.dg .ext{fill:var(--ext);stroke:#b5b5c2;stroke-width:1}
+.dg .db{fill:var(--accent-deep);stroke:#6b45c9;stroke-width:1}
+.dg .person{fill:var(--brand);stroke:#5a3fa0;stroke-width:1}
+
+/* sections */
+section{padding-block:88px}
+.sec-alt{background:var(--bg-1);border-block:1px solid var(--border-1)}
+.eyebrow{margin-bottom:14px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:48px;align-items:center}
+@media (max-width:860px){.two{grid-template-columns:minmax(0,1fr)}}
+.stack{display:grid;gap:16px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:36px}
+@media (max-width:860px){.cards{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--bg-2);border:1px solid var(--border-1);border-radius:12px;padding:20px;display:grid;gap:12px;transition:border-color .15s}
+.card:hover{border-color:var(--border-2)}
+.card .pic{border:1px solid var(--border-1);border-radius:8px;background:var(--bg-1);padding:12px;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:16px 16px}
+.card .pic svg{width:100%;height:auto;display:block}
+.card p{color:var(--text-2);font-size:14.5px}
+.card.wide{grid-column:1/-1}
+.feito{display:flex;gap:28px;flex-wrap:wrap;justify-content:center;padding-block:28px;border-block:1px solid var(--border-1)}
+.feito span{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.feito span b{color:var(--text-2);font-weight:500}
+
+/* timeline */
+.tl{position:relative;display:grid;gap:28px;padding-left:28px;margin-top:36px}
+.tl::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:1px;background:var(--border-2)}
+.tl li{list-style:none;position:relative;display:grid;gap:4px}
+.tl li::before{content:"";position:absolute;left:-28px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--bg-0);border:2px solid var(--accent)}
+.tl li .h{font-weight:500}
+.tl li .d{color:var(--text-2);font-size:14.5px;max-width:44em}
+
+/* export */
+.code{background:var(--bg-2);border:1px solid var(--border-1);border-radius:12px;padding:20px 22px;font-family:var(--mono);font-size:13px;line-height:1.7;color:var(--text-2);overflow-x:auto}
+.code .c{color:var(--text-3)}
+.code .a{color:var(--accent)}
+.code .w{color:var(--text-1)}
+
+/* why */
+.why{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:36px}
+@media (max-width:860px){.why{grid-template-columns:minmax(0,1fr)}}
+.why div{display:grid;gap:12px}
+.why svg{width:100%;height:auto;display:block;border:1px solid var(--border-1);border-radius:12px;background:var(--bg-1)}
+.why p{color:var(--text-2);font-size:14.5px}
+.wire{fill:none;stroke:var(--text-3);stroke-width:1}
+.wire-a{fill:none;stroke:var(--accent);stroke-width:1}
+
+/* themes */
+.themes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:36px}
+@media (max-width:860px){.themes{grid-template-columns:minmax(0,1fr)}}
+.mini{border:1px solid var(--border-1);border-radius:12px;overflow:hidden}
+.mini .bar{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border-1);color:var(--text-3)}
+.mini .body{padding:14px;display:grid;grid-template-columns:1fr 1.3fr;gap:12px;min-height:150px}
+.mini.light{background:#f7f6fa;color:#241a44;border-color:#e1dcee}
+.mini.light .bar{color:#6b6389;border-color:#e1dcee}
+.mini .ln{height:8px;border-radius:4px;background:var(--border-2);margin-bottom:8px}
+.mini .ln.s{width:60%}
+.mini.light .ln{background:#d9d2ea}
+.mini .cv{border-radius:8px;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:14px 14px;border:1px solid var(--border-1)}
+.mini.light .cv{border-color:#e1dcee;background-image:radial-gradient(rgba(48,28,95,.12) 1px,transparent 1px)}
+.mini .cv svg{width:100%;height:auto;display:block}
+
+/* final cta */
+.final{position:relative;text-align:center;padding-block:120px;overflow:hidden}
+.final::before{content:"";position:absolute;left:50%;top:50%;width:720px;height:420px;transform:translate(-50%,-50%);background:radial-gradient(ellipse,rgba(167,139,250,.14),transparent 62%);pointer-events:none}
+.final .wrap{position:relative;display:grid;gap:22px;justify-items:center}
+footer{border-top:1px solid var(--border-1);padding-block:32px;color:var(--text-3);font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+.toggle{display:inline-flex;border:1px solid var(--border-1);border-radius:8px;overflow:hidden;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.toggle span{padding:6px 10px}
+.toggle .on{background:var(--bg-2);color:var(--text-1)}
+.note{border:1px dashed var(--border-2);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--text-3);margin-top:16px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#aaa3c2"/></marker>
+    <marker id="arr-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#241a44"/></marker>
+  </defs>
+</svg>
+
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="#"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" fill="#502e9e"/><rect x="6" y="6" width="5" height="5" rx="1" fill="#c4b5fd"/><rect x="13" y="13" width="5" height="5" rx="1" fill="#c4b5fd"/><path d="M11 8.5h2v4.5h-2z" fill="#c4b5fd"/></svg>DokDraw</a>
+    <ul>
+      <li><a href="#wiki">Wiki</a></li>
+      <li class="has-menu"><a href="#diagramas" aria-haspopup="true">Diagramas</a>
+        <div class="menu" role="menu">
+          <a href="#d-c4">C4 Model</a><a href="#d-basicas">Formas básicas</a><a href="#d-aws">AWS</a><a href="#d-azure">Azure</a><a href="#d-gcp">Google Cloud</a><a href="#d-oci">OCI</a><a href="#d-tec">Tecnologias</a><a href="#d-uml">UML</a><a href="#d-bpmn">BPMN</a>
+        </div>
+      </li>
+      <li><a href="#fluxo">Versões</a></li>
+      <li><a href="#porque">Por quê</a></li>
+      <li><a href="desenvolvedores.html">Desenvolvedores</a></li>
+    </ul>
+    <div class="cta"><a class="btn btn-ghost" href="#">Entrar</a><a class="btn btn-primary" href="#">Criar conta</a></div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <p class="mono">Documentação de arquitetura</p>
+      <h1>A wiki e o diagrama<br><span class="acc">no mesmo lugar.</span></h1>
+      <p class="lead">Escreva a página, desenhe o C4 ao lado, e cada mudança no diagrama aparece na página que o explica.</p>
+      <div class="ctas"><a class="btn btn-primary" href="#">Começar grátis</a><a class="btn btn-ghost" href="#">Ver um exemplo</a></div>
+      <p class="proof"><b>C4</b> · AWS · Azure · GCP · OCI · <b>DokMD</b></p>
+    </div>
+
+    <div class="figlabel"><span class="mono n">FIG 01</span><span class="mono">Diagrama de containers e a página que o documenta</span></div>
+    <div class="frame">
+      <div class="chrome"><i></i><i></i><i></i><span class="url">app.dokdraw.com/projetos/loja/diagramas/containers</span></div>
+      <div class="app">
+        <div class="tree">
+          <div class="g">Wiki</div>
+          <div>Visão geral</div><div class="on">Containers</div><div>Decisões</div>
+          <div class="g">Diagramas</div>
+          <div>Contexto</div><div class="on">Containers</div><div>Componentes · API</div>
+        </div>
+        <div class="page">
+          <h4>Containers</h4>
+          <p>A loja tem três containers. O front conversa só com a API, e a API é a única que fala com o banco e com o provedor de pagamento.</p>
+          <div class="blk">[diagrama: containers · nível 2]</div>
+          <p style="margin-top:12px">Sessões ficam no banco. Nada de estado no front.</p>
+        </div>
+        <div class="canvas">
+          <svg class="dg" viewBox="0 0 440 300" role="img" aria-label="Diagrama de containers: arquiteto usa a Loja web, que chama a API, que grava no banco e chama o provedor de pagamento">
+            <!-- pessoa -->
+            <circle cx="60" cy="34" r="12" class="person"/>
+            <rect x="34" y="48" width="52" height="40" rx="14" class="person"/>
+            <text x="60" y="108" text-anchor="middle">Cliente</text>
+            <text x="60" y="120" text-anchor="middle" class="k">[Person]</text>
+            <!-- web -->
+            <rect x="150" y="30" width="140" height="70" rx="8" class="cont"/>
+            <text x="220" y="58" text-anchor="middle">Loja web</text>
+            <text x="220" y="74" text-anchor="middle" class="k">[Container: React]</text>
+            <!-- api -->
+            <rect x="140" y="150" width="160" height="70" rx="8" class="cont"/>
+            <text x="220" y="178" text-anchor="middle">API</text>
+            <text x="220" y="194" text-anchor="middle" class="k">[Container: Functions]</text>
+            <!-- db -->
+            <g class="db">
+              <path d="M22 176 a44 10 0 0 1 88 0 v54 a44 10 0 0 1 -88 0 z"/>
+              <ellipse cx="66" cy="176" rx="44" ry="10"/>
+            </g>
+            <text x="66" y="210" text-anchor="middle">Banco</text>
+            <text x="66" y="224" text-anchor="middle" class="k">[Postgres]</text>
+            <!-- externo -->
+            <rect x="320" y="150" width="110" height="70" rx="8" class="ext"/>
+            <text x="375" y="178" text-anchor="middle" class="ink">Pagamento</text>
+            <text x="375" y="194" text-anchor="middle" class="kink">[External]</text>
+            <!-- setas -->
+            <path d="M92 65 H148" class="edge" marker-end="url(#arr)"/>
+            <text x="120" y="58" text-anchor="middle" class="lbl">usa</text>
+            <path d="M220 102 V148" class="edge" marker-end="url(#arr)"/>
+            <text x="238" y="128" class="lbl">HTTPS</text>
+            <path d="M138 185 H114" class="edge" marker-end="url(#arr)"/>
+            <text x="126" y="176" text-anchor="middle" class="lbl">SQL</text>
+            <path d="M302 185 H318" class="edge" marker-end="url(#arr)"/>
+            <text x="310" y="176" text-anchor="middle" class="lbl">REST</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap"><div class="feito"><span>Feito para</span><span><b>Arquiteto de software</b></span><span><b>Time de plataforma</b></span><span><b>Consultoria</b></span></div></div>
+
+<section id="wiki">
+  <div class="wrap two">
+    <div class="stack">
+      <p class="mono eyebrow">Wiki e diagrama</p>
+      <h2>A página sabe qual diagrama ela explica.</h2>
+      <p class="lead" style="font-size:16px">Um bloco de diagrama dentro do texto. Quando o diagrama muda, a página mostra a versão nova. Quando a página é publicada, o diagrama vai junto, na versão certa.</p>
+      <p class="mono" style="text-transform:none;letter-spacing:.02em">Formato aberto: DokMD, Markdown com bloco de diagrama.</p>
+    </div>
+    <div class="frame" style="box-shadow:inset 0 1px 0 rgba(255,255,255,.06)">
+      <div class="chrome"><i></i><i></i><i></i><span class="url">…/wiki/containers</span></div>
+      <div style="padding:22px 24px;display:grid;gap:10px">
+        <div class="mono" style="text-transform:none;letter-spacing:.02em"># Containers</div>
+        <p style="font-size:14px;color:var(--text-2)">A loja tem três containers. O front conversa só com a API.</p>
+        <div class="mono" style="text-transform:none;letter-spacing:.02em;color:var(--accent)">```diagram id=containers version=3```</div>
+        <div class="card" style="padding:12px;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:16px 16px">
+          <svg class="dg" viewBox="0 0 400 96" role="img" aria-label="Recorte do diagrama de containers embutido na página">
+            <rect x="10" y="20" width="110" height="52" rx="8" class="cont"/><text x="65" y="42" text-anchor="middle">Loja web</text><text x="65" y="56" text-anchor="middle" class="k">[Container]</text>
+            <rect x="150" y="20" width="110" height="52" rx="8" class="cont"/><text x="205" y="42" text-anchor="middle">API</text><text x="205" y="56" text-anchor="middle" class="k">[Container]</text>
+            <rect x="290" y="20" width="100" height="52" rx="8" class="ext"/><text x="340" y="42" text-anchor="middle" class="ink">Pagamento</text><text x="340" y="56" text-anchor="middle" class="kink">[External]</text>
+            <path d="M122 46 H148" class="edge" marker-end="url(#arr)"/><path d="M262 46 H288" class="edge" marker-end="url(#arr)"/>
+          </svg>
+        </div>
+        <p style="font-size:14px;color:var(--text-2)">Sessões ficam no banco. Nada de estado no front.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="diagramas" class="sec-alt">
+  <div class="wrap">
+    <p class="mono eyebrow">Diagramas</p>
+    <h2>Uma notação para cada conversa.<br>Um projeto para todas.</h2>
+    <p class="lead" style="margin-top:16px">Arquitetura em C4, detalhe em UML, processo em BPMN, as quatro nuvens com ícone oficial e formas básicas para o que não tem notação. Cada família tem a sua página, com as formas, as regras e um exemplo pronto.</p>
+    <div class="cards">
+      <div class="card" id="d-c4">
+        <div class="pic"><svg class="dg" viewBox="0 0 280 120" role="img" aria-label="C4: pessoa, sistema e sistema externo">
+          <circle cx="40" cy="30" r="9" class="person"/><rect x="21" y="41" width="38" height="28" rx="10" class="person"/><text x="40" y="86" text-anchor="middle" style="font-size:10px">Cliente</text>
+          <rect x="100" y="30" width="90" height="46" rx="8" class="sys"/><text x="145" y="50" text-anchor="middle" style="font-size:10.5px">Loja</text><text x="145" y="63" text-anchor="middle" class="k">[System]</text>
+          <rect x="215" y="30" width="58" height="46" rx="8" class="ext"/><text x="244" y="50" text-anchor="middle" class="ink" style="font-size:10px">Pgto</text><text x="244" y="63" text-anchor="middle" class="kink">[Ext]</text>
+          <path d="M64 53 H98" class="edge" marker-end="url(#arr)"/><path d="M192 53 H213" class="edge" marker-end="url(#arr)"/>
+        </svg></div>
+        <div><span class="mono">Arquitetura</span><h3>C4 Model</h3></div>
+        <p>Contexto, container e componente com as mesmas cores. Pessoa, sistema, banco e limite já desenhados.</p>
+        <a class="mono" href="#d-c4" style="color:var(--accent)">Ver a página</a>
+      </div>
+      <div class="card" id="d-basicas">
+        <div class="pic"><svg class="dg" viewBox="0 0 280 120" role="img" aria-label="Formas básicas: retângulo, elipse, losango e cilindro">
+          <rect x="18" y="34" width="60" height="44" rx="6" class="wire-a"/><ellipse cx="118" cy="56" rx="30" ry="22" class="wire-a"/>
+          <path d="M190 34 L218 56 L190 78 L162 56 Z" class="wire-a"/>
+          <path d="M236 40 a13 5 0 0 1 26 0 v32 a13 5 0 0 1 -26 0 z" class="wire-a"/><ellipse cx="249" cy="40" rx="13" ry="5" class="wire-a"/>
+        </svg></div>
+        <div><span class="mono">Livre</span><h3>Formas básicas</h3></div>
+        <p>Retângulo, elipse, losango, cilindro, ator, nuvem, raia e seta. Para o desenho que não segue notação.</p>
+        <a class="mono" href="#d-basicas" style="color:var(--accent)">Ver a página</a>
+      </div>
+      <div class="card" id="d-aws">
+        <div class="pic"><svg class="dg" viewBox="0 0 280 120" role="img" aria-label="AWS: Lambda, DynamoDB e SQS">
+          <rect x="16" y="34" width="76" height="46" rx="8" class="cont"/><rect x="24" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="54" y="70" text-anchor="middle" class="k">Lambda</text>
+          <rect x="102" y="34" width="76" height="46" rx="8" class="cont"/><rect x="110" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="140" y="70" text-anchor="middle" class="k">DynamoDB</text>
+          <rect x="188" y="34" width="76" height="46" rx="8" class="cont"/><rect x="196" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="226" y="70" text-anchor="middle" class="k">SQS</text>
+          <path d="M94 57 H100" class="edge" marker-end="url(#arr)"/><path d="M180 57 H186" class="edge" marker-end="url(#arr)"/>
+        </svg></div>
+        <div><span class="mono">Nuvem</span><h3>AWS</h3></div>
+        <p>Ícones oficiais da AWS dentro de qualquer nó. Computação, dados, mensageria e rede.</p>
+        <a class="mono" href="#d-aws" style="color:var(--accent)">Ver a página</a>
+      </div>
+      <div class="card" id="d-azure">
+        <div class="pic"><svg class="dg" viewBox="0 0 280 120" role="img" aria-label="Azure: App Service, Cosmos DB e Service Bus">
+          <rect x="16" y="34" width="76" height="46" rx="8" class="cont"/><rect x="24" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="54" y="70" text-anchor="middle" class="k">App Service</text>
+          <rect x="102" y="34" width="76" height="46" rx="8" class="cont"/><rect x="110" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="140" y="70" text-anchor="middle" class="k">Cosmos DB</text>
+          <rect x="188" y="34" width="76" height="46" rx="8" class="cont"/><rect x="196" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="226" y="70" text-anchor="middle" class="k">Service Bus</text>
+          <path d="M94 57 H100" class="edge" marker-end="url(#arr)"/><path d="M180 57 H186" class="edge" marker-end="url(#arr)"/>
+        </svg></div>
+        <div><span class="mono">Nuvem</span><h3>Azure</h3></div>
+        <p>Os serviços do Azure com o ícone de cada um, no mesmo diagrama que os outros provedores.</p>
+        <a class="mono" href="#d-azure" style="color:var(--accent)">Ver a página</a>
+      </div>
+      <div class="card" id="d-gcp">
+        <div class="pic"><svg class="dg" viewBox="0 0 280 120" role="img" aria-label="Google Cloud: Cloud Run, BigQuery e Pub/Sub">
+          <rect x="16" y="34" width="76" height="46" rx="8" class="cont"/><rect x="24" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="54" y="70" text-anchor="middle" class="k">Cloud Run</text>
+          <rect x="102" y="34" width="76" height="46" rx="8" class="cont"/><rect x="110" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="140" y="70" text-anchor="middle" class="k">BigQuery</text>
+          <rect x="188" y="34" width="76" height="46" rx="8" class="cont"/><rect x="196" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="226" y="70" text-anchor="middle" class="k">Pub/Sub</text>
+          <path d="M94 57 H100" class="edge" marker-end="url(#arr)"/><path d="M180 57 H186" class="edge" marker-end="url(#arr)"/>
+        </svg></div>
+        <div><span class="mono">Nuvem</span><h3>Google Cloud</h3></div>
+        <p>Cloud Run, BigQuery, Pub/Sub e o resto do catálogo, com o ícone oficial.</p>
+        <a class="mono" href="#d-gcp" style="color:var(--accent)">Ver a página</a>
+      </div>
+      <div class="card" id="d-oci">
+        <div class="pic"><svg class="dg" viewBox="0 0 280 120" role="img" aria-label="OCI: Functions, Autonomous DB e Streaming">
+          <rect x="16" y="34" width="76" height="46" rx="8" class="cont"/><rect x="24" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="54" y="70" text-anchor="middle" class="k">Functions</text>
+          <rect x="102" y="34" width="76" height="46" rx="8" class="cont"/><rect x="110" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="140" y="70" text-anchor="middle" class="k">Autonomous</text>
+          <rect x="188" y="34" width="76" height="46" rx="8" class="cont"/><rect x="196" y="42" width="14" height="14" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><text x="226" y="70" text-anchor="middle" class="k">Streaming</text>
+          <path d="M94 57 H100" class="edge" marker-end="url(#arr)"/><path d="M180 57 H186" class="edge" marker-end="url(#arr)"/>
+        </svg></div>
+        <div><span class="mono">Nuvem</span><h3>OCI</h3></div>
+        <p>Oracle Cloud com os mesmos recursos das outras três nuvens. Ninguém fica de fora.</p>
+        <a class="mono" href="#d-oci" style="color:var(--accent)">Ver a página</a>
+      </div>
+      <div class="card" id="d-tec">
+        <div class="pic"><svg class="dg" viewBox="0 0 280 120" role="img" aria-label="Tecnologias: PostgreSQL, Kafka e React">
+          <rect x="24" y="28" width="232" height="64" rx="8" class="cont"/><text x="140" y="50" text-anchor="middle">API</text>
+          <rect x="52" y="60" width="52" height="18" rx="9" class="comp"/><text x="78" y="72" text-anchor="middle" class="kink">Postgres</text>
+          <rect x="114" y="60" width="52" height="18" rx="9" class="comp"/><text x="140" y="72" text-anchor="middle" class="kink">Kafka</text>
+          <rect x="176" y="60" width="52" height="18" rx="9" class="comp"/><text x="202" y="72" text-anchor="middle" class="kink">React</text>
+        </svg></div>
+        <div><span class="mono">Stack</span><h3>Tecnologias</h3></div>
+        <p>Banco, fila, linguagem e framework como etiqueta do nó, com o logotipo quando a marca permite.</p>
+        <a class="mono" href="#d-tec" style="color:var(--accent)">Ver a página</a>
+      </div>
+      <div class="card" id="d-uml">
+        <div class="pic"><svg class="dg" viewBox="0 0 280 120" role="img" aria-label="UML: duas classes com associação">
+          <rect x="24" y="22" width="100" height="76" class="comp"/><path d="M24 44 H124 M24 70 H124" stroke="#b9a9e6" stroke-width="1"/><text x="74" y="37" text-anchor="middle" class="ink" style="font-size:10px">Pedido</text><text x="30" y="59" class="kink">+ total</text><text x="30" y="86" class="kink">+ fechar()</text>
+          <rect x="156" y="22" width="100" height="76" class="comp"/><path d="M156 44 H256 M156 70 H256" stroke="#b9a9e6" stroke-width="1"/><text x="206" y="37" text-anchor="middle" class="ink" style="font-size:10px">Item</text><text x="162" y="59" class="kink">+ qtd</text><text x="162" y="86" class="kink">+ preco()</text>
+          <path d="M126 60 H154" class="edge"/><path d="M146 55 L154 60 L146 65" class="edge"/><text x="140" y="52" text-anchor="middle" class="lbl">1..*</text>
+        </svg></div>
+        <div><span class="mono">Detalhe</span><h3>UML</h3></div>
+        <p>Classe, sequência e estado para o que o C4 não desce a mostrar.</p>
+        <a class="mono" href="#d-uml" style="color:var(--accent)">Ver a página</a>
+      </div>
+      <div class="card" id="d-bpmn">
+        <div class="pic"><svg class="dg" viewBox="0 0 280 120" role="img" aria-label="BPMN: início, tarefa, gateway e fim">
+          <circle cx="34" cy="60" r="12" class="wire-a"/>
+          <rect x="66" y="42" width="70" height="36" rx="8" class="cont"/><text x="101" y="64" text-anchor="middle" style="font-size:10px">Aprovar</text>
+          <path d="M176 44 L192 60 L176 76 L160 60 Z" class="wire-a"/><text x="176" y="63" text-anchor="middle" class="lbl" style="fill:var(--accent)">?</text>
+          <circle cx="234" cy="60" r="12" class="wire-a" style="stroke-width:3"/>
+          <path d="M46 60 H64" class="edge" marker-end="url(#arr)"/><path d="M138 60 H158" class="edge" marker-end="url(#arr)"/><path d="M194 60 H220" class="edge" marker-end="url(#arr)"/>
+        </svg></div>
+        <div><span class="mono">Processo</span><h3>BPMN</h3></div>
+        <p>Evento, tarefa, gateway e raia para o processo que passa pelo sistema.</p>
+        <a class="mono" href="#d-bpmn" style="color:var(--accent)">Ver a página</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="nuvens">
+  <div class="wrap">
+    <p class="mono eyebrow">Ícones das quatro nuvens</p>
+    <h2>AWS, Azure, Google Cloud e OCI<br>com os ícones oficiais, no mesmo canvas.</h2>
+    <div class="cards">
+      <div class="card wide">
+        <div class="pic"><svg class="dg" viewBox="0 0 900 200" role="img" aria-label="Diagrama de containers com serviços de nuvem">
+          <rect x="30" y="60" width="190" height="80" rx="8" class="cont"/><text x="125" y="92" text-anchor="middle">Loja web</text><text x="125" y="108" text-anchor="middle" class="k">[Container: CloudFront]</text>
+          <rect x="250" y="60" width="190" height="80" rx="8" class="cont"/><text x="345" y="92" text-anchor="middle">API</text><text x="345" y="108" text-anchor="middle" class="k">[Container: Lambda]</text>
+          <g class="db"><path d="M480 76 a60 11 0 0 1 120 0 v48 a60 11 0 0 1 -120 0 z"/><ellipse cx="540" cy="76" rx="60" ry="11"/></g><text x="540" y="112" text-anchor="middle">Pedidos</text><text x="540" y="126" text-anchor="middle" class="k">[Container: RDS]</text>
+          <rect x="640" y="60" width="230" height="80" rx="8" class="ext"/><text x="755" y="92" text-anchor="middle" class="ink">Fila de notificações</text><text x="755" y="108" text-anchor="middle" class="kink">[External: Service Bus]</text>
+          <path d="M222 100 H248" class="edge" marker-end="url(#arr)"/><text x="235" y="92" text-anchor="middle" class="lbl">HTTPS</text>
+          <path d="M442 100 H478" class="edge" marker-end="url(#arr)"/><text x="460" y="92" text-anchor="middle" class="lbl">SQL</text>
+          <path d="M602 100 H638" class="edge" marker-end="url(#arr)"/><text x="620" y="92" text-anchor="middle" class="lbl">AMQP</text>
+          <!-- lugar do ícone oficial -->
+          <rect x="40" y="70" width="18" height="18" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><rect x="260" y="70" width="18" height="18" rx="3" fill="none" stroke="#aaa3c2" stroke-dasharray="2 2"/><rect x="650" y="70" width="18" height="18" rx="3" fill="none" stroke="#4a3f70" stroke-dasharray="2 2"/>
+        </svg></div>
+        <p>Cada nó leva o ícone do serviço no canto. Os ícones oficiais só aparecem em screenshot real do app, por isso este protótipo marca o lugar deles com um quadrado tracejado. Rótulo que não cabe na caixa é cortado com reticência, como no app, nunca vaza para fora.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="fluxo" class="sec-alt">
+  <div class="wrap two" style="align-items:start">
+    <div class="stack">
+      <p class="mono eyebrow">Fluxo editorial e versões</p>
+      <h2>Rascunho, revisão, publicado.<br>Cada versão guardada.</h2>
+      <p class="lead" style="font-size:16px">Quem lê vê a versão publicada. Quem escreve trabalha no rascunho. Voltar uma versão é um clique.</p>
+    </div>
+    <ul class="tl">
+      <li><span class="mono">v1 · 12 mar</span><span class="h">Publicado</span><span class="d">Primeira versão da página de containers, com o diagrama v1.</span></li>
+      <li><span class="mono">v2 · 03 abr</span><span class="h">Publicado</span><span class="d">A API passou a falar com o provedor de pagamento. Diagrama e texto mudaram juntos.</span></li>
+      <li><span class="mono">v3 · hoje</span><span class="h" style="color:var(--accent)">Em revisão</span><span class="d">Fila de notificações entrou. Quem revisa vê a diferença entre v2 e v3, no texto e no diagrama.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="exportar">
+  <div class="wrap two">
+    <div class="stack">
+      <p class="mono eyebrow">Exportação e publicação</p>
+      <h2>Publique como site.<br>Exporte como imagem.</h2>
+      <p class="lead" style="font-size:16px">A wiki publicada vira uma URL. Cada diagrama sai em PNG ou SVG com o cabeçalho e o rodapé do projeto, por diagrama ou por aba.</p>
+    </div>
+    <div class="code"><span class="c">$</span> dokdraw publicar loja<br><span class="c">→</span> <span class="a">https://loja.dokdraw.site</span> <span class="c">· v3 · 14 páginas · 6 diagramas</span><br><br><span class="c">$</span> dokdraw exportar containers --formato svg --abas todas<br><span class="c">→</span> <span class="w">containers-contexto.svg</span> <span class="c">12 KB</span><br><span class="c">→</span> <span class="w">containers-producao.svg</span> <span class="c">14 KB</span></div>
+  </div>
+</section>
+
+<section id="porque" class="sec-alt">
+  <div class="wrap">
+    <p class="mono eyebrow">Por que DokDraw</p>
+    <h2>Menos ferramentas. Um projeto.</h2>
+    <div class="why">
+      <div>
+        <svg viewBox="0 0 320 160" role="img" aria-label="Wireframe: dois quadrados ligados a um só ponto">
+          <rect x="40" y="40" width="70" height="50" rx="6" class="wire"/><rect x="210" y="40" width="70" height="50" rx="6" class="wire"/>
+          <rect x="125" y="100" width="70" height="30" rx="6" class="wire-a"/>
+          <path d="M75 92 L140 100" class="wire"/><path d="M245 92 L180 100" class="wire"/>
+        </svg>
+        <span class="mono"><span style="color:var(--accent)">FIG 02</span> · Fonte única</span>
+        <h3>O diagrama não envelhece na wiki.</h3>
+        <p>A página aponta para o diagrama, não para uma cópia dele.</p>
+      </div>
+      <div>
+        <svg viewBox="0 0 320 160" role="img" aria-label="Wireframe: três caixas empilhadas em perspectiva">
+          <path d="M120 40 l60 -20 l60 20 l-60 20 z" class="wire"/><path d="M120 70 l60 -20 l60 20 l-60 20 z" class="wire"/><path d="M120 100 l60 -20 l60 20 l-60 20 z" class="wire-a"/>
+          <path d="M120 40 v60 M240 40 v60 M180 60 v60" class="wire"/>
+        </svg>
+        <span class="mono"><span style="color:var(--accent)">FIG 03</span> · Três níveis</span>
+        <h3>C4 de verdade, não caixas soltas.</h3>
+        <p>Pessoa, sistema, container e componente têm forma e cor próprias.</p>
+      </div>
+      <div>
+        <svg viewBox="0 0 320 160" role="img" aria-label="Wireframe: documento com carimbo de versão">
+          <rect x="110" y="24" width="100" height="120" rx="6" class="wire"/><path d="M125 48 h70 M125 64 h70 M125 80 h50" class="wire"/>
+          <circle cx="200" cy="120" r="18" class="wire-a"/><path d="M192 120 l6 6 l12 -12" class="wire-a"/>
+        </svg>
+        <span class="mono"><span style="color:var(--accent)">FIG 04</span> · Versões</span>
+        <h3>Publicar é uma decisão, não um salvamento.</h3>
+        <p>Quem lê nunca vê o rascunho. Quem escreve nunca perde a versão anterior.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="temas">
+  <div class="wrap">
+    <p class="mono eyebrow">Dois temas no app</p>
+    <h2>O site é escuro. O app é como você quiser.</h2>
+    <div class="themes">
+      <div class="mini"><div class="bar">App · tema escuro</div><div class="body"><div><div class="ln"></div><div class="ln s"></div><div class="ln"></div><div class="ln s"></div></div><div class="cv"><svg class="dg" viewBox="0 0 200 120"><rect x="20" y="20" width="70" height="36" rx="6" class="cont"/><rect x="110" y="64" width="70" height="36" rx="6" class="ext"/><path d="M92 38 H100 V82 H108" class="edge" marker-end="url(#arr)"/></svg></div></div></div>
+      <div class="mini light"><div class="bar">App · tema claro</div><div class="body"><div><div class="ln"></div><div class="ln s"></div><div class="ln"></div><div class="ln s"></div></div><div class="cv"><svg class="dg" viewBox="0 0 200 120"><rect x="20" y="20" width="70" height="36" rx="6" class="cont"/><rect x="110" y="64" width="70" height="36" rx="6" fill="#e4e4ea" stroke="#b5b5c2"/><path d="M92 38 H100 V82 H108" fill="none" stroke="#241a44" stroke-width="1.2" marker-end="url(#arr-ink)"/></svg></div></div></div>
+    </div>
+    <div class="note">Nota do protótipo: os frames usam desenhos vetoriais no lugar de screenshots. Na página real entram capturas do app em tema escuro (hero, seções 4 a 6) e uma em tema claro (esta seção).</div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <p class="mono">Começar</p>
+    <h2>Um projeto. A wiki e os diagramas <span style="font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0">juntos.</span></h2>
+    <p class="lead" style="text-align:center">Grátis para um projeto. Sem cartão.</p>
+    <div class="ctas"><a class="btn btn-primary" href="#">Criar conta</a><a class="btn btn-ghost" href="#">Entrar</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>DokDraw · documentação de arquitetura · <a href="desenvolvedores.html" style="color:var(--text-2)">Desenvolvedores</a></span>
+    <span class="toggle"><span class="on">Site escuro</span><span>App: claro</span><span>App: escuro</span></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var nav=document.getElementById('nav');
+  function f(){nav.classList.toggle('scrolled',window.scrollY>8)}
+  window.addEventListener('scroll',f,{passive:true});f();
+})();
+</script>
