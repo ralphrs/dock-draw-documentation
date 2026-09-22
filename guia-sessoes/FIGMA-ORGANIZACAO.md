@@ -48,6 +48,7 @@ Todo card que precisa de um desses gestos manuais leva o rótulo `humano`, com a
 - Antes de criar arquivo, confira com `whoami` o `planKey` do `SquadPro` e use `projectId: "658381844"`. Registre no resultado o link do arquivo e a pasta em que ele nasceu.
 - Um arquivo por proposta, pequeno, feito para o humano validar. Nada de arquivo "de trabalho" fora do ciclo.
 - Nunca edite o `design-system-latest` fora de um card de consolidação aberto pela sessão A.
+- Toda forma, componente ou exemplo leva o nome oficial escrito abaixo, em legenda `muted-foreground`, no Design System e em toda prancha (`DEC-0037`). Sem legenda, a entrega volta.
 - Mantenha a organização do `design-system-latest` sempre atualizada: página numerada na ordem, Section por grupo, grade alinhada, capa com o índice e a data. Consolidação que deixa nó solto, página sem número ou capa desatualizada volta com correção.
 - Nunca recrie no `done` o que está no draft. `done` é arquivo do humano.
 - No resultado de toda consolidação, liste os arquivos de draft que ficaram aprovados, para a sessão A montar o card de mover.
