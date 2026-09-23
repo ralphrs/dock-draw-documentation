@@ -1,0 +1,114 @@
+[
+  {
+    "category": "compute",
+    "label": "Compute",
+    "services": [
+      {
+        "slug": "compute-engine",
+        "name": "Compute Engine"
+      },
+      {
+        "slug": "cloud-run",
+        "name": "Cloud Run"
+      },
+      {
+        "slug": "gke",
+        "name": "Google Kubernetes Engine (GKE)"
+      },
+      {
+        "slug": "anthos",
+        "name": "Anthos"
+      },
+      {
+        "slug": "distributed-cloud",
+        "name": "Google Distributed Cloud"
+      },
+      {
+        "slug": "ai-hypercomputer",
+        "name": "AI Hypercomputer"
+      }
+    ]
+  },
+  {
+    "category": "storage",
+    "label": "Storage",
+    "services": [
+      {
+        "slug": "cloud-storage",
+        "name": "Cloud Storage"
+      },
+      {
+        "slug": "hyperdisk",
+        "name": "Hyperdisk"
+      }
+    ]
+  },
+  {
+    "category": "database",
+    "label": "Database",
+    "services": [
+      {
+        "slug": "alloydb",
+        "name": "AlloyDB for PostgreSQL"
+      },
+      {
+        "slug": "cloud-sql",
+        "name": "Cloud SQL"
+      },
+      {
+        "slug": "cloud-spanner",
+        "name": "Cloud Spanner"
+      }
+    ]
+  },
+  {
+    "category": "networking-content-delivery",
+    "label": "Networking & Content Delivery",
+    "services": [
+      {
+        "slug": "apigee",
+        "name": "Apigee API Management"
+      }
+    ]
+  },
+  {
+    "category": "security-identity",
+    "label": "Security, Identity & Compliance",
+    "services": [
+      {
+        "slug": "mandiant",
+        "name": "Mandiant"
+      },
+      {
+        "slug": "security-command-center",
+        "name": "Security Command Center"
+      },
+      {
+        "slug": "security-operations",
+        "name": "Google Security Operations (SecOps)"
+      },
+      {
+        "slug": "threat-intelligence",
+        "name": "Google Threat Intelligence"
+      }
+    ]
+  },
+  {
+    "category": "analytics",
+    "label": "Analytics",
+    "services": [
+      {
+        "slug": "bigquery",
+        "name": "BigQuery"
+      },
+      {
+        "slug": "looker",
+        "name": "Looker"
+      },
+      {
+        "slug": "vertex-ai",
+        "name": "Vertex AI"
+      }
+    ]
+  }
+]
