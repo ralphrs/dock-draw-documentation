@@ -531,6 +531,19 @@ Depois de seis voltas seguidas sem novidade, a sessão para de escutar e escreve
 
 Item de processo para num estado consistente do repositório, porque a janela ociosa acaba quando a fila voltar a encher, sem aviso. Trabalho de processo nunca interrompe entrega. Decisão inteira em `decisoes/DEC-0016-trilha-de-processo-e-trabalho-ocioso.md`.
 
+## Navegação do repositório
+
+`docs/CODEBASE_MAP.md`, na raiz de `dok-draw-documentation`, é o mapa de navegação do
+repositório: cadeia de dependência dos ADRs, índice de decisões, ciclo de vida de uma
+tarefa e regra de posse por pasta, num único arquivo. Toda sessão pode lê-lo direto,
+sem gerar de novo.
+
+Quem gera e atualiza o mapa é a skill `cartographer`, instalada no escopo do usuário
+(visível às quatro sessões, em qualquer repositório) e usada só pela sessão A, sob
+pedido ou depois de reestruturação grande. Escopo hoje: só `dok-draw-documentation`.
+Regra completa, incluindo por que o repositório do app fica fora sem decisão própria,
+em `decisoes/DEC-0045-uso-do-cartographer.md`.
+
 ## Paralelismo
 
 B e C trabalham em paralelo. Cada um pode assumir outra issue da própria fila enquanto espera resposta bloqueante, desde que não dependa da bloqueada e não mexa nos mesmos arquivos.

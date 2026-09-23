@@ -3,6 +3,13 @@
 Responda sempre em pt-BR. Termos técnicos, nomes de arquivo, pacotes e APIs ficam em inglês.
 Seja direto: proposta primeiro, justificativa depois. Discorde quando eu estiver errado, sobretudo em decisões difíceis de reverter.
 
+## Mapa do repositório
+
+Repositório de ADRs, decisões de processo e protocolo de coordenação entre sessões,
+não uma aplicação. Cadeia de dependência dos ADRs, índice de decisões, ciclo de vida
+de uma tarefa no quadro Jira e navegação por pasta em [docs/CODEBASE_MAP.md](docs/CODEBASE_MAP.md),
+gerado e atualizado pela skill `cartographer` (`decisoes/DEC-0045-uso-do-cartographer.md`).
+
 ## Estrutura
 
 | Pasta | Conteúdo | Quem escreve |
