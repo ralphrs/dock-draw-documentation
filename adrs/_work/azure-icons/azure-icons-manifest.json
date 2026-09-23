@@ -1,0 +1,436 @@
+[
+  {
+    "category": "compute",
+    "label": "Compute",
+    "services": [
+      {
+        "slug": "virtual-machine",
+        "name": "Azure Virtual Machines"
+      },
+      {
+        "slug": "kubernetes-services",
+        "name": "Azure Kubernetes Service"
+      },
+      {
+        "slug": "container-instances",
+        "name": "Azure Container Instances"
+      },
+      {
+        "slug": "function-apps",
+        "name": "Azure Functions"
+      },
+      {
+        "slug": "app-services",
+        "name": "Azure App Service"
+      },
+      {
+        "slug": "batch-accounts",
+        "name": "Azure Batch"
+      },
+      {
+        "slug": "vm-scale-sets",
+        "name": "Azure Virtual Machine Scale Sets"
+      },
+      {
+        "slug": "availability-sets",
+        "name": "Azure Availability Sets"
+      },
+      {
+        "slug": "disks",
+        "name": "Azure managed disks"
+      },
+      {
+        "slug": "disk-snapshots",
+        "name": "Azure disk snapshots"
+      },
+      {
+        "slug": "images",
+        "name": "Azure VM images"
+      },
+      {
+        "slug": "azure-compute-galleries",
+        "name": "Azure Compute Gallery"
+      },
+      {
+        "slug": "service-fabric-clusters",
+        "name": "Azure Service Fabric"
+      },
+      {
+        "slug": "azure-spring-apps",
+        "name": "Azure Spring Apps"
+      },
+      {
+        "slug": "disk-encryption-sets",
+        "name": "Azure disk encryption sets"
+      },
+      {
+        "slug": "compute-fleet",
+        "name": "Azure Compute Fleet"
+      },
+      {
+        "slug": "host-pools",
+        "name": "Azure Virtual Desktop host pools"
+      },
+      {
+        "slug": "application-group",
+        "name": "Azure Virtual Desktop application groups"
+      },
+      {
+        "slug": "workspaces",
+        "name": "Azure Virtual Desktop workspaces"
+      }
+    ]
+  },
+  {
+    "category": "storage",
+    "label": "Storage",
+    "services": [
+      {
+        "slug": "storage-accounts",
+        "name": "Azure Storage account"
+      },
+      {
+        "slug": "data-lake-storage-gen1",
+        "name": "Azure Data Lake Storage Gen1"
+      },
+      {
+        "slug": "storage-sync-services",
+        "name": "Azure File Sync"
+      },
+      {
+        "slug": "data-box",
+        "name": "Azure Data Box"
+      },
+      {
+        "slug": "azure-netapp-files",
+        "name": "Azure NetApp Files"
+      },
+      {
+        "slug": "data-shares",
+        "name": "Azure Data Share"
+      },
+      {
+        "slug": "import-export-jobs",
+        "name": "Azure Import/Export"
+      },
+      {
+        "slug": "azure-fileshares",
+        "name": "Azure Files"
+      },
+      {
+        "slug": "recovery-services-vaults",
+        "name": "Azure Recovery Services vault"
+      },
+      {
+        "slug": "azure-databox-gateway",
+        "name": "Azure Data Box Gateway"
+      },
+      {
+        "slug": "azure-hpc-cache",
+        "name": "Azure HPC Cache"
+      }
+    ]
+  },
+  {
+    "category": "database",
+    "label": "Database",
+    "services": [
+      {
+        "slug": "sql-database",
+        "name": "Azure SQL Database"
+      },
+      {
+        "slug": "azure-cosmos-db",
+        "name": "Azure Cosmos DB"
+      },
+      {
+        "slug": "azure-database-mysql-server",
+        "name": "Azure Database for MySQL"
+      },
+      {
+        "slug": "azure-database-mariadb-server",
+        "name": "Azure Database for MariaDB"
+      },
+      {
+        "slug": "azure-database-postgresql-server",
+        "name": "Azure Database for PostgreSQL"
+      },
+      {
+        "slug": "azure-sql",
+        "name": "Azure SQL"
+      },
+      {
+        "slug": "azure-sql-vm",
+        "name": "SQL Server on Azure Virtual Machines"
+      },
+      {
+        "slug": "sql-server",
+        "name": "SQL Server"
+      },
+      {
+        "slug": "sql-managed-instance",
+        "name": "Azure SQL Managed Instance"
+      },
+      {
+        "slug": "sql-elastic-pools",
+        "name": "Azure SQL Database elastic pools"
+      },
+      {
+        "slug": "managed-database",
+        "name": "Azure SQL managed database"
+      },
+      {
+        "slug": "oracle-database",
+        "name": "Oracle Database@Azure"
+      },
+      {
+        "slug": "azure-managed-redis",
+        "name": "Azure Managed Redis"
+      },
+      {
+        "slug": "azure-database-migration-services",
+        "name": "Azure Database Migration Service"
+      }
+    ]
+  },
+  {
+    "category": "networking-content-delivery",
+    "label": "Networking & Content Delivery",
+    "services": [
+      {
+        "slug": "virtual-networks",
+        "name": "Azure Virtual Network"
+      },
+      {
+        "slug": "subnet",
+        "name": "Subnet"
+      },
+      {
+        "slug": "load-balancers",
+        "name": "Azure Load Balancer"
+      },
+      {
+        "slug": "virtual-network-gateways",
+        "name": "Azure Virtual network gateway"
+      },
+      {
+        "slug": "dns-zones",
+        "name": "Azure DNS zone"
+      },
+      {
+        "slug": "traffic-manager-profiles",
+        "name": "Azure Traffic Manager"
+      },
+      {
+        "slug": "network-watcher",
+        "name": "Azure Network Watcher"
+      },
+      {
+        "slug": "network-security-groups",
+        "name": "Azure Network Security Group"
+      },
+      {
+        "slug": "public-ip-addresses",
+        "name": "Azure Public IP address"
+      },
+      {
+        "slug": "ddos-protection-plans",
+        "name": "Azure DDoS Protection"
+      },
+      {
+        "slug": "front-door-and-cdn-profiles",
+        "name": "Azure Front Door and CDN profiles"
+      },
+      {
+        "slug": "application-gateways",
+        "name": "Azure Application Gateway"
+      },
+      {
+        "slug": "expressroute-circuits",
+        "name": "Azure ExpressRoute circuit"
+      },
+      {
+        "slug": "network-interfaces",
+        "name": "Azure network interface"
+      },
+      {
+        "slug": "route-tables",
+        "name": "Azure route table"
+      },
+      {
+        "slug": "firewalls",
+        "name": "Azure Firewall"
+      },
+      {
+        "slug": "nat",
+        "name": "Azure NAT Gateway"
+      },
+      {
+        "slug": "virtual-wans",
+        "name": "Azure Virtual WAN"
+      },
+      {
+        "slug": "web-application-firewall-policies-waf",
+        "name": "Azure Web Application Firewall (WAF)"
+      },
+      {
+        "slug": "bastions",
+        "name": "Azure Bastion"
+      },
+      {
+        "slug": "private-link",
+        "name": "Azure Private Link"
+      }
+    ]
+  },
+  {
+    "category": "security-identity",
+    "label": "Security, Identity & Compliance",
+    "services": [
+      {
+        "slug": "key-vaults",
+        "name": "Azure Key Vault"
+      },
+      {
+        "slug": "microsoft-defender-for-cloud",
+        "name": "Microsoft Defender for Cloud"
+      },
+      {
+        "slug": "azure-sentinel",
+        "name": "Microsoft Sentinel"
+      },
+      {
+        "slug": "multi-factor-authentication",
+        "name": "Microsoft Entra multifactor authentication"
+      },
+      {
+        "slug": "application-security-groups",
+        "name": "Azure Application Security Group"
+      },
+      {
+        "slug": "azure-information-protection",
+        "name": "Microsoft Purview Information Protection"
+      },
+      {
+        "slug": "users",
+        "name": "Microsoft Entra ID users"
+      },
+      {
+        "slug": "groups",
+        "name": "Microsoft Entra ID groups"
+      },
+      {
+        "slug": "managed-identities",
+        "name": "Managed identities for Azure resources"
+      },
+      {
+        "slug": "azure-ad-b2c",
+        "name": "Azure Active Directory B2C"
+      },
+      {
+        "slug": "app-registrations",
+        "name": "Microsoft Entra ID app registrations"
+      },
+      {
+        "slug": "enterprise-applications",
+        "name": "Microsoft Entra ID enterprise applications"
+      },
+      {
+        "slug": "identity-governance",
+        "name": "Microsoft Entra ID Governance"
+      },
+      {
+        "slug": "entra-id-protection",
+        "name": "Microsoft Entra ID Protection"
+      },
+      {
+        "slug": "entra-domain-services",
+        "name": "Microsoft Entra Domain Services"
+      },
+      {
+        "slug": "external-identities",
+        "name": "Microsoft Entra External ID"
+      },
+      {
+        "slug": "entra-connect",
+        "name": "Microsoft Entra Connect"
+      },
+      {
+        "slug": "entra-connect-health",
+        "name": "Microsoft Entra Connect Health"
+      }
+    ]
+  },
+  {
+    "category": "analytics",
+    "label": "Analytics",
+    "services": [
+      {
+        "slug": "event-hubs",
+        "name": "Azure Event Hubs"
+      },
+      {
+        "slug": "stream-analytics-jobs",
+        "name": "Azure Stream Analytics"
+      },
+      {
+        "slug": "log-analytics-workspaces",
+        "name": "Log Analytics workspace"
+      },
+      {
+        "slug": "azure-synapse-analytics",
+        "name": "Azure Synapse Analytics"
+      },
+      {
+        "slug": "power-bi-embedded",
+        "name": "Power BI Embedded"
+      },
+      {
+        "slug": "data-factories",
+        "name": "Azure Data Factory"
+      },
+      {
+        "slug": "hd-insight-clusters",
+        "name": "Azure HDInsight"
+      },
+      {
+        "slug": "data-lake-analytics",
+        "name": "Azure Data Lake Analytics"
+      },
+      {
+        "slug": "azure-data-explorer-clusters",
+        "name": "Azure Data Explorer"
+      },
+      {
+        "slug": "analysis-services",
+        "name": "Azure Analysis Services"
+      },
+      {
+        "slug": "event-hub-clusters",
+        "name": "Azure Event Hubs Clusters"
+      },
+      {
+        "slug": "azure-databricks",
+        "name": "Azure Databricks"
+      }
+    ]
+  },
+  {
+    "category": "general",
+    "label": "General",
+    "services": [
+      {
+        "slug": "subscriptions",
+        "name": "Subscriptions"
+      },
+      {
+        "slug": "resource-groups",
+        "name": "Resource groups"
+      },
+      {
+        "slug": "region-management",
+        "name": "Region management"
+      }
+    ]
+  }
+]
