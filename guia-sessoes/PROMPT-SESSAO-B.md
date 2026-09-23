@@ -44,6 +44,10 @@ Antes de agir, verifique se uma skill cobre o que vem a seguir. Estas são obrig
 
 Proibidas nesta sessão: `test-driven-development`, `using-git-worktrees` e `finishing-a-development-branch`. Não há código de produto nem branch aqui, e o `CLAUDE.md` já registra a proibição das duas primeiras.
 
+Fora da lista de obrigatórias, mas disponível: `read-arxiv-paper`, quando uma pesquisa
+de candidata ou um estudo de `adrs/_work/` citar um paper do arXiv como fonte. Uso e
+adaptação de caminho em `decisoes/DEC-0046-uso-do-read-arxiv-paper.md`.
+
 ## Registro de decisão
 
 Toda decisão que você tomar dentro do seu escopo e que não vira contrato de ADR entra no comentário de resultado, em "Decisões tomadas", com a alternativa descartada e o custo aceito. A sessão A promove para `decisoes/` o que precisa sobreviver à tarefa.

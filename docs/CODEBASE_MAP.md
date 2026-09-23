@@ -195,7 +195,7 @@ e C recusam executar resposta dessas categorias sem `aprovado_por: humano`.
 | C | Revisora de arquitetura/UX/UI. Recebe `revisar-ordem` (antes do código) e `revisar-resultado` (depois do commit do Lovable) | `dok-draw-app` | `systematic-debugging`, `verification-before-completion`, `dispatching-parallel-agents`, `design:design-critique`, `design:accessibility-review`, `frontend-design` |
 | D | Desenha formas do Diagram Studio no Figma, uma tarefa por forma. Sem conta no Jira, fila pelo rótulo `sessao-d` | Figma (`SquadPro`) | `figma-use`, `figma-generate-library`, `design:design-system`, `design:accessibility-review`, `verification-before-completion` |
 
-Mapa completo de skills e gatilhos, incluindo proibições, em `decisoes/DEC-0001`.
+Mapa completo de skills do plugin superpowers e gatilhos, incluindo proibições, em `decisoes/DEC-0001`. Skills fora desse plugin (`cartographer`, `read-arxiv-paper`) ficam em `decisoes/DEC-0045` e `DEC-0046`.
 
 ### Regras de posse de pastas
 
@@ -223,7 +223,7 @@ Mapa completo de skills e gatilhos, incluindo proibições, em `decisoes/DEC-000
 
 ### `decisoes/` — índice
 
-44 decisões numeradas (`DEC-0001` a `DEC-0044`) mais achados e auditorias pontuais,
+46 decisões numeradas (`DEC-0001` a `DEC-0046`) mais achados e auditorias pontuais,
 indexadas cronologicamente em `decisoes/REGISTRO.md`. Cobrem numeração, sequenciamento
 de trilha, regras de processo (`DEC-0038` ordem de trabalho, `DEC-0041` texto de tela
 sem referência interna, `DEC-0042` coluna FAZER DEPLOY) e decisões de produto/design
