@@ -143,7 +143,7 @@ Cobre tudo que o Lovable entregou até 2026-09-22 e que passou pela revisão da 
 
 | Rodada | Data | Card | Ambiente | Executor | Resultado |
 | --- | --- | --- | --- | --- | --- |
-| 1 | a marcar | `DDP-524` | preview e prod | a definir no card | |
+| 1 | 2026-09-22 | `DDP-524` | preview (commit `b5c15ed`) | A: seções B e C a H pela extensão do Chrome. C: seção A | 85 casos: 70 passaram, 8 falharam, 7 não rodaram. Falhas: RT-A04 e RT-H06 (`DDP-519`), RT-C07 (`DDP-535`), RT-F05 (`DDP-536`), RT-E13 (`DDP-538`), RT-C02, RT-C16 e RT-H09 (limite da extensão, confirmar à mão). Prévia do cabeçalho em `DDP-537`, observações em `DDP-539`. Casos `prod` não rodaram: domínio publicado não informado |
 
 ## O que este plano não cobre
 
