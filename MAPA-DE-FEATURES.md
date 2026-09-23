@@ -30,8 +30,9 @@ Este arquivo lista o que o app faz hoje, o que está em construção, o que est�
 | Em execução | Emenda 1 da DDP-515 (aguarda humano), formas básicas (DDP-522, aguarda a fila) |
 | Aguardando humano | DDP-535 (desfazer), DDP-536 (subpasta), DDP-549 (ícones AWS), DDP-542 (testes manuais), DDP-517 (deploy) |
 | Ordem escrita | DDP-529 (moldura e contêineres AWS), DDP-528 (bucket, suspensa) |
-| Design pronto | 11 formas C4, conexões, moldura e contêineres AWS e Azure, moldura Google Cloud, OCI e logotipos, 13 formas básicas, wireflow, margens |
-| Design em andamento | Contêineres Google Cloud e OCI |
+| Design pronto | 11 formas C4, conexões, moldura e contêineres AWS, wireflow, margens |
+| Design em andamento | Contêineres Google Cloud |
+| Design não iniciado (só épico escopado) | Moldura e contêineres Azure, moldura Google Cloud, moldura e contêineres OCI, logotipos de tecnologia, 13 formas básicas restantes |
 | Decidido | Wiki: formato (ADR 002), armazenamento (ADR 003), fluxo editorial (ADR 004), edição (ADR 005), shell (ADR 006). Notações do Diagram Studio (DEC-0011, depois da meta) |
 | Backlog | 76 issues de app e feature em A FAZER, listadas por grupo abaixo |
 | Ideia | Playground com IA, plugins Claude Code e Obsidian, modelos pré-definidos, estilo rascunho, importação de projeto `.md` |
@@ -153,11 +154,12 @@ Sugestões:
 | Trocar o tipo do elemento pela janela de propriedades | Produção | `janela-propriedades.tsx` |
 | Família Básicas: elipse, losango, triângulo e texto solto | Ordem escrita, aguarda a fila | DDP-513, DDP-522 |
 | Triângulo com alças no contorno e rótulo em 2h/3 | Backlog | DDP-437 |
-| Família Básicas restante: paralelogramo, documento, nuvem, nota, retângulos, cilindro genérico, ator, seta direcional, raia | Design pronto (menos paralelogramo, documento e nota) | DDP-251 a DDP-349 |
+| Família Básicas restante: paralelogramo, documento, nuvem, nota, retângulos, cilindro genérico, ator, seta direcional, raia | Backlog, nenhuma das 13 issues tem comentário de D | DDP-251 a DDP-349 |
 | Moldura de serviço e contêineres AWS com ícones oficiais | Ordem escrita, mecanismo em decisão | DDP-529, DDP-549 |
-| Moldura e contêineres Azure | Design pronto | DDP-358, DDP-362 |
-| Moldura Google Cloud e OCI | Design pronto, contêineres em andamento | DDP-375, DDP-380, DDP-455, DDP-459 |
-| Logotipos de tecnologia (DEC-0030) | Design pronto | DDP-388 |
+| Moldura e contêineres Azure | Backlog, épico só escopado | DDP-358, DDP-362 |
+| Contêineres Google Cloud | Design em andamento, devolvido com correção (rótulo e legenda) | DDP-457, DDP-458 |
+| Moldura Google Cloud, contêineres OCI e moldura OCI | Backlog, épico só escopado (fonte do pacote OCI registrada) | DDP-375, DDP-380, DDP-459, DDP-460 |
+| Logotipos de tecnologia (DEC-0030) | Backlog, épico só escopado | DDP-388 |
 | Ícones Lucide como forma | Backlog, épico | DDP-487 |
 | UML moderno, BPMN 2.0, linha do tempo | Backlog, épicos de design | DDP-473, DDP-479, DDP-468 |
 | Diagrama de referência por nuvem | Backlog | DDP-463 |
