@@ -40,7 +40,7 @@ Com isso os sintomas 1, 2 e 3 somem juntos: o campo de nome abre em qualquer ní
 **2. Mensagem certa ao mover para onde já existe irmã com o mesmo nome.** `mover` (linha 277) trata qualquer erro com "Não foi possível mover. O destino não é válido.". O banco devolve `23505` nesse caso, e `moveViewFolder` em `src/infrastructure/supabase/c4-repository.ts` (linha 445) não passa por `recusarNomeRepetido` como `createViewFolder` e `updateViewFolder` passam. Duas mudanças:
 
 - Em `moveViewFolder` do repositório, guardar o resultado do `update`, chamar `recusarNomeRepetido(result.error)` antes de `unwrap`, no mesmo desenho de `updateViewFolder` (linha 438).
-- Em `mover` da rota, o `catch` passa a distinguir: `eNomeRepetido(erro)` mostra "Já existe uma pasta com esse nome aqui.", qualquer outro erro mantém "Não foi possível mover. O destino não é válido.". `eNomeRepetido` já existe no arquivo (linha 105).
+- Em `mover` da rota, o `catch` passa a distinguir: `eNomeRepetido(erro)` mostra "Já existe uma pasta com esse nome aqui.", qualquer outro erro mantém "Não foi possível mover. O destino não é válido.". `eNomeRepetido` já existe no arquivo (linha 104).
 
 **3. Conferir** no preview, no projeto `Regressão`: criar pasta na raiz, criar pasta dentro dela, ver o campo de nome abrir nos dois casos, renomear a subpasta na hora sem recarregar, mover a subpasta para a raiz e de volta, apagar a subpasta, tudo sem recarregar a página e sem toast de erro. Depois criar duas pastas irmãs com o mesmo nome e arrastar uma pasta para dentro de outra que já tem irmã com o mesmo nome: as duas vezes com "Já existe uma pasta com esse nome aqui.". Um ciclo (pasta para dentro da própria subpasta) continua recusado com a mensagem de destino inválido.
 
