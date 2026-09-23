@@ -3,6 +3,7 @@
 **Data:** 2026-09-22
 **Quem decidiu:** Sessão A, sobre o estudo da sessão B em `adrs/_work/ESTUDO-icones-aws-fonte.md` (`DDP-514`).
 **Registrado por:** Sessão A
+**Substituída por:** `DEC-0044` em 2026-09-22. As premissas do bucket público (criação por SQL e upload pelo painel do Supabase) não valem em Lovable Cloud.
 
 ## Decisão
 

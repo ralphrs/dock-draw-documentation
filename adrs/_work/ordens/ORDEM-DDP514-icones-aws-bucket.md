@@ -1,50 +1,54 @@
-# Ordem DDP-514a: bucket dos ícones oficiais da AWS
+# Ordem DDP-514a: política de leitura da pasta `aws-icons/` no bucket `diagram-images`
 
-**Issue da ordem:** a definir pela sessão A a partir da `DDP-514`, rótulo `lovable`.
+**Issue da ordem:** `DDP-528`.
+**App:** `dok-draw-app`. Uma migração nova, não aplicada por esta ordem. Sem dependência nova, sem publicação.
 
-Primeira de duas ordens da `DDP-514`. Categoria `app-release` (bucket novo é infraestrutura, `DEC-0007`), exige aprovação humana explícita antes de aplicar. Decisão de mecanismo em `adrs/_work/ESTUDO-icones-aws-fonte.md`: carga sob demanda, sem pacote npm, sem cópia em `public/`. A segunda ordem (frame, contêineres, família) depende desta.
+Primeira de duas ordens da `DDP-514`. Categoria `app-release` (política RLS, `DEC-0007`): o Lovable escreve o arquivo da migração e não aplica. A aplicação vem depois, com o sim do dono do produto, em card próprio. Decisão de mecanismo em `DEC-0044`, que substitui a `DEC-0043`: os ícones oficiais da AWS já estão na pasta `aws-icons/` do bucket privado `diagram-images`, subidos pelo dono do produto pelo painel Storage do Lovable Cloud (`DDP-549`), e o app os lê por URL assinada.
+
+## Por que
+
+A política de leitura atual do bucket, `diagram_images_select` (`drizzle/migrations/0004_diagram_images_bucket_policies.sql`), só libera objeto cujo primeiro nível de pasta é o uuid de um projeto que a pessoa acessa (`private.can_access_project`). O caminho `aws-icons/compute/lambda.svg` não passa nessa regra, então `createSignedUrl` falha para qualquer pessoa logada. O ícone é o mesmo arquivo para todo mundo, sem dado de usuário e sem regra por projeto: basta uma política de leitura para o prefixo.
 
 ## O que fazer
 
-**1. Bucket `aws-icons`, leitura pública.** Diferente de `diagram-images` (privado, por projeto), o ícone é o mesmo arquivo para qualquer pessoa: nenhum dado de usuário, nenhuma regra de acesso por projeto.
+**1. Migração nova, próximo número livre em `drizzle/migrations/`, nome `NNNN_diagram_images_aws_icons_select.sql`, com exatamente este conteúdo e nada além:**
 
 ```sql
-INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-VALUES ('aws-icons', 'aws-icons', true, 1048576, ARRAY['image/svg+xml'])
-ON CONFLICT (id) DO NOTHING;
+-- Ordem DDP-528 (DEC-0044): leitura da pasta aws-icons/ do bucket diagram-images para qualquer pessoa autenticada.
+CREATE POLICY diagram_images_select_aws_icons ON storage.objects FOR SELECT
+  TO authenticated
+  USING (
+    bucket_id = 'diagram-images'
+    AND (storage.foldername(name))[1] = 'aws-icons'
+  );
 ```
 
-Bucket público não precisa de política de `SELECT`: o Supabase serve o objeto pela URL pública sem checar RLS. Sem política de `INSERT`/`UPDATE`/`DELETE` para `authenticated` nem `anon`: quem sobe o arquivo é quem administra, pelo painel do Supabase ou pela `service_role`, nunca o app em nome de uma pessoa logada. Isso também impede qualquer pessoa de sobrescrever o ícone oficial pela API pública.
+Entrada correspondente em `drizzle/migrations/meta/_journal.json`, no mesmo padrão das anteriores (`0006_diagram_images_mime_lock`). Nenhuma outra política muda: `diagram_images_select` e `diagram_images_insert` ficam como estão, e continua sem política de `INSERT`, `UPDATE` ou `DELETE` para `aws-icons/`. Quem sobe o arquivo é quem administra, pelo painel.
 
-**2. Convenção de caminho.** `{categoria}/{slug-do-serviço}.svg`, com `categoria` em `kebab-case` batendo as categorias oficiais do pacote AWS (`compute`, `storage`, `database`, e as demais que o pacote `Icon-package_07312026` trouxer) e `slug-do-serviço` derivado do nome do arquivo oficial (`Arch_AWS-Lambda_48.svg` vira `lambda.svg`, dentro de `compute/`). Um arquivo por serviço, sem separação clara/escuro: a `DDP-237` já confirmou que o ícone de serviço é um quadrado colorido sólido que funciona nos dois temas sem alteração, só a moldura do DokDraw muda de cor.
+**2. Não aplicar.** A migração fica no repositório sem rodar no banco. Se a ferramenta perguntar se aplica, a resposta é não. A aplicação é o passo seguinte, com aprovação humana explícita.
 
-**3. Manifesto, `adrs/_work/aws-icons/aws-icons-manifest.json`, copiado para `public/aws-icons-manifest.json` no repositório do app pela outra ordem.** Lista estática `{ category: string; label: string; services: { slug: string; name: string }[] }[]`, uma entrada por categoria. É o que a paleta lê para montar os grupos da família `aws` (segunda ordem), sem precisar listar o bucket em tempo de execução.
-
-**4. A pasta pronta para subir, `adrs/_work/aws-icons/`.** Já extraída do `Icon-package_07312026...zip` (pesquisa da `DDP-514`, `FICHA-ADR015-icones-aws.md`) nesta sessão, sem alteração de conteúdo, só renomeando o arquivo para o slug. Contagem por categoria: Compute 24, Storage 16, Database 11, Networking & Content Delivery 19, Security, Identity & Compliance 28, Analytics 20, mais `groups/` com 4 ícones de contêiner (`region.svg`, `vpc.svg`, `subnet-public.svg`, `subnet-private.svg`, extraídos do `Architecture-Group-Icons_07312026` do mesmo pacote, para a segunda ordem não depender de outro upload). Total: 122 arquivos SVG, 429.766 bytes (0,41 MB). As demais categorias do pacote ficam para leva futura, sem bloquear esta ordem.
-
-**5. Quem sobe e como.** O Lovable cria o bucket (item 1) e devolve a confirmação. Depois disso, o humano sobe a pasta pelo painel do Supabase (Storage, bucket `aws-icons`, arrastar a pasta `adrs/_work/aws-icons/` inteira: o painel preserva o caminho `categoria/slug.svg` de cada subpasta). O Lovable não sobe os arquivos: são 122 SVGs, fora do que um agente de código deve escrever em massa numa API de storage.
-
-**6. Atribuição.** O rodapé de licenças do app (onde já existe algum texto de atribuição, se houver, ou a criar na próxima ordem de interface) precisa citar a AWS conforme a `DEC-0030`. Esta ordem só prepara o bucket, o texto entra na ordem de interface.
+**3. Nenhum código de app nesta ordem.** A leitura por URL assinada já existe (`signDiagramImage` em `src/infrastructure/supabase/image-storage.ts`) e é a segunda ordem (`DDP-529`) que a usa para o tipo `aws_icon`.
 
 ## O que não fazer aqui
 
-- Não desenhar a moldura nem os contêineres AWS no app: isso é a `ORDEM-DDP514-frame-e-conteineres-aws.md`.
+- Não criar bucket, não escrever em `storage.buckets` (a plataforma recusa, `DDP-419`).
+- Não subir nem listar arquivos do bucket.
+- Não mexer na moldura, nos contêineres nem na família `aws`: isso é a `ORDEM-DDP514-frame-e-conteineres-aws.md`.
 - Não instalar nenhum pacote npm.
-- Não alterar nenhum ícone, cor ou proporção do arquivo oficial.
-- Não criar política de escrita para `authenticated`: upload é sempre administrativo.
 - Nenhum texto de tela cita tarefa, ADR, ordem ou sessão (`DEC-0041`).
 
 ## Tabela de restrições do contrato
 
 | Restrição (`LEDGER.md` e decisões) | Onde esta ordem cumpre |
 | --- | --- |
-| `DEC-0030`: ícone oficial sem alteração, com atribuição | Item 2 e 4, arquivos extraídos direto do zip oficial, sem edição de conteúdo, só renomeados para o slug |
-| Dependências novas só com justificativa em ADR | Nenhuma dependência nova, é bucket, não pacote |
-| Migração e RLS exigem aprovação humana explícita (`DEC-0007`) | Categoria `app-release`, aplicação represada até o sim do humano |
+| `DEC-0030`: ícone oficial sem alteração, com atribuição | Arquivos subidos direto do pacote oficial pelo dono do produto (`DDP-549`). Atribuição na segunda ordem, item 10 |
+| Dependências novas só com justificativa em ADR | Nenhuma dependência nova |
+| Migração e RLS exigem aprovação humana explícita (`DEC-0007`) | Categoria `app-release`, arquivo escrito sem aplicar, aplicação represada até o sim do humano |
+| `DEC-0031`: lista de tipos do bucket não gravada, risco aceito | Sem política de escrita para `aws-icons/`, o risco não alcança a pasta |
 
 ## Verificação
 
-Roteiro da sessão A: `SELECT public FROM storage.buckets WHERE id = 'aws-icons'` devolve `true`. Depois do upload manual do item 5, baixar um SVG por URL pública sem sessão autenticada (`curl` sem header de autorização) devolve 200. Tentar subir um arquivo pela API do app autenticado (não pelo painel) falha por falta de política de `INSERT`. `adrs/_work/aws-icons/aws-icons-manifest.json` lista as seis categorias do item 4, cada uma com pelo menos um serviço, e bate com a contagem de arquivos de cada pasta.
+Roteiro da sessão A, antes de aplicar: o arquivo da migração é idêntico ao SQL do item 1, linha a linha, e o journal tem a entrada. Depois de aplicar: `SELECT policyname FROM pg_policies WHERE tablename = 'objects' AND policyname = 'diagram_images_select_aws_icons'` devolve uma linha. `SELECT count(*) FROM storage.objects WHERE bucket_id = 'diagram-images' AND name LIKE 'aws-icons/%'` devolve 122 (mais o manifesto, se subido). Uma pessoa logada sem acesso a nenhum projeto consegue `createSignedUrl` de `aws-icons/compute/lambda.svg`, e um `curl` sem sessão na URL do objeto (não assinada) devolve 400 ou 403.
 
 ## Restrições
 

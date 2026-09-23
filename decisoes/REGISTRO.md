@@ -67,6 +67,7 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 | [DEC-0040](DEC-0040-rotulos-humano-e-backlog.md) | 2026-09-22 | Um só rótulo humano (aprovacao-humana e revisao-humana extintos) e backlog no lugar de roadmap | Humano |
 | [DEC-0041](DEC-0041-tela-sem-referencia-interna.md) | 2026-09-22 | Texto de tela nunca cita tarefa, ADR, ordem ou sessão. Varredura antes de publicar | Humano |
 | [DEC-0042](DEC-0042-coluna-fazer-deploy.md) | 2026-09-22 | Coluna FAZER DEPLOY para publicação e migração, o que o humano executa contra o ambiente | Humano |
-| [DEC-0043](DEC-0043-icones-aws-por-bucket-publico.md) | 2026-09-22 | Ícones oficiais da AWS por bucket público sob demanda, sem pacote npm nem cópia em public/ | Sessão A |
+| [DEC-0044](DEC-0044-icones-aws-na-pasta-do-bucket-privado.md) | 2026-09-22 | Ícones oficiais da AWS na pasta aws-icons/ do bucket privado diagram-images, lidos por URL assinada, com política de leitura nova. Substitui a DEC-0043 | Humano |
+| [DEC-0043](DEC-0043-icones-aws-por-bucket-publico.md) | 2026-09-22 | Ícones oficiais da AWS por bucket público sob demanda, sem pacote npm nem cópia em public/ | Sessão A. Substituída pela DEC-0044 |
 | A-Q-0002 | 2026-09-19 | Aplicar o diff no ledger, aceitar os ADRs 002 a 005 e commitar a etapa do ADR 005 | Humano |
 | A-Q-0001 | 2026-09-19 | Parada 4 do ADR 005: corrigir a fixture 05 no MDXEditor, com três travas, e criar o arquivo do ADR | Humano |
