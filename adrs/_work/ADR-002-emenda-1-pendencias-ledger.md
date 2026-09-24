@@ -24,3 +24,4 @@ Acumuladas em 2026-09-19, durante a escrita da Emenda 1 (`adrs/_work/ADR-002-eme
 
 5. Para trás, contra os contratos dos ADRs 001 a 005 do `LEDGER.md`: sem conflito, ver "Verificação de compatibilidade" na emenda.
 6. Para frente, contra a tabela "Premissas pendentes por camada destinatária" do ledger: os itens novos de 007 e 010 complementam entradas já existentes na tabela (a linha de "Renderização (007)" e a de "Exportação (010)"), sem contradizer o que já está registrado para essas camadas.
+

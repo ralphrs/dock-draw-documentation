@@ -10,13 +10,13 @@ A AST oficial é **mdast** (`@types/mdast` 4), produzida com `mdast-util-from-ma
 
 Registro de diretivas v1 (ADR 002, A.3):
 
-| Tipo | Nome | Atributos | Rótulo | Filhos |
-| --- | --- | --- | --- | --- |
-| container | `note`, `tip`, `caution`, `danger` | `variant`, `fold` | opcional | qualquer bloco |
-| container | `tabs` | `sync` | não | só `tab` |
-| container | `tab` | — | obrigatório | qualquer bloco |
-| container | `steps` | — | não | uma lista ordenada |
-| leaf | `diagram` | `src`, `view`, `rev`, `title` | recomendado | — |
+| Tipo      | Nome                               | Atributos                     | Rótulo      | Filhos             |
+| --------- | ---------------------------------- | ----------------------------- | ----------- | ------------------ |
+| container | `note`, `tip`, `caution`, `danger` | `variant`, `fold`             | opcional    | qualquer bloco     |
+| container | `tabs`                             | `sync`                        | não         | só `tab`           |
+| container | `tab`                              | —                             | obrigatório | qualquer bloco     |
+| container | `steps`                            | —                             | não         | uma lista ordenada |
+| leaf      | `diagram`                          | `src`, `view`, `rev`, `title` | recomendado | —                  |
 
 Referências por URI: `dok:page/<uuid>[#slug]`, `dok:page/new?title=<pct>`, `dok:asset/<uuid>`, `dok:diagram/<uuid>?view=<uuid>`. Exemplo de embed: `::diagram[Descrição]{src="dok:diagram/<uuid>" view="<uuid>" title="…"}`.
 
@@ -27,6 +27,7 @@ Arquitetura base (candidata que conflita é eliminada): TanStack Start (SSR) + R
 ## Critérios a notar (grade N Nativo · P Plugin oficial · C Código próprio, estimar dias · X Contra a arquitetura · ? Verificar em spike)
 
 Eliminatórios:
+
 - E-01 Round-trip: carregar Markdown DokMD, inserir e apagar um caractere, serializar; após `normalizeDok`, igual ao original nas fixtures.
 - E-02 No modo fonte, `<Tabs>` e `<script>` não viram nó (o save retorna erro); `Hora:agora` num parágrafo não cria diretiva.
 - E-03 Inserir diagrama pela UI gera exatamente `::diagram[…]{src=… view=… title=…}` (fixture 23).
@@ -36,6 +37,7 @@ Eliminatórios:
 - E-07 Rota do editor carregável sob demanda (lazy) no TanStack Start, sem erro de hidratação.
 
 Importantes:
+
 - E-10 Diff textual contra a revisão publicada.
 - E-11 Diff renderizado contra a revisão publicada.
 - E-12 Comentário ancorado por faixa de linhas do DokMD canônico.
@@ -67,7 +69,7 @@ Nota: E-10, E-11 e E-12 serão implementados fora do editor (diff de texto e vis
 
 ## Formato da ficha
 
-```md
+```Java
 # Ficha — <candidata>
 
 Verificado em: 2026-09-19
@@ -98,3 +100,4 @@ Lista do que ficou "?".
 ## Não verificado
 Lista explícita.
 ```
+

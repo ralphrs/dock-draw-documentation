@@ -10,18 +10,18 @@ Arquivo `tsconfig.flags-teste.json` temporário no spike, `extends: "./tsconfig.
 
 ## Resultado da compilação
 
-```
+```Shell
 $ tsc -p tsconfig.flags-teste.json --noEmit
 exit: 2
 ```
 
 8 erros, em 3 códigos, todos em `dokmd.ts`. `check-fixtures.ts` e `perf.ts`, os dois outros arquivos de `content-format/`, compilam sem erro sob as seis flags.
 
-| Código | Ocorrências | Flag que provoca |
-| :--- | ---: | :--- |
-| `TS4111` | 4 | `noPropertyAccessFromIndexSignature` |
-| `TS2322` | 2 | `exactOptionalPropertyTypes` |
-| `TS2379` | 2 | `exactOptionalPropertyTypes` |
+| Código   | Ocorrências | Flag que provoca                     |
+| :------- | ----------: | :----------------------------------- |
+| `TS4111` |           4 | `noPropertyAccessFromIndexSignature` |
+| `TS2322` |           2 | `exactOptionalPropertyTypes`         |
+| `TS2379` |           2 | `exactOptionalPropertyTypes`         |
 
 `noFallthroughCasesInSwitch`, `noImplicitOverride`, `noImplicitReturns` e `noUncheckedSideEffectImports` não produzem nenhum erro nesta versão do arquivo.
 
@@ -64,10 +64,10 @@ Os dois padrões foram aplicados de fato ao arquivo do spike, para medir o resul
 
 O fix foi revertido ao final desta tarefa (`git checkout -- content-format/dokmd.ts`), porque escrever o fix definitivo é trabalho da fatia F1, não desta medição.
 
-> [!WARNING]
+> \[!WARNING]
 > Nota sobre o estado do repositório: ao reverter, `git checkout` restaurou o arquivo para o `HEAD` atual, não para o estado anterior a esta sessão. Um commit externo (`f742395`, não feito por esta tarefa) capturou o `HEAD` no meio da medição, e o `HEAD` de hoje já contém quatro das cinco linhas do fix aplicado aqui (as quatro do Grupo 1 e duas das quatro do Grupo 2). Confirmado por `git diff` linha a linha depois do `checkout`: o arquivo em disco ficou idêntico ao `HEAD`, e o `HEAD` já tinha a maior parte do fix. Não é uma decisão desta tarefa, é um efeito do commit externo. Registrado para quem revisar não interpretar as linhas já mudadas como decisão tomada aqui.
 
-> [!NOTE]
+> \[!NOTE]
 > Adendo de 2026-09-20, escrito pela sessão A na revisão desta tarefa e acrescentado sem alterar o texto acima. O reparo saiu no commit que traz este adendo: `dokmd.ts` voltou ao estado de `14379cd`, o artefato que passou 30/30 no S-1, e `tsconfig.flags-teste.json` deixou o repositório. As 30 fixtures rodaram contra o arquivo restaurado, 30/30. Duas correções ao alerta acima. As linhas que o `f742395` levou ao `HEAD` foram três do Grupo 2 (`Diagnostic.line`, `UrlClass.anchor`, `UrlClass.view`), não duas, e por isso a compilação do `HEAD` devolvia um erro e não dois. O commit foi da sessão A, com escopo largo de `git add`, e a regra que faltava está em `guia-sessoes/PROTOCOLO.md`, seção "Quem decide".
 
 ## Custo em dias
@@ -84,7 +84,7 @@ Alternativa descartada: um `tsconfig.json` próprio para `src/content-format`, m
 
 ## Verificação final
 
-```
+```Shell
 $ git diff --stat -- adrs/_work/spike-s1/content-format/dokmd.ts
 (vazio)
 ```
