@@ -24,7 +24,7 @@ O trabalho termina quando o ADR 012 for aceito e A publicar a issue com o rótul
 - Uma aprovação vale só para as ações listadas na "Instrução" daquela resposta. Se a ação já foi aprovada ali, não peça de novo.
 - Cada ponto de parada do `/adr` vira uma dúvida. A parada 3 leva `dependencias`. A parada 5 leva `ledger` e `aceite-adr`, e também `fora-de-work` se criar o arquivo do ADR ainda não tiver sido aprovado.
 - Dúvida boa é autossuficiente: opções numeradas, custo de cada uma, recomendação, caminho do arquivo com a evidência em `adrs/_work/`. A sessão A não vê a sua conversa.
-- Ao terminar, comente o resultado com cada item do critério de pronto e a evidência real (comando e saída), e mova a issue para `EM REVISÃO`. Quem fecha é a sessão A.
+- Ao terminar, comente o resultado com cada item do critério de pronto e a evidência real (comando e saída), e mova a issue para `EM REVISÃO`, e troque o rótulo de `para-b` para `para-a` (`DEC-0047`, seção "Passagem de bola" do `PROTOCOLO.md`; nunca deixe dois rótulos de destino). Quem fecha é a sessão A.
 - O app em `/Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-app` é a fonte de verdade da arquitetura base. Leia de lá versões, schema do Supabase e estrutura, em vez das cópias de `insumos/`. Divergência entre app e cópia vira pendência no resultado da tarefa.
 - Você não altera o app. Quem escreve código lá é o agente do Lovable, executando ordens que você escreve a partir do contrato da fatia e que a sessão C revisa (`decisoes/DEC-0007-lovable-como-implementador.md`). Por isso as "Fatias de implementação" do seu ADR precisam ser executáveis por quem não participou da decisão: objetivo, arquivos ou módulos afetados e critério de pronto verificável. Spike nunca roda no app. Nunca leia nem edite `.env*` do app.
 - Nunca edite descrição de issue nem comentário da sessão A.
@@ -62,8 +62,7 @@ Decisão nenhuma fica só na sua conversa. A sessão A não a vê.
 loop:
   guia-sessoes/bin/espera.sh <n>     (Bash com run_in_background: a sessão volta quando o comando termina)
   conta com searchResultMode "count", sem campos:
-       project = DDP AND assignee = "712020:ec30868f-8e34-4c25-97e2-cd920e5da679"
-       AND status in ("A FAZER", "EM ANDAMENTO")
+       project = DDP AND labels = "para-b" AND status != "CONCLUÍDA"
   zero                 -> esperar de novo, <n> dobra (piso 300, teto 1800); na sexta volta seguida, parar e avisar o humano
   mais que zero        -> repetir com fields e ORDER BY updated DESC, e <n> volta ao piso
   A FAZER              -> transição 31 (EM ANDAMENTO) e executar. Rótulo encerrar: conferir, entregar, parar

@@ -40,6 +40,12 @@ Na `DDP-385` o humano estendeu a decisão "para tudo": as mesmas regras valem pa
 
 Arquivo de marca entra da fonte oficial do dono (kit de imprensa ou repositório de artwork), sem alteração. Onde a única fonte for uma coleção de terceiros, como o simple-icons, isso fica registrado por marca, porque o desenho ali pode ser redesenhado e não o original.
 
+## Onde os pacotes ficam na máquina do humano
+
+O humano baixa os pacotes nas páginas oficiais e os põe em `/Users/ralphrenatodasilva/workspace/000-Pessoal/design-systems/dokdrawapp/images/icons`, uma subpasta por família (hoje `aws`, `azure`, `gcp`, `oci`, `bpmn` e `generic`). Essa pasta é a fonte local dos arquivos oficiais. As sessões só leem dela e nunca gravam, renomeiam nem apagam nada ali. Pasta de família nova é criada pelo humano.
+
+O caminho fica fora dos dois repositórios. Ícone só entra no app pelo caminho já decidido (`DEC-0043` e `DEC-0044`), depois da conferência de versão e termos descrita abaixo.
+
 ## Lacuna declarada
 
 O aviso de marca da seção anterior cita só os quatro provedores. Ele ganha a lista das outras marcas quando elas entrarem no produto.

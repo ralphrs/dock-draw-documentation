@@ -70,6 +70,7 @@ A pasta é escrita pela sessão A. As sessões B e C registram as decisões dela
 | [DEC-0044](DEC-0044-icones-aws-na-pasta-do-bucket-privado.md) | 2026-09-22 | Ícones oficiais da AWS na pasta aws-icons/ do bucket privado diagram-images, lidos por URL assinada, com política de leitura nova. Substitui a DEC-0043 | Humano |
 | [DEC-0045](DEC-0045-uso-do-cartographer.md) | 2026-09-23 | Skill cartographer no escopo do usuário, disponível às quatro sessões, mapeia hoje só dok-draw-documentation. Escrever em dok-draw-app fica fora sem decisão própria | Sessão A, por delegação |
 | [DEC-0046](DEC-0046-uso-do-read-arxiv-paper.md) | 2026-09-23 | Skill read-arxiv-paper no escopo do usuário, dona é a sessão B. Saída redirigida de ./knowledge/ para adrs/_work/ESTUDO-arxiv-*.md, conexão com o ADR do DokDraw em vez do nanochat | Sessão A, por delegação |
+| [DEC-0047](DEC-0047-fila-por-rotulo-para.md) | 2026-09-23 | Fila por rótulo `para-a`, `para-b`, `para-c`, `para-d`, `para-lovable` e `humano`, com status derivado, devolução sempre para A e checagem no quadro | Humano |
 | [DEC-0043](DEC-0043-icones-aws-por-bucket-publico.md) | 2026-09-22 | Ícones oficiais da AWS por bucket público sob demanda, sem pacote npm nem cópia em public/ | Sessão A. Substituída pela DEC-0044 |
 | A-Q-0002 | 2026-09-19 | Aplicar o diff no ledger, aceitar os ADRs 002 a 005 e commitar a etapa do ADR 005 | Humano |
 | A-Q-0001 | 2026-09-19 | Parada 4 do ADR 005: corrigir a fixture 05 no MDXEditor, com três travas, e criar o arquivo do ADR | Humano |

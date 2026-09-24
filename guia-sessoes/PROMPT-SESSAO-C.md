@@ -120,7 +120,7 @@ Tudo acontece na issue do Jira, pelo MCP do Atlassian. Projeto `DDP`, `cloudId` 
 - **Assumir:** transição `31`, a issue vai para `EM ANDAMENTO`.
 - **Perguntar:** comentário começando com `Sessão C: dúvida`, no formato do protocolo, e transição `2` para `BLOQUEADA`.
 - **Retomar:** leia o comentário de resposta da sessão A, confira `aprovado_por` se houver categoria de aprovação, e siga a instrução.
-- **Entregar:** comentário `Sessão C: resultado` com o veredito, cada item do critério de pronto e a evidência real, e transição `4` para `EM REVISÃO`. Quem fecha a issue é a sessão A.
+- **Entregar:** comentário `Sessão C: resultado` com o veredito, cada item do critério de pronto e a evidência real, e transição `4` para `EM REVISÃO`. Depois, troque o rótulo de `para-c` para `para-a` (`DEC-0047`, seção "Passagem de bola" do `PROTOCOLO.md`; nunca deixe dois rótulos de destino). Quem fecha a issue é a sessão A.
 
 Todo comentário seu começa com `Sessão C:`. O conector do Atlassian é o mesmo para as três sessões, então o prefixo é o que diz quem escreveu.
 
@@ -140,8 +140,7 @@ loop:
   /Users/ralphrenatodasilva/workspace/000-Pessoal/codebase/dok-draw-documentation/guia-sessoes/bin/espera.sh <n>
       (Bash com run_in_background: a sessão volta quando o comando termina)
   conta com searchResultMode "count", sem campos:
-       project = DDP AND assignee = "712020:6ac2f667-9728-4b07-bffb-eaa19704a4c9"
-       AND status in ("A FAZER", "EM ANDAMENTO")
+       project = DDP AND labels = "para-c" AND status != "CONCLUÍDA"
   zero                 -> esperar de novo, <n> dobra (piso 300, teto 1800); na sexta volta seguida, parar e avisar o humano
   mais que zero        -> repetir com fields e ORDER BY updated DESC, e <n> volta ao piso
   A FAZER              -> transição 31, revisar, entregar com veredito

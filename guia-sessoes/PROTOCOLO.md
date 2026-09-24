@@ -60,13 +60,13 @@ Ids de transição, para a chamada de transição do MCP:
 | C | `712020:6ac2f667-9728-4b07-bffb-eaa19704a4c9` |
 | Humano | `5d1ba41843efe40d1d30677c` |
 
-O conector do Atlassian é autorizado na conta Claude, não por sessão, então toda escrita aparece como feita pelo humano. Quem fez o quê se lê em dois lugares: o **responsável** da issue e o **prefixo** do comentário. Todo comentário começa por `Sessão A:`, `Sessão B:` ou `Sessão C:`.
+O conector do Atlassian é autorizado na conta Claude, não por sessão, então toda escrita aparece como feita pelo humano. Quem fez o quê se lê em dois lugares: o **responsável** da issue e o **prefixo** do comentário. Todo comentário começa por `Sessão A:`, `Sessão B:`, `Sessão C:` ou `Sessão D:` (o Lovable usa `Lovable:`), mesmo dentro de negrito. O `bin/confere-quadro.sh` avisa, no cabeçalho da escuta, comentário das últimas 24h sem prefixo.
 
 ### Rótulos
 
 | Rótulo | Uso |
 | --- | --- |
-| `sessao-b`, `sessao-c` | Fila de destino, redundante com o responsável e útil no JQL |
+| `para-a`, `para-b`, `para-c`, `para-d`, `para-lovable` | **Destino da bola** (`DEC-0047`). Toda issue aberta leva exatamente um, e a escuta de cada sessão vigia o dela. Substituem `sessao-b`, `sessao-c` e `sessao-d` como fila. Ver "Passagem de bola" |
 | `trilha-adr`, `trilha-dev` | Qual das duas trilhas |
 | `adr-002`, `adr-005`, ... | ADR de origem. O projeto é business e não tem Epic, então o rótulo é o agrupador |
 | `sprint-1`, ... | Sprint da trilha de desenvolvimento |
@@ -79,9 +79,31 @@ O conector do Atlassian é autorizado na conta Claude, não por sessão, então 
 | `revisar-ordem`, `revisar-resultado`, `encerrar` | Tipo de tarefa, quando não é implementação comum |
 | categoria (`ledger`, `app-release`, ...) | O que a issue espera do humano, junto de `humano` |
 | `humano` | Único rótulo de humano desde 2026-09-22: os antigos `aprovacao-humana` e `revisao-humana` foram fundidos nele (`DEC-0040`). Toda issue que espera algo do humano, seja aprovação, resposta, conferência no preview ou tarefa manual, leva `humano` mais a categoria quando houver |
-| `sessao-d` | Tarefa da sessão D, designer de formas no Figma. É a fila dela, porque a D não tem conta no Jira (`DEC-0024`) |
+| `sessao-b`, `sessao-c`, `sessao-d` | Legado, anteriores à `DEC-0047`. Não servem mais de fila. Podem ficar nas issues antigas, sem efeito |
 
 **Correção da sessão A para a sessão D vai na descrição de uma tarefa dela ainda aberta, nunca só num comentário de cartão fechado.** A sessão D não lê cartão depois de entregar e não relê o próprio prompt enquanto roda. Em 2026-09-21 duas correções escritas em cartão fechado não chegaram a ela, e uma tarefa de prioridade foi pulada porque a regra entrou no prompt depois que ela começou. A escuta dela, `aguarda-fila.sh D`, passou a imprimir a próxima tarefa na ordem certa (em andamento, depois prioridade, depois menor chave) e a mandar ler a descrição inteira.
+
+## Passagem de bola
+
+Desde `DEC-0047`, a bola tem endereço explícito: toda issue aberta leva **exatamente um** rótulo entre `para-a`, `para-b`, `para-c`, `para-d`, `para-lovable` e `humano`. A coluna "Bola com" da tabela de status descreve o caso típico, e o rótulo decide. A escuta de cada sessão vigia só o rótulo dela, em qualquer status diferente de `CONCLUÍDA`.
+
+Quem passa a bola faz quatro coisas, nesta ordem: comentário curto com prefixo `Sessão X:`, troca do rótulo de destino (nunca dois), transição de status conforme a tabela abaixo e mensagem de aviso à sessão de destino, quando ela estiver aberta. A mensagem é conveniência. O registro é o Jira, e a escuta apanha a sessão que estava fechada ou ocupada.
+
+| Destino | Status | Quem passa |
+| --- | --- | --- |
+| `para-b`, `para-c`, `para-d` | `A FAZER` | A |
+| `para-a` | `EM REVISÃO`, ou `BLOQUEADA` em dúvida | B, C, D ou o Lovable |
+| `para-lovable` | `EM ANDAMENTO` | A, ao despachar a ordem |
+| `humano` | `AGUARDANDO APROVAÇÃO` ou `FAZER DEPLOY` | A, e só A |
+
+- **B, C e D devolvem sempre para A.** A distribui. Revisão cruzada passa por A.
+- **A lista de espera da A é `para-a` com o rótulo `espera`.** A escuta da A não vigia essa combinação. Serve para a issue que aguarda uma dependência e que a A libera para `para-b`, `para-c` ou `para-d` quando ela fecha, tirando o `espera`. `para-a` sem `espera`, em qualquer status, acorda a A.
+- **Quem recebe confirma.** Ao começar, move a issue para `EM ANDAMENTO` e não troca o rótulo.
+- **Trabalho de duas sessões vira duas issues ligadas.** Uma issue tem um dono por vez.
+- **O Lovable não troca rótulo.** A põe `para-lovable` ao despachar. O Lovable devolve movendo a issue para `EM REVISÃO`, e A troca para `para-a` ao tratar a entrega.
+- **A checagem é a garantia.** O `bin/confere-quadro.sh` acusa issue aberta com zero ou dois ou mais rótulos de destino, avisa rótulo incoerente com o status, `para-b`, `para-c` ou `para-d` em `A FAZER` há mais de 12 horas, `para-lovable` há mais de 4 horas sem resultado e comentário sem prefixo. Épico e issue com `backlog`, `acao-humana`, `bloqueio-externo`, `draft`, `liberada` ou `processo` sem responsável ficam de fora.
+- **O responsável deixa de ser fila.** Pode continuar preenchido nas issues antigas, sem efeito.
+- **Nome da sessão no `SendMessage`.** É livre e muda. Registrar aqui o nome que cada sessão usa quando A o souber: C, "DokDraw sessão C desenvolvedora".
 
 ## Ordem de trabalho
 
@@ -151,13 +173,13 @@ A cria issue ──► A FAZER ──(B ou C assume)──► EM ANDAMENTO ─�
 
 | Evento | Quem | Ação |
 | --- | --- | --- |
-| criar | A | Cria a issue com descrição completa, responsável, rótulos. Nasce em `A FAZER` |
+| criar | A | Cria a issue com descrição completa, o rótulo de destino (`para-b`, `para-c` ou `para-d`) e os demais rótulos. Nasce em `A FAZER`. O responsável é opcional e só informa |
 | assumir | B ou C | Transição `31` para `EM ANDAMENTO` |
-| perguntar | B ou C | Comentário `Sessão X: dúvida` e transição `2` para `BLOQUEADA` |
-| responder | A | Comentário `Sessão A: resposta` e transição `31` de volta. Reatribui se mudar de fila |
-| escalar | A | Rótulos `humano` e a categoria, responsável passa a ser o humano, transição `3` |
-| liberar | A | Depois do sim do humano, comentário de resposta com `aprovado_por: humano`, responsável volta para B ou C, transição `31` |
-| entregar | B ou C | Comentário `Sessão X: resultado` e transição `4` para `EM REVISÃO` |
+| perguntar | B, C ou D | Comentário `Sessão X: dúvida`, rótulo trocado para `para-a` e transição `2` para `BLOQUEADA` |
+| responder | A | Comentário `Sessão A: resposta`, rótulo trocado de volta para `para-b`, `para-c` ou `para-d` e transição `31` |
+| escalar | A | Rótulos `humano` e a categoria no lugar do `para-*`, transição `3`. Só A cria `humano` |
+| liberar | A | Depois do sim do humano, comentário de resposta com `aprovado_por: humano`, `humano` sai e entra o `para-*` de quem executa, transição `31` |
+| entregar | B, C ou D | Comentário `Sessão X: resultado`, rótulo trocado para `para-a` e transição `4` para `EM REVISÃO` |
 | revisar | A | Comentário `Sessão A: revisão` com o veredito e transição `41` para `CONCLUÍDA` |
 
 Quem entrega nunca fecha a própria issue. `EM REVISÃO` existe para separar "B diz que terminou" de "A conferiu".
@@ -408,9 +430,10 @@ loop:
 
 | Sessão | JQL da fila |
 | --- | --- |
-| A | `project = DDP AND (status in ("BLOQUEADA", "EM REVISÃO") OR (status = "EM ANDAMENTO" AND labels = "humano") OR (status = "AGUARDANDO APROVAÇÃO" AND (labels is EMPTY OR labels != "humano")) OR (labels = "liberada" AND labels != "draft" AND status != "CONCLUÍDA"))` |
-| B | `project = DDP AND assignee = "712020:ec30868f-8e34-4c25-97e2-cd920e5da679" AND status in ("A FAZER", "EM ANDAMENTO")` |
-| C | `project = DDP AND assignee = "712020:6ac2f667-9728-4b07-bffb-eaa19704a4c9" AND status in ("A FAZER", "EM ANDAMENTO")` |
+| A | `project = DDP AND status != "CONCLUÍDA" AND ((labels = "para-a" AND labels not in ("espera", "bloqueio-externo")) OR (labels = "para-lovable" AND status = "EM REVISÃO") OR (status in ("BLOQUEADA", "EM REVISÃO") AND (labels is EMPTY OR labels != "bloqueio-externo")) OR (labels = "humano" AND status = "EM ANDAMENTO") OR (status = "AGUARDANDO APROVAÇÃO" AND (labels is EMPTY OR labels != "humano")) OR (labels = "liberada" AND labels != "draft"))` |
+| B | `project = DDP AND labels = "para-b" AND status != "CONCLUÍDA"` |
+| C | `project = DDP AND labels = "para-c" AND status != "CONCLUÍDA"` |
+| D | `project = DDP AND labels = "para-d" AND status != "CONCLUÍDA"` |
 
 **A contagem é a volta normal.** `searchResultMode` em `count` devolve um número e nada mais, cerca de 250 tokens. A mesma consulta pedindo campos devolve de 3.000 a 5.000, porque o Jira manda junto URL de avatar, link de API e categoria de status de cada issue. Como a volta sem novidade é a maioria absoluta das voltas, é ela que precisa ser barata.
 

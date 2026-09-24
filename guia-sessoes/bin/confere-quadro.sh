@@ -51,7 +51,7 @@ achados = []
 #    ciclo inteiro de escuta com trabalho que a própria sessão acabou de fazer.
 #    Sinal preciso: o último comentário é da sessão A e começa por "Sessão A:".
 # --------------------------------------------------------------------------
-VIGIADA = ('project = DDP AND ((status in ("BLOQUEADA", "EM REVISÃO") '
+VIGIADA = ('project = DDP AND status != "CONCLUÍDA" AND ((labels = "para-a" AND labels != "espera") OR (status in ("BLOQUEADA", "EM REVISÃO") '
            'AND (labels is EMPTY OR labels not in ("bloqueio-externo"))) '
            'OR (status = "EM ANDAMENTO" AND labels = "humano"))')
 for i in busca(VIGIADA, "key,summary,status,comment"):
@@ -337,6 +337,86 @@ if esperando:
     for i in esperando:
         tipo = "permissão" if "bloqueio-externo" in i["fields"]["labels"] else "arquivo"
         notas.append("  %s (%s) %s" % (i["key"], tipo, i["fields"]["summary"][:70]))
+
+# --------------------------------------------------------------------------
+# Prefixo de sessão no comentário (PROTOCOLO.md, seção de contas). O conector
+# do Atlassian escreve tudo como o humano, então o prefixo é a única marca de
+# quem falou. Sai como aviso, nunca como achado: o próprio humano comenta sem
+# prefixo, e o script não separa uma resposta dele de um esquecimento de sessão.
+# Janela de 24h, para o aviso sumir sozinho.
+# --------------------------------------------------------------------------
+from datetime import datetime, timedelta, timezone
+PREFIXO = re.compile(r"^[\s*_>]*(Sessão [ABCD]|Lovable)\s*:")
+corte = datetime.now(timezone.utc) - timedelta(hours=24)
+sem_prefixo = []
+for i in busca("project = DDP AND updated >= -1d ORDER BY updated DESC", "key,comment", limit=50):
+    for c in ((i["fields"].get("comment") or {}).get("comments") or []):
+        try:
+            quando = datetime.strptime(c["created"], "%Y-%m-%dT%H:%M:%S.%f%z")
+        except ValueError:
+            continue
+        if quando < corte:
+            continue
+        linhas = [l for l in (c.get("body") or "").splitlines() if l.strip()]
+        if not linhas or not PREFIXO.match(linhas[0]):
+            sem_prefixo.append("%s (comentário %s)" % (i["key"], c["id"]))
+if sem_prefixo:
+    notas.append("Comentário sem prefixo Sessão A/B/C/D ou Lovable nas últimas 24h "
+                 "(pode ser resposta do humano; se for de sessão, editar e pôr o prefixo):")
+    for x in sem_prefixo[:10]:
+        notas.append("  " + x)
+
+# --------------------------------------------------------------------------
+# Destino da bola (DEC-0047). Toda issue aberta leva exatamente um rótulo de
+# destino, e é isso que a escuta de cada sessão vigia. Sem rótulo a issue não
+# cai na fila de ninguém, com dois ela cai na de duas sessões. Falta de rótulo
+# e rótulo duplo são achado, porque a sessão A conserta na hora. Incoerência
+# com o status e sessão parada saem como aviso.
+# --------------------------------------------------------------------------
+DESTINOS = ("para-a", "para-b", "para-c", "para-d", "para-lovable", "humano")
+ISENTAS = {"backlog", "acao-humana", "bloqueio-externo", "draft", "liberada"}
+abertas = busca('project = DDP AND status != "CONCLUÍDA" ORDER BY key ASC',
+                "key,summary,status,labels,assignee,issuetype", limit=200)
+incoerentes = []
+for i in abertas:
+    f = i["fields"]
+    labs = set(f.get("labels") or [])
+    if (f.get("issuetype") or {}).get("hierarchyLevel", 0) > 0:
+        continue
+    if labs & ISENTAS or ("processo" in labs and not f.get("assignee")):
+        continue
+    dest = [l for l in (f.get("labels") or []) if l in DESTINOS]
+    st = f["status"]["name"]
+    if not dest:
+        achados.append((i["key"], "sem rótulo de destino (para-a, para-b, para-c, para-d, para-lovable ou humano). "
+                                  "Nenhuma escuta vigia esta issue."))
+    elif len(dest) > 1:
+        achados.append((i["key"], "tem mais de um rótulo de destino (%s). A bola precisa de um dono só." % ", ".join(dest)))
+    else:
+        d = dest[0]
+        if d in ("para-b", "para-c", "para-d") and st not in ("A FAZER", "EM ANDAMENTO"):
+            incoerentes.append("%s: %s em %s" % (i["key"], d, st))
+        elif d == "para-lovable" and st not in ("EM ANDAMENTO", "EM REVISÃO"):
+            incoerentes.append("%s: %s em %s" % (i["key"], d, st))
+        elif d == "humano" and st not in ("AGUARDANDO APROVAÇÃO", "FAZER DEPLOY", "EM ANDAMENTO"):
+            incoerentes.append("%s: %s em %s" % (i["key"], d, st))
+if len(abertas) >= 100:
+    notas.append("Conferência de destino leu só as 200 primeiras issues abertas.")
+if incoerentes:
+    notas.append("Rótulo de destino incoerente com o status:")
+    for x in incoerentes[:10]:
+        notas.append("  " + x)
+
+paradas = []
+for lab, quem in (("para-b", "B"), ("para-c", "C"), ("para-d", "D")):
+    for i in busca('project = DDP AND labels = "%s" AND status = "A FAZER" AND updated <= -12h' % lab, "key", limit=20):
+        paradas.append("%s espera a sessão %s há mais de 12h em A FAZER" % (i["key"], quem))
+for i in busca('project = DDP AND labels = "para-lovable" AND status = "EM ANDAMENTO" AND updated <= -4h', "key", limit=20):
+    paradas.append("%s está com o Lovable há mais de 4h sem resultado" % i["key"])
+if paradas:
+    notas.append("Issue parada (a sessão pode estar fechada, ou a ordem não chegou):")
+    for x in paradas[:10]:
+        notas.append("  " + x)
 
 if notas:
     print("Avisos:")

@@ -65,10 +65,10 @@ Três regras, sem exceção:
 
 ## Sua fila
 
-A sessão D não tem conta própria no Jira. As suas tarefas são as issues do projeto `DDP` com o rótulo **`sessao-d`**:
+A sessão D não tem conta própria no Jira. As suas tarefas são as issues do projeto `DDP` com o rótulo **`para-d`** (`DEC-0047`):
 
 ```
-project = DDP AND labels = "sessao-d" AND status in ("A FAZER", "EM ANDAMENTO")
+project = DDP AND labels = "para-d" AND status != "CONCLUÍDA"
 ```
 
 O trabalho está em épicos com o rótulo `web-design`: um épico de fundação, um por forma, um de conexões e dois da AWS. Cada épico tem uma tarefa por preocupação. A fila são as **tarefas**, nunca os épicos.
@@ -84,7 +84,7 @@ Tudo acontece na issue do Jira, pelo MCP do Atlassian. Projeto `DDP`, `cloudId` 
 - **Assumir:** transição `31`, a issue vai para `EM ANDAMENTO`.
 - **Perguntar:** comentário começando com `Sessão D: dúvida`, com o que você viu, as opções numeradas e a sua recomendação, e transição `2` para `BLOQUEADA`.
 - **Retomar:** leia o comentário de resposta da sessão A e siga a instrução.
-- **Entregar:** comentário `Sessão D: resultado` com o link do frame no Figma, as variantes criadas, as decisões de desenho que você tomou e o que ficou em aberto. Transição `4` para `EM REVISÃO`. Quem fecha a issue é a sessão A, depois de o humano ver o desenho.
+- **Entregar:** comentário `Sessão D: resultado` com o link do frame no Figma, as variantes criadas, as decisões de desenho que você tomou e o que ficou em aberto. Transição `4` para `EM REVISÃO`, e troque o rótulo de `para-d` para `para-a` (`DEC-0047`, seção "Passagem de bola" do `PROTOCOLO.md`; nunca deixe dois rótulos de destino). Quem fecha a issue é a sessão A, depois de o humano ver o desenho.
 
 **Nunca ponha chave dentro de monospace.** Trecho como `opacity={0.85}` ou uma regra CSS com chave dentro de `{{...}}` quebra a renderização do Jira e engole o texto seguinte. Para qualquer trecho de código com chave, use a macro `{code}` ou `{noformat}`. A conferência do quadro reprova esse erro.
 
@@ -114,7 +114,7 @@ Você nunca edita descrição de issue nem comentário de outra sessão.
 
 ## Início
 
-- **Se há issue `sessao-d` em `EM ANDAMENTO`:** retome pelo histórico dela.
+- **Se há issue `para-d` em `EM ANDAMENTO`:** retome pelo histórico dela.
 - **Senão:** assuma a de menor chave em `A FAZER`.
 
 ## Ciclo

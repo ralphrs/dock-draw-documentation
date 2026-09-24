@@ -43,11 +43,11 @@ case "$sessao" in
   # Card fechado que volta para EM ANDAMENTO é o humano pedindo algo novo num
   # card velho. Em 2026-09-21 o pedido dos 24 tipos chegou assim na DDP-184 e
   # ficou 25 minutos sem ser visto, porque nenhum rótulo o punha na fila.
-  A | a) jql='project = DDP AND ((status in ("BLOQUEADA", "EM REVISÃO") AND (labels is EMPTY OR labels not in ("bloqueio-externo"))) OR (status = "EM ANDAMENTO" AND labels = "humano") OR (status = "AGUARDANDO APROVAÇÃO" AND (labels is EMPTY OR labels != "humano")) OR (labels = "liberada" AND labels != "draft" AND status != "CONCLUÍDA") OR (status = "EM ANDAMENTO" AND status changed FROM "CONCLUÍDA" AFTER -1d))' ;;
-  B | b) jql='project = DDP AND assignee = "712020:ec30868f-8e34-4c25-97e2-cd920e5da679" AND status in ("A FAZER", "EM ANDAMENTO")' ;;
-  C | c) jql='project = DDP AND assignee = "712020:6ac2f667-9728-4b07-bffb-eaa19704a4c9" AND status in ("A FAZER", "EM ANDAMENTO")' ;;
-  # D não tem conta no Jira: a fila dela é o rótulo sessao-d.
-  D | d) jql='project = DDP AND labels = "sessao-d" AND status in ("A FAZER", "EM ANDAMENTO")' ;;
+  A | a) jql='project = DDP AND status != "CONCLUÍDA" AND ((labels = "para-a" AND labels not in ("espera", "bloqueio-externo")) OR (labels = "para-lovable" AND status = "EM REVISÃO") OR (status in ("BLOQUEADA", "EM REVISÃO") AND (labels is EMPTY OR labels != "bloqueio-externo")) OR (labels = "humano" AND status = "EM ANDAMENTO") OR (status = "AGUARDANDO APROVAÇÃO" AND (labels is EMPTY OR labels != "humano")) OR (labels = "liberada" AND labels != "draft") OR (status = "EM ANDAMENTO" AND status changed FROM "CONCLUÍDA" AFTER -1d))' ;;
+  B | b) jql='project = DDP AND labels = "para-b" AND status != "CONCLUÍDA"' ;;
+  C | c) jql='project = DDP AND labels = "para-c" AND status != "CONCLUÍDA"' ;;
+  # Desde a DEC-0047 a fila de B, C e D é o rótulo para-b, para-c, para-d, em qualquer status menos CONCLUÍDA.
+  D | d) jql='project = DDP AND labels = "para-d" AND status != "CONCLUÍDA"' ;;
   *)
     echo "ERRO: sessão '$sessao' não é A, B, C nem D" >&2
     exit 1
@@ -199,11 +199,12 @@ while :; do
     printf 'FILA %s: %s issue(s) esperando, %s\n' "$sessao" "$n" "$(date +%Y-%m-%dT%H:%M:%S)"
     proxima
     case "$sessao" in
-    B | b | C | c)
+    B | b | C | c | D | d)
       # Sessão rodando não relê o próprio prompt, e a escuta é o texto que ela
       # lê a cada volta. Em 2026-09-21 a sessão C pôs chave em monospace em
       # dois comentários seguidos (DDP-305, DDP-307).
       echo "No comentário, nunca ponha chave dentro de monospace: trecho com chave vai na macro de código."
+      echo "Ao devolver: comentário Sessão X:, rótulo trocado para para-a (nunca dois rótulos de destino) e transição 4 (dúvida: transição 2). Ao pegar: transição 31, sem trocar o rótulo. DEC-0047."
       ;;
     esac
     religue
